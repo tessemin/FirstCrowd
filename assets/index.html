@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<head>
+<link rel="stylesheet" href="navbar.component.css">
+<link rel="stylesheet" href="carousel.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">FirstCrowd</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="#">Enterprise Connection</a></li>
+        <li><a href="#">List task</a></li>
+        <li><a href="#">Do task</a></li>
+        <li><a href="#">Labor Market</a></li>
+        <li><a href="#">Resource Market</a></li>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Language<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+
+                <li><a href="#">English</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#">Italian</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#">Japanese</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#">Chinese</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#">French</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#">Deutsche</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#">Spanish</a></li>
+            </ul>
+        </li>
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Login<span class="caret"></span></a>
+          <form class="dropdown-menu">
+              <div class="form-group login">
+                  <input type="text" class="form-control nav-login-input" placeholder="Username">
+                  <input type="text" class="form-control nav-login-input" placeholder="Password">
+                  <button type="submit" class="btn btn-default nav-login-button">Submit</button>
+              </div>
+          </form>
+
+
+        </li>
+        <li><a href="#">Sign up</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+<div id="myCarousel" class="carousel slide" data-ride="carousel">
+  <!-- Indicators -->
+  <ol class="carousel-indicators">
+    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+    <li data-target="#myCarousel" data-slide-to="1"></li>
+    <li data-target="#myCarousel" data-slide-to="2"></li>
+  </ol>
+
+  <!-- Wrapper for slides -->
+  <div class="carousel-inner" role="listbox">
+    <div class="item active">
+	<div class="contentWraper testimonial">
+      <table class="testimonial">
+      <tr>
+        <td><img src="man.jpg" alt="Business man"></td>
+        <td>
+			<h1>Connect With Other Businesses!</h1>
+			<h3>"I found better ways of connecting with potential clients and employees!"</h3>
+		</td>
+      </tr>
+      </table>
+	  </div>
+    </div>
+
+    <div class="item">
+     <div class="contentWraper"><div class="textWraper"><h2>He looked across the sea and knew how alone he was now. But he could see the prisms in the deep dark water and the line stretching ahead and the strange undulation of the calm. The clouds were building up now for the trade wind and he looked ahead and saw a flight of wild ducks etching themselves against the sky over the water, then blurring, then etching again and he knew no man was ever alone on the sea.</h2></div></div>
+    </div>
+
+    <div class="item">
+      <div class="contentWraper" id="fadePciture"><img  src="working.jpg" alt="Node Map"></div>
+      <div class="carousel-caption">
+        <h1>Collaborate!</h1>
+      </div>
+    </div>
+  </div>
+
+  <!-- Left and right controls -->
+  <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+</body>
+</html>
