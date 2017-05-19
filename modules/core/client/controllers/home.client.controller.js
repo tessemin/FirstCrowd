@@ -3,9 +3,14 @@
 
   angular
     .module('core')
-    .controller('HomeController', HomeController);
+    .controller('carouselCtrl', carouselCtrl);
 
-  function HomeController() {
-    var vm = this;
+  function carouselCtrl() {
+    $scope.removeFocus = function() {
+			if (document.activeElement != document.body) document.activeElement.blur();
+		}
   }
+  
+  
 }());
+
