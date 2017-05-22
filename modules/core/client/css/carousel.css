@@ -1,5 +1,13 @@
-.contentWraper img{
-	width: 100%;
+.autoResizeImg{
+	width: 85%;
+}
+
+.widerCol{
+	width: 60%;
+}
+
+.testimonial img{
+	width: 102%;
 }
 .testimonial{
 	 padding-top: 15vh;
@@ -24,7 +32,7 @@
 	background: #F1A94E !important; /* For browsers that do not support gradients */
 	color: #003366;
 	font-weight: bold;
-	font-size:50px;
+	font-size:calc(12px + 2.5vw);
 	padding: 15px;
 	padding-top: 20px;
 	padding-bottom: 20px;
@@ -32,8 +40,12 @@
 }
 
 .contentWraper h1{
+	font-size:calc(12px + 2.5vw);
 	color: #003366;
 	font-weight: bold;
+}
+.contentWraper h3, .contentWraper p, .contentWraper h2{
+	font-size:calc(12px + 1.5vw);
 }
 .contentWraper{
 	margin-left:auto;
