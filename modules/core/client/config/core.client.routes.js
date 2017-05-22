@@ -30,7 +30,7 @@
       .state('home', {
         url: '/',
         templateUrl: '/modules/core/client/views/home.client.view.html',
-        controller: 'HomeController',
+        controller: 'carouselCtrl',
         controllerAs: 'vm'
       })
       .state('not-found', {
