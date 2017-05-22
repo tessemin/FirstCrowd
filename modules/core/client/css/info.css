@@ -1,0 +1,63 @@
+.container-fluid{
+  padding:0;
+}
+.info{
+  background-color:#0077b3;
+	min-height:93vh;
+	min-width:100%;
+}
+.info-list-head{
+    color: white;
+    text-align:center;
+}
+.info-head{
+    color: white;
+    padding-bottom:15vh;
+    text-align:center;
+}
+.info-list{
+    padding: 5px;
+    word-wrap: break-word;
+}
+.info-section{
+    background: white;
+    border: 1px solid none;
+    border-radius: 5px;
+    box-shadow: 1px 1px 1px #000;
+    text-align:center;
+}
+.node-side{
+    /* padding-bottom: 30vh; */
+    padding-top: 15vh;
+}
+.node-head{
+    padding-bottom: 30vh;
+    padding-top: 5vh;
+}
+.node-info{
+    padding: 6vh;
+}
+.black{
+    padding:5px;
+}
+.pointer{
+    padding-top:9px;
+    color: white;
+}
+.list-text{
+    color: white;
+}
+.pad{
+    padding:5px;
+}
+.end{
+    padding-bottom: 8vh;
+}
+.call-to-action{
+    /* background: white; */
+    /* border: 1px solid none; */
+    /* border-radius: 5px; */
+    /* box-shadow: 1px 1px 1px #000; */
+    text-align:center;
+    padding: 5px;
+}

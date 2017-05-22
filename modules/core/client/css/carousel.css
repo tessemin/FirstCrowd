@@ -10,7 +10,7 @@
 	width: 102%;
 }
 .testimonial{
-	 padding-top: 15vh;
+	padding-top: 15vh;
 }
 
 .carousel-control {
@@ -40,8 +40,8 @@
 }
 
 .contentWraper h1{
-	font-size:calc(12px + 2.5vw);
 	color: #003366;
+	font-size:calc(12px + 2.5vw);
 	font-weight: bold;
 }
 .contentWraper h3, .contentWraper p, .contentWraper h2{
@@ -52,7 +52,9 @@
 	margin-right:auto;
 	max-height:90vh;
 	min-height:90vh;
+	position:relative;
 	text-align:center;
+    vertical-align: middle;
 	width:80%;
 }
 
