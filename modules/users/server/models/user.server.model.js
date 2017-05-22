@@ -51,6 +51,19 @@ var validateUsername = function(username) {
  * User Schema
  */
 var UserSchema = new Schema({
+  userType: {
+    type: [{
+      type: String,
+      enum: ['individual', 'enterprise']
+    }],
+    default: ['individual'],
+    required: 'Please provide one user type'
+  },
+  userRole: {
+    worker: { type: Boolean },
+    requester: { type: Boolean },
+    resource_owner: { type: Boolean }
+  },
   firstName: {
     type: String,
     trim: true,

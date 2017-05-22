@@ -147,6 +147,8 @@ exports.me = function (req, res) {
   var safeUserObject = null;
   if (req.user) {
     safeUserObject = {
+      userRole: validator.escape(req.user.userRole),
+      userType: validator.escape(req.user.userType),
       displayName: validator.escape(req.user.displayName),
       provider: validator.escape(req.user.provider),
       username: validator.escape(req.user.username),
