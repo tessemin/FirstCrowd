@@ -8,22 +8,23 @@
  .glyphicon{
 	 color:  #003366;
  }
-.carousel-control.left , .carousel-control.right{
-	width: 5%;
+.carousel-control.right , .carousel-control.left{
 	background: none !important;
+	width: 5%;
 }
-.carousel-caption *{
-	background: #F1A94E !important; /* For browsers that do not support gradients */
-    background:  -webkit-radial-gradient(60% 55%,#FFCC66, white) !important; /* For Safari 5.1 to 6.0 */
+.carousel-caption  *{
+	background: -moz-radial-gradient(60% 55%,#FFCC66, white) !important; /* For Firefox 3.6 to 15 */
     background: -o-radial-gradient(60% 55%,#FFCC66, white) !important; /* For Opera 11.1 to 12.0 */
-    background: -moz-radial-gradient(60% 55%,#FFCC66, white) !important; /* For Firefox 3.6 to 15 */
-    background: radial-gradient(60% 55%,#FFCC66, white) !important; /* Standard syntax */
-	padding: 15px;
-	padding-top: 20px;
-	padding-bottom: 20px;
+	background: -webkit-gradient(60% 55%,#FFCC66, white) !important; /* for old safari and chrome*/
+	background: -webkit-radial-gradient(60% 55%,#FFCC66, white) !important; /* For Safari 5.1 to 6.0 */
+	background: radial-gradient(60% 55%,#FFCC66, white) !important; /* Standard syntax */
+	background: #F1A94E !important; /* For browsers that do not support gradients */
 	color: #003366;
 	font-weight: bold;
 	font-size:50px;
+	padding: 15px;
+	padding-top: 20px;
+	padding-bottom: 20px;
 	width: 100%;
 }
 
@@ -34,11 +35,10 @@
 .contentWraper{
 	margin-left:auto;
 	margin-right:auto;
+	max-height:90vh;
+	min-height:90vh;
 	text-align:center;
 	width:80%;
-	min-height:90vh;
-	max-height:90vh;
-
 }
 
 .contentWraper .textWraper{
@@ -50,9 +50,7 @@
 	font-weight: bold;
 }
 
-#myCarousel{
-	padding-top:0px;
-	margin-top:0px;
+.carousel.slide{	
 	width:100%;
 }
 
@@ -61,7 +59,8 @@
 }
 
 .carousel-indicators li {
-  background-color: rgba(70,70,70,.25);
+	background-color: rgb(70,70,70);
+	background-color: rgba(70,70,70,.25);
 }
 
 .carousel-indicators .active {
