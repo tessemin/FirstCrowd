@@ -45,7 +45,6 @@ exports.signup = function (req, res) {
           res.status(400).send(err);
         } else {
 			res.json(user);
-      /*
 			if(user.userType[0] === "enterprise"){
 				 console.log("enterprise");
 				 newEnterpriseUser(req, res);
@@ -55,7 +54,6 @@ exports.signup = function (req, res) {
 			}else{ // error, just make user
 				res.json(user);
 			}
-      */
         }
       });
     }
