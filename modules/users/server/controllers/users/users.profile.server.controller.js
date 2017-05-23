@@ -146,21 +146,38 @@ exports.me = function (req, res) {
   // TODO create proper passport mock: See https://gist.github.com/mweibel/5219403
   var safeUserObject = null;
   if (req.user) {
-    safeUserObject = {
-      userRole: validator.escape(req.user.userRole),
-      userType: validator.escape(req.user.userType),
-      displayName: validator.escape(req.user.displayName),
-      provider: validator.escape(req.user.provider),
-      username: validator.escape(req.user.username),
-      created: req.user.created.toString(),
-      roles: req.user.roles,
-      profileImageURL: req.user.profileImageURL,
-      email: validator.escape(req.user.email),
-      lastName: validator.escape(req.user.lastName),
-      firstName: validator.escape(req.user.firstName),
-      additionalProvidersData: req.user.additionalProvidersData
-    };
+	if (req.user.userType == "enterprise"){
+		safeUserObject = {
+		  userRole: validator.escape(req.user.userRole),
+		  userType: validator.escape(req.user.userType),
+		  displayName: validator.escape(req.user.displayName),
+		  provider: validator.escape(req.user.provider),
+		  username: validator.escape(req.user.username),
+		  created: req.user.created.toString(),
+		  roles: req.user.roles,
+		  profileImageURL: req.user.profileImageURL,
+		  email: validator.escape(req.user.email),
+		  lastName: validator.escape(req.user.lastName),
+		  firstName: validator.escape(req.user.firstName),
+		  additionalProvidersData: req.user.additionalProvidersData
+		};
+	}else{
+		safeUserObject = {
+		  userRole: validator.escape(req.user.userRole),
+		  userType: validator.escape(req.user.userType),
+		  displayName: validator.escape(req.user.displayName),
+		  provider: validator.escape(req.user.provider),
+		  username: validator.escape(req.user.username),
+		  created: req.user.created.toString(),
+		  roles: req.user.roles,
+		  profileImageURL: req.user.profileImageURL,
+		  email: validator.escape(req.user.email),
+		  lastName: validator.escape(req.user.lastName),
+		  firstName: validator.escape(req.user.firstName),
+		  additionalProvidersData: req.user.additionalProvidersData
+		};
+	}
   }
-
+  console.log('here');
   res.json(safeUserObject || null);
 };
