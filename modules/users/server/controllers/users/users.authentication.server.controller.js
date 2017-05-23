@@ -44,16 +44,16 @@ exports.signup = function (req, res) {
         if (err) {
           res.status(400).send(err);
         } else {
-			res.json(user);
-			if(user.userType[0] === "enterprise"){
-				 console.log("enterprise");
-				 newEnterpriseUser(req, res);
-			}else if(user.userType[0] === "individual"){
-				console.log("individual");
-				newIndividualUser(req, res);
-			}else{ // error, just make user
-				res.json(user);
-			}
+          res.json(user);
+          if (user.userType[0] === 'enterprise') {
+            console.log("enterprise");
+            newEnterpriseUser(req, res);
+          } else if (user.userType[0] === 'individual') {
+            console.log('individual');
+            newIndividualUser(req, res);
+          } else { // error, just make user
+            res.json(user);
+          }
         }
       });
     }
@@ -64,7 +64,7 @@ exports.signup = function (req, res) {
  * create a new enterprise user
  */
 function newEnterpriseUser(req, res){
- EnterpriseUser;
+  EnterpriseUser;
 
 }
 
@@ -72,7 +72,7 @@ function newEnterpriseUser(req, res){
  * create a new individual user
 */
 function newIndividualUser(req, res){
- IndividualUser;
+  IndividualUser;
 }
 
 /**

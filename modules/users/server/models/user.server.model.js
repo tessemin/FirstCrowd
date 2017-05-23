@@ -171,7 +171,7 @@ var EnterpriseUserSchema = new Schema({
     type: String,
     default: ''
   },
-  industryClassification:[{ // an array
+  industryClassification: [{ // an array
     type: String, 
   }],
   primaryCountry: {
