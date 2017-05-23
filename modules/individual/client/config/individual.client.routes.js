@@ -13,13 +13,6 @@
         url: '/individual',
         templateUrl: '/modules/individual/client/views/individual.client.view.html',
         controller: 'IndividualController',
-        controllerAs: 'vm',
-        resolve: {
-          individualResolve: getIndividual
-        },
-        data: {
-          pageTitle: 'Individual {{ individualResolve.title }}'
-        }
         controllerAs: 'vm'
       })
       .state('individualSkill', {
