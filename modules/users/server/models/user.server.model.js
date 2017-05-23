@@ -140,19 +140,66 @@ var UserSchema = new Schema({
   }
 });
 
-var EnterpriseUserSchema = UserSchema({
-  companyName:{
-	  type:string,
-	  required: 'Please provide a Company Name'
+/*
+ * Enterprise Schema
+ */
+var EnterpriseUserSchema = new Schema({
+  user: Schema.ObjectId,
+  companyName: {
+    type: String,
+    required: 'Please provide a Company Name'
+  },
+  companyAddress: {
+    type: String,
+    default: ''
+  },
+  contact: {
+    email: {
+      type: String,
+      default: ''
+    },
+    phone: {
+      type: Number,
+      default: ''
     }
+  },
+  website: {
+    type: String,
+    default: ''
+  },
+  description: {
+    type: String,
+    default: ''
+  },
+  industryClassification:[{ // an array
+    type: String, 
+  }],
+  primaryCountry: {
+    type: String,
+    default: ''
+  },
+  state: {
+    type: String,
+    default: ''
+	},
+  yearEstablished: {
+    type: Number,
+    default: null
+  },
+  employeeCount: {
+    type: Number,
+    default: null
   }
 });
 
-var IndividualUserSchema = UserSchema({
-  middleName:{
-	  type:string,
-	  required: 'Please provide a Middle Name'
-    }
+/*
+ * Individual Schema
+ */
+var IndividualUserSchema = new Schema({
+  user: Schema.ObjectId,
+  middleName: {
+    type: String,
+    required: 'Please provide a Middle Name'
   }
 });
 
