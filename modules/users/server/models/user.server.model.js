@@ -62,7 +62,7 @@ var UserSchema = new Schema({
   userRole: {
     worker: { type: Boolean },
     requester: { type: Boolean },
-    resource_owner: { type: Boolean }
+    resourceOwner: { type: Boolean }
   },
   firstName: {
     type: String,
