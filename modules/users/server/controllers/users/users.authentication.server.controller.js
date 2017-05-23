@@ -46,7 +46,7 @@ exports.signup = function (req, res) {
         } else {
           res.json(user);
           if (user.userType[0] === 'enterprise') {
-            console.log("enterprise");
+            console.log('enterprise');
             newEnterpriseUser(req, res);
           } else if (user.userType[0] === 'individual') {
             console.log('individual');
@@ -63,7 +63,7 @@ exports.signup = function (req, res) {
 /**
  * create a new enterprise user
  */
-function newEnterpriseUser(req, res){
+function newEnterpriseUser(req, res) {
   EnterpriseUser;
 
 }
@@ -71,7 +71,7 @@ function newEnterpriseUser(req, res){
 /**
  * create a new individual user
 */
-function newIndividualUser(req, res){
+function newIndividualUser(req, res) {
   IndividualUser;
 }
 
