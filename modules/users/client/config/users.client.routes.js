@@ -30,6 +30,15 @@
           pageTitle: 'Settings'
         }
       })
+      .state('settings.education', {
+        url: '/education',
+        templateUrl: '/modules/users/client/views/settings/edit-education.client.view.html',
+        controller: 'EditEducationController',
+        controllerAs: 'vm',
+        data: {
+          pageTitle: 'Education'
+        }
+      })
       .state('settings.password', {
         url: '/password',
         templateUrl: '/modules/users/client/views/settings/change-password.client.view.html',
