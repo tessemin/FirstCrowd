@@ -1,9 +1,7 @@
 <section class="row">
   <div class="col-xs-offset-1 col-xs-10 col-md-offset-4 col-md-4">
     <form name="vm.individualCertification" ng-submit="vm.updateIndividualCertification(vm.individualCertification.$valid)" class="signin" novalidate autocomplete="off">
-      <fieldset>        
-        <div class="form-group" show-errors>
-        
+      <fieldset>
         <div class="form-group" show-errors>
           <label for="certificationName">Certification Name</label>
           <input type="text" id="certificationName" name="certificationName" class="form-control" ng-model="vm.individualCertification.certificationName" placeholder="Certification Name" required autofocus>
