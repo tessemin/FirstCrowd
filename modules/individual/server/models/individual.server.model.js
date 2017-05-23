@@ -14,8 +14,6 @@ var IndividualSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'User'
   }
-  
-  
   // created: {
   //   type: Date,
   //   default: Date.now
