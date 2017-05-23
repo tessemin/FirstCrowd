@@ -1,0 +1,64 @@
+<section class="row">
+  <div class="col-xs-offset-1 col-xs-10 col-md-offset-4 col-md-4">
+    <form name="vm.individualWorkExperience" ng-submit="vm.updateIndividualWorkExperience(vm.individualWorkExperience.$valid)" class="signin" novalidate autocomplete="off">
+      <fieldset>        
+        <div class="form-group" show-errors>
+        
+        <div class="form-group" show-errors>
+          <label for="employer">Employer</label>
+          <input type="text" id="employer" name="employer" class="form-control" ng-model="vm.individualWorkExperience.employer" placeholder="Employer" required autofocus>
+          <div ng-messages="vm.individualWorkExperience.employer.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Employer is required.</p>
+          </div>
+        </div>
+        
+        <div class="form-group" show-errors>
+          <label for="jobTitle">Job Title</label>
+          <input type="text" id="jobTitle" name="jobTitle" class="form-control" ng-model="vm.individualWorkExperience.jobTitle" placeholder="Job Title" required>
+          <div ng-messages="vm.individualWorkExperience.jobTitle.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Job Title is required.</p>
+          </div>
+        </div>
+        
+        <div class="form-group" show-errors>
+          <label for="description"></label>
+          <input type="text" id="description" name="description" class="form-control" ng-model="vm.individualWorkExperience.description" placeholder="Description" required>
+          <div ng-messages="vm.individualWorkExperience.description.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Description is required.</p>
+          </div>
+        </div>
+        
+        <div class="form-group" show-errors>
+          <label for="skills">Skills</label>
+          <input type="text" id="skills" name="skills" class="form-control" ng-model="vm.individualWorkExperience.skills" placeholder="Skills" required>
+          <div ng-messages="vm.individualWorkExperience.skills.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Skills are required.</p>
+          </div>
+        </div>
+        
+        <div class="form-group" show-errors>
+          <label for="firstDateEmployed">First Date Employed</label>
+          <input type="text" id="firstDateEmployed" name="firstDateEmployed" class="form-control" ng-model="vm.individualWorkExperience.firstDateEmployed" placeholder="First Date Employed" required>
+          <div ng-messages="vm.individualWorkExperience.firstDateEmployed.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">First Date Employed is required.</p>
+            <p class="help-block error-text" ng-message="firstDateEmployed">First Date Employed is invalid.</p>
+          </div>
+        </div>
+        
+        <div class="form-group" show-errors>
+          <label for="lastDateEmployed">Last Date Employed</label>
+          <input type="text" id="lastDateEmployed" name="lastDateEmployed" class="form-control" ng-model="vm.individualWorkExperience.lastDateEmployed" placeholder="Last Date Employed" required>
+          <div ng-messages="vm.individualWorkExperience.lastDateEmployed.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Last Date Employed is required.</p>
+            <p class="help-block error-text" ng-message="firstDateAttended">Last Date Employed is invalid.</p>
+          </div>
+        </div>
+        
+        <div class="text-center form-group">
+          <button type="submit" class="btn btn-primary">Save Work Experience</button>
+        </div>
+        
+      </fieldset>
+    </form>
+  </div>
+</section>
