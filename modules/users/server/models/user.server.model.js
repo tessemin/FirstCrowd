@@ -56,13 +56,13 @@ var UserSchema = new Schema({
       type: String,
       enum: ['individual', 'enterprise']
     }],
-    default: ['individual'],
     required: 'Please provide one user type'
   },
   userRole: {
     worker: { type: Boolean },
     requester: { type: Boolean },
     resourceOwner: { type: Boolean }
+    // required: 'Please choose at least one role'
   },
   firstName: {
     type: String,
