@@ -25,6 +25,13 @@
         data: {
           pageTitle: 'Individual {{ individualResolve.title }}'
         }
+        controllerAs: 'vm'
+      })
+      .state('individualSkill', {
+        url: '/edit-skill',
+        templateUrl: '/modules/individual/client/views/settings/edit-skill.client.view.html',
+        controller: 'IndividualSkillController',
+        controllerAs: 'vm'
       });
   }
 
