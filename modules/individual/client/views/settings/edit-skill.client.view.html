@@ -1,0 +1,35 @@
+<section class="row">
+  <div class="col-xs-offset-1 col-xs-10 col-md-offset-4 col-md-4">
+    <form name="vm.individualSkill" ng-submit="vm.updateIndividualSkill(vm.individualSkill.$valid)" class="signin" novalidate autocomplete="off">
+      <fieldset>
+        
+        <div class="form-group" show-errors>
+          <label for="skill">Skill</label>
+          <input type="text" id="skill" name="skill" class="form-control" ng-model="vm.individualSkill.skill" placeholder="Skill" required autofocus>
+          <div ng-messages="vm.individualSkill.skill.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Skill is required.</p>
+          </div>
+        </div>
+        
+        <div class="input-group input-daterange">
+          <input id="skillFirstUsed" name="skillFirstUsed" type="text" class="form-control">
+          <div class="input-group-addon">to</div>
+          <input id="skillLastUsed" name="skillLastUsed" type="text" class="form-control">
+        </div>
+        
+        <div class="form-group" show-errors>
+          <label for="skillWhere">Where you learned the skill</label>
+          <input type="text" id="skillWhere" name="skillWhere" class="form-control" ng-model="vm.userEducation.skillWhere" placeholder="Where" required>
+          <div ng-messages="vm.educationForm.skillWhere.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Where is required.</p>
+          </div>
+        </div>
+        
+        <div class="text-center form-group">
+          <button type="submit" class="btn btn-primary">Save Skill</button>
+        </div>
+   
+      </fieldset>
+    </form>
+  </div>
+</section>
