@@ -31,11 +31,11 @@
 	background: radial-gradient(60% 55%,#FFCC66, white) !important; /* Standard syntax */
 	background: #F1A94E !important; /* For browsers that do not support gradients */
 	color: #003366;
-	font-weight: bold;
 	font-size:calc(12px + 2.5vw);
+	font-weight: bold;
 	padding: 15px;
-	padding-top: 20px;
 	padding-bottom: 20px;
+	padding-top: 20px;
 	width: 100%;
 }
 

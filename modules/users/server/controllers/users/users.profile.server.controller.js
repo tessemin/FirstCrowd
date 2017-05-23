@@ -161,6 +161,5 @@ exports.me = function (req, res) {
       additionalProvidersData: req.user.additionalProvidersData
     };
   }
-
   res.json(safeUserObject || null);
 };

@@ -140,6 +140,69 @@ var UserSchema = new Schema({
   }
 });
 
+/*
+ * Enterprise Schema
+ */
+var EnterpriseUserSchema = new Schema({
+  user: Schema.ObjectId,
+  companyName: {
+    type: String,
+    required: 'Please provide a Company Name'
+  },
+  companyAddress: {
+    type: String,
+    default: ''
+  },
+  contact: {
+    email: {
+      type: String,
+      default: ''
+    },
+    phone: {
+      type: Number,
+      default: ''
+    }
+  },
+  website: {
+    type: String,
+    default: ''
+  },
+  description: {
+    type: String,
+    default: ''
+  },
+  industryClassification:[{ // an array
+    type: String, 
+  }],
+  primaryCountry: {
+    type: String,
+    default: ''
+  },
+  state: {
+    type: String,
+    default: ''
+	},
+  yearEstablished: {
+    type: Number,
+    default: null
+  },
+  employeeCount: {
+    type: Number,
+    default: null
+  }
+});
+
+/*
+ * Individual Schema
+ */
+var IndividualUserSchema = new Schema({
+  user: Schema.ObjectId,
+  middleName: {
+    type: String,
+    required: 'Please provide a Middle Name'
+  }
+});
+
 /**
  * Hook a pre save method to hash the password
  */
@@ -244,3 +307,5 @@ UserSchema.statics.generateRandomPassphrase = function () {
 };
 
 mongoose.model('User', UserSchema);
+mongoose.model('EnterpriseUser', EnterpriseUserSchema);
+mongoose.model('IndividualUser', IndividualUserSchema);

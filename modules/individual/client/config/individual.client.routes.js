@@ -10,12 +10,7 @@
   function routeConfig($stateProvider) {
     $stateProvider
       .state('individual', {
-        abstract: true,
         url: '/individual',
-        template: '<ui-view/>'
-      })
-      .state('individual.view', {
-        url: '/:individualId',
         templateUrl: '/modules/individual/client/views/individual.client.view.html',
         controller: 'IndividualController',
         controllerAs: 'vm',
@@ -33,13 +28,25 @@
         controller: 'IndividualSkillController',
         controllerAs: 'vm'
       });
+      // .state('individual.view', {
+      //   url: '/individual/:individualId',
+      //   templateUrl: '/modules/individual/client/views/individual.client.view.html',
+      //   controller: 'IndividualController',
+      //   controllerAs: 'vm',
+      //   resolve: {
+      //     individualResolve: getIndividual
+      //   },
+      //   data: {
+      //     pageTitle: 'Individual {{ individualResolve.title }}'
+      //   }
+      // });
   }
 
-  getIndividual.$inject = ['$stateParams', 'IndividualService'];
+  // getIndividual.$inject = ['$stateParams', 'IndividualService'];
 
-  function getIndividual($stateParams, IndividualService) {
-    return IndividualService.get({
-      individualId: $stateParams.individualId
-    }).$promise;
-  }
+  // function getIndividual($stateParams, IndividualService) {
+  //   return IndividualService.get({
+  //     individualId: $stateParams.individualId
+  //   }).$promise;
+  // }
 }());

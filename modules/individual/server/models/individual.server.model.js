@@ -10,6 +10,12 @@ var mongoose = require('mongoose'),
  * Individual Schema
  */
 var IndividualSchema = new Schema({
+  user: {
+    type: Schema.ObjectId,
+    ref: 'User'
+  }
+  
+  
   // created: {
   //   type: Date,
   //   default: Date.now
