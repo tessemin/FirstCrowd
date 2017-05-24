@@ -13,7 +13,7 @@
       title: 'Individuals',
       state: 'individuals',
       type: 'dropdown',
-      roles: ['ind']
+      userRole: 'individual'
     });
 
     // Add the dropdown list item
@@ -26,7 +26,7 @@
     menuService.addSubMenuItem('topbar', 'individuals', {
       title: 'Create Individual',
       state: 'individuals.create',
-      roles: ['ind']
+      userRole: 'individual'
     });
   }
 }());
