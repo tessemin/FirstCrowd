@@ -27,7 +27,7 @@ module.exports = {
     'no-shadow': 0,
     'no-spaced-func': 2,
     'no-throw-literal': 2,
-    'no-trailing-spaces': 2,
+    'no-trailing-spaces': 0,
     'no-undef': 2,
     'no-unneeded-ternary': 2,
     'no-unreachable': 2,
