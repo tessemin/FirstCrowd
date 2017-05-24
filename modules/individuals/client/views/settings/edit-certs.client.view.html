@@ -1,0 +1,16 @@
+<!-- Certifications are called "certs" because I kept confusing them
+     with certificates
+--->
+
+<div ng-controller="CertsController">
+  <button>Add certificate</button>
+  
+  <ul>
+    <li ng-repeat="cert in certs as results" ng-include="getCert(cert)">
+      <!-- Template from cert.client.view.html -->
+    </li>
+  </ul>
+  <li ng-if="results.length === 0">
+    You have not added any certifications.
+  </li>
+</div>
