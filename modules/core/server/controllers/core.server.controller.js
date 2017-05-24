@@ -9,7 +9,6 @@ var validator = require('validator'),
  */
 exports.renderIndex = function (req, res) {
   var safeUserObject = null;
-  console.log(req.user);
   if (req.user) {
     safeUserObject = {
       displayName: validator.escape(req.user.displayName),
