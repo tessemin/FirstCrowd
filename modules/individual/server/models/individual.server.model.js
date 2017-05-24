@@ -35,4 +35,4 @@ var IndividualSchema = new Schema({
   // }
 });
 
-mongoose.model('Individual', IndividualSchema);
+mongoose.model('Individual2', IndividualSchema);
