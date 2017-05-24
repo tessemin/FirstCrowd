@@ -1,0 +1,46 @@
+<section class="row">
+  <div class="col-xs-offset-1 col-xs-10 col-md-offset-4 col-md-4">
+    <form name="vm.individualCertification" ng-submit="vm.updateIndividualCertification(vm.individualCertification.$valid)" class="signin" novalidate autocomplete="off">
+      <fieldset>
+        <div class="form-group" show-errors>
+          <label for="certificationName">Certification Name</label>
+          <input type="text" id="certificationName" name="certificationName" class="form-control" ng-model="vm.individualCertification.certificationName" placeholder="Certification Name" required autofocus>
+          <div ng-messages="vm.individualCertification.certificationName.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Certification Name is required.</p>
+          </div>
+        </div>
+        
+        <div class="form-group" show-errors>
+          <label for="institutionName">Institution Name</label>
+          <input type="text" id="institutionName" name="institutionName" class="form-control" ng-model="vm.individualCertification.institutionName" placeholder="Institution Name" required>
+          <div ng-messages="vm.individualCertification.institutionName.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Institution Name is required.</p>
+          </div>
+        </div>
+        
+        <div class="form-group" show-errors>
+          <label for="date">Date</label>
+          <input type="text" id="date" name="date" class="form-control" ng-model="vm.individualCertification.date" placeholder="Date" required>
+          <div ng-messages="vm.individualCertification.date.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Date is required.</p>
+          </div>
+        </div>
+        
+        <div class="form-group" show-errors>
+          <label for="summary">Summary</label>
+          <input type="text" id="summary" name="summary" class="form-control" ng-model="vm.individualCertification.summary" placeholder="Summary" required>
+          <div ng-messages="vm.individualCertification.summary.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Summary is required.</p>
+          </div>
+        </div>
+        
+        
+        <div class="text-center form-group">
+          <button type="submit" class="btn btn-primary">Save Certification</button>
+        </div>
+        
+      </fieldset>
+    </form>
+  </div>
+</section>
+  
