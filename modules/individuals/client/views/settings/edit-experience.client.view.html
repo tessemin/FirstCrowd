@@ -1,0 +1,12 @@
+<div ng-controller="ExperiencesController">
+  <button>Add experience</button>
+  
+  <ul>
+    <li ng-repeat="experience in experiences as results" ng-include="getExperience(experience)">
+      <!-- Template from experience.client.view.html -->
+    </li>
+  </ul>
+  <li ng-if="results.length === 0">
+    You have not added any experiences.
+  </li>
+</div>
