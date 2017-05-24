@@ -154,17 +154,17 @@ var IndividualUserSchema = new Schema({
  * set first and last name as same for user and individual
  */
 IndividualUserSchema.pre('save', function (next) {
-  if (this.firstName !== '') {
-    this.bio.firstName = this.firstName;
+  if (this.user.firstName !== '') {
+    this.bio.firstName = this.user.firstName;
   } else if (this.bio.firstName !== '') {
-    this.firstName = this.bio.firstName;
+    this.user.firstName = this.bio.firstName;
   }
-  if (this.lastName !== '') {
-    this.bio.lastName = this.lastName;
+  if (this.user.lastName !== '') {
+    this.bio.lastName = this.user.lastName;
   } else if (this.bio.lastName !== '') {
-    this.lastName = this.bio.lastName;
+    this.user.lastName = this.bio.lastName;
   }
-  this.displayName = this.first + ' ' + this.last;
+  this.user.displayName = this.first + ' ' + this.last;
   next();
 });
 
