@@ -26,7 +26,7 @@ var validateLocalStrategyProperty = function (property) {
  * A Validation function for local strategy email
  */
 var validateLocalStrategyEmail = function (email) {
-  return ((this.provider !== 'local' && !this.updated) || validator.isEmail(email, { require_tld: false }));
+  return ((this.contact.provider !== 'local' && !this.contact.updated) || validator.isEmail(email, { require_tld: false }));
 };
 
 /**
@@ -52,10 +52,8 @@ var validateUsername = function(username) {
  */
 var UserSchema = new Schema({
   userType: {
-    type: [{
-      type: String,
-      enum: ['individual', 'enterprise']
-    }],
+    type: String,
+    enum: ['individual', 'enterprise'],
     required: 'Please provide one user type'
   },
   userRole: {
@@ -80,16 +78,26 @@ var UserSchema = new Schema({
     type: String,
     trim: true
   },
-  email: {
-    type: String,
-    index: {
-      unique: true,
-      sparse: true // For this to work on a previously indexed field, the index must be dropped & the application restarted.
+  contact: {
+        email: {
+      type: String,
+      index: {
+        unique: true,
+        sparse: true // For this to work on a previously indexed field, the index must be dropped & the application restarted.
+      },
+      lowercase: true,
+      trim: true,
+      default: '',
+      validate: [validateLocalStrategyEmail, 'Please fill a valid email address']
     },
-    lowercase: true,
-    trim: true,
-    default: '',
-    validate: [validateLocalStrategyEmail, 'Please fill a valid email address']
+    phone: {
+      type: Number,
+      default: ''
+    },
+    preference: {
+      type: String,
+      enum: ['phone', 'email']
+    }
   },
   username: {
     type: String,
@@ -143,8 +151,8 @@ var UserSchema = new Schema({
 /*
  * Enterprise Schema
  */
-var EnterpriseUserSchema = new Schema({
-  user: Schema.ObjectId,
+var EnterpriseUserSchema = UserSchema.clone();
+EnterpriseUserSchema.add({
   companyName: {
     type: String,
     required: 'Please provide a Company Name'
@@ -152,16 +160,6 @@ var EnterpriseUserSchema = new Schema({
   companyAddress: {
     type: String,
     default: ''
-  },
-  contact: {
-    email: {
-      type: String,
-      default: ''
-    },
-    phone: {
-      type: Number,
-      default: ''
-    }
   },
   website: {
     type: String,
@@ -195,12 +193,64 @@ var EnterpriseUserSchema = new Schema({
 /*
  * Individual Schema
  */
-var IndividualUserSchema = new Schema({
-  user: Schema.ObjectId,
-  middleName: {
-    type: String,
-    required: 'Please provide a Middle Name'
+var IndividualUserSchema = UserSchema.clone();
+IndividualUserSchema.add({
+  bio: {
+    firstName: {
+      type: String,
+      default: ''
+    },
+    middleName: {
+      type: String,
+      required: 'Please provide a Middle Name'
+    },
+    lastName: {
+      type: String,
+      default: ''
+    },
+    dateOfBirth: {
+      type: Date,
+      default: ''
+    },
+    sex: {
+      type: String,
+      enum: ['male', 'female']
+    },
+    profession: {
+      type: String,
+      default: ''
+    },
+    country: {
+      type: String,
+      default: ''
+    },
+    zipCode: {
+      type: Number,
+      default: null
+    },
+    address: {
+      type: String,
+      default: ''
+    }
   }
+});
+
+/**
+ * Hook a pre save method to hash the password
+ */
+IndividualUserSchema.pre('save', function (next) {
+  if (this.firstName !== '') {
+    this.bio.firstName = this.firstName;
+  } else if (this.bio.firstName !== '') {
+    this.firstName = this.bio.firstName;
+  }
+  if (this.lastName !== '') {
+    this.bio.lastName = this.lastName;
+  } else if (this.bio.lastName !== '') {
+    this.lastName = this.bio.lastName;
+  }
+  this.displayName = this.first + ' ' + this.last;
+  next();
 });
 
 /**

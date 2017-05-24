@@ -45,10 +45,10 @@ exports.signup = function (req, res) {
           res.status(400).send(err);
         } else {
           res.json(user);
-          if (user.userType[0] === 'enterprise') {
+          if (user.userType === 'enterprise') {
             console.log('enterprise');
             newEnterpriseUser(req, res);
-          } else if (user.userType[0] === 'individual') {
+          } else if (user.userType === 'individual') {
             console.log('individual');
             newIndividualUser(req, res);
           } else { // error, just make user
