@@ -45,13 +45,13 @@
           <label control-label" for="sex">Sex</label>
           <div class="radio">
             <label for="male">
-              <input class="form-check" name="sex" id="male" value="male" type="radio" ng-model="vm.credentials.sex">
+              <input class="form-check" name="sex" id="male" value="male" type="radio" ng-model="vm.user.sex">
               Male
             </label>
           </div>
           <div class="radio">
             <label for="female">
-              <input class="form-check" name="sex" id="female" value="female" type="radio" ng-model="vm.credentials.sex">
+              <input class="form-check" name="sex" id="female" value="female" type="radio" ng-model="vm.user.sex">
               Female
             </label>
           </div>
@@ -59,7 +59,7 @@
         
         <div class="form-group" show-errors>
           <label for="profession">Profession</label>
-          <select id="profession" name="profession" class="form-control" ng-model="vm.user.profession" ng-options="x for x in professions" required>
+          <select id="profession" name="profession" class="form-control" ng-model="vm.user.profession" ng-options="x for x in vm.professions" required>
           </select>
         </div>
         
@@ -108,7 +108,7 @@
         
         <div class="form-group" show-errors>
           <label for="country">Country</label>
-          <select id="country" name="country" class="form-control" ng-model="vm.user.country" ng-options="x for x in countries" required>
+          <select id="country" name="country" class="form-control" ng-model="vm.user.country" ng-options="x as x.name for x in vm.countries" required>
           </select>
           <div ng-messages="vm.userForm.country.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Country is required.</p>
@@ -119,13 +119,13 @@
           <label control-label" for="preferredContact">Preferred Contact</label>
           <div class="radio">
             <label for="phone">
-              <input class="form-check" name="preferredContact" id="phone" value="phone" type="radio" ng-model="vm.credentials.preferredContact" required>
+              <input class="form-check" name="preferredContact" id="phone" value="phone" type="radio" ng-model="vm.user.preferredContact" required>
               Phone
             </label>
           </div>
           <div class="radio">
             <label for="email">
-              <input class="form-check" name="preferredContact" id="email" value="email" type="radio" ng-model="vm.credentials.preferredContact">
+              <input class="form-check" name="preferredContact" id="email" value="email" type="radio" ng-model="vm.user.preferredContact">
               Email
             </label>
           </div>

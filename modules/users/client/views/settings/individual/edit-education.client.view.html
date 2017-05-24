@@ -5,7 +5,7 @@
         
         <div class="form-group" show-errors>
           <label for="degreeLevel">Degree Level</label>
-          <select id="degreeLevel" name="degreeLevel" class="form-control" ng-model="vm.educationForm.degreeLevel" ng-options="x for x in degreeLevels" required>
+          <select id="degreeLevel" name="degreeLevel" class="form-control" ng-model="vm.userEducation.degreeLevel" ng-options="x for x in vm.degreeLevels" required>
           </select>
         </div>
         
@@ -77,7 +77,7 @@
         
         <div class="form-group" show-errors>
           <label for="schoolCountry">School Country</label>
-          <select id="schoolCountry" name="schoolCountry" class="form-control" ng-model="vm.userEducation.schoolCountry" ng-options="x for x in countries" required>
+          <select id="schoolCountry" name="schoolCountry" class="form-control" ng-model="vm.userEducation.schoolCountry" ng-options="x as x.name for x in vm.countries" required>
           </select>
           <div ng-messages="vm.educationForm.schoolCountry.$error" role="alert">
             <p class="help-block error-text" ng-message="required">School Country is required.</p>

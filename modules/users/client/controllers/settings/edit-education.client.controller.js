@@ -3,14 +3,14 @@
 
   angular
     .module('users')
-    .controller('EditProfileController', EditProfileController);
+    .controller('EducationController', EducationController);
 
-  EditProfileController.$inject = ['$scope', '$http', '$location', 'UsersService', 'Authentication', 'Notification'];
+  EducationController.$inject = ['$scope', '$http', '$location', 'UsersService', 'Authentication', 'Notification'];
 
-  function EditProfileController($scope, $http, $location, UsersService, Authentication, Notification) {
+  function EducationController($scope, $http, $location, UsersService, Authentication, Notification) {
     var vm = this;
 
-    vm.professions = [1, 2, 3, 4, 5];
+    vm.degreeLevels = ['Middle School', 'Highschool', 'Associate\'s Degree', 'Bachelor\'s Degree', 'Master\'s Degree', 'Doctoral Degree'];
 
     vm.countries = [
       { name: 'Afghanistan', code: 'AF' },
@@ -258,28 +258,27 @@
       { name: 'Zimbabwe', code: 'ZW' }
     ];
 
+    vm.userEducation = Authentication.user;
+    vm.updateUserEducation = updateUserEducation;
 
-    vm.user = Authentication.user;
-    vm.updateUserProfile = updateUserProfile;
-
-    // Update a user profile
-    function updateUserProfile(isValid) {
+    // Update a user education
+    function updateUserEducation(isValid) {
 
       if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'vm.userForm');
+        $scope.$broadcast('show-errors-check-validity', 'vm.educationForm');
 
         return false;
       }
 
-      var user = new UsersService(vm.user);
+      var userEducation = new UsersService(vm.user);
 
       user.$update(function (response) {
-        $scope.$broadcast('show-errors-reset', 'vm.userForm');
+        $scope.$broadcast('show-errors-reset', 'vm.educationForm');
 
-        Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Edit profile successful!' });
+        Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Edit education successful!' });
         Authentication.user = response;
       }, function (response) {
-        Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Edit profile failed!' });
+        Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Edit education failed!' });
       });
     }
   }
