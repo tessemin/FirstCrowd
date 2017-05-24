@@ -270,7 +270,7 @@
         return false;
       }
 
-      var userEducation = new UsersService(vm.user);
+      var user = new UsersService(vm.userEducation);
 
       user.$update(function (response) {
         $scope.$broadcast('show-errors-reset', 'vm.educationForm');
