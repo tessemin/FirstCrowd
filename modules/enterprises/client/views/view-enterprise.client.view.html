@@ -1,0 +1,26 @@
+<section>
+  <div class="page-header">
+    <h1 ng-bind="vm.enterprise.name"></h1>
+  </div>
+  <div class="pull-right"
+       ng-show="vm.enterprise.isCurrentUserOwner">
+    <a class="btn btn-primary"
+       ui-sref="enterprises.edit({ enterpriseId: vm.enterprise._id })">
+      <i class="glyphicon glyphicon-edit"></i>
+    </a>
+    <a class="btn btn-primary" ng-click="vm.remove()">
+      <i class="glyphicon glyphicon-trash"></i>
+    </a>
+  </div>
+  <small>
+    <em class="text-muted">
+      Posted on
+      <span ng-bind="vm.enterprise.created | date:'mediumDate'"></span>
+      by
+      <span ng-if="vm.enterprise.user"
+            ng-bind="vm.enterprise.user.displayName"></span>
+      <span ng-if="!vm.enterprise.user">Deleted User</span>
+    </em>
+  </small>
+  <p class="lead" ng-bind="vm.enterprise.content"></p>
+</section>
