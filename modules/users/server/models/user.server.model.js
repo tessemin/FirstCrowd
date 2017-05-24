@@ -78,7 +78,8 @@ var UserSchema = new Schema({
     type: String,
     trim: true
   },
-  email: {
+  contact: {
+    email: {
       type: String,
       index: {
         unique: true,
@@ -89,7 +90,6 @@ var UserSchema = new Schema({
       default: '',
       validate: [validateLocalStrategyEmail, 'Please fill a valid email address']
     },
-  contact: {
     phone: {
       type: Number,
       default: ''

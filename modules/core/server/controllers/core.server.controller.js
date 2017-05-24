@@ -9,6 +9,7 @@ var validator = require('validator'),
  */
 exports.renderIndex = function (req, res) {
   var safeUserObject = null;
+  console.log(req.user);
   if (req.user) {
     safeUserObject = {
       displayName: validator.escape(req.user.displayName),
@@ -17,7 +18,7 @@ exports.renderIndex = function (req, res) {
       created: req.user.created.toString(),
       roles: req.user.roles,
       profileImageURL: req.user.profileImageURL,
-      email: validator.escape(req.user.email),
+      email: validator.escape(req.user.contact.email),
       lastName: validator.escape(req.user.lastName),
       firstName: validator.escape(req.user.firstName),
       additionalProvidersData: req.user.additionalProvidersData
