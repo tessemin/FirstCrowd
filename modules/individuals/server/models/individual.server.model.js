@@ -6,24 +6,167 @@
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
-/**
+/*
  * Individual Schema
  */
-var IndividualSchema = new Schema({
-  name: {
-    type: String,
-    default: '',
-    required: 'Please fill Individual name',
-    trim: true
-  },
-  created: {
-    type: Date,
-    default: Date.now
-  },
+var IndividualUserSchema = new Schema({
   user: {
     type: Schema.ObjectId,
     ref: 'User'
-  }
+  },
+  bio: {
+    firstName: {
+      type: String,
+      default: ''
+    },
+    middleName: {
+      type: String,
+      required: 'Please provide a Middle Name'
+    },
+    lastName: {
+      type: String,
+      default: ''
+    },
+    dateOfBirth: {
+      type: Date,
+      default: ''
+    },
+    sex: {
+      type: String,
+      enum: ['male', 'female']
+    },
+    profession: {
+      type: String,
+      default: ''
+    },
+    country: {
+      type: String,
+      default: ''
+    },
+    zipCode: {
+      type: Number,
+      default: null
+    },
+    address: {
+      type: String,
+      default: ''
+    }
+  },
+  eudcation: [{
+    degreeLevel: {
+      type: String,
+      default: ''
+    },
+    schoolName: {
+      type: String,
+      default: ''
+    },
+    startDate: {
+      type: Date,
+      default: null
+    },
+    endDate: {
+      type: Date,
+      default: null
+    },
+    concentration: {
+      type: String,
+      default: ''
+    },
+    country: {
+      type: String,
+      default: ''
+    },
+    address: {
+      type: String,
+      default: ''
+    }
+  }],
+  jobExperience: [{
+    employer: {
+      type: String,
+      default: ''
+    },
+    title: {
+      type: String,
+      default: ''
+    },
+    description: {
+      type: String,
+      default: ''
+    },
+    skills: [{
+      type: String,
+      default: ''
+    }],
+    startDate: {
+      type: Date,
+      default: null
+    },
+    endDate: {
+      type: Date,
+      default: null
+    }
+  }],
+  certification: [{
+    name: {
+      type: String,
+      default: ''
+    },
+    organization: {
+      type: String,
+      default: ''
+    },
+    dateIssued: {
+      type: Date,
+      default: null
+    },
+    dateExpired: {
+      type: Date,
+      default: null
+    },
+    description: {
+      type: String,
+      default: ''
+    }
+  }],
+  skills: [{
+    skill: {
+      type: String,
+      default: ''
+    },
+    dateStart: {
+      type: Date,
+      default: null
+    },
+    dateEnd: {
+      type: Date,
+      default: null
+    },
+    locationLearned: [{
+      type: String,
+      default: ''
+    }]
+  }]
 });
 
-mongoose.model('Individual', IndividualSchema);
+/**
+ * set first and last name as same for user and individual
+ */
+IndividualUserSchema.pre('save', function (next) {
+  if (this.firstName !== '') {
+    this.bio.firstName = this.firstName;
+  } else if (this.bio.firstName !== '') {
+    this.firstName = this.bio.firstName;
+  }
+  if (this.lastName !== '') {
+    this.bio.lastName = this.lastName;
+  } else if (this.bio.lastName !== '') {
+    this.lastName = this.bio.lastName;
+  }
+  this.displayName = this.first + ' ' + this.last;
+  next();
+});
+
+
+mongoose.model('Individual', IndividualUserSchema);
