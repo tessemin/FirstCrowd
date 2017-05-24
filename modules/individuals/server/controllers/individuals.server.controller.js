@@ -15,6 +15,8 @@ var path = require('path'),
 exports.create = function(req, res) {
   var individual = new Individual(req.body);
   individual.user = req.user;
+  individual.bio.firstName = req.user.firstName;
+  individual.bio.lastName = req.user.lastName;
 
   individual.save(function(err) {
     if (err) {
@@ -34,6 +36,7 @@ exports.read = function(req, res) {
   // convert mongoose document to JSON
   var individual = req.individual ? req.individual.toJSON() : {};
 
+
   // Add a custom field to the Article, for determining if the current User is the "owner".
   // NOTE: This field is NOT persisted to the database, since it doesn't exist in the Article model.
   individual.isCurrentUserOwner = req.user && individual.user && individual.user._id.toString() === req.user._id.toString();
@@ -48,6 +51,9 @@ exports.update = function(req, res) {
   var individual = req.individual;
 
   individual = _.extend(individual, req.body);
+  
+  req.user.firstName = individual.bio.firstName;
+  req.user.lastName = individual.bio.lastName;
 
   individual.save(function(err) {
     if (err) {
