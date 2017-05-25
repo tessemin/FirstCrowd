@@ -12,8 +12,8 @@
     menuService.addMenuItem('topbar', {
       title: 'Enterprises',
       state: 'enterprises',
-      type: 'dropdown',
-      roles: ['ent']
+      type: 'dropdown'
+      // roles: ['ent']
     });
 
     // Add the dropdown list item
@@ -25,8 +25,33 @@
     // Add the dropdown create item
     menuService.addSubMenuItem('topbar', 'enterprises', {
       title: 'Create Enterprise',
-      state: 'enterprises.create',
-      roles: ['ent']
+      state: 'enterprises.create'
+      // roles: ['ent']
     });
+
+
+
+    //
+    // custom menu items
+    //
+    menuService.addMenu('enterprise',{
+      roles: ['enterprise']
+    });
+
+    menuService.addMenuItem('enterprise', {
+      title: 'CoProfile',
+      state: 'enterprises.create',
+      roles: ['enterprise']
+    });
+
+    menuService.addMenuItem('enterprise', {
+      title: 'Company Profile',
+      state: 'enterprises.create',
+      roles: ['enterprise'],
+      position: 1
+    });
+
+
+
   }
 }());
