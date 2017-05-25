@@ -34,8 +34,8 @@
       })
       .state('individuals.certifications', {
         url: '/certifications',
-        templateUrl: '/modules/individuals/client/views/settings/edit-certs.client.view.html',
-        controller: 'CertsController',
+        templateUrl: '/modules/individuals/client/views/settings/edit-certifications.client.view.html',
+        controller: 'CertificationsController',
         controllerAs: 'vm',
         data: {
           pageTitle: 'Edit Your Certifications'
