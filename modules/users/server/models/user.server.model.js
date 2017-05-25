@@ -47,16 +47,16 @@ var validateUsername = function(username) {
   );
 };
 
-var validateUserTypeIsRequired = function(v) {
-  if (this.userType.worker || this.userType.requester || this.userType.resourceOwner) {
-    if (!this.userType.worker) {
-      this.userType.worker = false;
+var validateUserRoleIsRequired = function(v) {
+  if (this.userRole.worker || this.userRole.requester || this.userRole.resourceOwner) {
+    if (!this.userRole.worker) {
+      this.userRole.worker = false;
     }
-    if (!this.userType.requester) {
-      this.userType.requester = false;
+    if (!this.userRole.requester) {
+      this.userRole.requester = false;
     }
-    if (!this.userType.resourceOwner) {
-      this.userType.resourceOwner = false;
+    if (!this.userRole.resourceOwner) {
+      this.userRole.resourceOwner = false;
     }
     return true;
   }
@@ -67,7 +67,7 @@ var validateUserTypeIsRequired = function(v) {
  * User Schema
  */
 var UserSchema = new Schema({
-  userType: {
+  userRole: {
     type: {
       worker: {
         type: Boolean
@@ -84,7 +84,7 @@ var UserSchema = new Schema({
       requester: false,
       resourceOwner: false
     },
-    validate: [validateUserTypeIsRequired, 'Please provide one user type']
+    validate: [validateUserRoleIsRequired, 'Please provide one user type']
   },
   firstName: {
     type: String,
