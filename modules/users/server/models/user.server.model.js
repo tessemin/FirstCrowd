@@ -47,27 +47,35 @@ var validateUsername = function(username) {
   );
 };
 
-var validateUserRoleIsRequired = function() {
-  return (this.worker || this.requester || this.resourceOwner);
+var validateUserRoleIsRequired = function(v) {
+  console.log(this.worker);
+   return (this.worker || this.requester || this.resourceOwner);
 };
 
 /**
  * User Schema
  */
 var UserSchema = new Schema({
-  userType: {
-    type: String,
-    enum: ['individual', 'enterprise'],
-    required: 'Please provide one user type'
-  },
   userRole: {
     //todo make them required
     type: {
-      worker: { type: Boolean },
-      requester: { type: Boolean },
-      resourceOwner: { type: Boolean }
+      worker: {
+        type: Boolean,
+        default: false
+      },
+      requester: {
+        type: Boolean,
+        default: false
+      },
+      resourceOwner: {
+        type: Boolean,
+        default: false
+      }
     },
-    validate: [validateUserRoleIsRequired, 'Please provide one user role']
+    validate: {
+      validator: validateUserRoleIsRequired,
+      message: 'Please provide one user role'
+    }
   },
   firstName: {
     type: String,
@@ -132,9 +140,8 @@ var UserSchema = new Schema({
   roles: {
     type: [{
       type: String,
-      enum: ['user', 'admin']
+      enum: ['user', 'admin', 'individual', 'enterprise']
     }],
-    default: ['user'],
     required: 'Please provide at least one role'
   },
   updated: {
