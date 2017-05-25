@@ -55,16 +55,16 @@
         </div>
 
         <div class="form-group">
-          <label control-label" for="userType">Type</label>
+          <label control-label" for="roles">Type</label>
           <div class="radio">
             <label for="individual">
-              <input class="form-check" name="userType" id="individual" value="individual" type="radio" ng-model="vm.credentials.userType">
+              <input class="form-check" name="roles" id="individual" value="individual" type="radio" ng-model="vm.credentials.roles">
               Individual
             </label>
           </div>
           <div class="radio">
             <label for="enterprise">
-              <input class="form-check" name="userType" id="enterprise" value="enterprise" type="radio" ng-model="vm.credentials.userType">
+              <input class="form-check" name="roles" id="enterprise" value="enterprise" type="radio" ng-model="vm.credentials.roles">
               Enterprise
             </label>
           </div>
@@ -74,19 +74,19 @@
           <label class="control-label" for="userRole">Role</label>
           <div class="checkbox">
             <label for="worker">
-              <input class="form-check" name="userRole" id="worker" value="worker" type="checkbox" ng-model="vm.credentials.userRole.worker" value="false">
+              <input class="form-check" name="userRole" id="worker" type="checkbox" ng-model="vm.credentials.userRole.worker" value="false">
               Worker
             </label>
           </div>
           <div class="checkbox">
             <label for="requester">
-              <input class="form-check" name="userRole" id="requester" value="requester" type="checkbox" ng-model="vm.credentials.userRole.requester" value="false">
+              <input class="form-check" name="userRole" id="requester" type="checkbox" ng-model="vm.credentials.userRole.requester" value="false">
               Requester
             </label>
           </div>
           <div class="checkbox">
             <label for="resourceOwner">
-              <input class="form-check" name="userRole" id="resourceOwner" value="resourceOwner" type="checkbox" ng-model="vm.credentials.userRole.resourceOwner" value="false">
+              <input class="form-check" name="userRole" id="resourceOwner" type="checkbox" ng-model="vm.credentials.userRole.resourceOwner" value="false" >
               Resource Owner
             </label>
           </div>

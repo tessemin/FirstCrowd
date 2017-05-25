@@ -56,11 +56,6 @@ var validateUserRoleIsRequired = function(v) {
  * User Schema
  */
 var UserSchema = new Schema({
-  userType: {
-    type: String,
-    enum: ['individual', 'enterprise'],
-    required: 'Please provide one user type'
-  },
   userRole: {
     //todo make them required
     type: {
@@ -145,9 +140,8 @@ var UserSchema = new Schema({
   roles: {
     type: [{
       type: String,
-      enum: ['user', 'admin']
+      enum: ['user', 'admin', 'individual', 'enterprise']
     }],
-    default: ['user'],
     required: 'Please provide at least one role'
   },
   updated: {
