@@ -12,7 +12,7 @@
       .state('individuals', {
         abstract: true,
         url: '/individuals',
-        template: '<ui-view/>'
+        templateUrl: '/modules/individuals/client/views/settings/individuals.client.view.html'
       })
       .state('individuals.profile', {
         url: '/profile',
@@ -32,7 +32,7 @@
           pageTitle: 'Edit Your Personal Bio'
         }
       })
-      .state('individuals.certs', {
+      .state('individuals.certifications', {
         url: '/certifications',
         templateUrl: '/modules/individuals/client/views/settings/edit-certs.client.view.html',
         controller: 'CertsController',
@@ -59,9 +59,9 @@
           pageTitle: 'Edit Your Work Experience'
         }
       })
-      .state('individuals.skill', {
-        url: '/skill',
-        templateUrl: '/modules/individuals/client/views/settings/edit-skill.client.view.html',
+      .state('individuals.skills', {
+        url: '/skills',
+        templateUrl: '/modules/individuals/client/views/settings/edit-skills.client.view.html',
         controller: 'SkillController',
         controllerAs: 'vm',
         data: {
