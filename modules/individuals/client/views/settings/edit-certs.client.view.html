@@ -9,7 +9,7 @@
       <div class="individual-bio-element">
         <div class="form-group" show-errors>
           <label for="certificationName">Certification Name</label>
-          <input type="text" id="certificationName" name="certificationName" class="form-control" ng-model="vm.individualCertification[$index].certificationName" placeholder="Certification Name" required autofocus>
+          <input type="text" id="certificationName" name="certificationName" class="form-control" ng-model="vm.certs[$index].certificationName" placeholder="Certification Name" required autofocus>
           <div ng-messages="vm.individualCertification.certificationName.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Certification Name is required.</p>
           </div>
@@ -17,7 +17,7 @@
 
         <div class="form-group" show-errors>
           <label for="institutionName">Institution Name</label>
-          <input type="text" id="institutionName" name="institutionName" class="form-control" ng-model="vm.individualCertification[$index].institutionName" placeholder="Institution Name" required>
+          <input type="text" id="institutionName" name="institutionName" class="form-control" ng-model="vm.certs[$index].institutionName" placeholder="Institution Name" required>
           <div ng-messages="vm.individualCertification.institutionName.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Institut ion Name is required.</p>
           </div>
@@ -25,7 +25,7 @@
 
         <div class="form-group" show-errors>
           <label for="date">Date</label>
-          <input type="text" id="date" name="date" class="form-control" ng-model="vm.individualCertification[$index].date" placeholder="Date" required>
+          <input type="text" id="date" name="date" class="form-control" ng-model="vm.certs[$index].date" placeholder="Date" required>
           <div ng-messages="vm.individualCertification.date.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Date is required.</p>
           </div>
@@ -33,7 +33,7 @@
 
         <div class="form-group" show-errors>
           <label for="summary">Summary</label>
-          <input type="text" id="summary" name="summary" class="form-control" ng-model="vm.individualCertification[$index].summary" placeholder="Summary" required>
+          <input type="text" id="summary" name="summary" class="form-control" ng-model="vm.certs[$index].summary" placeholder="Summary" required>
           <div ng-messages="vm.individualCertification.summary.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Summary is required.</p>
           </div>
