@@ -26,7 +26,7 @@ var validateLocalStrategyProperty = function (property) {
  * A Validation function for local strategy email
  */
 var validateLocalStrategyEmail = function (email) {
-  return ((this.contact.provider !== 'local' && !this.contact.updated) || validator.isEmail(email, { require_tld: false }));
+  return ((this.provider !== 'local' && !this.updated) || validator.isEmail(email, { require_tld: false }));
 };
 
 /**
@@ -47,6 +47,10 @@ var validateUsername = function(username) {
   );
 };
 
+var validateUserRoleIsRequired = function() {
+  return (this.worker || this.requester || this.resourceOwner);
+};
+
 /**
  * User Schema
  */
@@ -57,10 +61,13 @@ var UserSchema = new Schema({
     required: 'Please provide one user type'
   },
   userRole: {
-    worker: { type: Boolean },
-    requester: { type: Boolean },
-    resourceOwner: { type: Boolean }
-    // required: 'Please choose at least one role'
+    //todo make them required
+    type: {
+      worker: { type: Boolean },
+      requester: { type: Boolean },
+      resourceOwner: { type: Boolean }
+    },
+    validate: [validateUserRoleIsRequired, 'Please provide one user role']
   },
   firstName: {
     type: String,
@@ -78,26 +85,24 @@ var UserSchema = new Schema({
     type: String,
     trim: true
   },
-  contact: {
-    email: {
-      type: String,
-      index: {
-        unique: true,
-        sparse: true // For this to work on a previously indexed field, the index must be dropped & the application restarted.
-      },
-      lowercase: true,
-      trim: true,
-      default: '',
-      validate: [validateLocalStrategyEmail, 'Please fill a valid email address']
+  email: {
+    type: String,
+    index: {
+      unique: true,
+      sparse: true // For this to work on a previously indexed field, the index must be dropped & the application restarted.
     },
-    phone: {
-      type: Number,
-      default: ''
-    },
-    preference: {
-      type: String,
-      enum: ['phone', 'email']
-    }
+    lowercase: true,
+    trim: true,
+    default: '',
+    validate: [validateLocalStrategyEmail, 'Please fill a valid email address']
+  },
+  phone: {
+    type: Number,
+    default: ''
+  },
+  contactPreference: {
+    type: String,
+    enum: ['phone', 'email']
   },
   username: {
     type: String,
