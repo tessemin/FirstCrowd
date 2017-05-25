@@ -1,0 +1,14 @@
+core\server\controllers\errors.server.controller.js:    output = fieldName.charAt(0).toUpperCase() + fieldName.slice(1) + ' already exists';
+core\server\controllers\errors.server.controller.js:    output = 'Unique field already exists';
+core\tests\server\core.server.config.tests.js:    it('should NOT seed admin user account if it already exists when NODE_ENV is set to "production"', function(done) {
+core\tests\server\core.server.config.tests.js:            err.message.should.equal('Failed due to local account already exists: ' + adminFromSeedConfig.username);
+users\server\models\user.server.model.js:    unique: 'Username already exists',
+users\server\models\user.server.model.js~:    unique: 'Username already exists',
+users\tests\client\authentication.client.controller.tests.js:            'message': 'Username already exists'
+users\tests\client\authentication.client.controller.tests.js:          expect(Notification.error).toHaveBeenCalledWith({ message: 'Username already exists', title: '<i class="glyphicon glyphicon-remove"></i> Signup Error!', delay: 6000 });
+users\tests\e2e\users.e2e.tests.js:    it('Should report Email already exists', function () {
+users\tests\e2e\users.e2e.tests.js:      expect(element.all(by.css('.message')).get(0).getText()).toBe('Email already exists');
+users\tests\e2e\users.e2e.tests.js:    it('Should report Username already exists', function () {
+users\tests\e2e\users.e2e.tests.js:      expect(element.all(by.css('.message')).get(0).getText()).toBe('Username already exists');
+users\tests\server\user.server.routes.tests.js:              userInfoRes.body.message.should.equal('Username already exists');
+users\tests\server\user.server.routes.tests.js:              userInfoRes.body.message.should.equal('Email already exists');
