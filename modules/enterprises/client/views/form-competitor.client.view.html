@@ -1,0 +1,25 @@
+<section>
+  <div class="col-md-12">
+    <div>
+      <h1>{{vm.competitor._id ? 'Edit Competitor' : 'New Competitor'}}</h1>
+    </div>
+    <form name="vm.competitorForm" class="form-horizontal" ng-submit="vm.save(vm.competitorForm.$valid)" novalidate>
+      <fieldset>
+        <div class="form-group" show-errors>
+          <label for="companyName">Company Name</label>
+          <input type="text" id="companyName" name="companyName" class="form-control" ng-model="vm.competitor.companyName" placeholder="Company Name" required autofocus>
+          <div ng-messages="vm.competitorForm.companyName.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Company name is required.</p>
+          </div>
+        </div>
+        <div class="form-group" show-errors>
+          <label for="website">Website</label>
+          <input type="url" id="website" name="website" class="form-control" ng-model="vm.competitor.website" placeholder="Website" required>
+          <div ng-messages="vm.competitorForm.website.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Webiste is required.</p>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+</section>
