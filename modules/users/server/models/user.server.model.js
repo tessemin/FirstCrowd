@@ -47,15 +47,15 @@ var validateUsername = function(username) {
   );
 };
 
-var validateUserRoleIsRequired = function(v) {
-  if(this.userType.worker || this.userType.requester || this.userType.resourceOwner){
-    if(!this.userType.worker){
+var validateUserTypeIsRequired = function(v) {
+  if (this.userType.worker || this.userType.requester || this.userType.resourceOwner) {
+    if (!this.userType.worker) {
       this.userType.worker = false;
     }
-    if(!this.userType.requester){
+    if (!this.userType.requester) {
       this.userType.requester = false;
     }
-    if(!this.userType.resourceOwner){
+    if (!this.userType.resourceOwner) {
       this.userType.resourceOwner = false;
     }
     return true;
@@ -68,16 +68,15 @@ var validateUserRoleIsRequired = function(v) {
  */
 var UserSchema = new Schema({
   userType: {
-    //todo make them required
     type: {
       worker: {
-        type: Boolean,
+        type: Boolean
       },
       requester: {
-        type: Boolean,
+        type: Boolean
       },
       resourceOwner: {
-        type: Boolean,
+        type: Boolean
       }
     },
     default: {
@@ -85,7 +84,7 @@ var UserSchema = new Schema({
       requester: false,
       resourceOwner: false
     },
-    validate: [validateUserRoleIsRequired, 'Please provide one user type']
+    validate: [validateUserTypeIsRequired, 'Please provide one user type']
   },
   firstName: {
     type: String,
