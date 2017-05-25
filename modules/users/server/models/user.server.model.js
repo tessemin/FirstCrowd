@@ -47,8 +47,9 @@ var validateUsername = function(username) {
   );
 };
 
-var validateUserRoleIsRequired = function() {
-  return (this.worker || this.requester || this.resourceOwner);
+var validateUserRoleIsRequired = function(v) {
+  console.log(this.worker);
+   return (this.worker || this.requester || this.resourceOwner);
 };
 
 /**
@@ -63,11 +64,23 @@ var UserSchema = new Schema({
   userRole: {
     //todo make them required
     type: {
-      worker: { type: Boolean },
-      requester: { type: Boolean },
-      resourceOwner: { type: Boolean }
+      worker: {
+        type: Boolean,
+        default: false
+      },
+      requester: {
+        type: Boolean,
+        default: false
+      },
+      resourceOwner: {
+        type: Boolean,
+        default: false
+      }
     },
-    validate: [validateUserRoleIsRequired, 'Please provide one user role']
+    validate: {
+      validator: validateUserRoleIsRequired,
+      message: 'Please provide one user role'
+    }
   },
   firstName: {
     type: String,
