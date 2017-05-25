@@ -42,14 +42,14 @@ exports.signup = function (req, res) {
         if (err) {
           res.status(400).send(err);
         } else {
-          res.json(user);
+          res.json(user);/*
           if (user.userType === 'enterprise') {
             newEnterpriseUser(req, res);
           } else if (user.userType === 'individual') {
             newIndividualUser(req, res);
           } else { // error, just make user
             res.json(user);
-          }
+          }*/
         }
       });
     }
