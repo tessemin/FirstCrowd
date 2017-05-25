@@ -3,14 +3,49 @@
 --->
 
 <div ng-controller="CertsController">
-  <button>Add certificate</button>
-  
-  <ul>
-    <li ng-repeat="cert in certs as results" ng-include="getCert(cert)">
-      <!-- Template from cert.client.view.html -->
-    </li>
-  </ul>
-  <li ng-if="results.length === 0">
-    You have not added any certifications.
-  </li>
+  <button ng-click="vm.addCert()">Add certificate</button>
+  <form name="vm.certsForm" ng-submit="vm.updateIndividualCerts(vm.certsForm.$valid)" novalidate autocomplete="off">
+    <div ng-repeat="cert in vm.certs as results track by $index">
+      <div class="individual-bio-element">
+        <div class="form-group" show-errors>
+          <label for="certificationName">Certification Name</label>
+          <input type="text" id="certificationName" name="certificationName" class="form-control" ng-model="vm.individualCertification[$index].certificationName" placeholder="Certification Name" required autofocus>
+          <div ng-messages="vm.individualCertification.certificationName.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Certification Name is required.</p>
+          </div>
+        </div>
+
+        <div class="form-group" show-errors>
+          <label for="institutionName">Institution Name</label>
+          <input type="text" id="institutionName" name="institutionName" class="form-control" ng-model="vm.individualCertification[$index].institutionName" placeholder="Institution Name" required>
+          <div ng-messages="vm.individualCertification.institutionName.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Institut ion Name is required.</p>
+          </div>
+        </div>
+
+        <div class="form-group" show-errors>
+          <label for="date">Date</label>
+          <input type="text" id="date" name="date" class="form-control" ng-model="vm.individualCertification[$index].date" placeholder="Date" required>
+          <div ng-messages="vm.individualCertification.date.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Date is required.</p>
+          </div>
+        </div>
+
+        <div class="form-group" show-errors>
+          <label for="summary">Summary</label>
+          <input type="text" id="summary" name="summary" class="form-control" ng-model="vm.individualCertification[$index].summary" placeholder="Summary" required>
+          <div ng-messages="vm.individualCertification.summary.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Summary is required.</p>
+          </div>
+        </div>
+        <button type="button" ng-click="vm.removeCert($index)">Remove Certificate</button>
+      </div>
+    </div> <!-- end ng-repeat -->
+    <div ng-if="results.length === 0">
+      You have not added any certifications.
+    </div>
+    <div ng-if="results.length > 0">
+      <input type="submit" value="Save Your Certifications"/>
+    </div>
+  </form>
 </div>
