@@ -1,6 +1,6 @@
 <div ng-controller="CertificationsController">
   <button ng-click="vm.addCertification()">Add certification</button>
-  <form name="vm.certificationsForm" ng-submit="vm.updateIndividualCertificationss(vm.certificationsForm.$valid)" novalidate autocomplete="off">
+  <form name="vm.certificationsForm" ng-submit="vm.updateIndividualCertifications(vm.certificationsForm.$valid)" novalidate autocomplete="off">
     <div ng-repeat="certification in vm.certifications as results track by $index">
       <div class="individual-bio-element">
         <div class="form-group" show-errors>
@@ -15,7 +15,7 @@
           <label for="institutionName">Institution Name</label>
           <input type="text" id="institutionName" name="institutionName" class="form-control" ng-model="vm.certifications[$index].institutionName" placeholder="Institution Name" required>
           <div ng-messages="vm.individualCertification.institutionName.$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Institut ion Name is required.</p>
+            <p class="help-block error-text" ng-message="required">Institution Name is required.</p>
           </div>
         </div>
 
