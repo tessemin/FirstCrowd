@@ -36,6 +36,58 @@
           pageTitle: 'Enterprises Create'
         }
       })
+      .state('enterprises.competitor', {
+        url: '/competitors',
+        templateUrl: 'modules/enterprises/client/views/form-competitor.client.view.html',
+        controller: 'EnterpriseCompetitorController',
+        controllerAs: 'vm',
+        // resolve: {
+        //   enterpriseResolve: getEnterprise
+        // },
+        data: {
+          roles: ['user', 'admin', 'enterprise'],
+          pageTitle: 'Edit Enterprise {{ enterpriseResolve.name }}'
+        }
+      })
+      .state('enterprises.customer', {
+        url: '/customers',
+        templateUrl: 'modules/enterprises/client/views/form-customer.client.view.html',
+        controller: 'EnterpriseCustomerController',
+        controllerAs: 'vm',
+        // resolve: {
+        //   enterpriseResolve: getEnterprise
+        // },
+        data: {
+          roles: ['user', 'admin', 'enterprise'],
+          pageTitle: 'Edit Enterprise {{ enterpriseResolve.name }}'
+        }
+      })
+      .state('enterprises.supplier', {
+        url: '/suppliers',
+        templateUrl: 'modules/enterprises/client/views/form-supplier.client.view.html',
+        controller: 'EnterpriseSupplierController',
+        controllerAs: 'vm',
+        // resolve: {
+        //   enterpriseResolve: getEnterprise
+        // },
+        data: {
+          roles: ['user', 'admin', 'enterprise'],
+          pageTitle: 'Edit Enterprise {{ enterpriseResolve.name }}'
+        }
+      })
+      .state('enterprises.profile', {
+        url: '/profile',
+        templateUrl: 'modules/enterprises/client/views/form-enterprise.client.view.html',
+        controller: 'EnterprisesController',
+        controllerAs: 'vm',
+        // resolve: {
+        //   enterpriseResolve: getEnterprise
+        // },
+        data: {
+          roles: ['user', 'admin', 'enterprise'],
+          pageTitle: 'Edit Enterprise {{ enterpriseResolve.name }}'
+        }
+      })
       .state('enterprises.edit', {
         url: '/:enterpriseId/edit',
         templateUrl: 'modules/enterprises/client/views/form-enterprise.client.view.html',
@@ -67,6 +119,7 @@
 
   function getEnterprise($stateParams, EnterprisesService) {
     return EnterprisesService.get({
+      // isArray: false,
       enterpriseId: $stateParams.enterpriseId
     }).$promise;
   }

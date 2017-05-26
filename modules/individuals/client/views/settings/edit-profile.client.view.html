@@ -4,7 +4,7 @@
       <fieldset>        
         <div class="form-group" show-errors>
           <label for="username">Username</label>
-          <input type="text" id="username" name="username" class="form-control" ng-model="vm.individual.username" placeholder="username" lowercase required>
+          <input type="text" id="username" name="username" class="form-control" ng-model="vm.individual.user.username" placeholder="username" lowercase>
           <div ng-messages="vm.individualProfile.username.$error" role="alert">
             <p class="help-block error-text" ng-message="required">username is required.</p>
           </div>
@@ -12,7 +12,7 @@
         
         <div class="form-group" show-errors>
           <label for="phone">Phone</label>
-          <input type="text" id="phone" name="phone" class="form-control" ng-model="vm.individual.phone" placeholder="Phone" required>
+          <input type="text" id="phone" name="phone" class="form-control" ng-model="vm.individual.user.phone" placeholder="Phone">
           <div ng-messages="vm.individualProfile.phone.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Phone is required.</p>
             <p class="help-block error-text" ng-message="email">Phone is invalid.</p>
@@ -22,7 +22,7 @@
         
         <div class="form-group" show-errors>
           <label for="email">Email</label>
-          <input type="email" id="email" name="email" class="form-control" ng-model="vm.individual.email" placeholder="Email" lowercase required>
+          <input type="email" id="email" name="email" class="form-control" ng-model="vm.individual.user.email" placeholder="Email" lowercase>
           <div ng-messages="vm.individualProfile.email.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Email address is required.</p>
             <p class="help-block error-text" ng-message="email">Email address is invalid.</p>
@@ -32,14 +32,14 @@
         <div class="form-group">
           <label control-label" for="preferredContact">Preferred Contact</label>
           <div class="radio">
-            <label for="phone">
-              <input class="form-check" name="preferredContact" id="phone" value="phone" type="radio" ng-model="vm.individual.preferredContact" required>
+            <label for="phone-pref">
+              <input class="form-check" name="preferredContact" id="phone-pref" value="phone" type="radio" ng-model="vm.individual.user.contactPreference">
               Phone
             </label>
           </div>
           <div class="radio">
-            <label for="email">
-              <input class="form-check" name="preferredContact" id="email" value="email" type="radio" ng-model="vm.individual.preferredContact">
+            <label for="email-pref">
+              <input class="form-check" name="preferredContact" id="email-pref" value="email" type="radio" ng-model="vm.individual.user.contactPreference">
               Email
             </label>
           </div>

@@ -11,7 +11,6 @@
     var vm = this;
 
     vm.menu = menuService.getMenu('enterprise');
-    console.log(vm.menu);
 
     vm.enterprises = EnterprisesService.query();
   }

@@ -15,21 +15,6 @@ var IndividualUserSchema = new Schema({
     ref: 'User'
   },
   bio: {
-    firstName: {
-      type: String,
-      default: '',
-      trim: true
-    },
-    middleName: {
-      type: String,
-      default: '',
-      trim: true
-    },
-    lastName: {
-      type: String,
-      default: '',
-      trim: true
-    },
     dateOfBirth: {
       type: Date,
       default: '',
