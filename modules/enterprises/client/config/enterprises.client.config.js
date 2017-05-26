@@ -44,19 +44,19 @@
     });
 
     menuService.addMenuItem('enterprise', {
-      title: 'Supplier',
+      title: 'View Suppliers',
       state: 'enterprises.supplier',
       roles: ['enterprise']
     });
 
     menuService.addMenuItem('enterprise', {
-      title: 'Customer',
+      title: 'View Customers',
       state: 'enterprises.customer',
       roles: ['enterprise']
     });
 
     menuService.addMenuItem('enterprise', {
-      title: 'Competitor',
+      title: 'View Competitors',
       state: 'enterprises.competitor',
       roles: ['enterprise']
     });
