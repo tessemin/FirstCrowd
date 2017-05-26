@@ -16,7 +16,7 @@ exports.create = function(req, res) {
   var enterprise = new Enterprise(req.body);
   enterprise.user = req.user;
   
-//todo add display name as company name
+// todo add display name as company name
 
   enterprise.save(function(err) {
     if (err) {

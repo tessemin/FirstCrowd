@@ -48,15 +48,15 @@ var validateUsername = function(username) {
 };
 
 var validateUserRoleIsRequired = function(v) {
-  if(this.userType.worker || this.userType.requester || this.userType.resourceOwner){
-    if(!this.userType.worker){
-      this.userType.worker = false;
+  if (this.userRole.worker || this.userRole.requester || this.userRole.resourceOwner) {
+    if (!this.userRole.worker) {
+      this.userRole.worker = false;
     }
-    if(!this.userType.requester){
-      this.userType.requester = false;
+    if (!this.userRole.requester) {
+      this.userRole.requester = false;
     }
-    if(!this.userType.resourceOwner){
-      this.userType.resourceOwner = false;
+    if (!this.userRole.resourceOwner) {
+      this.userRole.resourceOwner = false;
     }
     return true;
   }
@@ -67,17 +67,16 @@ var validateUserRoleIsRequired = function(v) {
  * User Schema
  */
 var UserSchema = new Schema({
-  userType: {
-    //todo make them required
+  userRole: {
     type: {
       worker: {
-        type: Boolean,
+        type: Boolean
       },
       requester: {
-        type: Boolean,
+        type: Boolean
       },
       resourceOwner: {
-        type: Boolean,
+        type: Boolean
       }
     },
     default: {
