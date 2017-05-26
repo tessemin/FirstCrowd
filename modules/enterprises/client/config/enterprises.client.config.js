@@ -29,6 +29,8 @@
       // roles: ['ent']
     });
 
+
+
     //
     // custom menu items
     //
@@ -36,29 +38,20 @@
       roles: ['enterprise']
     });
 
-   menuService.addMenuItem('enterprise', {
+    menuService.addMenuItem('enterprise', {
+      title: 'CoProfile',
+      state: 'enterprises.create',
+      roles: ['enterprise']
+    });
+
+    menuService.addMenuItem('enterprise', {
       title: 'Company Profile',
-      state: 'enterprises.profile',
+      state: 'enterprises.create',
       roles: ['enterprise'],
       position: 1
     });
 
-    menuService.addMenuItem('enterprise', {
-      title: 'View Suppliers',
-      state: 'enterprises.supplier',
-      roles: ['enterprise']
-    });
 
-    menuService.addMenuItem('enterprise', {
-      title: 'View Customers',
-      state: 'enterprises.customer',
-      roles: ['enterprise']
-    });
 
-    menuService.addMenuItem('enterprise', {
-      title: 'View Competitors',
-      state: 'enterprises.competitor',
-      roles: ['enterprise']
-    });
   }
 }());

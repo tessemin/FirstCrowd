@@ -24,7 +24,7 @@
 
     // If user is signed in then redirect back home
     if (vm.authentication.user) {
-      $location.path('/');
+      redirectOnSign(vm.authentication.user);
     }
 
     function signup(isValid) {
@@ -55,12 +55,14 @@
 
     // OAuth provider request
     function callOauthProvider(url) {
-      if ($state.previous && $state.previous.href) {
+/*       if ($state.previous && $state.previous.href) {
         url += '?redirect_to=' + encodeURIComponent($state.previous.href);
       }
 
       // Effectively call OAuth authentication route:
-      $window.location.href = url;
+      $window.location.href = url; */
+      
+      redirectOnSign(vm.authentication.user);
     }
 
     // Authentication Callbacks
@@ -69,8 +71,12 @@
       // If successful we assign the response to the global user model
       vm.authentication.user = response;
       Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Signup successful!' });
+      
       // And redirect to the previous or home page
-      $state.go($state.previous.state.name || 'home', $state.previous.params);
+      // $state.go($state.previous.state.name || 'home', $state.previous.params);
+      
+      // redirects to either individual or enterprise page
+      redirectOnSign(vm.authentication.user);
     }
 
     function onUserSignupError(response) {
@@ -81,12 +87,36 @@
       // If successful we assign the response to the global user model
       vm.authentication.user = response;
       Notification.info({ message: 'Welcome ' + response.firstName });
+      
       // And redirect to the previous or home page
-      $state.go($state.previous.state.name || 'home', $state.previous.params);
+      // $state.go($state.previous.state.name || 'home', $state.previous.params);
+      
+      // redirects to either individual or enterprise page
+      redirectOnSign(vm.authentication.user);
     }
-
     function onUserSigninError(response) {
       Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Signin Error!', delay: 6000 });
     }
+    
+    function redirectOnSign(user) {
+      var individual = false,
+        enterprise = false;
+      for (var i in user.roles) {
+        if (user.roles[i] === 'enterprise')
+          enterprise = true;
+        else if (user.roles[i] === 'individual')
+          individual = true;
+      }
+      if (!(enterprise && individual))
+        if (enterprise)
+          window.location = '/enterprises';
+        else if (individual)
+          window.location = '/individuals';
+        else // error
+          $state.go($state.previous.state.name || 'home', $state.previous.params);
+      else // error
+         $state.go($state.previous.state.name || 'home', $state.previous.params);
+    }
+    
   }
 }());

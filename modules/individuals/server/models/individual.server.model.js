@@ -17,19 +17,23 @@ var IndividualUserSchema = new Schema({
   bio: {
     firstName: {
       type: String,
-      default: ''
+      default: '',
+      trim: true
     },
     middleName: {
       type: String,
-      required: 'Please provide a Middle Name'
+      default: '',
+      trim: true
     },
     lastName: {
       type: String,
-      default: ''
+      default: '',
+      trim: true
     },
     dateOfBirth: {
       type: Date,
-      default: ''
+      default: '',
+      trim: true
     },
     sex: {
       type: String,
@@ -37,115 +41,141 @@ var IndividualUserSchema = new Schema({
     },
     profession: {
       type: String,
-      default: ''
+      default: '',
+      trim: true
     },
     country: {
       type: String,
-      default: ''
+      default: '',
+      trim: true
     },
     zipCode: {
       type: Number,
-      default: null
+      default: null,
+      trim: true
     },
     address: {
       type: String,
-      default: ''
+      default: '',
+      trim: true
     }
   },
-  education: [{
+  eudcation: [{
     degreeLevel: {
       type: String,
-      default: ''
+      default: '',
+      trim: true
     },
     schoolName: {
       type: String,
-      default: ''
+      default: '',
+      trim: true
     },
     startDate: {
       type: Date,
-      default: null
+      default: null,
+      trim: true
     },
     endDate: {
       type: Date,
-      default: null
+      default: null,
+      trim: true
     },
     concentration: {
       type: String,
-      default: ''
+      default: '',
+      trim: true
     },
     country: {
       type: String,
-      default: ''
+      default: '',
+      trim: true
     },
     address: {
       type: String,
-      default: ''
+      default: '',
+      trim: true
     }
   }],
   jobExperience: [{
     employer: {
       type: String,
-      default: ''
+      default: '',
+      trim: true
     },
     title: {
       type: String,
-      default: ''
+      default: '',
+      trim: true
     },
     description: {
       type: String,
-      default: ''
+      default: '',
+      trim: true
     },
     skills: [{
       type: String,
-      default: ''
+      default: '',
+      trim: true
     }],
     startDate: {
       type: Date,
-      default: null
+      default: null,
+      trim: true
     },
     endDate: {
       type: Date,
-      default: null
+      default: null,
+      trim: true
     }
   }],
   certification: [{
     name: {
       type: String,
-      default: ''
+      default: '',
+      trim: true
     },
     organization: {
       type: String,
-      default: ''
+      default: '',
+      trim: true
     },
     dateIssued: {
       type: Date,
-      default: null
+      default: null,
+      trim: true
     },
     dateExpired: {
       type: Date,
-      default: null
+      default: null,
+      trim: true
     },
     description: {
       type: String,
-      default: ''
+      default: '',
+      trim: true
     }
   }],
   skills: [{
     skill: {
       type: String,
-      default: ''
+      default: '',
+      trim: true
     },
     dateStart: {
       type: Date,
-      default: null
+      default: null,
+      trim: true
     },
     dateEnd: {
       type: Date,
-      default: null
+      default: null,
+      trim: true
     },
     locationLearned: [{
       type: String,
-      default: ''
+      default: '',
+      trim: true
     }]
   }]
 });

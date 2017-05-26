@@ -12,13 +12,7 @@
       .state('enterprises', {
         abstract: true,
         url: '/enterprises',
-        // template: '<ui-view/>'
-        templateUrl: 'modules/enterprises/client/views/side-menu.client.view.html',
-        controller: 'EnterprisesListController',
-        controllerAs: 'vm',
-        data: {
-          pageTitle: 'Enterprises List'
-        }
+        template: '<ui-view/>'
       })
       .state('enterprises.list', {
         url: '',
@@ -38,7 +32,7 @@
           enterpriseResolve: newEnterprise
         },
         data: {
-          // roles: ['user', 'admin'],
+          roles: ['user', 'admin'],
           pageTitle: 'Enterprises Create'
         }
       })
@@ -103,7 +97,7 @@
           enterpriseResolve: getEnterprise
         },
         data: {
-          roles: ['user', 'admin', 'enterprise'],
+          roles: ['user', 'admin'],
           pageTitle: 'Edit Enterprise {{ enterpriseResolve.name }}'
         }
       })
