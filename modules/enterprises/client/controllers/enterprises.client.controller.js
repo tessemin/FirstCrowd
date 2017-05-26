@@ -6,15 +6,15 @@
     .module('enterprises')
     .controller('EnterprisesController', EnterprisesController);
 
-  EnterprisesController.$inject = ['$scope', '$state', '$window', 'Authentication', 'enterpriseResolve'];
+  EnterprisesController.$inject = ['$scope', '$state', '$window', 'Authentication'];
 
-  function EnterprisesController ($scope, $state, $window, Authentication, enterprise) {
+  function EnterprisesController ($scope, $state, $window, Authentication) {
     var vm = this;
 
     vm.authentication = Authentication;
-    vm.enterprise = enterprise;
+    // vm.enterprise = enterprise;
     vm.error = null;
-    vm.form = {};
+    vm.enterpriseForm = {};
     vm.remove = remove;
     vm.save = save;
 
@@ -283,7 +283,7 @@
     // Save Enterprise
     function save(isValid) {
       if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'vm.form.enterpriseForm');
+        $scope.$broadcast('show-errors-check-validity', 'vm.enterpriseForm');
         return false;
       }
 

@@ -6,15 +6,15 @@
     .module('enterprises')
     .controller('EnterpriseCompetitorController', EnterpriseCompetitorController);
 
-  EnterpriseCompetitorController.$inject = ['$scope', '$state', '$window', 'Authentication', 'enterpriseResolve'];
+  EnterpriseCompetitorController.$inject = ['$scope', '$state', '$window', 'Authentication'];
 
-  function EnterpriseCompetitorController ($scope, $state, $window, Authentication, enterprise) {
+  function EnterpriseCompetitorController ($scope, $state, $window, Authentication) {
     var vm = this;
 
     vm.authentication = Authentication;
-    vm.enterprise = enterprise;
+    // vm.enterprise = enterprise;
     vm.error = null;
-    vm.form = {};
+    vm.competitorForm = {};
     vm.remove = remove;
     vm.save = save;
 
@@ -28,7 +28,7 @@
     // Save Enterprise
     function save(isValid) {
       if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'vm.form.enterpriseForm');
+        $scope.$broadcast('show-errors-check-validity', 'vm.competitorForm');
         return false;
       }
 

@@ -47,9 +47,9 @@
         templateUrl: 'modules/enterprises/client/views/form-competitor.client.view.html',
         controller: 'EnterpriseCompetitorController',
         controllerAs: 'vm',
-        resolve: {
-          enterpriseResolve: getEnterprise
-        },
+        // resolve: {
+        //   enterpriseResolve: getEnterprise
+        // },
         data: {
           roles: ['user', 'admin', 'enterprise'],
           pageTitle: 'Edit Enterprise {{ enterpriseResolve.name }}'
@@ -60,9 +60,9 @@
         templateUrl: 'modules/enterprises/client/views/form-customer.client.view.html',
         controller: 'EnterpriseCustomerController',
         controllerAs: 'vm',
-        resolve: {
-          enterpriseResolve: getEnterprise
-        },
+        // resolve: {
+        //   enterpriseResolve: getEnterprise
+        // },
         data: {
           roles: ['user', 'admin', 'enterprise'],
           pageTitle: 'Edit Enterprise {{ enterpriseResolve.name }}'
@@ -73,9 +73,9 @@
         templateUrl: 'modules/enterprises/client/views/form-supplier.client.view.html',
         controller: 'EnterpriseSupplierController',
         controllerAs: 'vm',
-        resolve: {
-          enterpriseResolve: getEnterprise
-        },
+        // resolve: {
+        //   enterpriseResolve: getEnterprise
+        // },
         data: {
           roles: ['user', 'admin', 'enterprise'],
           pageTitle: 'Edit Enterprise {{ enterpriseResolve.name }}'
@@ -86,9 +86,9 @@
         templateUrl: 'modules/enterprises/client/views/form-enterprise.client.view.html',
         controller: 'EnterprisesController',
         controllerAs: 'vm',
-        resolve: {
-          enterpriseResolve: getEnterprise
-        },
+        // resolve: {
+        //   enterpriseResolve: getEnterprise
+        // },
         data: {
           roles: ['user', 'admin', 'enterprise'],
           pageTitle: 'Edit Enterprise {{ enterpriseResolve.name }}'
@@ -124,14 +124,8 @@
   getEnterprise.$inject = ['$stateParams', 'EnterprisesService'];
 
   function getEnterprise($stateParams, EnterprisesService) {
-
-    console.log(EnterprisesService.get({
-      enterpriseId: $stateParams.enterpriseId
-    }));
-
-
-
     return EnterprisesService.get({
+      // isArray: false,
       enterpriseId: $stateParams.enterpriseId
     }).$promise;
   }
