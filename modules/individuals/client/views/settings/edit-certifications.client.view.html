@@ -4,33 +4,33 @@
     <div ng-repeat="certification in vm.certifications as results track by $index">
       <div class="individual-bio-element">
         <div class="form-group" show-errors>
-          <label for="certificationName">Certification Name</label>
-          <input type="text" id="certificationName" name="certificationName" class="form-control" ng-model="vm.certifications[$index].certificationName" placeholder="Certification Name" required autofocus>
-          <div ng-messages="vm.certifications[$index].certificationName.$error" role="alert">
+          <label for="certificationName{{$index}}">Certification Name</label>
+          <input type="text" id="certificationName{{$index}}" name="certificationName{{$index}}" class="form-control" ng-model="vm.certifications[$index].certificationName" placeholder="Certification Name" required autofocus>
+          <div ng-messages="vm.certificationsForm['certificationName'+$index].$error" role="alert">
             <p class="help-block error-text" ng-message="required">Certification Name is required.</p>
           </div>
         </div>
 
         <div class="form-group" show-errors>
-          <label for="institutionName">Institution Name</label>
-          <input type="text" id="institutionName" name="institutionName" class="form-control" ng-model="vm.certifications[$index].institutionName" placeholder="Institution Name" required>
-          <div ng-messages="vm.individualCertification.institutionName.$error" role="alert">
+          <label for="institutionName{{$index}}">Institution Name</label>
+          <input type="text" id="institutionName{{$index}}" name="institutionName{{$index}}" class="form-control" ng-model="vm.certifications[$index].institutionName" placeholder="Institution Name" required>
+          <div ng-messages="vm.certificationsForm['institutionName'+$index].$error" role="alert">
             <p class="help-block error-text" ng-message="required">Institution Name is required.</p>
           </div>
         </div>
 
         <div class="form-group" show-errors>
-          <label for="date">Date</label>
-          <input type="text" id="date" name="date" class="form-control" ng-model="vm.certifications[$index].date" placeholder="Date" required>
-          <div ng-messages="vm.individualCertification.date.$error" role="alert">
+          <label for="date{{$index}}">Date</label>
+          <input type="text" id="date{{$index}}" name="date{{$index}}" class="form-control" ng-model="vm.certifications[$index].date" placeholder="Date" required>
+          <div ng-messages="vm.certificationsForm['date'+$index].$error" role="alert">
             <p class="help-block error-text" ng-message="required">Date is required.</p>
           </div>
         </div>
 
         <div class="form-group" show-errors>
-          <label for="summary">Summary</label>
-          <input type="text" id="summary" name="summary" class="form-control" ng-model="vm.certifications[$index].summary" placeholder="Summary" required>
-          <div ng-messages="vm.individualCertification.summary.$error" role="alert">
+          <label for="summary{{$index}}">Summary</label>
+          <input type="text" id="summary{{$index}}" name="summary{{$index}}" class="form-control" ng-model="vm.certifications[$index].summary" placeholder="Summary" required>
+          <div ng-messages="vm.certificationsForm['summary'+ $index].$error" role="alert">
             <p class="help-block error-text" ng-message="required">Summary is required.</p>
           </div>
         </div>

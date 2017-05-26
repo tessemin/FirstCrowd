@@ -52,7 +52,7 @@ var IndividualUserSchema = new Schema({
       default: ''
     }
   },
-  eudcation: [{
+  education: [{
     degreeLevel: {
       type: String,
       default: ''
