@@ -7,7 +7,8 @@ var path = require('path'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   mongoose = require('mongoose'),
   passport = require('passport'),
-  User = mongoose.model('User');
+  User = mongoose.model('User'),
+  individuals = require(path.resolve('./modules/individuals/server/controllers/individuals.server.controller'));
 
 // URLs for which user can't be redirected on signin
 var noReturnUrls = [
@@ -21,16 +22,20 @@ var noReturnUrls = [
 exports.signup = function (req, res) {
   // For security measurement we remove the roles from the req.body object
   // delete req.body.roles;
-
+  
+  
   // Init user and add missing fields
   var user = new User(req.body);
   user.provider = 'local';
   user.displayName = user.firstName + ' ' + user.lastName;
   
-  // For security measurement we remove any admin privalges
+  let indiv = false;
+  // For security measurement we remove any admin privileges
   for (var i in user.roles) {
     if (user.roles[i] === 'admin') {
       user.roles.splice(i, 1);
+    } else if (user.roles[i] === 'individual') {
+      indiv = true;
     }
   }
   
@@ -64,6 +69,13 @@ exports.signup = function (req, res) {
       });
     }
   });
+  
+  if(indiv) {
+    req.user = user;
+    console.log(req.user);
+    console.log(req.body);
+    newIndividualUser(req, res);
+  }
 };
 
 /**
@@ -77,7 +89,9 @@ function newEnterpriseUser(req, res) {
  * create a new individual user
 */
 function newIndividualUser(req, res) {
-  
+  // Start with a totally default individual because the individual is
+  // created before defining anything about it (besides 
+  var individual = individuals.create(req, res);
 }
 
 /**

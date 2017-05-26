@@ -21,7 +21,7 @@ var IndividualUserSchema = new Schema({
     },
     middleName: {
       type: String,
-      required: 'Please provide a Middle Name'
+      default: ''
     },
     lastName: {
       type: String,
@@ -149,6 +149,8 @@ var IndividualUserSchema = new Schema({
     }]
   }]
 });
+
+IndividualUserSchema.set('collection', 'individualusers');
 
 /**
  * set first and last name as same for user and individual
