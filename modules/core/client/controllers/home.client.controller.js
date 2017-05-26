@@ -1,6 +1,5 @@
 (function () {
   'use strict';
-
   angular
     .module('core')
     .controller('carouselCtrl', carouselCtrl);

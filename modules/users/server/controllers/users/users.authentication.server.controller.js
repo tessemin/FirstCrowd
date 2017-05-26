@@ -7,8 +7,7 @@ var path = require('path'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   mongoose = require('mongoose'),
   passport = require('passport'),
-  User = mongoose.model('User'),
-  individuals = require(path.resolve('./modules/individuals/server/controllers/individuals.server.controller'));
+  User = mongoose.model('User');
 
 // URLs for which user can't be redirected on signin
 var noReturnUrls = [
@@ -22,20 +21,16 @@ var noReturnUrls = [
 exports.signup = function (req, res) {
   // For security measurement we remove the roles from the req.body object
   // delete req.body.roles;
-  
-  
+
   // Init user and add missing fields
   var user = new User(req.body);
   user.provider = 'local';
   user.displayName = user.firstName + ' ' + user.lastName;
   
-  let indiv = false;
-  // For security measurement we remove any admin privileges
+  // For security measurement we remove any admin privalges
   for (var i in user.roles) {
     if (user.roles[i] === 'admin') {
       user.roles.splice(i, 1);
-    } else if (user.roles[i] === 'individual') {
-      indiv = true;
     }
   }
   
@@ -57,41 +52,35 @@ exports.signup = function (req, res) {
         if (err) {
           res.status(400).send(err);
         } else {
-          res.json(user);/*
           if (user.userType === 'enterprise') {
-            newEnterpriseUser(req, res);
+            newEnterpriseUser(req, res, user);
           } else if (user.userType === 'individual') {
-            newIndividualUser(req, res);
+            newIndividualUser(req, res, user);
           } else { // error, just make user
             res.json(user);
-          }*/
+          }
         }
       });
     }
   });
-  
-  if(indiv) {
-    req.user = user;
-    console.log(req.user);
-    console.log(req.body);
-    newIndividualUser(req, res);
-  }
 };
 
 /**
  * create a new enterprise user
  */
-function newEnterpriseUser(req, res) {
-
+function newEnterpriseUser(req, res, user) {
+  
+  
+  res.json(user);
 }
 
 /**
  * create a new individual user
 */
-function newIndividualUser(req, res) {
-  // Start with a totally default individual because the individual is
-  // created before defining anything about it (besides 
-  var individual = individuals.create(req, res);
+function newIndividualUser(req, res, user) {
+  
+  
+  res.json(user);
 }
 
 /**
