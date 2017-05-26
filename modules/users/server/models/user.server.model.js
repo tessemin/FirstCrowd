@@ -92,6 +92,11 @@ var UserSchema = new Schema({
     default: '',
     validate: [validateLocalStrategyProperty, 'Please fill in your first name']
   },
+  middleName: {
+    type: String,
+    trim: true,
+    default: ''
+  },
   lastName: {
     type: String,
     trim: true,

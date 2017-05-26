@@ -15,8 +15,6 @@ var path = require('path'),
 exports.create = function(req, res) {
   var individual = new Individual(req.body);
   individual.user = req.user;
-  individual.bio.firstName = req.user.firstName;
-  individual.bio.lastName = req.user.lastName;
 
   individual.save(function(err) {
     if (err) {
@@ -51,9 +49,6 @@ exports.update = function(req, res) {
   var individual = req.individual;
 
   individual = _.extend(individual, req.body);
-  
-  req.user.firstName = individual.bio.firstName;
-  req.user.lastName = individual.bio.lastName;
 
   individual.save(function(err) {
     if (err) {
