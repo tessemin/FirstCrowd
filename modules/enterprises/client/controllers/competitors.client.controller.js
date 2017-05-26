@@ -6,9 +6,9 @@
     .module('enterprises')
     .controller('EnterpriseCompetitorController', EnterpriseCompetitorController);
 
-  EnterprisesController.$inject = ['$scope', '$state', '$window', 'Authentication', 'enterpriseResolve'];
+  EnterpriseCompetitorController.$inject = ['$scope', '$state', '$window', 'Authentication', 'enterpriseResolve'];
 
-  function EnterprisesController ($scope, $state, $window, Authentication, enterprise) {
+  function EnterpriseCompetitorController ($scope, $state, $window, Authentication, enterprise) {
     var vm = this;
 
     vm.authentication = Authentication;
