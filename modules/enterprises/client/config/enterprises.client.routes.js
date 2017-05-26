@@ -82,7 +82,7 @@
         }
       })
       .state('enterprises.profile', {
-        url: '',
+        url: '/profile',
         templateUrl: 'modules/enterprises/client/views/form-enterprise.client.view.html',
         controller: 'EnterprisesController',
         controllerAs: 'vm',
