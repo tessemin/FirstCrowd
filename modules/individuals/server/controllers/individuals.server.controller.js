@@ -20,9 +20,11 @@ exports.create = function(req, res) {
 
   individual.save(function(err) {
     if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
+      console.log(err);
+      return;
+ //     return res.status(400).send({
+  //      message: errorHandler.getErrorMessage(err)
+   //   });
     } else {
       res.jsonp(individual);
     }
