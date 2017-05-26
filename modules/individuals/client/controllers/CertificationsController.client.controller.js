@@ -33,8 +33,10 @@
         $scope.$broadcast('show-errors-check-validity', 'vm.certificationsForm');
         Notification.error({ message: 'Fill out required fields!' });
         return false;
+      } else {
+        Notification.info({message: 'Certifications update not implemented!'});
       }
-
+      /*
       var user = new UsersService(vm.user);
 
       user.$update(function (response) {
@@ -45,6 +47,7 @@
       }, function (response) {
         Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Update failed! Certifications not updated!' });
       });
+      */
     }
   };
 }());
