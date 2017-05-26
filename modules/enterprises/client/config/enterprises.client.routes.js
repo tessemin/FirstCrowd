@@ -10,7 +10,7 @@
   function routeConfig($stateProvider) {
     $stateProvider
       .state('enterprises', {
-        // abstract: true,
+        abstract: true,
         url: '/enterprises',
         // template: '<ui-view/>'
         templateUrl: 'modules/enterprises/client/views/side-menu.client.view.html',
@@ -20,15 +20,15 @@
           pageTitle: 'Enterprises List'
         }
       })
-      // .state('enterprises.list', {
-      //   url: '',
-      //   templateUrl: 'modules/enterprises/client/views/side-menu.client.view.html',
-      //   controller: 'EnterprisesListController',
-      //   controllerAs: 'vm',
-      //   data: {
-      //     pageTitle: 'Enterprises List'
-      //   }
-      // })
+      .state('enterprises.list', {
+        url: '',
+        templateUrl: 'modules/enterprises/client/views/list-enterprises.client.view.html',
+        controller: 'EnterprisesListController',
+        controllerAs: 'vm',
+        data: {
+          pageTitle: 'Enterprises List'
+        }
+      })
       .state('enterprises.create', {
         url: '/create',
         templateUrl: 'modules/enterprises/client/views/form-enterprise.client.view.html',
