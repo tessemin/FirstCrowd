@@ -39,7 +39,7 @@
       .state('enterprises.competitor', {
         url: '/enterprises/profile',
         templateUrl: 'modules/enterprises/client/views/form-enterprise.client.view.html',
-        controller: 'EnterprisesController',
+        controller: 'EnterpriseCompetitorController',
         controllerAs: 'vm',
         resolve: {
           enterpriseResolve: getEnterprise
@@ -52,7 +52,7 @@
       .state('enterprises.customer', {
         url: '/enterprises/profile',
         templateUrl: 'modules/enterprises/client/views/form-enterprise.client.view.html',
-        controller: 'EnterprisesController',
+        controller: 'EnterpriseCustomerController',
         controllerAs: 'vm',
         resolve: {
           enterpriseResolve: getEnterprise
@@ -65,7 +65,7 @@
       .state('enterprises.supplier', {
         url: '/enterprises/profile',
         templateUrl: 'modules/enterprises/client/views/form-enterprise.client.view.html',
-        controller: 'EnterprisesController',
+        controller: 'EnterpriseSupplierController',
         controllerAs: 'vm',
         resolve: {
           enterpriseResolve: getEnterprise
