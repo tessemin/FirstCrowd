@@ -47,7 +47,7 @@ var validateUsername = function(username) {
   );
 };
 
-var validateUserRoleIsRequired = function(v) {
+var validateUserRoleIsRequired = function() {
   if (this.userRole.worker || this.userRole.requester || this.userRole.resourceOwner) {
     if (!this.userRole.worker) {
       this.userRole.worker = false;
@@ -84,7 +84,7 @@ var UserSchema = new Schema({
       requester: false,
       resourceOwner: false
     },
-    validate: [validateUserRoleIsRequired, 'Please provide one user type']
+    validate: [validateUserRoleIsRequired, 'Please provide one user role']
   },
   firstName: {
     type: String,
@@ -115,7 +115,8 @@ var UserSchema = new Schema({
   },
   phone: {
     type: Number,
-    default: ''
+    default: '',
+    trim: true
   },
   contactPreference: {
     type: String,

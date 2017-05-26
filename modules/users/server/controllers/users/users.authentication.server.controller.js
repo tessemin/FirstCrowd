@@ -52,14 +52,13 @@ exports.signup = function (req, res) {
         if (err) {
           res.status(400).send(err);
         } else {
-          res.json(user);/*
           if (user.userType === 'enterprise') {
-            newEnterpriseUser(req, res);
+            newEnterpriseUser(req, res, user);
           } else if (user.userType === 'individual') {
-            newIndividualUser(req, res);
+            newIndividualUser(req, res, user);
           } else { // error, just make user
             res.json(user);
-          }*/
+          }
         }
       });
     }
@@ -69,15 +68,19 @@ exports.signup = function (req, res) {
 /**
  * create a new enterprise user
  */
-function newEnterpriseUser(req, res) {
-
+function newEnterpriseUser(req, res, user) {
+  
+  
+  res.json(user);
 }
 
 /**
  * create a new individual user
 */
-function newIndividualUser(req, res) {
+function newIndividualUser(req, res, user) {
   
+  
+  res.json(user);
 }
 
 /**
