@@ -1,14 +1,14 @@
 (function () {
   'use strict';
 
-  // Enterprises controller
+  // EnterpriseCustomer controller
   angular
     .module('enterprises')
     .controller('EnterpriseCustomerController', EnterpriseCustomerController);
 
-  EnterprisesController.$inject = ['$scope', '$state', '$window', 'Authentication', 'enterpriseResolve'];
+  EnterpriseCustomerController.$inject = ['$scope', '$state', '$window', 'Authentication', 'enterpriseResolve'];
 
-  function EnterprisesController ($scope, $state, $window, Authentication, enterprise) {
+  function EnterpriseCustomerController ($scope, $state, $window, Authentication, enterprise) {
     var vm = this;
 
     vm.authentication = Authentication;

@@ -29,8 +29,6 @@
       // roles: ['ent']
     });
 
-
-
     //
     // custom menu items
     //
@@ -62,9 +60,5 @@
       state: 'enterprises.competitor',
       roles: ['enterprise']
     });
-
- 
-
-
   }
 }());
