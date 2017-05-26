@@ -34,20 +34,17 @@
         Notification.error({ message: 'Fill out required fields!' });
         return false;
       } else {
-        Notification.info({message: 'Certifications update not implemented!'});
+        var individual = new IndividualsService(vm.user);
+
+        individual.$update(function (response) {
+          $scope.$broadcast('show-errors-reset', 'vm.certificationsForm');
+
+          Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Certifications updated!' });
+          // Authentication.user = response;
+        }, function (response) {
+          Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Update failed! Certifications not updated!' });
+        });
       }
-      /*
-      var user = new UsersService(vm.user);
-
-      user.$update(function (response) {
-        $scope.$broadcast('show-errors-reset', 'vm.certificationsForm');
-
-        Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Certifications updated!' });
-        Authentication.user = response;
-      }, function (response) {
-        Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Update failed! Certifications not updated!' });
-      });
-      */
     }
   };
 }());
