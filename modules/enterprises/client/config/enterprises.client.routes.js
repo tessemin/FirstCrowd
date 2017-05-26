@@ -36,6 +36,58 @@
           pageTitle: 'Enterprises Create'
         }
       })
+      .state('enterprises.competitor', {
+        url: '/enterprises/profile',
+        templateUrl: 'modules/enterprises/client/views/form-enterprise.client.view.html',
+        controller: 'EnterprisesController',
+        controllerAs: 'vm',
+        resolve: {
+          enterpriseResolve: getEnterprise
+        },
+        data: {
+          roles: ['user', 'admin'],
+          pageTitle: 'Edit Enterprise {{ enterpriseResolve.name }}'
+        }
+      })
+      .state('enterprises.customer', {
+        url: '/enterprises/profile',
+        templateUrl: 'modules/enterprises/client/views/form-enterprise.client.view.html',
+        controller: 'EnterprisesController',
+        controllerAs: 'vm',
+        resolve: {
+          enterpriseResolve: getEnterprise
+        },
+        data: {
+          roles: ['user', 'admin'],
+          pageTitle: 'Edit Enterprise {{ enterpriseResolve.name }}'
+        }
+      })
+      .state('enterprises.supplier', {
+        url: '/enterprises/profile',
+        templateUrl: 'modules/enterprises/client/views/form-enterprise.client.view.html',
+        controller: 'EnterprisesController',
+        controllerAs: 'vm',
+        resolve: {
+          enterpriseResolve: getEnterprise
+        },
+        data: {
+          roles: ['user', 'admin'],
+          pageTitle: 'Edit Enterprise {{ enterpriseResolve.name }}'
+        }
+      })
+      .state('enterprises.profile', {
+        url: '/enterprises/profile',
+        templateUrl: 'modules/enterprises/client/views/form-enterprise.client.view.html',
+        controller: 'EnterprisesController',
+        controllerAs: 'vm',
+        resolve: {
+          enterpriseResolve: getEnterprise
+        },
+        data: {
+          roles: ['user', 'admin'],
+          pageTitle: 'Edit Enterprise {{ enterpriseResolve.name }}'
+        }
+      })
       .state('enterprises.edit', {
         url: '/:enterpriseId/edit',
         templateUrl: 'modules/enterprises/client/views/form-enterprise.client.view.html',

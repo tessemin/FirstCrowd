@@ -38,19 +38,32 @@
       roles: ['enterprise']
     });
 
-    menuService.addMenuItem('enterprise', {
-      title: 'CoProfile',
-      state: 'enterprises.create',
-      roles: ['enterprise']
-    });
-
-    menuService.addMenuItem('enterprise', {
+   menuService.addMenuItem('enterprise', {
       title: 'Company Profile',
-      state: 'enterprises.create',
+      state: 'enterprises.profile',
       roles: ['enterprise'],
       position: 1
     });
 
+    menuService.addMenuItem('enterprise', {
+      title: 'Supplier',
+      state: 'enterprises.supplier',
+      roles: ['enterprise']
+    });
+
+    menuService.addMenuItem('enterprise', {
+      title: 'Customer',
+      state: 'enterprises.customer',
+      roles: ['enterprise']
+    });
+
+    menuService.addMenuItem('enterprise', {
+      title: 'Competitor',
+      state: 'enterprises.competitor',
+      roles: ['enterprise']
+    });
+
+ 
 
 
   }
