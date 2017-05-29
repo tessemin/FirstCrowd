@@ -24,7 +24,7 @@
 
     // If user is signed in then redirect back home
     if (vm.authentication.user) {
-      redirectOnSign(vm.authentication.user);
+      redirectOnSign(vm.authentication.user, $state);
     }
 
     function signup(isValid) {
@@ -62,7 +62,7 @@
       // Effectively call OAuth authentication route:
       $window.location.href = url; */
       
-      redirectOnSign(vm.authentication.user);
+      redirectOnSign(vm.authentication.user, $state);
     }
 
     // Authentication Callbacks
@@ -76,7 +76,7 @@
       // $state.go($state.previous.state.name || 'home', $state.previous.params);
       
       // redirects to either individual or enterprise page
-      redirectOnSign(vm.authentication.user);
+      redirectOnSign(vm.authentication.user, $state);
     }
 
     function onUserSignupError(response) {
@@ -92,13 +92,13 @@
       // $state.go($state.previous.state.name || 'home', $state.previous.params);
       
       // redirects to either individual or enterprise page
-      redirectOnSign(vm.authentication.user);
+      redirectOnSign(vm.authentication.user, $state);
     }
     function onUserSigninError(response) {
       Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Signin Error!', delay: 6000 });
     }
     
-    function redirectOnSign(user) {
+    function redirectOnSign(user, $state) {
       var individual = false,
         enterprise = false;
       for (var i in user.roles) {

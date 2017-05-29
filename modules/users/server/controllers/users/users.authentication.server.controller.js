@@ -7,7 +7,9 @@ var path = require('path'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   mongoose = require('mongoose'),
   passport = require('passport'),
-  User = mongoose.model('User');
+  User = mongoose.model('User'),
+  Individual = mongoose.model('Individual'),
+  Enterprise = mongoose.model('Enterprise');
 
 // URLs for which user can't be redirected on signin
 var noReturnUrls = [
@@ -27,16 +29,28 @@ exports.signup = function (req, res) {
   user.provider = 'local';
   user.displayName = user.firstName + ' ' + user.lastName;
   
+  var individual = false,
+    enterprise = false;
+
+  // checks if enterprise or individual user
   // For security measurement we remove any admin privalges
   for (var i in user.roles) {
     if (user.roles[i] === 'admin') {
       user.roles.splice(i, 1);
+    } else if (user.roles[i] === 'enterprise') {
+      user.enterprise = new Enterprise();
+      user.enterprise.user = user.id;
+      enterprise = true;
+    } else if (user.roles[i] === 'individual') {
+      user.individual = new Individual();
+      user.individual.user = user.id;
+      individual = true;
     }
   }
   
   // always adds the user role to the user
   user.roles.push('user');
-
+  
   // Then save the user
   user.save(function (err) {
     if (err) {
@@ -52,11 +66,15 @@ exports.signup = function (req, res) {
         if (err) {
           res.status(400).send(err);
         } else {
-          if (user.userType === 'enterprise') {
-            newEnterpriseUser(req, res, user);
-          } else if (user.userType === 'individual') {
-            newIndividualUser(req, res, user);
-          } else { // error, just make user
+          if (!(enterprise && individual)) {
+            if (enterprise) {
+              newEnterpriseUser(req, res, user);
+            } else if (individual) {
+              newIndividualUser(req, res, user);
+            } else {
+              res.json(user);
+            }
+          } else {
             res.json(user);
           }
         }
@@ -69,8 +87,15 @@ exports.signup = function (req, res) {
  * create a new enterprise user
  */
 function newEnterpriseUser(req, res, user) {
-  
-  
+  user.enterprise.save(function (err) {
+    if (err) {
+      return res.status(422).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else { 
+      res.json(user);
+    }
+  });
   res.json(user);
 }
 
@@ -78,8 +103,15 @@ function newEnterpriseUser(req, res, user) {
  * create a new individual user
 */
 function newIndividualUser(req, res, user) {
-  
-  
+  user.individual.save(function (err) {
+    if (err) {
+      return res.status(422).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else { 
+      res.json(user);
+    }
+  });
   res.json(user);
 }
 
