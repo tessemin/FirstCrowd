@@ -4,11 +4,11 @@
   // Enterprises controller
   angular
     .module('enterprises')
-    .controller('EnterprisesController', EnterprisesController);
+    .controller('EnterpriseProfileController', EnterpriseProfileController);
 
-  EnterprisesController.$inject = ['$scope', '$state', '$window', 'Authentication', 'UsersService'];
+  EnterpriseProfileController.$inject = ['$scope', '$state', '$window', 'Authentication', 'UsersService'];
 
-  function EnterprisesController ($scope, $state, $window, Authentication, UsersService) {
+  function EnterpriseProfileController ($scope, $state, $window, Authentication, UsersService) {
     var vm = this;
 
     vm.countries = [
