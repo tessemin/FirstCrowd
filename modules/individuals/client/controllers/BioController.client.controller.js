@@ -28,10 +28,10 @@
         user.$update(function (response) {
           $scope.$broadcast('show-errors-reset', 'vm.bioForm');
 
-          Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Certifications updated!' });
+          Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Bio updated!' });
           // Authentication.user = response;
         }, function (response) {
-          Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Update failed! Certifications not updated!' });
+          Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Update failed! Bio not updated!' });
         });
       }
     }

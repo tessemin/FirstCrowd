@@ -6,9 +6,9 @@
     .module('individuals')
     .controller('CertificationsController', CertificationsController);
 
-  CertificationsController.$inject = ['$scope', '$state', 'UsersService', 'Authentication', 'Notification'];
+  CertificationsController.$inject = ['$scope', '$state', 'IndividualsService', 'Authentication', 'Notification'];
 
-  function CertificationsController ($scope, $state, UsersService, Authentication, Notification) {
+  function CertificationsController ($scope, $state, IndividualsService, Authentication, Notification) {
     var vm = this;
     
     vm.certifications = [];
@@ -34,17 +34,18 @@
         Notification.error({ message: 'Fill out required fields!' });
         return false;
       }
-
-      var user = new UsersService(vm.user);
-
-      user.$update(function (response) {
-        $scope.$broadcast('show-errors-reset', 'vm.certificationsForm');
-
-        Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Certifications updated!' });
-        Authentication.user = response;
-      }, function (response) {
-        Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Update failed! Certifications not updated!' });
-      });
+      
+      IndividualsService.updateCerts(vm.certifications)
+        .then(onUpdateCertificationsSuccess)
+        .catch(onUpdateCertificationsError);
     }
-  };
+    
+    function onUpdateCertificationsSuccess(response) {
+      Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Certifications updated!' });
+    }
+    
+    function onUpdateCertificationsError(response) {
+      Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Update failed! Certifications not updated!' });
+    }
+  }
 }());

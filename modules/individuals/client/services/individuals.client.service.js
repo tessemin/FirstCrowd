@@ -9,12 +9,24 @@
   IndividualsService.$inject = ['$resource'];
 
   function IndividualsService($resource) {
-    return $resource('api/individuals/:individualId', {
+    var Individuals = $resource('api/individuals/:individualId', {
       individualId: '@_id'
     }, {
       update: {
         method: 'PUT'
+      },
+      updateCertifications: {
+        method: 'POST',
+        url: 'api/individuals/certifications/'
       }
     });
+    
+    angular.extend(Individuals, {
+      updateCerts: function (certifications) {
+        return this.updateCertifications(certifications).$promise;
+      }
+    });
+    
+    return Individuals;
   }
 }());
