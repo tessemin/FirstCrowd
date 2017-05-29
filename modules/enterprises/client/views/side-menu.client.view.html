@@ -1,12 +1,11 @@
 <section>
   <div class="page-header">
-    <h1>Enterprise</h1>
+    <h1>Enterprises</h1>
   </div>
   <div class="row">
     <nav class="col-sm-3 col-md-3">
       <ul class="nav nav-pills nav-stacked">
-        <li ng-repeat="item in vm.menu.items" ng-switch="item.type" ui-sref-active="active" class="{{item.class}}">
-          <!-- <li ng-repeat="item in vm.menu.items | orderBy: 'position'" ng-if="item.shouldRender(vm.authentication.user);" ng-switch="item.type" ui-sref-active="active" class="{{item.class}}"> -->
+        <li ng-repeat="item in vm.menu.items" ng-if="vm.menu.shouldRender(vm.user);" ui-sref-active="active">
           <a ui-sref="{{item.state}}" ng-bind="item.title"></a>
         </li>
       </ul>

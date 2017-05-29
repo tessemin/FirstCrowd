@@ -10,8 +10,6 @@
   function EnterprisesListController(EnterprisesService, menuService) {
     var vm = this;
 
-    vm.menu = menuService.getMenu('enterprise');
-
     vm.enterprises = EnterprisesService.query();
   }
 }());

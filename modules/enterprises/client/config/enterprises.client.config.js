@@ -30,28 +30,36 @@
     });
 
 
-
     //
     // custom menu items
     //
-    menuService.addMenu('enterprise',{
-      roles: ['enterprise']
-    });
-
-    menuService.addMenuItem('enterprise', {
-      title: 'CoProfile',
-      state: 'enterprises.create',
-      roles: ['enterprise']
+    menuService.addMenu('enterprise', {
+      // roles: ['enterprise']
+      roles: ['*']
     });
 
     menuService.addMenuItem('enterprise', {
       title: 'Company Profile',
-      state: 'enterprises.create',
-      roles: ['enterprise'],
-      position: 1
+      state: 'enterprises.profile',
+      roles: ['enterprise']
     });
 
+    menuService.addMenuItem('enterprise', {
+      title: 'View Suppliers',
+      state: 'enterprises.supplier',
+      roles: ['enterprise']
+    });
 
+    menuService.addMenuItem('enterprise', {
+      title: 'View Customers',
+      state: 'enterprises.customer',
+      roles: ['enterprise']
+    });
 
+    menuService.addMenuItem('enterprise', {
+      title: 'View Competitors',
+      state: 'enterprises.competitor',
+      roles: ['enterprise']
+    });
   }
 }());
