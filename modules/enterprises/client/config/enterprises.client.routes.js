@@ -12,7 +12,49 @@
       .state('enterprises', {
         abstract: true,
         url: '/enterprises',
-        template: '<ui-view/>'
+        templateUrl: 'modules/enterprises/client/views/side-menu.client.view.html',
+        controller: 'SideMenuController',
+        controllerAs: 'vm'
+      })
+      .state('enterprises.profile', {
+        url: '/profile',
+        templateUrl: 'modules/enterprises/client/views/form-profile.client.view.html',
+        controller: 'EnterpriseProfileController',
+        controllerAs: 'vm',
+        data: {
+          roles: ['enterprise'],
+          pageTitle: 'Edit your Enterprise Profile'
+        }
+      })
+      .state('enterprises.competitor', {
+        url: '/competitors',
+        templateUrl: 'modules/enterprises/client/views/form-competitor.client.view.html',
+        controller: 'EnterpriseCompetitorController',
+        controllerAs: 'vm',
+        data: {
+          roles: ['enterprise'],
+          pageTitle: 'Edit your Competitor List'
+        }
+      })
+      .state('enterprises.customer', {
+        url: '/customers',
+        templateUrl: 'modules/enterprises/client/views/form-customer.client.view.html',
+        controller: 'EnterpriseCustomerController',
+        controllerAs: 'vm',
+        data: {
+          roles: ['enterprise'],
+          pageTitle: 'Edit your Customer List'
+        }
+      })
+      .state('enterprises.supplier', {
+        url: '/suppliers',
+        templateUrl: 'modules/enterprises/client/views/form-supplier.client.view.html',
+        controller: 'EnterpriseSupplierController',
+        controllerAs: 'vm',
+        data: {
+          roles: ['enterprise'],
+          pageTitle: 'Edit your Supplier List'
+        }
       })
       .state('enterprises.list', {
         url: '',
@@ -20,6 +62,7 @@
         controller: 'EnterprisesListController',
         controllerAs: 'vm',
         data: {
+          roles: ['enterprise'],
           pageTitle: 'Enterprises List'
         }
       })
@@ -32,60 +75,8 @@
           enterpriseResolve: newEnterprise
         },
         data: {
-          roles: ['user', 'admin'],
+          roles: ['user', 'admin', 'enterprise'],
           pageTitle: 'Enterprises Create'
-        }
-      })
-      .state('enterprises.competitor', {
-        url: '/competitors',
-        templateUrl: 'modules/enterprises/client/views/form-competitor.client.view.html',
-        controller: 'EnterpriseCompetitorController',
-        controllerAs: 'vm',
-        // resolve: {
-        //   enterpriseResolve: getEnterprise
-        // },
-        data: {
-          roles: ['user', 'admin', 'enterprise'],
-          pageTitle: 'Edit Enterprise {{ enterpriseResolve.name }}'
-        }
-      })
-      .state('enterprises.customer', {
-        url: '/customers',
-        templateUrl: 'modules/enterprises/client/views/form-customer.client.view.html',
-        controller: 'EnterpriseCustomerController',
-        controllerAs: 'vm',
-        // resolve: {
-        //   enterpriseResolve: getEnterprise
-        // },
-        data: {
-          roles: ['user', 'admin', 'enterprise'],
-          pageTitle: 'Edit Enterprise {{ enterpriseResolve.name }}'
-        }
-      })
-      .state('enterprises.supplier', {
-        url: '/suppliers',
-        templateUrl: 'modules/enterprises/client/views/form-supplier.client.view.html',
-        controller: 'EnterpriseSupplierController',
-        controllerAs: 'vm',
-        // resolve: {
-        //   enterpriseResolve: getEnterprise
-        // },
-        data: {
-          roles: ['user', 'admin', 'enterprise'],
-          pageTitle: 'Edit Enterprise {{ enterpriseResolve.name }}'
-        }
-      })
-      .state('enterprises.profile', {
-        url: '/profile',
-        templateUrl: 'modules/enterprises/client/views/form-enterprise.client.view.html',
-        controller: 'EnterprisesController',
-        controllerAs: 'vm',
-        // resolve: {
-        //   enterpriseResolve: getEnterprise
-        // },
-        data: {
-          roles: ['user', 'admin', 'enterprise'],
-          pageTitle: 'Edit Enterprise {{ enterpriseResolve.name }}'
         }
       })
       .state('enterprises.edit', {

@@ -1,9 +1,9 @@
-<section>
+<section class="row">
   <div class="col-md-12">
-    <div>
-      <h1>{{vm.customer._id ? 'Edit Customer' : 'New Customer'}}</h1>
-    </div>
-    <form name="vm.customerForm" class="form-horizontal" ng-submit="vm.save(vm.customerForm.$valid)" novalidate>
+    <!-- <div> -->
+    <!-- <h1>{{vm.customer._id ? 'Edit Customer' : 'New Customer'}}</h1> -->
+    <!-- </div> -->
+    <form name="vm.customerForm" class="form-horizontal" ng-submit="vm.saveCustomer(vm.customerForm.$valid)" novalidate>
       <fieldset>
         <div class="form-group" show-errors>
           <label for="companyName">Company Name</label>

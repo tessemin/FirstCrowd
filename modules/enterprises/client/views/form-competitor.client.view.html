@@ -1,9 +1,9 @@
-<section>
+<section class="row">
   <div class="col-md-12">
-    <div>
-      <h1>{{vm.competitor._id ? 'Edit Competitor' : 'New Competitor'}}</h1>
-    </div>
-    <form name="vm.competitorForm" class="form-horizontal" ng-submit="vm.save(vm.competitorForm.$valid)" novalidate>
+    <!-- <div> -->
+    <!-- <h1>{{vm.competitor._id ? 'Edit Competitor' : 'New Competitor'}}</h1> -->
+    <!-- </div> -->
+    <form name="vm.competitorForm" class="form-horizontal" ng-submit="vm.saveCompetitor(vm.competitorForm.$valid)" novalidate>
       <fieldset>
         <div class="form-group" show-errors>
           <label for="companyName">Company Name</label>
