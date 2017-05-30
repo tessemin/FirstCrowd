@@ -118,3 +118,11 @@ exports.individualByID = function(req, res, next, id) {
     next();
   });
 };
+
+/**
+ * Individual certification update
+ */
+
+exports.updateCertification = function(req, res) {
+  
+};

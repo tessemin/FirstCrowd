@@ -40,13 +40,17 @@ exports.signup = function (req, res) {
     } else if (user.roles[i] === 'enterprise') {
       user.enterprise = new Enterprise();
       user.enterprise.user = user.id;
+      user.enterprise.save();
       enterprise = true;
     } else if (user.roles[i] === 'individual') {
       user.individual = new Individual();
       user.individual.user = user.id;
+      user.individual.save();
       individual = true;
     }
   }
+  
+  console.log(enterprise);
   
   // always adds the user role to the user
   user.roles.push('user');
@@ -66,8 +70,10 @@ exports.signup = function (req, res) {
         if (err) {
           res.status(400).send(err);
         } else {
+          res.json(user);
           if (!(enterprise && individual)) {
             if (enterprise) {
+              console.log('here');
               newEnterpriseUser(req, res, user);
             } else if (individual) {
               newIndividualUser(req, res, user);
@@ -87,32 +93,14 @@ exports.signup = function (req, res) {
  * create a new enterprise user
  */
 function newEnterpriseUser(req, res, user) {
-  user.enterprise.save(function (err) {
-    if (err) {
-      return res.status(422).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else { 
-      res.json(user);
-    }
-  });
-  res.json(user);
+
 }
 
 /**
  * create a new individual user
 */
 function newIndividualUser(req, res, user) {
-  user.individual.save(function (err) {
-    if (err) {
-      return res.status(422).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else { 
-      res.json(user);
-    }
-  });
-  res.json(user);
+  
 }
 
 /**
