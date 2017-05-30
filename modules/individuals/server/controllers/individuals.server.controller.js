@@ -13,7 +13,7 @@ var path = require('path'),
 /**
  * Find the Individual
  */
-var findIndividual = function(req, res){
+var findIndividual = function(req, res, callBack){
   var individualID = req.user.individual;
 
   Individual.findById(individualID, function (err, individual) { 
@@ -27,7 +27,7 @@ var findIndividual = function(req, res){
       });
     } else {
       superIndividual = individual;
-      return individual;
+      callBack(superIndividual);
     }
   });
 }
@@ -37,11 +37,9 @@ var findIndividual = function(req, res){
  */
 var getIndividual = function(req, res, callBack) {
   if (!superIndividual) {
-    superIndividual = findIndividual(req, res);
-    callBack(superIndividual);
+    findIndividual(req, res, callBack);
   } else if (superIndividual.id !== req.user.individual) {
-    superIndividual = findIndividual(req, res);
-    callBack(superIndividual);
+    findIndividual(req, res, callBack);
   } else {
     callBack(superIndividual);
   }
