@@ -6,9 +6,9 @@
     .module('individuals')
     .controller('BioController', BioController);
 
-  BioController.$inject = ['$scope', '$state', 'UsersService', 'Authentication', 'Notification'];
+  BioController.$inject = ['$scope', '$state', 'IndividualsService', 'Authentication', 'Notification'];
 
-  function BioController ($scope, $state, UsersService, Authentication, Notification) {
+  function BioController ($scope, $state, IndividualsService, Authentication, Notification) {
     var vm = this;
     
     vm.user = Authentication.user;
@@ -24,8 +24,8 @@
       } else {
         
         var individual = new IndividualsService(vm.user);
-
-        user.$update(function (response) {
+        /*
+        individual.$updateBio(function (response) {
           $scope.$broadcast('show-errors-reset', 'vm.bioForm');
 
           Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Bio updated!' });
@@ -33,7 +33,8 @@
         }, function (response) {
           Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Update failed! Bio not updated!' });
         });
+        */
       }
     }
-  };
+  }
 }());
