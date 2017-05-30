@@ -1,12 +1,22 @@
-<div ng-controller="ExperiencesController">
-  <button>Add experience</button>
-  
-  <ul>
-    <li ng-repeat="experience in experiences as results" ng-include="getExperience(experience)">
-      <!-- Template from experience.client.view.html -->
-    </li>
-  </ul>
-  <li ng-if="results.length === 0">
-    You have not added any experiences.
-  </li>
+<div ng-controller="ExperienceController">
+  <form name="vm.experienceForm" ng-submit="vm.updateIndividualExperience(vm.experienceForm.$valid)" novalidate autocomplete="off">
+    <div ng-repeat="experience in vm.experiences as results track by $index">
+      <div class="individual-bio-element">
+        <div class="form-group" show-errors>
+          <label for="employer{{$index}}">Employer:</label>
+          <input type="text" id="employer{{$index}}" name="employer{{$index}}" class="form-control" ng-model="vm.experiences[$index].employer" placeholder="Employer" required autofocus>
+          <div ng-messages="vm.experienceForm['experienceName'+$index].$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Employer is required. </p>
+          </div>
+        </div>
+        
+        <button type="button" ng-click="vm.removeExperience($index)">Remove Experience</button>
+      </div>
+    </div> <!-- end ng-repeat -->
+    <div ng-if="results.length === 0">
+      You have no experience.
+    </div>
+    <button type="button" ng-click="vm.addExperience()">Add experience</button>
+    <input type="submit" value="Save"/>
+  </form>
 </div>
