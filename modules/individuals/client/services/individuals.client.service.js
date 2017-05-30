@@ -18,12 +18,33 @@
       updateCertifications: {
         method: 'POST',
         url: 'api/individuals/certifications/'
+      },
+      updateExperiences: {
+        method: 'POST',
+        url: 'api/individuals/experiences/'
+      },
+      updateSkills: {
+        method: 'POST',
+        url: 'api.individuals/skills/'
+      },
+      updateEducation: {
+        method: 'POST',
+        url: 'api/individuals/education/'
       }
     });
     
     angular.extend(Individuals, {
-      updateCerts: function (certifications) {
+      updateCertificationsFromForm: function (certifications) {
         return this.updateCertifications(certifications).$promise;
+      },
+      updateExperienceFromForm: function (experiences) {
+        return this.updateExperiences(experiences).$promise;
+      },
+      updateSkillsFromForm: function (skills) {
+        return this.updateSkills(skills).$promise;
+      },
+      updateEducationFromForm: function (degrees) {
+        return this.updateEducation(degrees).$promise;
       }
     });
     

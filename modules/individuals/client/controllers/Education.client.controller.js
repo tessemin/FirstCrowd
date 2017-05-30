@@ -2,13 +2,27 @@
   'use strict';
 
   angular
-    .module('users')
+    .module('individuals')
     .controller('EducationController', EducationController);
 
-  EducationController.$inject = ['$scope', '$http', '$location', 'UsersService', 'Authentication', 'Notification'];
+  EducationController.$inject = ['$scope', '$state', 'IndividualsService', 'Authentication', 'Notification'];
 
-  function EducationController($scope, $http, $location, UsersService, Authentication, Notification) {
+  function EducationController($scope, $state, IndividualsService, Authentication, Notification) {
     var vm = this;
+    
+    vm.degrees = [];
+    vm.addDegree = addDegree;
+    vm.removeDegree = removeDegree;
+    
+    function addDegree() {
+      vm.degrees.push({});
+    }
+    
+    function removeDegree(index) {
+      vm.degrees.splice(index, 1);
+    }
+    
+    vm.updateEducation = updateEducation;
 
     vm.degreeLevels = ['Middle School', 'Highschool', 'Associate\'s Degree', 'Bachelor\'s Degree', 'Master\'s Degree', 'Doctoral Degree'];
 
@@ -18,7 +32,7 @@
       { name: 'Albania', code: 'AL' },
       { name: 'Algeria', code: 'DZ' },
       { name: 'American Samoa', code: 'AS' },
-      { name: 'AndorrA', code: 'AD' },
+      { name: 'Andorra', code: 'AD' },
       { name: 'Angola', code: 'AO' },
       { name: 'Anguilla', code: 'AI' },
       { name: 'Antarctica', code: 'AQ' },
@@ -257,29 +271,27 @@
       { name: 'Zambia', code: 'ZM' },
       { name: 'Zimbabwe', code: 'ZW' }
     ];
-
-    vm.userEducation = Authentication.user;
-    vm.updateUserEducation = updateUserEducation;
-
+    
     // Update a user education
-    function updateUserEducation(isValid) {
+    function updateEducation(isValid) {
 
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'vm.educationForm');
 
         return false;
       }
-
-      var user = new UsersService(vm.userEducation);
-
-      user.$update(function (response) {
-        $scope.$broadcast('show-errors-reset', 'vm.educationForm');
-
-        Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Edit education successful!' });
-        Authentication.user = response;
-      }, function (response) {
-        Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Edit education failed!' });
-      });
+      
+      IndividualsService.updateEducationFromForm(vm.degrees)
+        .then(onUpdateEducationSuccess)
+        .catch(onUpdateEducationError);
+    }
+    
+    function onUpdateEducationSuccess(response) {
+      Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Education updated!' });
+    }
+    
+    function onUpdateEducationError(response) {
+      Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Update failed! Education not updated!' });
     }
   }
 }());

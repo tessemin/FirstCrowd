@@ -22,8 +22,7 @@
     function removeCertification(index) {
       vm.certifications.splice(index, 1);
     }
-
-    vm.user = Authentication.user;
+    
     vm.updateIndividualCertifications = updateIndividualCertifications;
 
     // Update a user profile
@@ -35,7 +34,7 @@
         return false;
       }
       
-      IndividualsService.updateCerts(vm.certifications)
+      IndividualsService.updateCertificationsFromForm(vm.certifications)
         .then(onUpdateCertificationsSuccess)
         .catch(onUpdateCertificationsError);
     }

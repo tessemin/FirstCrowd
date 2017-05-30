@@ -2,36 +2,48 @@
   'use strict';
 
   angular
-    .module('users')
+    .module('individuals')
     .controller('ExperienceController', ExperienceController);
 
-  ExperienceController.$inject = ['$scope', '$http', '$location', 'UsersService', 'Authentication', 'Notification'];
+  ExperienceController.$inject = ['$scope', '$state', 'IndividualsService', 'Authentication', 'Notification'];
 
-  function ExperienceController($scope, $http, $location, UsersService, Authentication, Notification) {
+  function ExperienceController ($scope, $state, IndividualsService, Authentication, Notification) {
     var vm = this;
 
-    vm.individualWorkExperience = Authentication.user;
-    vm.updateIndividualWorkExperience = updateIndividualWorkExperience;
+    vm.experiences = [];
+    vm.addExperience = addExperience;
+    vm.removeExperience = removeExperience;
+    
+    function addExperience() {
+      vm.experiences.push({});
+    }
+    
+    function removeExperience(index) {
+      vm.experiences.splice(index, 1);
+    }
+    
+    vm.updateIndividualExperience = updateIndividualExperience;
 
     // Update a user profile
-    function updateIndividualWorkExperience(isValid) {
+    function updateIndividualExperience(isValid) {
 
       if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'vm.individualWorkExperience');
-
+        $scope.$broadcast('show-errors-check-validity', 'vm.experienceForm');
+        Notification.error({ message: 'Fill out required fields!' });
         return false;
       }
-
-      var user = new UsersService(vm.individualWorkExperience);
-
-      user.$update(function (response) {
-        $scope.$broadcast('show-errors-reset', 'vm.individualWorkExperienceForm');
-
-        Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Edit profile successful!' });
-        Authentication.user = response;
-      }, function (response) {
-        Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Edit profile failed!' });
-      });
+      
+      IndividualsService.updateExperienceFromForm(vm.experiences)
+        .then(onUpdateExperiencesSuccess)
+        .catch(onUpdateExperiencesError);
+    }
+    
+    function onUpdateExperiencesSuccess(response) {
+      Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Work Experience updated!' });
+    }
+    
+    function onUpdateExperiencesError(response) {
+      Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Update failed! Work Experience not updated!' });
     }
   }
 }());

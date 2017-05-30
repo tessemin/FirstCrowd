@@ -62,7 +62,7 @@
       .state('individuals.skills', {
         url: '/skills',
         templateUrl: '/modules/individuals/client/views/settings/edit-skills.client.view.html',
-        controller: 'SkillController',
+        controller: 'SkillsController',
         controllerAs: 'vm',
         data: {
           pageTitle: 'Edit your Skills'

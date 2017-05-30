@@ -12,7 +12,7 @@
         
         <div class="form-group" show-errors>
           <label for="institutionName{{$index}}">Institution:</label>
-          <input type="text" id="institutionName{{$index}}" name="institutionName{{$index}}" class="form-control" ng-model="vm.certifications[$index].institutionName" placeholder="Institution Name" required>          <span ng-messages="vm.certificationsForm['certificationName'+$index].$error" role="alert">
+          <input type="text" id="institutionName{{$index}}" name="institutionName{{$index}}" class="form-control" ng-model="vm.certifications[$index].institutionName" placeholder="Institution Name" required>
           <div ng-messages="vm.certificationsForm['institutionName'+$index].$error" role="alert">
             <p class="help-block error-text" ng-message="required">Institution Name is required. </p>
           </div>
