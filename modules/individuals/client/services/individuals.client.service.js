@@ -30,6 +30,10 @@
       updateEducation: {
         method: 'POST',
         url: 'api/individuals/education/'
+      },
+      updateBio: {
+        method: 'POST',
+        url: 'api/individuals/bio'
       }
     });
     
@@ -45,6 +49,9 @@
       },
       updateEducationFromForm: function (degrees) {
         return this.updateEducation(degrees).$promise;
+      },
+      updateBioFromForm: function (bio) {
+        return this.updateBio(bio).$promise;
       }
     });
     
