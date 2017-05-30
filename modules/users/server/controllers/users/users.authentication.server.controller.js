@@ -28,9 +28,6 @@ exports.signup = function (req, res) {
   var user = new User(req.body);
   user.provider = 'local';
   user.displayName = user.firstName + ' ' + user.lastName;
-  
-  var individual = false,
-    enterprise = false;
 
   // checks if enterprise or individual user
   // For security measurement we remove any admin privalges
@@ -38,19 +35,20 @@ exports.signup = function (req, res) {
     if (user.roles[i] === 'admin') {
       user.roles.splice(i, 1);
     } else if (user.roles[i] === 'enterprise') {
-      user.enterprise = new Enterprise();
-      user.enterprise.user = user.id;
-      user.enterprise.save();
-      enterprise = true;
+      // adds and saves enterprise object and binds to user
+      var enterpriseObj = new Enterprise();
+      enterpriseObj.user = user.id;
+      user.enterprise = enterpriseObj;
+      enterpriseObj.save();
     } else if (user.roles[i] === 'individual') {
-      user.individual = new Individual();
-      user.individual.user = user.id;
-      user.individual.save();
-      individual = true;
+      // adds and saves individual object and binds to user
+      var individualObj = new Individual();
+      console.log();
+      individualObj.user = user.id;
+      individualObj.save();
+      user.individual = individualObj;
     }
   }
-  
-  console.log(enterprise);
   
   // always adds the user role to the user
   user.roles.push('user');
@@ -71,37 +69,11 @@ exports.signup = function (req, res) {
           res.status(400).send(err);
         } else {
           res.json(user);
-          if (!(enterprise && individual)) {
-            if (enterprise) {
-              console.log('here');
-              newEnterpriseUser(req, res, user);
-            } else if (individual) {
-              newIndividualUser(req, res, user);
-            } else {
-              res.json(user);
-            }
-          } else {
-            res.json(user);
-          }
         }
       });
     }
   });
 };
-
-/**
- * create a new enterprise user
- */
-function newEnterpriseUser(req, res, user) {
-
-}
-
-/**
- * create a new individual user
-*/
-function newIndividualUser(req, res, user) {
-  
-}
 
 /**
  * Signin after passport authentication

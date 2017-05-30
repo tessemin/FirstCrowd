@@ -17,7 +17,7 @@ module.exports = function(app) {
     .put(individuals.update)
     .delete(individuals.delete);
     
-  app.route('api/individuals/certifications/').put(individuals.updateCertification);
+  app.route('/individuals/api/individuals/certifications/').post(individuals.updateCertification);
 
   // Finish by binding the Individual middleware
   app.param('individualId', individuals.individualByID);

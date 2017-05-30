@@ -122,7 +122,7 @@ var IndividualUserSchema = new Schema({
       default: '',
       trim: true
     },
-    organization: {
+    institution: {
       type: String,
       default: '',
       trim: true
