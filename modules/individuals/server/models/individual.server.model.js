@@ -7,7 +7,10 @@ var mongoose = require('mongoose'),
   path = require('path'),
   config = require(path.resolve('./config/config')),
   Schema = mongoose.Schema;
+  
+var validateDate = function() {
 
+}
 /*
  * Individual Schema
  */
@@ -117,7 +120,7 @@ var IndividualUserSchema = new Schema({
     }
   }],
   certification: [{
-    name: {
+    certificationName: {
       type: String,
       default: '',
       trim: true
@@ -130,12 +133,14 @@ var IndividualUserSchema = new Schema({
     dateIssued: {
       type: Date,
       default: null,
-      trim: true
+      trim: true,
+      validate: [validateDate, 'Date Isssued is not in the correct form']
     },
     dateExpired: {
       type: Date,
       default: null,
-      trim: true
+      trim: true,
+      validate: [validateDate, 'Date Expired is not in the correct form']
     },
     description: {
       type: String,

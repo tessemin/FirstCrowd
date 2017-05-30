@@ -37,8 +37,8 @@
     }
     
     vm.professions = [
-      "Prince",
-      "Emperor"
+      'Prince',
+      'Emperor'
     ];
   
     // There is nothing interesting past this big honking array of countries.

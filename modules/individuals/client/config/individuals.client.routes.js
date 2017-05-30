@@ -16,8 +16,8 @@
       })
       .state('individuals.profile', {
         url: '/profile',
-        templateUrl: '/modules/individuals/client/views/settings/edit-profile.client.view.html',
-        controller: 'ProfileController',
+        templateUrl: '/modules/users/client/views/settings/edit-profile.client.view.html',
+        controller: 'EditProfileController',
         controllerAs: 'vm',
         data: {
           pageTitle: 'Edit Your Account Details'
