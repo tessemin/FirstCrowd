@@ -29,7 +29,7 @@ var findIndividual = function(req, res){
       superIndividual = individual;
       return individual;
     }
-  }
+  });
 }
 
 /**
