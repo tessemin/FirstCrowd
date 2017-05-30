@@ -11,7 +11,7 @@
   function EnterpriseSupplierController ($scope, $state, $window, Authentication, UsersService) {
     var vm = this;
 
-    vm.supplier = Authentication.user;
+    vm.supplier = Authentication.user.suppliers;
     vm.save = save;
 
     // Save Enterprise

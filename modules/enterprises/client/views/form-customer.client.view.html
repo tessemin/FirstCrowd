@@ -1,8 +1,21 @@
 <section class="row">
-  <div class="col-md-12">
+  <!-- <div class="col-md-12"> -->
     <!-- <div> -->
     <!-- <h1>{{vm.customer._id ? 'Edit Customer' : 'New Customer'}}</h1> -->
     <!-- </div> -->
+  <label class="col-sm-11">Customer Company Names</label>
+  <label class="col-sm-1">Edit</label>
+    <div class="list-group">
+      <div ng-repeat="item in vm.customer">
+      <a href="//{{item.website}}" class="list-group-item col-sm-11" ng-mouseover="hoverEdit = true" ng-mouseleave="hoverEdit = false">
+        <h5 ng-bind="item.companyName">
+          <h5 ng-show="hoverEdit" class="website-prompt">Visit {{item.website}}</h5>
+        </h5>
+      </a>
+      <span class="col-sm-1 glyphicon glyphicon-pencil edit-icon"></span>
+      </div>
+    </div>
+    <div class="col-md-12">
     <form name="vm.customerForm" class="form-horizontal" ng-submit="vm.saveCustomer(vm.customerForm.$valid)" novalidate>
       <fieldset>
         <div class="form-group" show-errors>

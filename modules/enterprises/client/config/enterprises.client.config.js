@@ -34,7 +34,6 @@
     // custom menu items
     //
     menuService.addMenu('enterprise', {
-      // roles: ['enterprise']
       roles: ['*']
     });
 

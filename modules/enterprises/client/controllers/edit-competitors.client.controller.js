@@ -11,7 +11,7 @@
   function EnterpriseCompetitorController ($scope, $state, $window, Authentication, UsersService) {
     var vm = this;
 
-    vm.competitor = Authentication.user;
+    vm.competitor = Authentication.user.competitors;
     vm.saveCompetitor = saveCompetitor;
 
     // UpdateCompetitor Enterprise

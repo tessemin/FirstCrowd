@@ -11,8 +11,22 @@
   function EnterpriseCustomerController ($scope, $state, $window, Authentication, UsersService) {
     var vm = this;
 
-    vm.customer = Authentication.user;
+    // vm.customer = Authentication.user.customers;
     vm.saveCustomer = saveCustomer;
+    vm.hoverEdit = false;
+    vm.hoverIn = hoverIn;
+    vm.hoverOut = hoverOut;
+
+    vm.customer = [
+      {
+        companyName: 'jeff',
+        website: 'www.bawls.com'
+      },
+      {
+        companyName: 'yuki',
+        website: 'www.pawlbs.com'
+      }
+    ];
 
     // Update a user customer
     function saveCustomer(isValid) {
@@ -34,5 +48,13 @@
         Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Edit customer failed!' });
       });
     }
+    function hoverIn() {
+      this.hoverEdit = true;
+    };
+
+    function hoverOut() {
+      this.hoverEdit = false;
+    };
+
   }
 }());
