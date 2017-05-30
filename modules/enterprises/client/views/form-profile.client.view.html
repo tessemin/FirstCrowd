@@ -56,6 +56,7 @@
 
           <div class="form-group" show-errors>
             <label for="phone">Phone</label>
+            <!-- <input type='tel' pattern='[\+]\d{2}[\(]\d{2}[\)]\d{4}[\-]\d{4}' title='Phone Number (Format: +99(99)9999-9999)'> -->
             <input type="tel" id="phone" name="phone" class="form-control" ng-model="vm.enterprise.phone" placeholder="Phone" required>
             <div ng-messages="vm.userForm.phone.$error" role="alert">
               <p class="help-block error-text" ng-message="required">Phone address is required.</p>
@@ -70,7 +71,8 @@
 
           <div class="form-group" show-errors>
             <label for="description">Business Description</label>
-            <input type="text" id="description" name="description" class="form-control" ng-model="vm.enterprise.description" placeholder="Description" required>
+            <textarea id="description" name="description"  placeholder="Description" class="form-control" ng-model="vm.enterprise.description" form="vm.enterpriseForm" required></textarea>
+            <!-- <input type="text" id="description" name="description" class="form-control"  placeholder="Description" required> -->
           </div>
 
 
@@ -90,7 +92,6 @@
               <p class="help-block error-text" ng-message="required">Country Of Business is required.</p>
             </div>
           </div>
-
 
           <div class="form-group" show-errors>
             <label for="year">Year Established</label>

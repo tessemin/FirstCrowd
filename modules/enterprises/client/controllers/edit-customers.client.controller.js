@@ -13,9 +13,6 @@
 
     // vm.customer = Authentication.user.customers;
     vm.saveCustomer = saveCustomer;
-    vm.hoverEdit = false;
-    vm.hoverIn = hoverIn;
-    vm.hoverOut = hoverOut;
 
     vm.customer = [
       {
@@ -48,13 +45,5 @@
         Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Edit customer failed!' });
       });
     }
-    function hoverIn() {
-      this.hoverEdit = true;
-    };
-
-    function hoverOut() {
-      this.hoverEdit = false;
-    };
-
   }
 }());
