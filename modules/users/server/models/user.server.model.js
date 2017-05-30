@@ -67,6 +67,14 @@ var validateUserRoleIsRequired = function() {
  * User Schema
  */
 var UserSchema = new Schema({
+  enterprise: {
+    type: Schema.Types.ObjectId,
+    ref: 'Enterprise'
+  },
+  individual: {
+    type: Schema.Types.ObjectId,
+    ref: 'Individual'
+  },
   userRole: {
     type: {
       worker: {

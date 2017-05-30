@@ -52,4 +52,8 @@ var EnterpriseUserSchema = new Schema({
   }
 });
 
+EnterpriseUserSchema.pre('save', function (next) {
+  next();
+});
+
 mongoose.model('Enterprise', EnterpriseUserSchema);
