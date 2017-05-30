@@ -18,6 +18,8 @@ module.exports = function(app) {
     .delete(individuals.delete);
     
   app.route('/individuals/api/individuals/certifications/').post(individuals.updateCertification);
+  
+  app.route('/individuals/api/individuals/education/').post(individuals.updateEducation);
 
   // Finish by binding the Individual middleware
   app.param('individualId', individuals.individualByID);

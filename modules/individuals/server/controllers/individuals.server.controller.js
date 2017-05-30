@@ -7,26 +7,44 @@ var path = require('path'),
   mongoose = require('mongoose'),
   Individual = mongoose.model('Individual'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
-  _ = require('lodash');
+  _ = require('lodash'),
+  superIndividual = null;
+  
+/**
+ * Find the Individual
+ */
+var findIndividual = function(req, res){
+  var individualID = req.user.individual;
+
+  Individual.findById(individualID, function (err, individual) { 
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else if (!individual) {
+      return res.status(404).send({
+        message: 'No Individual with that identifier has been found'
+      });
+    } else {
+      superIndividual = individual;
+      return individual;
+    }
+  }
+}
 
 /**
- * Create a Individual
+ * Get the Individual
  */
-exports.create = function(req, res) {
-  var individual = new Individual(req.body);
-  individual.user = req.user;
-
-  individual.save(function(err) {
-    if (err) {
-      console.log(err);
-      return;
- //     return res.status(400).send({
-  //      message: errorHandler.getErrorMessage(err)
-   //   });
-    } else {
-      res.jsonp(individual);
-    }
-  });
+var getIndividual = function(req, res, callBack) {
+  if (!superIndividual) {
+    superIndividual = findIndividual(req, res);
+    callBack(superIndividual);
+  } else if (superIndividual.id !== req.user.individual) {
+    superIndividual = findIndividual(req, res);
+    callBack(superIndividual);
+  } else {
+    callBack(superIndividual);
+  }
 };
 
 /**
@@ -122,30 +140,38 @@ exports.individualByID = function(req, res, next, id) {
 /**
  * Individual certification update
  */
-
 exports.updateCertification = function(req, res) {
-  
-  var body = req.body,
-    individualID = req.user.individual;
-  console.log(body);
-    
-  Individual.findById(individualID, function (err, individual) { 
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
+  getIndividual(req, res, function(individual){
+    individual.certification = req.body;
+    if (!individual.save()) {
+      res.status(400).send({
+      message: 'Individual is invalid'
       });
     }
-    else if (!individual) {
-      return res.status(404).send({
-        message: 'No Individual with that identifier has been found'
-      });
-    } else {
-      individual.certification.name = req.body.certificationName;
-      individual.certification.institution = req.body.institutionName;
-      individual.certification.dateIssued = req.body.date;
-      individual.certification.dateExpired = null;
-      individual.certification.description = req.body.summary;
-      res.jsonp(individuals);
-    }
+    individual.save();
+    res.jsonp(individual);
   });
 };
+
+/**
+ * Individual Education update
+ */
+exports.updateEducation = function(req, res) {
+  getIndividual(req, res, function(individual){
+    individual.certification = req.body;
+    if (!individual.save()) {
+      res.status(400).send({
+      message: 'Individual is invalid'
+      });
+    }
+    individual.save();
+    res.jsonp(individual);
+  });
+}
+
+/**
+ * create and individual
+ */
+exports.create = function(req, res) {
+  
+}
