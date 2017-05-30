@@ -20,17 +20,18 @@
         
         <div class="form-group" show-errors>
           <label for="dateIssued{{$index}}">Date Issued:</label>
-          <input type="text" id="dateIssued{{$index}}" name="dateIssued{{$index}}" class="form-control" ng-model="vm.certifications[$index].dateIssued" placeholder="Date Issued" required>
+          <input type="date" id="dateIssued{{$index}}" name="dateIssued{{$index}}" class="form-control" ng-model="vm.certifications[$index].dateIssued" placeholder="yyyy-MM-dd" required>
           <div ng-messages="vm.certificationsForm['dateIssued'+$index].$error" role="alert">
             <p class="help-block error-text" ng-message="required">Date Issued is required.</p>
+            <p class="help-block error-text" ng-message="date">Dates must be in yyyy-MM-dd format.</p>
           </div>
         </div>
         
         <div class="form-group" show-errors>
-          <label for="dateExpired{{$index}}">Date Expiried:</label>
-          <input type="text" id="dateExpired{{$index}}" name="dateExpired{{$index}}" class="form-control" ng-model="vm.certifications[$index].dateExpired" placeholder="dateExpired">
+          <label for="dateExpired{{$index}}">Date Expired:</label>
+          <input type="date" id="dateExpired{{$index}}" name="dateExpired{{$index}}" class="form-control" ng-model="vm.certifications[$index].dateExpired" placeholder="yyyy-MM-dd">
           <div ng-messages="vm.certificationsForm['dateExpired'+$index].$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Date is required.</p>
+            <p class="help-block error-text" ng-message="date">Dates must be in yyyy-MM-dd format.</p>
           </div>
         </div>
 
