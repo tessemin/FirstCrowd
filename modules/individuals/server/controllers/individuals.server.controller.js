@@ -118,3 +118,34 @@ exports.individualByID = function(req, res, next, id) {
     next();
   });
 };
+
+/**
+ * Individual certification update
+ */
+
+exports.updateCertification = function(req, res) {
+  
+  var body = req.body,
+    individualID = req.user.individual;
+  console.log(body);
+    
+  Individual.findById(individualID, function (err, individual) { 
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    }
+    else if (!individual) {
+      return res.status(404).send({
+        message: 'No Individual with that identifier has been found'
+      });
+    } else {
+      individual.certification.name = req.body.certificationName;
+      individual.certification.institution = req.body.institutionName;
+      individual.certification.dateIssued = req.body.date;
+      individual.certification.dateExpired = null;
+      individual.certification.description = req.body.summary;
+      res.jsonp(individuals);
+    }
+  });
+};

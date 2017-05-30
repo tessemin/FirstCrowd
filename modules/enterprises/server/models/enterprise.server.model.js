@@ -4,6 +4,8 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
+  path = require('path'),
+  config = require(path.resolve('./config/config')),
   Schema = mongoose.Schema;
 
 /*
@@ -16,7 +18,7 @@ var EnterpriseUserSchema = new Schema({
   },
   companyName: {
     type: String,
-    required: 'Please provide a Company Name'
+    default: ''
   },
   companyAddress: {
     type: String,
@@ -49,6 +51,38 @@ var EnterpriseUserSchema = new Schema({
   employeeCount: {
     type: Number,
     default: null
+  },
+  partners: {
+    supplier: [{
+      companyName: {
+        type: String,
+        default: ''
+      },
+      URL: {
+        type: String,
+        default: ''
+      }
+    }],
+    customer: [{
+      companyName: {
+        type: String,
+        default: ''
+      },
+      URL: {
+        type: String,
+        default: ''
+      }
+    }],
+    competitor: [{
+      companyName: {
+        type: String,
+        default: ''
+      },
+      URL: {
+        type: String,
+        default: ''
+      }
+    }]
   }
 });
 

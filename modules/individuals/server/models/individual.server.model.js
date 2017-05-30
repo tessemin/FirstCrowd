@@ -4,6 +4,8 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
+  path = require('path'),
+  config = require(path.resolve('./config/config')),
   Schema = mongoose.Schema;
 
 /*
@@ -120,7 +122,7 @@ var IndividualUserSchema = new Schema({
       default: '',
       trim: true
     },
-    organization: {
+    institution: {
       type: String,
       default: '',
       trim: true
