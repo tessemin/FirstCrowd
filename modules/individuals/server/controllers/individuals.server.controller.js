@@ -332,8 +332,8 @@ exports.getIndividual = function(req, res) {
         if (individual.degrees[degree]) {
           safeIndividualObject.degrees[degree].schoolName = validator.escape(individual.degrees[degree].schoolName);
           safeIndividualObject.degrees[degree].degreeLevel = validator.escape(individual.degrees[degree].degreeLevel);
-          safeIndividualObject.degrees[degree].startDate = validator.escape(individual.degrees[degree].startDate);
-          safeIndividualObject.degrees[degree].endDate = validator.escape(individual.degrees[degree].endDate);
+          safeIndividualObject.degrees[degree].startDate = individual.degrees[degree].startDate.toString();
+          safeIndividualObject.degrees[degree].endDate = individual.degrees[degree].endDate.toString();
           safeIndividualObject.degrees[degree].concentration = validator.escape(individual.degrees[degree].concentration);
           safeIndividualObject.degrees[degree].address.schoolCountry = validator.escape(individual.degrees[degree].address.schoolCountry);
           safeIndividualObject.degrees[degree].address.schoolCountryCode = validator.escape(individual.degrees[degree].address.schoolCountryCode);
@@ -348,8 +348,8 @@ exports.getIndividual = function(req, res) {
           safeIndividualObject.jobExperience[exp].employer = validator.escape(individual.jobExperience[exp].employer);
           safeIndividualObject.jobExperience[exp].description = validator.escape(individual.jobExperience[exp].description);
           safeIndividualObject.jobExperience[exp].jobTitle = validator.escape(individual.jobExperience[exp].jobTitle);
-          safeIndividualObject.jobExperience[exp].startDate = validator.escape(individual.jobExperience[exp].startDate);
-          safeIndividualObject.jobExperience[exp].endDate = validator.escape(individual.jobExperience[exp].endDate);
+          safeIndividualObject.jobExperience[exp].startDate = individual.jobExperience[exp].startDate.toString();
+          safeIndividualObject.jobExperience[exp].endDate = individual.jobExperience[exp].endDate.toString();
           for (var skil in individual.jobExperience[exp].skills) {
             if (individual.jobExperience[exp].skills[skil]) {
               safeIndividualObject.jobExperience[exp].skills[skil] = validator.escape(individual.jobExperience[exp].skills[skil]);
@@ -361,16 +361,16 @@ exports.getIndividual = function(req, res) {
         if (individual.certification[cert]) {
           safeIndividualObject.certification[cert].certificationName = validator.escape(individual.certification[cert].certificationName);
           safeIndividualObject.certification[cert].institution = validator.escape(individual.certification[cert].institution);
-          safeIndividualObject.certification[cert].dateIssued = validator.escape(individual.certification[cert].dateIssued);
-          safeIndividualObject.certification[cert].dateExpired = validator.escape(individual.certification[cert].dateExpired);
+          safeIndividualObject.certification[cert].dateIssued = individual.certification[cert].dateIssued.toString();
+          safeIndividualObject.certification[cert].dateExpired = individual.certification[cert].dateExpired.toString();
           safeIndividualObject.certification[cert].description = validator.escape(individual.certification[cert].description);
         }
       }
       for (var skill in individual.skills) {
         if (individual.skills[skill]) {
           safeIndividualObject.skills[skill].skill = validator.escape(individual.skills[skill].skill);
-          safeIndividualObject.skills[skill].firstUsed = validator.escape(individual.skills[skill].firstUsed);
-          safeIndividualObject.skills[skill].lastUsed = validator.escape(individual.skills[skill].lastUsed);
+          safeIndividualObject.skills[skill].firstUsed = individual.skills[skill].firstUsed.toString();
+          safeIndividualObject.skills[skill].lastUsed = individual.skills[skill].lastUsed.toString();
           for (var loc in individual.skills[skill].locationLearned) {
             if (individual.skills[skill].locationLearned[loc]) {
               safeIndividualObject.skills[skill].locationLearned[loc] = validator.escape(individual.skills[skill].locationLearned[loc]);
