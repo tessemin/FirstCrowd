@@ -158,125 +158,155 @@ exports.individualByID = function(req, res, next, id) {
  * Individual certification update
  */
 exports.updateCertification = function(req, res) {
-  getIndividual(req, res, function(individual) {
-    individual.certification = req.body;
-    
-    individual.save(function (err) {
-      if (err) {
-        return res.status(422).send({
-          message: errorHandler.getErrorMessage(err)
-        });
-      } else {
-        res.jsonp(individual);
-      }
+  if (req.body) {
+    getIndividual(req, res, function(individual) {
+      individual.certification = req.body;
+      
+      individual.save(function (err) {
+        if (err) {
+          return res.status(422).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        } else {
+          res.jsonp(individual);
+        }
+      });
     });
-  });
+  } else {
+    return res.status(422).send({
+            message: errorHandler.getErrorMessage('Nothing to Update')
+    });
+  }
 };
 
 /**
  * Individual Education update
  */
 exports.updateEducation = function(req, res) {
-  getIndividual(req, res, function(individual) {
-    for (var i in req.body) {
-      if (req.body[i]) {
-        req.body[i].address.schoolCountryCode = req.body[i].address.schoolCountry.code;
-        req.body[i].address.schoolCountry = req.body[i].address.schoolCountry.name;
+  if (req.body) {
+    getIndividual(req, res, function(individual) {
+      for (var i in req.body) {
+        if (req.body[i]) {
+          req.body[i].address.schoolCountryCode = req.body[i].address.schoolCountry.code;
+          req.body[i].address.schoolCountry = req.body[i].address.schoolCountry.name;
+        }
       }
-    }
-    individual.degrees = req.body;
-    
-    individual.save(function (err) {
-      if (err) {
-        return res.status(422).send({
-          message: errorHandler.getErrorMessage(err)
-        });
-      } else {
-        res.jsonp(individual);
-      }
+      individual.degrees = req.body;
+      
+      individual.save(function (err) {
+        if (err) {
+          return res.status(422).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        } else {
+          res.jsonp(individual);
+        }
+      });
     });
-  });
+  } else {
+    return res.status(422).send({
+            message: errorHandler.getErrorMessage('Nothing to Update')
+    });
+  }
 };
 
 /**
  * Individual Skills update
  */
 exports.updateSkill = function(req, res) {
-  getIndividual(req, res, function(individual) {
-    for (var i in req.body) {
-      if (req.body[i].locationLearned) {
-        req.body[i].locationLearned = req.body[i].locationLearned.split(',');
+  if (req.body) {
+    getIndividual(req, res, function(individual) {
+      for (var i in req.body) {
+        if (req.body[i].locationLearned) {
+          req.body[i].locationLearned = req.body[i].locationLearned.split(',');
+        }
       }
-    }
-    individual.skills = req.body;
-    
-    individual.save(function (err) {
-      if (err) {
-        return res.status(422).send({
-          message: errorHandler.getErrorMessage(err)
-        });
-      } else {
-        res.jsonp(individual);
-      }
+      individual.skills = req.body;
+      
+      individual.save(function (err) {
+        if (err) {
+          return res.status(422).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        } else {
+          res.jsonp(individual);
+        }
+      });
     });
-  });
+  } else {
+    return res.status(422).send({
+            message: errorHandler.getErrorMessage('Nothing to Update')
+    });
+  }
 };
 
 /**
  * Individual Experience update
  */
 exports.updateExperience = function(req, res) {
-  getIndividual(req, res, function(individual) {
-    for (var i in req.body) {
-      if (req.body[i].skills) {
-        req.body[i].skills = req.body[i].skills.split(',');
+  if (req.body) {
+    getIndividual(req, res, function(individual) {
+      for (var i in req.body) {
+        if (req.body[i].skills) {
+          req.body[i].skills = req.body[i].skills.split(',');
+        }
       }
-    }
-    individual.jobExperience = req.body;
-    
-    individual.save(function (err) {
-      if (err) {
-        return res.status(422).send({
-          message: errorHandler.getErrorMessage(err)
-        });
-      } else {
-        res.jsonp(individual);
-      }
+      individual.jobExperience = req.body;
+      
+      individual.save(function (err) {
+        if (err) {
+          return res.status(422).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        } else {
+          res.jsonp(individual);
+        }
+      });
     });
-  });
+  } else {
+    return res.status(422).send({
+      message: errorHandler.getErrorMessage('Nothing to Update')
+    });
+  }
 };
 
 /**
  * Individual Bio update
  */
 exports.updateBio = function(req, res) {
-  getIndividual(req, res, function(individual) {
-    req.body.address.countryCode = req.body.address.country.code;
-    req.body.address.country = req.body.address.country.name;
-    individual.bio = req.body;
-    req.user.firstName = req.body.firstName;
-    req.user.middleName = req.body.middleName;
-    req.user.lastName = req.body.lastName;
-    req.user.displayName = req.body.firstName + ' ' + req.body.lastName;
-    
-    user.save(function (err) {
-      if (err) {
-        return res.status(422).send({
-          message: errorHandler.getErrorMessage(err)
-        });
-      }
+  if (req.body) {
+    getIndividual(req, res, function(individual) {
+      req.body.address.countryCode = req.body.address.country.code;
+      req.body.address.country = req.body.address.country.name;
+      individual.bio = req.body;
+      req.user.firstName = req.body.firstName;
+      req.user.middleName = req.body.middleName;
+      req.user.lastName = req.body.lastName;
+      req.user.displayName = req.body.firstName + ' ' + req.body.lastName;
+      
+      user.save(function (err) {
+        if (err) {
+          return res.status(422).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        }
+      });
+      
+      individual.save(function (err) {
+        if (err) {
+          return res.status(422).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        } else {
+          res.jsonp(individual);
+        }
+      });
     });
-    
-    individual.save(function (err) {
-      if (err) {
-        return res.status(422).send({
-          message: errorHandler.getErrorMessage(err)
-        });
-      } else {
-        res.jsonp(individual);
-      }
+  } else {
+    return res.status(422).send({
+            message: errorHandler.getErrorMessage('Nothing to Update')
     });
-  });
+  }
 };
 
 exports.getIndividual = function(req, res) {
