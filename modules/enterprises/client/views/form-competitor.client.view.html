@@ -17,14 +17,14 @@
       <fieldset>
         <div class="form-group" show-errors>
           <label for="companyName">Company Name</label>
-          <input type="text" id="companyName" name="companyName" class="form-control" ng-model="vm.selected.companyName" placeholder="Company Name" required autofocus>
+          <input type="text" id="companyName" name="companyName" class="form-control" ng-model="vm.selectedCompany" placeholder="Company Name" required autofocus>
           <div ng-messages="vm.competitorForm.companyName.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Company name is required.</p>
           </div>
         </div>
         <div class="form-group" show-errors>
           <label for="URL">Website</label>
-          <input type="url" id="URL" name="URL" class="form-control" ng-model="vm.selected.URL" placeholder="URL" required>
+          <input type="url" id="URL" name="URL" class="form-control" ng-model="vm.selectedURL" placeholder="URL" required>
           <div ng-messages="vm.competitorForm.URL.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Webiste is required.</p>
           </div>

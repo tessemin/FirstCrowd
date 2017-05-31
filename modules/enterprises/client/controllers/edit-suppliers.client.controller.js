@@ -6,14 +6,17 @@
     .module('enterprises')
     .controller('EnterpriseSupplierController', EnterpriseSupplierController);
 
-  EnterpriseSupplierController.$inject = ['$scope', '$state', '$window', 'Authentication', 'EnterprisesService'];
+  EnterpriseSupplierController.$inject = ['$scope', '$state', '$window', 'Authentication', 'EnterprisesService', 'Notification'];
 
-  function EnterpriseSupplierController ($scope, $state, $window, Authentication, EnterprisesService) {
+  function EnterpriseSupplierController ($scope, $state, $window, Authentication, EnterprisesService, Notification) {
     var vm = this;
 
-    vm.supplier = Authentication.user.suppliers;
+    vm.selected = {};
+    vm.selectedURL = null;
+    vm.selectedCompany = null;
     vm.saveSuppliers = saveSuppliers;
     vm.edit = edit;
+    vm.cancel = cancel;
 
     vm.supplier = [
       {
@@ -26,16 +29,23 @@
       }
     ];
 
-
-    vm.selected=null;
-
-
     function edit(item){
-      vm.selected=item;
+      vm.selectedURL = item.URL;
+      vm.selectedCompany = item.companyName;
+    }
+
+    function cancel(){
+      vm.selectedURL = null;
+      vm.selectedCompany = null;
     }
 
     // UpdateSuppliers Enterprise
     function saveSuppliers(isValid) {
+
+      vm.selected.URL = vm.selectedURL;
+      vm.selected.companyName = vm.selectedCompany;
+
+
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'vm.suppliersForm');
         return false;

@@ -6,12 +6,14 @@
     .module('enterprises')
     .controller('EnterpriseCustomerController', EnterpriseCustomerController);
 
-  EnterpriseCustomerController.$inject = ['$scope', '$state', '$window', 'Authentication', 'EnterprisesService'];
+  EnterpriseCustomerController.$inject = ['$scope', '$state', '$window', 'Authentication', 'EnterprisesService', 'Notification'];
 
-  function EnterpriseCustomerController ($scope, $state, $window, Authentication, EnterprisesService) {
+  function EnterpriseCustomerController ($scope, $state, $window, Authentication, EnterprisesService, Notification) {
     var vm = this;
 
-    // vm.customer = Authentication.user.customers;
+    vm.selected = {};
+    vm.selectedURL = null;
+    vm.selectedCompany = null;
     vm.saveCustomer = saveCustomer;
     vm.edit = edit;
     vm.cancel = cancel;
@@ -29,14 +31,12 @@
 
 
 
-    function edit(index, item){
-      vm.selectedIndex = index;
+    function edit(item){
       vm.selectedURL = item.URL;
       vm.selectedCompany = item.companyName;
     }
 
     function cancel(){
-      vm.selectedIndex = null;
       vm.selectedURL = null;
       vm.selectedCompany = null;
     }
@@ -44,13 +44,8 @@
     // UpdateCustomers Enterprise
     function saveCustomer(isValid) {
 
-      if(vm.selectedIndex !== null){
-        // vm.customer[vm.selectedIndex]
-        console.log(vm.selectedURL + ' ' + vm.selectedCompany);
-      }
-
-
-
+      vm.selected.URL = vm.selectedURL;
+      vm.selected.companyName = vm.selectedCompany;
 
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'vm.customersForm');
@@ -65,6 +60,7 @@
 
     function onUpdateCustomersSuccess(response) {
       Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Customers updated!' });
+
     }
 
     function onUpdateCustomersError(response) {

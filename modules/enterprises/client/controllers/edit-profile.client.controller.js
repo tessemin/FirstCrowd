@@ -6,10 +6,11 @@
     .module('enterprises')
     .controller('EnterpriseProfileController', EnterpriseProfileController);
 
-  EnterpriseProfileController.$inject = ['$scope', '$state', '$window', 'Authentication', 'EnterprisesService'];
+  EnterpriseProfileController.$inject = ['$scope', '$state', '$window', 'Authentication', 'EnterprisesService', 'Notification'];
 
-  function EnterpriseProfileController ($scope, $state, $window, Authentication, EnterprisesService) {
+  function EnterpriseProfileController ($scope, $state, $window, Authentication, EnterprisesService, Notification) {
     var vm = this;
+    vm.saveProfile = saveProfile;
 
     vm.countries = [
       { name: 'Afghanistan', code: 'AF' },
@@ -265,8 +266,6 @@
       'chief executive officer'
     ];
 
-    vm.enterprise = Authentication.user;
-    vm.saveProfile = saveProfile;
 
     // UpdateProfile Enterprise
     function saveProfile(isValid) {
