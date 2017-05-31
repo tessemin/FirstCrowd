@@ -11,12 +11,21 @@
   function CertificationsController ($scope, $state, IndividualsService, Authentication, Notification) {
     var vm = this;
     
+    // Pull your existing certifications from the server and populate them
+    vm.certifications = [];
     IndividualsService.getIndividual().$promise
       .then(function(data) {
-        console.log(data);
+        let certs = data.certification;
+        for(let i = 0; i < data.certification.length; ++i) {
+          vm.certifications.push({});
+          vm.certifications[i].certificationName = certs[i].certificationName;
+          vm.certifications[i].institution = certs[i].institution;
+          vm.certifications[i].dateIssued = new Date(certs[i].dateIssued);
+          vm.certifications[i].dateExpired = new Date(certs[i].dateIssued);
+          vm.certifications[i].description = certs[i].description;
+        }
       });
     
-    vm.certifications = [];
     vm.addCertification = addCertification;
     vm.removeCertification = removeCertification;
     
