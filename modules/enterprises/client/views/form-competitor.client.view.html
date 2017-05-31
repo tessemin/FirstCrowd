@@ -3,31 +3,28 @@
   <label class="col-sm-2">Edit / Delete</label>
     <div class="list-group">
       <div ng-repeat="item in vm.competitor">
-      <a href="//{{item.website}}" class="list-group-item col-sm-10" ng-mouseover="hoverEdit = true" ng-mouseleave="hoverEdit = false">
+      <a href="//{{item.URL}}" class="list-group-item col-sm-10" ng-mouseover="hoverEdit = true" ng-mouseleave="hoverEdit = false">
         <h5 ng-bind="item.companyName">
-          <h5 ng-show="hoverEdit" class="website-prompt">Visit {{item.website}}</h5>
+          <h5 ng-show="hoverEdit" class="website-prompt">Visit {{item.URL}}</h5>
         </h5>
       </a>
-      <span class="col-sm-2 glyphicon glyphicon-pencil edit-icon"></span>
+      <span ng-click="vm.edit(item)" class="col-sm-2 glyphicon glyphicon-pencil edit-icon"></span>
       </div>
     </div>
   <div class="col-md-12">
-    <!-- <div> -->
-    <!-- <h1>{{vm.competitor._id ? 'Edit Competitor' : 'New Competitor'}}</h1> -->
-    <!-- </div> -->
     <form name="vm.competitorForm" class="form-horizontal" ng-submit="vm.saveCompetitor(vm.competitorForm.$valid)" novalidate>
       <fieldset>
         <div class="form-group" show-errors>
           <label for="companyName">Company Name</label>
-          <input type="text" id="companyName" name="companyName" class="form-control" ng-model="vm.competitor.companyName" placeholder="Company Name" required autofocus>
+          <input type="text" id="companyName" name="companyName" class="form-control" ng-model="vm.selected.companyName" placeholder="Company Name" required autofocus>
           <div ng-messages="vm.competitorForm.companyName.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Company name is required.</p>
           </div>
         </div>
         <div class="form-group" show-errors>
-          <label for="website">Website</label>
-          <input type="url" id="URL" name="URL" class="form-control" ng-model="vm.competitor.URL" placeholder="Website" required>
-          <div ng-messages="vm.competitorForm.website.$error" role="alert">
+          <label for="URL">Website</label>
+          <input type="url" id="URL" name="URL" class="form-control" ng-model="vm.selected.URL" placeholder="URL" required>
+          <div ng-messages="vm.competitorForm.URL.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Webiste is required.</p>
           </div>
         </div>

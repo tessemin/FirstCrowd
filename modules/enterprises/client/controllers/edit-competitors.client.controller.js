@@ -11,8 +11,30 @@
   function EnterpriseCompetitorController ($scope, $state, $window, Authentication, UsersService) {
     var vm = this;
 
-    vm.competitor = Authentication.user.competitors;
+    // vm.competitor = Authentication.user.competitors;
     vm.saveCompetitor = saveCompetitor;
+    vm.edit = edit;
+
+
+    vm.competitor = [
+      {
+        companyName: 'jeff',
+        URL: 'www.bawls.com'
+      },
+      {
+        companyName: 'yuki',
+        URL: 'www.pawlbs.com'
+      }
+    ];
+
+
+    vm.selected=null;
+
+
+    function edit(item){
+      vm.selected=item;
+    }
+
 
     // UpdateCompetitor Enterprise
     function saveCompetitor(isValid) {
