@@ -22,8 +22,10 @@
           addDegree();
           vm.degrees[i].degreeLevel = degrees[i].degreeLevel;
           vm.degrees[i].schoolName = degrees[i].schoolName;
-          vm.degrees[i].startDate = new Date(degrees[i].startDate);
-          vm.degrees[i].endDate = new Date(degrees[i].endDate);
+          let date = new Date(work.startDate);
+          vm.experiences.startDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+          date = new Date(work.endDate);
+          vm.experiences.endDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
           vm.degrees[i].concentration = degrees[i].concentration;
           vm.degrees[i].address = degrees[i].address;
         }

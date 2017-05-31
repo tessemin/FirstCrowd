@@ -22,7 +22,7 @@
           vm.experiences[i].employer = work[i].employer;
           vm.experiences[i].jobTitle = work[i].jobTitle;
           vm.experiences[i].description = work[i].description;
-          vm.experiences[i].skills = work[i].skills
+          vm.experiences[i].skills = work[i].skills;
           let date = new Date(work.startDate);
           vm.experiences.startDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
           date = new Date(work.endDate);
