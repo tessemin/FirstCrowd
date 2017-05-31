@@ -141,7 +141,7 @@ exports.list = function(req, res) {
  */
 exports.enterpriseByID = function(req, res, next, id) {
 
-  Enterprise.findById(id).populate('user', 'displayName').exec(function (err, enterprise) {
+  /* Enterprise.findById(id).populate('user', 'displayName').exec(function (err, enterprise) {
     if (err) {
       return next(err);
     } else if (!enterprise) {
@@ -151,7 +151,7 @@ exports.enterpriseByID = function(req, res, next, id) {
     }
     req.enterprise = enterprise;
     next();
-  });
+  }); */
 };
 
 /**
