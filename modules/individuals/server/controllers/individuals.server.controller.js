@@ -328,7 +328,8 @@ exports.getIndividual = function(req, res) {
           }
         }
       };
-      for (var degree in individual.degrees) {
+      safeIndividualObject.degrees = [];
+      for (var degree = 0; degree < individual.degrees.length; degree++) {
         if (individual.degrees[degree]) {
           safeIndividualObject.degrees[degree].schoolName = validator.escape(individual.degrees[degree].schoolName);
           safeIndividualObject.degrees[degree].degreeLevel = validator.escape(individual.degrees[degree].degreeLevel);
@@ -343,7 +344,8 @@ exports.getIndividual = function(req, res) {
           safeIndividualObject.degrees[degree].address.schoolZipCode = individual.degrees[degree].address.schoolZipCode;
         }
       }
-      for (var exp in individual.jobExperience) {
+      safeIndividualObject.jobExperience = [];
+      for (var exp = 0; exp < individual.jobExperience.length; exp++) {
         if (individual.jobExperience[exp]) {
           safeIndividualObject.jobExperience[exp].employer = validator.escape(individual.jobExperience[exp].employer);
           safeIndividualObject.jobExperience[exp].description = validator.escape(individual.jobExperience[exp].description);
@@ -357,7 +359,8 @@ exports.getIndividual = function(req, res) {
           }
         }
       }
-      for (var cert in individual.certification) {
+      safeIndividualObject.certification = [];
+      for (var cert = 0; cert < individual.certification.length; cert++) {
         if (individual.certification[cert]) {
           safeIndividualObject.certification[cert].certificationName = validator.escape(individual.certification[cert].certificationName);
           safeIndividualObject.certification[cert].institution = validator.escape(individual.certification[cert].institution);
@@ -366,7 +369,8 @@ exports.getIndividual = function(req, res) {
           safeIndividualObject.certification[cert].description = validator.escape(individual.certification[cert].description);
         }
       }
-      for (var skill in individual.skills) {
+      safeIndividualObject.skills = [];
+      for (var skill = 0; skill < individual.skills.length; skill++) {
         if (individual.skills[skill]) {
           safeIndividualObject.skills[skill].skill = validator.escape(individual.skills[skill].skill);
           safeIndividualObject.skills[skill].firstUsed = individual.skills[skill].firstUsed;
