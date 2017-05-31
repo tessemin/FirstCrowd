@@ -34,6 +34,10 @@
       updateBio: {
         method: 'POST',
         url: 'api/individuals/bio'
+      },
+      getIndividual: {
+        method: 'GET',
+        url: 'api/individuals/getIndividual'
       }
     });
     
