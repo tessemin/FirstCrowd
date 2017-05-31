@@ -14,7 +14,7 @@
     vm.selected = {};
     vm.selectedURL = null;
     vm.selectedCompany = null;
-    vm.saveSuppliers = saveSuppliers;
+    vm.saveSupplier = saveSupplier;
     vm.edit = edit;
     vm.cancel = cancel;
 
@@ -40,11 +40,12 @@
     }
 
     // UpdateSuppliers Enterprise
-    function saveSuppliers(isValid) {
+    function saveSupplier(isValid) {
 
       vm.selected.URL = vm.selectedURL;
       vm.selected.companyName = vm.selectedCompany;
 
+      console.log(vm.selected);
 
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'vm.suppliersForm');
