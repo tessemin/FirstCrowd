@@ -2,13 +2,14 @@
   <h4 class="col-sm-10"><label>Competitor Company Names</label></h4>
   <label class="col-sm-2">Edit / Delete</label>
     <div class="list-group">
-      <div ng-repeat="item in vm.competitor">
+      <div ng-repeat="item in vm.competitor track by $index">
+        {{console.log($index);}}
       <a href="//{{item.URL}}" class="list-group-item col-sm-10" ng-mouseover="hoverEdit = true" ng-mouseleave="hoverEdit = false">
         <h5 ng-bind="item.companyName">
           <h5 ng-show="hoverEdit" class="website-prompt">Visit {{item.URL}}</h5>
         </h5>
       </a>
-      <span ng-click="vm.edit(item)" class="col-sm-2 glyphicon glyphicon-pencil edit-icon"></span>
+      <span ng-click="vm.edit(item)" class="col-sm-1 glyphicon glyphicon-pencil edit-icon"></span>
       </div>
     </div>
   <div class="col-md-12">
@@ -28,8 +29,9 @@
             <p class="help-block error-text" ng-message="required">Webiste is required.</p>
           </div>
         </div>
-        <div class="text-center form-group">
+        <div class="text-center">
           <button type="submit" class="btn btn-success">Save</button>
+          <button ng-click="vm.cancel" class="btn btn-default">Cancel</button>
         </div>
       </fieldset>
     </form>

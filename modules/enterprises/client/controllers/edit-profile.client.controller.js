@@ -275,7 +275,7 @@
         return false;
       }
 
-      EnterprisesService.updateProfileFromForm(vm.selected)
+      EnterprisesService.updateProfileFromForm(vm.enterprise)
         .then(onUpdateProfileSuccess)
         .catch(onUpdateProfileError);
 

@@ -14,28 +14,44 @@
     // vm.customer = Authentication.user.customers;
     vm.saveCustomer = saveCustomer;
     vm.edit = edit;
+    vm.cancel = cancel;
 
     vm.customer = [
       {
-        companyName: 'jeff',
-        URL: 'www.bawls.com'
+        companyName: 'FACEBOOK',
+        URL: 'www.facebook.com'
       },
       {
-        companyName: 'yuki',
-        URL: 'www.pawlbs.com'
+        companyName: 'GOOGLE',
+        URL: 'www.google.com'
       }
     ];
 
 
-    vm.selected=null;
 
+    function edit(index, item){
+      vm.selectedIndex = index;
+      vm.selectedURL = item.URL;
+      vm.selectedCompany = item.companyName;
+    }
 
-    function edit(item){
-      vm.selected=item;
+    function cancel(){
+      vm.selectedIndex = null;
+      vm.selectedURL = null;
+      vm.selectedCompany = null;
     }
 
     // UpdateCustomers Enterprise
     function saveCustomer(isValid) {
+
+      if(vm.selectedIndex !== null){
+        // vm.customer[vm.selectedIndex]
+        console.log(vm.selectedURL + ' ' + vm.selectedCompany);
+      }
+
+
+
+
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'vm.customersForm');
         return false;

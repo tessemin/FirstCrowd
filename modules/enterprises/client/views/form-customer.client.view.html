@@ -8,7 +8,7 @@
           <h5 ng-show="hoverEdit" class="website-prompt">Visit {{item.URL}}</h5>
         </h5>
       </a>
-      <span ng-click="vm.edit(item)"class="col-sm-2 glyphicon glyphicon-pencil edit-icon"></span>
+      <span ng-click="vm.edit($index, item)"class="col-sm-2 glyphicon glyphicon-pencil edit-icon"></span>
       </div>
     </div>
     <div class="col-md-12">
@@ -16,22 +16,24 @@
       <fieldset>
         <div class="form-group" show-errors>
           <label for="companyName">Company Name</label>
-          <input type="text" id="companyName" name="companyName" class="form-control" ng-model="vm.selected.companyName" placeholder="Company Name" required autofocus>
+          <input type="text" id="companyName" name="companyName" class="form-control" ng-model="vm.selectedCompany" placeholder="Company Name" required autofocus>
           <div ng-messages="vm.customerForm.companyName.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Company name is required.</p>
           </div>
         </div>
         <div class="form-group" show-errors>
           <label for="URL">Website</label>
-          <input type="url" id="URL" name="URL" class="form-control" ng-model="vm.selected.URL" placeholder="URL" required>
+          <input type="text" id="URL" name="URL" class="form-control" ng-model="vm.selectedURL" placeholder="URL" required>
           <div ng-messages="vm.customerForm.URL.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Website is required.</p>
           </div>
         </div>
-        <div class="text-center form-group">
+        <div class="text-center">
           <button type="submit" class="btn btn-success">Save</button>
+          <button ng-click="vm.cancel()" class="btn btn-default">Cancel</button>
         </div>
       </fieldset>
     </form>
+
   </div>
 </section>
