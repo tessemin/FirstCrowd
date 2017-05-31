@@ -1,6 +1,6 @@
 <div ng-controller="EducationController">
   <section class="row">
-    <div class="col-xs-offset-1 col-xs-10 col-md-offset-4 col-md-4">
+    <div class="col-xs-offset-1 col-xs-10 col-md-offset-3 col-md-6">
       <form name="vm.educationForm" ng-submit="vm.updateEducation(vm.educationForm.$valid)" novalidate autocomplete="off">
         <div ng-repeat="degree in vm.degrees as results track by $index">
           <fieldset>
@@ -94,8 +94,11 @@
           </fieldset>
         </div> <!-- end ng-repeat -->
           <div class="text-center form-group">
-            <button type="submit" class="btn btn-primary">Save Education</button>
+            <div ng-if="results.length === 0">
+              You have no education.
+            </div>
             <button type="button" class="btn" ng-click="vm.addDegree()">Add a Degree</button>
+            <button type="submit" class="btn btn-primary">Save Education</button>
           </div>
       </form>
     </div>
