@@ -171,23 +171,15 @@ exports.updateProfile = function(req, res) {
       req.body.profile.countryOfBusiness = req.body.profile.countryOfBusiness.name;
       req.body.profile.companyAddress.countryCode = req.body.profile.companyAddress.country.code.toString();
       req.body.profile.companyAddress.country = req.body.profile.companyAddress.country.name.toString();
-      
-      console.log(req.body);
-      
-      console.log(enterprise);
-      
+
       req.user.email = req.body.email;
       req.user.phone = req.body.phone;
       
       delete req.body.email;
       delete req.body.phone;
-      
-      console.log(req.body);
-      
+
       enterprise.profile = req.body.profile;
       
-      console.log(enterprise);
-
       req.user.save(function (err) {
         if (err) {
           return res.status(422).send({
