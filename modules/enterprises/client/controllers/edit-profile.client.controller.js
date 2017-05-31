@@ -12,6 +12,23 @@
     var vm = this;
     vm.saveProfile = saveProfile;
 
+    // Populate data
+    EnterprisesService.getEnterprise().$promise
+      .then(function(data) {
+        console.log('hi ' + data);
+        // let enterprises = data.enterprises;
+        // vm.enterprise.companyName = enterprises.companyName;
+        // vm.enterprise.companyAddress = enterprises.companyAddress;
+        // vm.enterprise.state = enterprises.phone;
+      });
+
+    let user = Authentication.user;
+    // vm.enterprise.firstName = user.firstName;
+    // vm.enterprise.middleName = user.middleName;
+    // vm.enterprise.lastName = user.lastName;
+    // vm.enterprise.email = enterprises.email;
+    // vm.enterprise.phone = enterprises.phone;
+
     vm.countries = [
       { name: 'Afghanistan', code: 'AF' },
       { name: 'Åland Islands', code: 'AX' },

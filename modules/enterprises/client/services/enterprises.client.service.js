@@ -30,6 +30,10 @@
       updateCustomers: {
         method: 'POST',
         url: 'api/enterprises/customers/'
+      },
+      getEnterprise: {
+        method: 'GET',
+        url: 'api/enterprises/getEnterprise'
       }
     });
 
