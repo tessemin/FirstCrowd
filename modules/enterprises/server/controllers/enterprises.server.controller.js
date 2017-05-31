@@ -141,12 +141,6 @@ exports.list = function(req, res) {
  */
 exports.enterpriseByID = function(req, res, next, id) {
 
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).send({
-      message: 'Enterprise is invalid'
-    });
-  }
-
   Enterprise.findById(id).populate('user', 'displayName').exec(function (err, enterprise) {
     if (err) {
       return next(err);
