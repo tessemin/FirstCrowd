@@ -262,7 +262,7 @@ exports.getIndividual = function(req, res) {
     if (individual) {
       safeIndividualObject = {
         bio: {
-          sex: validator.escape(individual.bio.sex),
+          sex: individual.bio.sex,
           dateOfBirth: validator.escape(individual.bio.dateOfBirth),
           profession: validator.escape(individual.bio.profession),
           address: {
