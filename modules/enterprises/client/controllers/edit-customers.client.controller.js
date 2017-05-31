@@ -13,17 +13,26 @@
 
     // vm.customer = Authentication.user.customers;
     vm.saveCustomer = saveCustomer;
+    vm.edit = edit;
 
     vm.customer = [
       {
         companyName: 'jeff',
-        website: 'www.bawls.com'
+        URL: 'www.bawls.com'
       },
       {
         companyName: 'yuki',
-        website: 'www.pawlbs.com'
+        URL: 'www.pawlbs.com'
       }
     ];
+
+
+    vm.selected=null;
+
+
+    function edit(item){
+      vm.selected=item;
+    }
 
     // Update a user customer
     function saveCustomer(isValid) {

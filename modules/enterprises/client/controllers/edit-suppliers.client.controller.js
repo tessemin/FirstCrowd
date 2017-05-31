@@ -13,6 +13,26 @@
 
     vm.supplier = Authentication.user.suppliers;
     vm.save = save;
+    vm.edit = edit;
+
+    vm.supplier = [
+      {
+        companyName: 'jeff',
+        URL: 'www.bawls.com'
+      },
+      {
+        companyName: 'yuki',
+        URL: 'www.pawlbs.com'
+      }
+    ];
+
+
+    vm.selected=null;
+
+
+    function edit(item){
+      vm.selected=item;
+    }
 
     // Save Enterprise
     function save(isValid) {

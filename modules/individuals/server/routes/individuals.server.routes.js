@@ -28,6 +28,8 @@ module.exports = function(app) {
   app.route('/individuals/api/individuals/bio/').post(individuals.updateBio);
   
   app.route('/individuals/api/individuals/listCertifications/').post(individuals.listCertifications);
+  
+  app.route('/individuals/api/individuals/getIndividual/').post(individuals.getIndividual);
 
   // Finish by binding the Individual middleware
   app.param('individualId', individuals.individualByID);

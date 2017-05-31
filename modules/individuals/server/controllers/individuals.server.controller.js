@@ -8,6 +8,7 @@ var path = require('path'),
   Individual = mongoose.model('Individual'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   _ = require('lodash'),
+  validator = require('validator'),
   superIndividual = null;
   
 /**
@@ -227,7 +228,7 @@ exports.updateExperience = function(req, res) {
     }
     res.jsonp(individual);
   });
-}
+};
 
 /**
  * Individual Bio update
@@ -240,7 +241,7 @@ exports.updateBio = function(req, res) {
     req.user.firstName = req.body.firstName;
     req.user.middleName = req.body.middleName;
     req.user.lastName = req.body.lastName;
-    req.user.displayName = req.body.firstName + " " + req.body.lastName;
+    req.user.displayName = req.body.firstName + ' ' + req.body.lastName;
     if (!individual.save()) {
       res.status(400).send({
         message: 'Individual Is Not Changed'
@@ -253,7 +254,81 @@ exports.updateBio = function(req, res) {
     }
     res.jsonp(individual);
   });
-}
+};
+
+exports.getIndividual = function(req, res) {
+  getIndividual(req, res, function(individual) {
+    var safeIndividualObject = null;
+    if (individual) {
+      safeIndividualObject = {
+        bio: {
+          sex: validator.escape(individual.bio.sex),
+          dateOfBirth: validator.escape(individual.bio.dateOfBirth),
+          profession: validator.escape(individual.bio.profession),
+          address: {
+            country: validator.escape(individual.bio.address.country),
+            countryCode: validator.escape(individual.bio.address.countryCode),
+            zipCode: validator.escape(individual.bio.address.zipCode),
+            state: validator.escape(individual.bio.address.state),
+            city: validator.escape(individual.bio.address.city),
+            streetAddress: validator.escape(individual.bio.address.streetAddress)
+          }
+        }
+      };
+      for (var degree in individual.degrees) {
+        if (individual.degrees[degree]) {
+          safeIndividualObject.degrees[degree].schoolName = validator.escape(individual.degrees[degree].schoolName);
+          safeIndividualObject.degrees[degree].degreeLevel = validator.escape(individual.degrees[degree].degreeLevel);
+          safeIndividualObject.degrees[degree].startDate = validator.escape(individual.degrees[degree].startDate);
+          safeIndividualObject.degrees[degree].endDate = validator.escape(individual.degrees[degree].endDate);
+          safeIndividualObject.degrees[degree].concentration = validator.escape(individual.degrees[degree].concentration);
+          safeIndividualObject.degrees[degree].address.schoolCountry = validator.escape(individual.degrees[degree].address.schoolCountry);
+          safeIndividualObject.degrees[degree].address.schoolCountryCode = validator.escape(individual.degrees[degree].address.schoolCountryCode);
+          safeIndividualObject.degrees[degree].address.schoolStreetAddress = validator.escape(individual.degrees[degree].address.schoolStreetAddress);
+          safeIndividualObject.degrees[degree].address.schoolCity = validator.escape(individual.degrees[degree].address.schoolCity);
+          safeIndividualObject.degrees[degree].address.schoolState = validator.escape(individual.degrees[degree].address.schoolState);
+          safeIndividualObject.degrees[degree].address.schoolZipCode = validator.escape(individual.degrees[degree].address.schoolZipCode);
+        }
+      }
+      for (var exp in individual.jobExperience) {
+        if (individual.jobExperience[exp]) {
+          safeIndividualObject.jobExperience[exp].employer = validator.escape(individual.jobExperience[exp].employer);
+          safeIndividualObject.jobExperience[exp].description = validator.escape(individual.jobExperience[exp].description);
+          safeIndividualObject.jobExperience[exp].jobTitle = validator.escape(individual.jobExperience[exp].jobTitle);
+          safeIndividualObject.jobExperience[exp].startDate = validator.escape(individual.jobExperience[exp].startDate);
+          safeIndividualObject.jobExperience[exp].endDate = validator.escape(individual.jobExperience[exp].endDate);
+          for(var skil in individual.jobExperience[exp].skills) {
+            if (individual.jobExperience[exp].skills[skil]) {
+              safeIndividualObject.jobExperience[exp].skills[skil] = validator.escape(individual.jobExperience[exp].skills[skil]);
+            }
+          }
+        }
+      }
+      for (var cert in individual.certification) {
+        if (individual.certification[cert]) {
+          safeIndividualObject.certification[cert].certificationName = validator.escape(individual.certification[cert].certificationName);
+          safeIndividualObject.certification[cert].institution = validator.escape(individual.certification[cert].institution);
+          safeIndividualObject.certification[cert].dateIssued = validator.escape(individual.certification[cert].dateIssued);
+          safeIndividualObject.certification[cert].dateExpired = validator.escape(individual.certification[cert].dateExpired);
+          safeIndividualObject.certification[cert].description = validator.escape(individual.certification[cert].description);
+        }
+      }
+      for (var skill in individual.skills) {
+        if (individual.skills[skill]) {
+          safeIndividualObject.skills[skill].skill = validator.escape(individual.skills[skill].skill);
+          safeIndividualObject.skills[skill].firstUsed = validator.escape(individual.skills[skill].firstUsed);
+          safeIndividualObject.skills[skill].lastUsed = validator.escape(individual.skills[skill].lastUsed);
+          for (var loc in individual.skills[skill].locationLearned) {
+            if (individual.skills[skill].locationLearned[loc]) {
+              safeIndividualObject.skills[skill].locationLearned[loc] = validator.escape(individual.skills[skill].locationLearned[loc]);
+            }
+          }
+        }
+      }
+    }
+    res.json(safeIndividualObject || null);
+  });
+};
 
 /**
  * create and individual
