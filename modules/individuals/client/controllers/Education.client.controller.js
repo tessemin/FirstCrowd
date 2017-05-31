@@ -14,6 +14,21 @@
     vm.addDegree = addDegree;
     vm.removeDegree = removeDegree;
     
+    IndividualsService.getIndividual().$promise
+      .then(function(data) {
+        let degrees = data.degrees;
+        console.log(degrees);
+        for(let i = 0; i < degrees.length; ++i) {
+          addDegree();
+          vm.degrees[i].degreeLevel = degrees[i].degreeLevel;
+          vm.degrees[i].schoolName = degrees[i].schoolName;
+          vm.degrees[i].startDate = new Date(degrees[i].startDate);
+          vm.degrees[i].endDate = new Date(degrees[i].endDate);
+          vm.degrees[i].concentration = degrees[i].concentration;
+          vm.degrees[i].address = degrees[i].address;
+        }
+      });
+    
     function addDegree() {
       vm.degrees.push({});
     }
