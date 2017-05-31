@@ -6,9 +6,9 @@
     .module('enterprises')
     .controller('EnterpriseCompetitorController', EnterpriseCompetitorController);
 
-  EnterpriseCompetitorController.$inject = ['$scope', '$state', '$window', 'Authentication', 'UsersService'];
+  EnterpriseCompetitorController.$inject = ['$scope', '$state', '$window', 'Authentication', 'EnterprisesService'];
 
-  function EnterpriseCompetitorController ($scope, $state, $window, Authentication, UsersService) {
+  function EnterpriseCompetitorController ($scope, $state, $window, Authentication, EnterprisesService) {
     var vm = this;
 
     // vm.competitor = Authentication.user.competitors;
@@ -43,16 +43,18 @@
         return false;
       }
 
-      var user = new UsersService(vm.competitor);
+      EnterprisesService.updateCompetitorsFromForm(vm.selected)
+        .then(onUpdateCompetitorsSuccess)
+        .catch(onUpdateCompetitorsError);
 
-      user.$update(function (response) {
-        $scope.$broadcast('show-errors-reset', 'vm.competitorForm');
+    }
 
-        Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Edit competitor successful!' });
-        Authentication.user = response;
-      }, function (response) {
-        Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Edit competitor failed!' });
-      });
+    function onUpdateCompetitorsSuccess(response) {
+      Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Competitors updated!' });
+    }
+
+    function onUpdateCompetitorsError(response) {
+      Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Update failed! Competitors not updated!' });
     }
   }
 }());

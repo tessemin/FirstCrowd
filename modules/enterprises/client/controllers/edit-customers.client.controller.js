@@ -6,9 +6,9 @@
     .module('enterprises')
     .controller('EnterpriseCustomerController', EnterpriseCustomerController);
 
-  EnterpriseCustomerController.$inject = ['$scope', '$state', '$window', 'Authentication', 'UsersService'];
+  EnterpriseCustomerController.$inject = ['$scope', '$state', '$window', 'Authentication', 'EnterprisesService'];
 
-  function EnterpriseCustomerController ($scope, $state, $window, Authentication, UsersService) {
+  function EnterpriseCustomerController ($scope, $state, $window, Authentication, EnterprisesService) {
     var vm = this;
 
     // vm.customer = Authentication.user.customers;
@@ -34,25 +34,25 @@
       vm.selected=item;
     }
 
-    // Update a user customer
-    function saveCustomer(isValid) {
-
+    // UpdateCustomers Enterprise
+    function saveCustomers(isValid) {
       if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'vm.customerForm');
-
+        $scope.$broadcast('show-errors-check-validity', 'vm.customersForm');
         return false;
       }
 
-      var user = new UsersService(vm.customer);
+      EnterprisesService.updateCustomersFromForm(vm.selected)
+        .then(onUpdateCustomersSuccess)
+        .catch(onUpdateCustomersError);
 
-      user.$update(function (response) {
-        $scope.$broadcast('show-errors-reset', 'vm.customerForm');
+    }
 
-        Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Edit customer successful!' });
-        Authentication.user = response;
-      }, function (response) {
-        Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Edit customer failed!' });
-      });
+    function onUpdateCustomersSuccess(response) {
+      Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Customers updated!' });
+    }
+
+    function onUpdateCustomersError(response) {
+      Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Update failed! Customers not updated!' });
     }
   }
 }());

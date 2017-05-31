@@ -160,12 +160,16 @@ exports.individualByID = function(req, res, next, id) {
 exports.updateCertification = function(req, res) {
   getIndividual(req, res, function(individual) {
     individual.certification = req.body;
-    if (!individual.save()) {
-      res.status(400).send({
-        message: 'Individual Is Not Changed'
-      });
-    }
-    res.jsonp(individual);
+    
+    individual.save(function (err) {
+      if (err) {
+        return res.status(422).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        res.jsonp(individual);
+      }
+    });
   });
 };
 
@@ -181,12 +185,16 @@ exports.updateEducation = function(req, res) {
       }
     }
     individual.degrees = req.body;
-    if (!individual.save()) {
-      res.status(400).send({
-        message: 'Individual Is Not Changed'
-      });
-    }
-    res.jsonp(individual);
+    
+    individual.save(function (err) {
+      if (err) {
+        return res.status(422).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        res.jsonp(individual);
+      }
+    });
   });
 };
 
@@ -201,12 +209,16 @@ exports.updateSkill = function(req, res) {
       }
     }
     individual.skills = req.body;
-    if (!individual.save()) {
-      res.status(400).send({
-        message: 'Individual Is Not Changed'
-      });
-    }
-    res.jsonp(individual);
+    
+    individual.save(function (err) {
+      if (err) {
+        return res.status(422).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        res.jsonp(individual);
+      }
+    });
   });
 };
 
@@ -221,12 +233,16 @@ exports.updateExperience = function(req, res) {
       }
     }
     individual.jobExperience = req.body;
-    if (!individual.save()) {
-      res.status(400).send({
-        message: 'Individual Is Not Changed'
-      });
-    }
-    res.jsonp(individual);
+    
+    individual.save(function (err) {
+      if (err) {
+        return res.status(422).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        res.jsonp(individual);
+      }
+    });
   });
 };
 
@@ -242,17 +258,24 @@ exports.updateBio = function(req, res) {
     req.user.middleName = req.body.middleName;
     req.user.lastName = req.body.lastName;
     req.user.displayName = req.body.firstName + ' ' + req.body.lastName;
-    if (!individual.save()) {
-      res.status(400).send({
-        message: 'Individual Is Not Changed'
-      });
-    }
-    if (!req.user.save()) {
-      res.status(400).send({
-        message: 'Cannot Change User'
-      });
-    }
-    res.jsonp(individual);
+    
+    user.save(function (err) {
+      if (err) {
+        return res.status(422).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      }
+    });
+    
+    individual.save(function (err) {
+      if (err) {
+        return res.status(422).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else {
+        res.jsonp(individual);
+      }
+    });
   });
 };
 
@@ -297,7 +320,7 @@ exports.getIndividual = function(req, res) {
           safeIndividualObject.jobExperience[exp].jobTitle = validator.escape(individual.jobExperience[exp].jobTitle);
           safeIndividualObject.jobExperience[exp].startDate = validator.escape(individual.jobExperience[exp].startDate);
           safeIndividualObject.jobExperience[exp].endDate = validator.escape(individual.jobExperience[exp].endDate);
-          for(var skil in individual.jobExperience[exp].skills) {
+          for (var skil in individual.jobExperience[exp].skills) {
             if (individual.jobExperience[exp].skills[skil]) {
               safeIndividualObject.jobExperience[exp].skills[skil] = validator.escape(individual.jobExperience[exp].skills[skil]);
             }
