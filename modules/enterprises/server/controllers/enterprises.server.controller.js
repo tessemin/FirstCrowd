@@ -281,7 +281,7 @@ exports.getEnterprise = function(req, res) {
       safeEnterpriseObject = {
         profile: {
           companyName: validator.escape(enterprise.profile.companyName),
-          website: validator.escape(enterprise.profile.website),
+          URL: validator.escape(enterprise.profile.URL),
           description: validator.escape(enterprise.profile.description),
           industryClassification: [{}],
           yearEstablished: enterprise.profile.yearEstablished,
@@ -292,7 +292,7 @@ exports.getEnterprise = function(req, res) {
             streetAddress: validator.escape(enterprise.profile.companyAddress.streetAddress),
             city: validator.escape(enterprise.profile.companyAddress.city),
             state: validator.escape(enterprise.profile.companyAddress.state),
-            zipCode: validator.escape(enterprise.profile.companyAddress.zipCode),
+            zipCode: enterprise.profile.companyAddress.zipCode
           }
         },
         partners: {
