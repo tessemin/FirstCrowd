@@ -16,41 +16,63 @@ var EnterpriseUserSchema = new Schema({
     type: Schema.ObjectId,
     ref: 'User'
   },
-  companyName: {
-    type: String,
-    default: ''
-  },
-  companyAddress: {
-    type: String,
-    default: ''
-  },
-  website: {
-    type: String,
-    default: ''
-  },
-  description: {
-    type: String,
-    default: ''
-  },
-  industryClassification: [{ // an array
-    type: String,
-    default: ''
-  }],
-  primaryCountry: {
-    type: String,
-    default: ''
-  },
-  state: {
-    type: String,
-    default: ''
-  },
-  yearEstablished: {
-    type: Number,
-    default: null
-  },
-  employeeCount: {
-    type: Number,
-    default: null
+  profile: {
+    companyName: {
+      type: String,
+      default: ''
+    },
+    website: {
+      type: String,
+      default: ''
+    },
+    description: {
+      type: String,
+      default: ''
+    },
+    industryClassification: [{ // an array
+      type: String,
+      default: ''
+    }],
+    yearEstablished: {
+      type: Number,
+      default: null
+    },
+    employeeCount: {
+      type: Number,
+      default: null
+    },
+    companyAddress: {
+      country: {
+        type: String,
+        default: '',
+        trim: true
+      },
+      countryCode: {
+        type: String,
+        default: '',
+        trim: true
+      },
+      streetAddress: {
+        type: String,
+        default: '',
+        trim: true
+      },
+      city: {
+        type: String,
+        default: '',
+        trim: true
+      },
+      state: {
+        type: String,
+        default: '',
+        trim: true
+      },
+      zipCode: {
+        type: Number,
+        default: null,
+        trim: true
+      }
+    }
   },
   partners: {
     supplier: [{

@@ -7,7 +7,49 @@ var path = require('path'),
   mongoose = require('mongoose'),
   Enterprise = mongoose.model('Enterprise'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
-  _ = require('lodash');
+  _ = require('lodash'),
+  validator = require('validator'),
+  superEnterprise = null;
+  
+/**
+ * Find the Enterprise
+ */
+var findEnterprise = function(req, res, callBack) {
+  var individualID = req.user.enterprise;
+
+  Enterprise.findById(individualID, function (err, enterprise) { 
+    if (err) {
+      return res.status(400).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else if (!enterprise) {
+      return res.status(404).send({
+        message: 'No Enterprise with that identifier has been found'
+      });
+    } else {
+      superEnterprise = enterprise;
+      callBack(superEnterprise);
+    }
+  });
+};
+
+/**
+ * Get the Enterprise
+ */
+var getEnterprise = function(req, res, callBack) {
+  if (!superEnterprise) {
+    findEnterprise(req, res, callBack);
+  } else if (superEnterprise.id !== req.user.enterprise) {
+    if (!mongoose.Types.ObjectId.isValid(req.user.enterprise)) {
+      return res.status(400).send({
+        message: 'User is an invalid Enterprise'
+      });
+    }
+    findEnterprise(req, res, callBack);
+  } else {
+    callBack(superEnterprise);
+  }
+};
 
 /**
  * Create a Enterprise
@@ -116,4 +158,100 @@ exports.enterpriseByID = function(req, res, next, id) {
     req.enterprise = enterprise;
     next();
   });
+};
+
+/**
+ * update Enterprise Profile
+ */
+exports.updateProfile = function(req, res) {
+  if (req.body) {
+    getEnterprise(req, res, function (enterprise) {
+      console.log(req.body);
+      enterprise.save(function (err) {
+        if (err) {
+          return res.status(422).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        } else {
+          res.jsonp(enterprise);
+        }
+      });
+    });
+  } else {
+    return res.status(422).send({
+      message: errorHandler.getErrorMessage('Nothing to Update')
+    });
+  }
+};
+
+/**
+ * update Enterprise Suppliers
+ */
+exports.updateSuppliers = function(req, res) {
+  if (req.body) {
+    getEnterprise(req, res, function (enterprise) {
+      console.log(req.body);
+      enterprise.save(function (err) {
+        if (err) {
+          return res.status(422).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        } else {
+          res.jsonp(enterprise);
+        }
+      });
+    });
+  } else {
+    return res.status(422).send({
+      message: errorHandler.getErrorMessage('Nothing to Update')
+    });
+  }
+};
+
+/**
+ * update Enterprise Competitors
+ */
+exports.updateCompetitors = function(req, res) {
+  if (req.body) {
+    getEnterprise(req, res, function (enterprise) {
+      console.log(req.body);
+      enterprise.save(function (err) {
+        if (err) {
+          return res.status(422).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        } else {
+          res.jsonp(enterprise);
+        }
+      });
+    });
+  } else {
+    return res.status(422).send({
+      message: errorHandler.getErrorMessage('Nothing to Update')
+    });
+  }
+};
+
+/**
+ * update Enterprise Customers
+ */
+exports.updateCustomers = function(req, res) {
+  if (req.body) {
+    getEnterprise(req, res, function (enterprise) {
+      console.log(req.body);
+      enterprise.save(function (err) {
+        if (err) {
+          return res.status(422).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        } else {
+          res.jsonp(enterprise);
+        }
+      });
+    });
+  } else {
+    return res.status(422).send({
+      message: errorHandler.getErrorMessage('Nothing to Update')
+    });
+  }
 };

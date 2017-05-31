@@ -199,7 +199,7 @@ exports.updateEducation = function(req, res) {
     });
   } else {
     return res.status(422).send({
-            message: errorHandler.getErrorMessage('Nothing to Update')
+      message: errorHandler.getErrorMessage('Nothing to Update')
     });
   }
 };
@@ -229,7 +229,7 @@ exports.updateSkill = function(req, res) {
     });
   } else {
     return res.status(422).send({
-            message: errorHandler.getErrorMessage('Nothing to Update')
+      message: errorHandler.getErrorMessage('Nothing to Update')
     });
   }
 };
@@ -278,7 +278,7 @@ exports.updateBio = function(req, res) {
       req.user.lastName = req.body.lastName;
       req.user.displayName = req.body.firstName + ' ' + req.body.lastName;
       
-      user.save(function (err) {
+      req.user.save(function (err) {
         if (err) {
           return res.status(422).send({
             message: errorHandler.getErrorMessage(err)
@@ -298,7 +298,7 @@ exports.updateBio = function(req, res) {
     });
   } else {
     return res.status(422).send({
-            message: errorHandler.getErrorMessage('Nothing to Update')
+      message: errorHandler.getErrorMessage('Nothing to Update')
     });
   }
 };

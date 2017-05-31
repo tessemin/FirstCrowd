@@ -16,6 +16,14 @@ module.exports = function(app) {
     .get(enterprises.read)
     .put(enterprises.update)
     .delete(enterprises.delete);
+    
+  app.route('/enterprises/api/enterprises/profile/').post(individuals.updateProfile);
+  
+  app.route('/enterprises/api/enterprises/suppliers/').post(individuals.updateSuppliers);
+  
+  app.route('/enterprises/api/enterprises/competitors/').post(individuals.updateCompetitors);
+  
+  app.route('/enterprises/api/enterprises/customers/').post(individuals.updateCustomers);
 
   // Finish by binding the Enterprise middleware
   app.param('enterpriseId', enterprises.enterpriseByID);
