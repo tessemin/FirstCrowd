@@ -164,6 +164,7 @@ exports.enterpriseByID = function(req, res, next, id) {
  * update Enterprise Profile
  */
 exports.updateProfile = function(req, res) {
+  console.log('hiiiiiiiiiiiiiiiiiiii');
   if (req.body) {
     getEnterprise(req, res, function (enterprise) {
       console.log(req.body);
