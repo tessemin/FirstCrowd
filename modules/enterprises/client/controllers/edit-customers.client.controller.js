@@ -29,14 +29,12 @@
       }
     ];
 
-
-
-    function edit(item){
+    function edit(item) {
       vm.selectedURL = item.URL;
       vm.selectedCompany = item.companyName;
     }
 
-    function cancel(){
+    function cancel() {
       vm.selectedURL = null;
       vm.selectedCompany = null;
     }

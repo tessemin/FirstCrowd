@@ -14,7 +14,7 @@
     }, {
       update: {
         method: 'PUT'
-     },
+      },
       updateProfile: {
         method: 'POST',
         url: 'api/enterprises/profile/'
