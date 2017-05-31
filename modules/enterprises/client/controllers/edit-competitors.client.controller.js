@@ -6,15 +6,17 @@
     .module('enterprises')
     .controller('EnterpriseCompetitorController', EnterpriseCompetitorController);
 
-  EnterpriseCompetitorController.$inject = ['$scope', '$state', '$window', 'Authentication', 'EnterprisesService'];
+  EnterpriseCompetitorController.$inject = ['$scope', '$state', '$window', 'Authentication', 'EnterprisesService', 'Notification'];
 
-  function EnterpriseCompetitorController ($scope, $state, $window, Authentication, EnterprisesService) {
+  function EnterpriseCompetitorController ($scope, $state, $window, Authentication, EnterprisesService, Notification) {
     var vm = this;
 
-    // vm.competitor = Authentication.user.competitors;
+    vm.selected = {};
+    vm.selectedURL = null;
+    vm.selectedCompany = null;
     vm.saveCompetitor = saveCompetitor;
     vm.edit = edit;
-
+    vm.cancel = cancel;
 
     vm.competitor = [
       {
@@ -27,17 +29,22 @@
       }
     ];
 
-
-    vm.selected=null;
-
-
-    function edit(item){
-      vm.selected=item;
+    function edit(item) {
+      vm.selectedURL = item.URL;
+      vm.selectedCompany = item.companyName;
     }
 
+    function cancel() {
+      vm.selectedURL = null;
+      vm.selectedCompany = null;
+    }
 
     // UpdateCompetitor Enterprise
     function saveCompetitor(isValid) {
+
+      vm.selected.URL = vm.selectedURL;
+      vm.selected.companyName = vm.selectedCompany;
+
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'vm.competitorForm');
         return false;

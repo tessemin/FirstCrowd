@@ -9,12 +9,12 @@
   EnterprisesService.$inject = ['$resource'];
 
   function EnterprisesService($resource) {
-    return $resource('api/enterprises/:enterpriseId', {
+    var Enterprises = $resource('api/enterprises/:enterpriseId', {
       enterpriseId: '@_id'
     }, {
       update: {
         method: 'PUT'
-     },
+      },
       updateProfile: {
         method: 'POST',
         url: 'api/enterprises/profile/'
