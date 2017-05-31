@@ -28,7 +28,7 @@
         </div>
         
         <div class="form-group" show-errors>
-          <label for="skills{{$index}}">Skills:</label>
+          <label for="skills{{$index}}">Skills (If more than one, seperate by a Comma):</label>
           <input type="text" id="skills{{$index}}" name="skills{{$index}}" class="form-control" ng-model="vm.experiences[$index].skills" placeholder="Skills" required>
           <div ng-messages="vm.experienceForm['skills'+$index].$error" role="alert">
             <p class="help-block error-text" ng-message="required">Skills are required. </p>

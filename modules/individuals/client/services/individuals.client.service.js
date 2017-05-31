@@ -25,7 +25,7 @@
       },
       updateSkills: {
         method: 'POST',
-        url: 'api.individuals/skills/'
+        url: 'api/individuals/skills/'
       },
       updateEducation: {
         method: 'POST',

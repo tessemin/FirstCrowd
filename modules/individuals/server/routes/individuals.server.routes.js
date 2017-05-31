@@ -20,6 +20,14 @@ module.exports = function(app) {
   app.route('/individuals/api/individuals/certifications/').post(individuals.updateCertification);
   
   app.route('/individuals/api/individuals/education/').post(individuals.updateEducation);
+  
+  app.route('/individuals/api/individuals/skills/').post(individuals.updateSkill);
+  
+  app.route('/individuals/api/individuals/experiences/').post(individuals.updateExperience);
+  
+  app.route('/individuals/api/individuals/bio/').post(individuals.updateBio);
+  
+  app.route('/individuals/api/individuals/listCertifications/').post(individuals.listCertifications);
 
   // Finish by binding the Individual middleware
   app.param('individualId', individuals.individualByID);

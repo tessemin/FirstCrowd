@@ -51,7 +51,7 @@
             
             <div class="form-group" show-errors>
               <label for="schoolStreetAddress{{$index}}">School Street Address</label>
-              <input type="text" id="schoolStreetAddress{{$index}}" name="schoolStreetAddress{{$index}}" class="form-control" ng-model="vm.degrees[$index].schoolStreetAddress" placeholder="School Street Address" required>
+              <input type="text" id="schoolStreetAddress{{$index}}" name="schoolStreetAddress{{$index}}" class="form-control" ng-model="vm.degrees[$index].address.schoolStreetAddress" placeholder="School Street Address" required>
               <div ng-messages="vm.educationForm['schoolStreetAddress'+$index].$error" role="alert">
                 <p class="help-block error-text" ng-message="required">School Street Address is required.</p>
               </div>
@@ -59,7 +59,7 @@
             
             <div class="form-group" show-errors>
               <label for="schoolCity{{$index}}">School City</label>
-              <input type="text" id="schoolCity{{$index}}" name="schoolCity{{$index}}" class="form-control" ng-model="vm.degrees[$index].schoolCity" placeholder="School City" required>
+              <input type="text" id="schoolCity{{$index}}" name="schoolCity{{$index}}" class="form-control" ng-model="vm.degrees[$index].address.schoolCity" placeholder="School City" required>
               <div ng-messages="vm.educationForm['schoolCity'+$index].$error" role="alert">
                 <p class="help-block error-text" ng-message="required">School City is required.</p>
               </div>
@@ -67,7 +67,7 @@
             
             <div class="form-group" show-errors>
               <label for="schoolState{{$index}}">School State/Province</label>
-              <input type="text" id="schoolState{{$index}}" name="schoolState{{$index}}" class="form-control" ng-model="vm.degrees[$index].schoolState" placeholder="School State / Province" required>
+              <input type="text" id="schoolState{{$index}}" name="schoolState{{$index}}" class="form-control" ng-model="vm.degrees[$index].address.schoolState" placeholder="School State / Province" required>
               <div ng-messages="vm.educationForm['schoolState'+$index].$error" role="alert">
                 <p class="help-block error-text" ng-message="required">School State is required.</p>
               </div>
@@ -75,7 +75,7 @@
             
             <div class="form-group" show-errors>
               <label for="schoolZipCode{{$index}}">School Zip Code/Mail Code</label>
-              <input type="text" id="schoolZipCode{{$index}}" name="schoolZipCode{{$index}}" class="form-control" ng-model="vm.degrees[$index].schoolZipCode" placeholder="School Zip Code / Mail Code" required>
+              <input type="text" id="schoolZipCode{{$index}}" name="schoolZipCode{{$index}}" class="form-control" ng-model="vm.degrees[$index].address.schoolZipCode" placeholder="School Zip Code / Mail Code" required>
               <div ng-messages="vm.educationForm['schoolZipCode'+$index].$error" role="alert">
                 <p class="help-block error-text" ng-message="required">School Zip Code / Mail Code is required.</p>
               </div>
@@ -83,7 +83,7 @@
             
             <div class="form-group" show-errors>
               <label for="schoolCountry{{$index}}">School Country</label>
-              <select id="schoolCountry{{$index}}" name="schoolCountry{{$index}}" class="form-control" ng-model="vm.degrees[$index].schoolCountry" ng-options="x.name for x in vm.countries" required>
+              <select id="schoolCountry{{$index}}" name="schoolCountry{{$index}}" class="form-control" ng-model="vm.degrees[$index].address.schoolCountry" ng-options="x.name for x in vm.countries" required>
               </select>
               <div ng-messages="vm.educationForm['schoolCountry'+$index].$error" role="alert">
                 <p class="help-block error-text" ng-message="required">School Country is required.</p>

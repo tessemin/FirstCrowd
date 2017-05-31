@@ -13,7 +13,7 @@ var path = require('path'),
 /**
  * Find the Individual
  */
-var findIndividual = function(req, res, callBack){
+var findIndividual = function(req, res, callBack) {
   var individualID = req.user.individual;
 
   Individual.findById(individualID, function (err, individual) { 
@@ -30,7 +30,7 @@ var findIndividual = function(req, res, callBack){
       callBack(superIndividual);
     }
   });
-}
+};
 
 /**
  * Get the Individual
@@ -39,6 +39,11 @@ var getIndividual = function(req, res, callBack) {
   if (!superIndividual) {
     findIndividual(req, res, callBack);
   } else if (superIndividual.id !== req.user.individual) {
+    if (!mongoose.Types.ObjectId.isValid(req.user.individual)) {
+      return res.status(400).send({
+        message: 'User is an invalid Individual'
+      });
+    }
     findIndividual(req, res, callBack);
   } else {
     callBack(superIndividual);
@@ -112,6 +117,19 @@ exports.list = function(req, res) {
 };
 
 /**
+ * List of Certifications
+ */
+exports.listCertifications = function(req, res) {
+  getIndividual(req, res, function(individual) {
+    if (individual.certification) {
+      res.jsonp(individual.certification);
+    } else {
+      res(null);
+    }
+  });
+};
+
+/**
  * Individual middleware
  */
 exports.individualByID = function(req, res, next, id) {
@@ -139,14 +157,13 @@ exports.individualByID = function(req, res, next, id) {
  * Individual certification update
  */
 exports.updateCertification = function(req, res) {
-  getIndividual(req, res, function(individual){
+  getIndividual(req, res, function(individual) {
     individual.certification = req.body;
     if (!individual.save()) {
       res.status(400).send({
-      message: 'Individual is invalid'
+        message: 'Individual Is Not Changed'
       });
     }
-    individual.save();
     res.jsonp(individual);
   });
 };
@@ -155,14 +172,85 @@ exports.updateCertification = function(req, res) {
  * Individual Education update
  */
 exports.updateEducation = function(req, res) {
-  getIndividual(req, res, function(individual){
-    individual.certification = req.body;
+  getIndividual(req, res, function(individual) {
+    for (var i in req.body) {
+      if (req.body[i]) {
+        req.body[i].address.schoolCountryCode = req.body[i].address.schoolCountry.code;
+        req.body[i].address.schoolCountry = req.body[i].address.schoolCountry.name;
+      }
+    }
+    individual.degrees = req.body;
     if (!individual.save()) {
       res.status(400).send({
-      message: 'Individual is invalid'
+        message: 'Individual Is Not Changed'
       });
     }
-    individual.save();
+    res.jsonp(individual);
+  });
+};
+
+/**
+ * Individual Skills update
+ */
+exports.updateSkill = function(req, res) {
+  getIndividual(req, res, function(individual) {
+    for (var i in req.body) {
+      if (req.body[i].locationLearned) {
+        req.body[i].locationLearned = req.body[i].locationLearned.split(',');
+      }
+    }
+    individual.skills = req.body;
+    if (!individual.save()) {
+      res.status(400).send({
+        message: 'Individual Is Not Changed'
+      });
+    }
+    res.jsonp(individual);
+  });
+};
+
+/**
+ * Individual Experience update
+ */
+exports.updateExperience = function(req, res) {
+  getIndividual(req, res, function(individual) {
+    for (var i in req.body) {
+      if (req.body[i].skills) {
+        req.body[i].skills = req.body[i].skills.split(',');
+      }
+    }
+    individual.jobExperience = req.body;
+    if (!individual.save()) {
+      res.status(400).send({
+        message: 'Individual Is Not Changed'
+      });
+    }
+    res.jsonp(individual);
+  });
+}
+
+/**
+ * Individual Bio update
+ */
+exports.updateBio = function(req, res) {
+  getIndividual(req, res, function(individual) {
+    req.body.address.countryCode = req.body.address.country.code;
+    req.body.address.country = req.body.address.country.name;
+    individual.bio = req.body;
+    req.user.firstName = req.body.firstName;
+    req.user.middleName = req.body.middleName;
+    req.user.lastName = req.body.lastName;
+    req.user.displayName = req.body.firstName + " " + req.body.lastName;
+    if (!individual.save()) {
+      res.status(400).send({
+        message: 'Individual Is Not Changed'
+      });
+    }
+    if (!req.user.save()) {
+      res.status(400).send({
+        message: 'Cannot Change User'
+      });
+    }
     res.jsonp(individual);
   });
 }
@@ -172,4 +260,4 @@ exports.updateEducation = function(req, res) {
  */
 exports.create = function(req, res) {
   
-}
+};

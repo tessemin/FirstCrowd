@@ -58,7 +58,7 @@
           
           <div class="form-group" show-errors>
             <label for="streetAddress">Street Address</label>
-            <input type="text" id="streetAddress" name="streetAddress" class="form-control" ng-model="vm.bio.streetAddress" placeholder="Street Address" required>
+            <input type="text" id="streetAddress" name="streetAddress" class="form-control" ng-model="vm.bio.address.streetAddress" placeholder="Street Address" required>
             <div ng-messages="vm.bioForm.streetAddress.$error" role="alert">
               <p class="help-block error-text" ng-message="required">Street Address is required.</p>
               <p class="help-block error-text" ng-message="dateOfBirth">Zip Code is invalid.</p>
@@ -67,7 +67,7 @@
           
           <div class="form-group" show-errors>
             <label for="city">City</label>
-            <input type="text" id="city" name="city" class="form-control" ng-model="vm.bio.city" placeholder="City" required>
+            <input type="text" id="city" name="city" class="form-control" ng-model="vm.bio.address.city" placeholder="City" required>
             <div ng-messages="vm.bioForm.city.$error" role="alert">
               <p class="help-block error-text" ng-message="required">City is required.</p>
             </div>
@@ -75,7 +75,7 @@
           
           <div class="form-group" show-errors>
             <label for="state">State / Province</label>
-            <input type="text" id="state" name="state" class="form-control" ng-model="vm.bio.state" placeholder="State / Province" required>
+            <input type="text" id="state" name="state" class="form-control" ng-model="vm.bio.address.state" placeholder="State / Province" required>
             <div ng-messages="vm.bioForm.state.$error" role="alert">
               <p class="help-block error-text" ng-message="required">State / Province is required.</p>
             </div>
@@ -83,7 +83,7 @@
           
           <div class="form-group" show-errors>
             <label for="zipCode">Zip Code / Mail Code</label>
-            <input type="text" id="zipCode" name="zipCode" class="form-control" ng-model="vm.bio.zipCode" placeholder="Zip Code" required>
+            <input type="text" id="zipCode" name="zipCode" class="form-control" ng-model="vm.bio.address.zipCode" placeholder="Zip Code" required>
             <div ng-messages="vm.bioForm.zipCode.$error" role="alert">
               <p class="help-block error-text" ng-message="required">Zip Code is required.</p>
               <p class="help-block error-text" ng-message="dateOfBirth">Zip Code is invalid.</p>
@@ -92,7 +92,7 @@
           
           <div class="form-group" show-errors>
             <label for="country">Country</label>
-            <select id="country" name="country" class="form-control" ng-model="vm.bio.country" ng-options="x.name for x in vm.countries" required>
+            <select id="country" name="country" class="form-control" ng-model="vm.bio.address.country" ng-options="x.name for x in vm.countries" required>
             </select>
             <div ng-messages="vm.bioForm.country.$error" role="alert">
               <p class="help-block error-text" ng-message="required">Country is required.</p>
