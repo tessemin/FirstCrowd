@@ -14,6 +14,24 @@
     vm.bio = {};
     vm.updateBio = updateBio;
     
+    // Populate bio data
+    IndividualsService.getIndividual().$promise
+      .then(function(data) {
+        let bio = data.bio;
+        if(bio.dateOfBirth) {
+          let date = new Date(bio.dateOfBirth);
+          vm.bio.dateOfBirth = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+        }
+        vm.bio.sex = bio.sex;
+        vm.bio.profession = bio.profession;
+        vm.bio.address = bio.address;
+      });
+      
+    let user = Authentication.user;
+    vm.bio.firstName = user.firstName;
+    vm.bio.middleName = user.middleName;
+    vm.bio.lastName = user.lastName;
+    
     // Update a user education
     function updateBio(isValid) {
 
@@ -37,8 +55,8 @@
     }
     
     vm.professions = [
-      'Prince',
-      'Emperor'
+      'Web Developer',
+      'Software Engineer'
     ];
   
     // There is nothing interesting past this big honking array of countries.
