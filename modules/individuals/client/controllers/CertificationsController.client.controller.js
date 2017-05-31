@@ -11,6 +11,11 @@
   function CertificationsController ($scope, $state, IndividualsService, Authentication, Notification) {
     var vm = this;
     
+    IndividualsService.getIndividual().$promise
+      .then(function(data) {
+        console.log(data);
+      });
+    
     vm.certifications = [];
     vm.addCertification = addCertification;
     vm.removeCertification = removeCertification;

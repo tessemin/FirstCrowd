@@ -121,6 +121,7 @@
   getIndividual.$inject = ['$stateParams', 'IndividualsService'];
 
   function getIndividual($stateParams, IndividualsService) {
+    console.log('get ye individual\n');
     return IndividualsService.get({
       individualId: $stateParams.individualId
     }).$promise;
