@@ -6,9 +6,9 @@
     .module('enterprises')
     .controller('EnterpriseProfileController', EnterpriseProfileController);
 
-  EnterpriseProfileController.$inject = ['$scope', '$state', '$window', 'Authentication', 'UsersService'];
+  EnterpriseProfileController.$inject = ['$scope', '$state', '$window', 'Authentication', 'EnterprisesService'];
 
-  function EnterpriseProfileController ($scope, $state, $window, Authentication, UsersService) {
+  function EnterpriseProfileController ($scope, $state, $window, Authentication, EnterprisesService) {
     var vm = this;
 
     vm.countries = [
@@ -268,25 +268,25 @@
     vm.enterprise = Authentication.user;
     vm.saveProfile = saveProfile;
 
-    // Update a user profile
+    // UpdateProfile Enterprise
     function saveProfile(isValid) {
-
       if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'vm.enterprise');
-
+        $scope.$broadcast('show-errors-check-validity', 'vm.enterpriseForm');
         return false;
       }
 
-      var user = new UsersService(vm.enterprise);
+      EnterprisesService.updateProfileFromForm(vm.selected)
+        .then(onUpdateProfileSuccess)
+        .catch(onUpdateProfileError);
 
-      user.$update(function (response) {
-        $scope.$broadcast('show-errors-reset', 'vm.enterprise');
+    }
 
-        Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Edit profile successful!' });
-        Authentication.user = response;
-      }, function (response) {
-        Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Edit profile failed!' });
-      });
+    function onUpdateProfileSuccess(response) {
+      Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Profile updated!' });
+    }
+
+    function onUpdateProfileError(response) {
+      Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Update failed! Profile not updated!' });
     }
   }
 }());

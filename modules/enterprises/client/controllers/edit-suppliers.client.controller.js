@@ -6,13 +6,13 @@
     .module('enterprises')
     .controller('EnterpriseSupplierController', EnterpriseSupplierController);
 
-  EnterpriseSupplierController.$inject = ['$scope', '$state', '$window', 'Authentication', 'UsersService'];
+  EnterpriseSupplierController.$inject = ['$scope', '$state', '$window', 'Authentication', 'EnterprisesService'];
 
-  function EnterpriseSupplierController ($scope, $state, $window, Authentication, UsersService) {
+  function EnterpriseSupplierController ($scope, $state, $window, Authentication, EnterprisesService) {
     var vm = this;
 
     vm.supplier = Authentication.user.suppliers;
-    vm.save = save;
+    vm.saveSuppliers = saveSuppliers;
     vm.edit = edit;
 
     vm.supplier = [
@@ -34,23 +34,25 @@
       vm.selected=item;
     }
 
-    // Save Enterprise
-    function save(isValid) {
+    // UpdateSuppliers Enterprise
+    function saveSuppliers(isValid) {
       if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'vm.supplierForm');
+        $scope.$broadcast('show-errors-check-validity', 'vm.suppliersForm');
         return false;
       }
 
-      var user = new UsersService(vm.supplier);
+      EnterprisesService.updateSuppliersFromForm(vm.selected)
+        .then(onUpdateSuppliersSuccess)
+        .catch(onUpdateSuppliersError);
 
-      user.$update(function (response) {
-        $scope.$broadcast('show-errors-reset', 'vm.supplierForm');
+    }
 
-        Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Edit supplier successful!' });
-        Authentication.user = response;
-      }, function (response) {
-        Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Edit supplier failed!' });
-      });
+    function onUpdateSuppliersSuccess(response) {
+      Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Suppliers updated!' });
+    }
+
+    function onUpdateSuppliersError(response) {
+      Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Update failed! Suppliers not updated!' });
     }
   }
 }());
