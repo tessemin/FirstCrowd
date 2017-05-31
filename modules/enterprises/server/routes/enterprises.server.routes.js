@@ -17,13 +17,13 @@ module.exports = function(app) {
     .put(enterprises.update)
     .delete(enterprises.delete);
     
-  app.route('/enterprises/api/enterprises/profile/').post(individuals.updateProfile);
+  app.route('/enterprises/api/enterprises/profile/').post(enterprises.updateProfile);
   
-  app.route('/enterprises/api/enterprises/suppliers/').post(individuals.updateSuppliers);
+  app.route('/enterprises/api/enterprises/suppliers/').post(enterprises.updateSuppliers);
   
-  app.route('/enterprises/api/enterprises/competitors/').post(individuals.updateCompetitors);
+  app.route('/enterprises/api/enterprises/competitors/').post(enterprises.updateCompetitors);
   
-  app.route('/enterprises/api/enterprises/customers/').post(individuals.updateCustomers);
+  app.route('/enterprises/api/enterprises/customers/').post(enterprises.updateCustomers);
 
   // Finish by binding the Enterprise middleware
   app.param('enterpriseId', enterprises.enterpriseByID);
