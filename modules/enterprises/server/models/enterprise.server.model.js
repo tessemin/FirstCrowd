@@ -21,7 +21,15 @@ var EnterpriseUserSchema = new Schema({
       type: String,
       default: ''
     },
-    website: {
+    countryOfBusiness: {
+      type: String,
+      default: ''
+    },
+    countryOfBusinessCode: {
+      type: String,
+      default: ''
+    },
+    URL: {
       type: String,
       default: ''
     },
@@ -29,7 +37,7 @@ var EnterpriseUserSchema = new Schema({
       type: String,
       default: ''
     },
-    industryClassification: [{ // an array
+    classifications: [{ // an array
       type: String,
       default: ''
     }],

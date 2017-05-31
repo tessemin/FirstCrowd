@@ -166,7 +166,36 @@ exports.enterpriseByID = function(req, res, next, id) {
 exports.updateProfile = function(req, res) {
   if (req.body) {
     getEnterprise(req, res, function (enterprise) {
+      
+      req.body.profile.countryOfBusinessCode = req.body.profile.countryOfBusiness.code;
+      req.body.profile.countryOfBusiness = req.body.profile.countryOfBusiness.name;
+      req.body.profile.companyAddress.countryCode = req.body.profile.companyAddress.country.code.toString();
+      req.body.profile.companyAddress.country = req.body.profile.companyAddress.country.name.toString();
+      
       console.log(req.body);
+      
+      console.log(enterprise);
+      
+      req.user.email = req.body.email;
+      req.user.phone = req.body.phone;
+      
+      delete req.body.email;
+      delete req.body.phone;
+      
+      console.log(req.body);
+      
+      enterprise.profile = req.body.profile;
+      
+      console.log(enterprise);
+
+      req.user.save(function (err) {
+        if (err) {
+          return res.status(422).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        }
+      });
+      
       enterprise.save(function (err) {
         if (err) {
           return res.status(422).send({
@@ -288,7 +317,7 @@ exports.getEnterprise = function(req, res) {
       };
       for (var classify = 0; classify < enterprise.profile.industryClassification.length; classify++) {
         if (enterprise.profile.industryClassification[classify]) {
-          safeEnterpriseObject.profile.industryClassification[classify] = venterprise.profile.industryClassification[classify];
+          safeEnterpriseObject.profile.industryClassification[classify] = enterprise.profile.industryClassification[classify];
         }
       }
       for (var supply = 0; supply < enterprise.partners.supplier.length; supply++) {
