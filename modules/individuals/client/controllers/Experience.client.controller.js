@@ -14,6 +14,22 @@
     vm.addExperience = addExperience;
     vm.removeExperience = removeExperience;
     
+    IndividualsService.getIndividual().$promise
+      .then(function(data) {
+        let work = data.jobExperience;
+        for(let i = 0; i < work.length; ++i) {
+          addExperience();
+          vm.experiences[i].employer = work[i].employer;
+          vm.experiences[i].jobTitle = work[i].jobTitle;
+          vm.experiences[i].description = work[i].description;
+          vm.experiences[i].skills = work[i].skills
+          let date = new Date(work.startDate);
+          vm.experiences.startDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+          date = new Date(work.endDate);
+          vm.experiences.endDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+        }
+      });
+    
     function addExperience() {
       vm.experiences.push({});
     }

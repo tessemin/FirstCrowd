@@ -15,6 +15,20 @@
     vm.addSkill = addSkill;
     vm.removeSkill = removeSkill;
     
+    IndividualsService.getIndividual().$promise
+      .then(function(data) {
+        let skills = data.skills;
+        for(let i = 0; i < skills.length; ++i) {
+          addSkill();
+          vm.skills[i].skill = skills[i].skill;
+          vm.skills[i].locationLearned = skills[i].locationLearned;
+          let date = new Date(skills.firstUsed);
+          vm.skills.firstUsed = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+          date = new Date(skills.endDate);
+          vm.skills.endDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+        }
+      });
+    
     function addSkill() {
       vm.skills.push({});
     }
