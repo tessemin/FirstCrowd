@@ -301,9 +301,9 @@ exports.getEnterprise = function(req, res) {
           competitor: [{}]
         }
       };
-      for (var classify = 0; classify < enterprise.profile.industryClassification.length; classify++) {
-        if (enterprise.profile.industryClassification[classify]) {
-          safeEnterpriseObject.profile.industryClassification[classify] = enterprise.profile.industryClassification[classify];
+      for (var classify = 0; classify < enterprise.profile.classification.length; classify++) {
+        if (enterprise.profile.classification[classify]) {
+          safeEnterpriseObject.profile.classification[classify] = enterprise.profile.classification[classify];
         }
       }
       for (var supply = 0; supply < enterprise.partners.supplier.length; supply++) {
