@@ -35,7 +35,7 @@
     }
 
     // UpdateCustomers Enterprise
-    function saveCustomers(isValid) {
+    function saveCustomer(isValid) {
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'vm.customersForm');
         return false;
