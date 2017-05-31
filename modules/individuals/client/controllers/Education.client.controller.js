@@ -17,16 +17,21 @@
     IndividualsService.getIndividual().$promise
       .then(function(data) {
         let degrees = data.degrees;
-        console.log(degrees);
         for(let i = 0; i < degrees.length; ++i) {
           addDegree();
           vm.degrees[i].degreeLevel = degrees[i].degreeLevel;
           vm.degrees[i].schoolName = degrees[i].schoolName;
-          let date = new Date(work.startDate);
-          vm.experiences.startDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
-          date = new Date(work.endDate);
-          vm.experiences.endDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+          let date = '';
+          if(degrees[i].startDate) {
+            date = new Date(degrees[i].startDate);
+            vm.degrees[i].startDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+          }
+          if(degrees[i].endDate) {
+            date = new Date(degrees[i].endDate);
+            vm.degrees[i].endDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+          }
           vm.degrees[i].concentration = degrees[i].concentration;
+          console.log(degrees[i].address);
           vm.degrees[i].address = degrees[i].address;
         }
       });

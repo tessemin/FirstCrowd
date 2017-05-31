@@ -23,10 +23,10 @@
           vm.experiences[i].jobTitle = work[i].jobTitle;
           vm.experiences[i].description = work[i].description;
           vm.experiences[i].skills = work[i].skills;
-          let date = new Date(work.startDate);
-          vm.experiences.startDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
-          date = new Date(work.endDate);
-          vm.experiences.endDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+          let date = new Date(work[i].startDate);
+          vm.experiences[i].startDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+          date = new Date(work[i].endDate);
+          vm.experiences[i].endDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
         }
       });
     
