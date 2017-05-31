@@ -152,7 +152,7 @@ exports.individualByID = function(req, res, next, id) {
  * Individual certification update
  */
 exports.updateCertification = function(req, res) {
-  if (req.body) {
+  /* if (req.body) {
     getIndividual(req, res, function(individual) {
       individual.certification = req.body;
       
@@ -170,7 +170,7 @@ exports.updateCertification = function(req, res) {
     return res.status(422).send({
       message: errorHandler.getErrorMessage('Nothing to Update')
     });
-  }
+  } */
 };
 
 /**
@@ -321,13 +321,18 @@ exports.getIndividual = function(req, res) {
             streetAddress: validator.escape(individual.bio.address.streetAddress)
           }
         },
-        degrees: [{}],
+        degrees: [{
+          address: [{}]
+        }],
         certification: [{}],
         jobExperience: [{}],
-        skills: [{}]
+        skills: [{
+          locationLearned: [{}]
+        }]
       };
       for (var degree = 0; degree < individual.degrees.length; degree++) {
         if (individual.degrees[degree]) {
+          safeIndividualObject.degrees[degree]._id = individual.degrees[degree]._id;
           safeIndividualObject.degrees[degree].schoolName = validator.escape(individual.degrees[degree].schoolName);
           safeIndividualObject.degrees[degree].degreeLevel = validator.escape(individual.degrees[degree].degreeLevel);
           safeIndividualObject.degrees[degree].startDate = individual.degrees[degree].startDate;
@@ -343,6 +348,7 @@ exports.getIndividual = function(req, res) {
       }
       for (var exp = 0; exp < individual.jobExperience.length; exp++) {
         if (individual.jobExperience[exp]) {
+          safeIndividualObject.jobExperience[exp]._id = individual.jobExperience[exp]._id;
           safeIndividualObject.jobExperience[exp].employer = validator.escape(individual.jobExperience[exp].employer);
           safeIndividualObject.jobExperience[exp].description = validator.escape(individual.jobExperience[exp].description);
           safeIndividualObject.jobExperience[exp].jobTitle = validator.escape(individual.jobExperience[exp].jobTitle);
@@ -357,6 +363,7 @@ exports.getIndividual = function(req, res) {
       }
       for (var cert = 0; cert < individual.certification.length; cert++) {
         if (individual.certification[cert]) {
+          safeIndividualObject.certification[cert]._id = individual.certification[cert]._id;
           safeIndividualObject.certification[cert].certificationName = validator.escape(individual.certification[cert].certificationName);
           safeIndividualObject.certification[cert].institution = validator.escape(individual.certification[cert].institution);
           safeIndividualObject.certification[cert].dateIssued = individual.certification[cert].dateIssued;
@@ -364,14 +371,15 @@ exports.getIndividual = function(req, res) {
           safeIndividualObject.certification[cert].description = validator.escape(individual.certification[cert].description);
         }
       }
-      for (var skill = 0; skill < individual.skills.length; skill++) {
-        if (individual.skills[skill]) {
-          safeIndividualObject.skills[skill].skill = validator.escape(individual.skills[skill].skill);
-          safeIndividualObject.skills[skill].firstUsed = individual.skills[skill].firstUsed;
-          safeIndividualObject.skills[skill].lastUsed = individual.skills[skill].lastUsed;
-          for (var loc in individual.skills[skill].locationLearned) {
-            if (individual.skills[skill].locationLearned[loc]) {
-              safeIndividualObject.skills[skill].locationLearned[loc] = validator.escape(individual.skills[skill].locationLearned[loc]);
+      for (var i = 0; i < individual.skills.length; i++) {
+        if (individual.skills[i]) {
+          safeIndividualObject.skills[i]._id = individual.skills[i]._id;
+          safeIndividualObject.skills[i].skill = validator.escape(individual.skills[i].skill);
+          safeIndividualObject.skills[i].firstUsed = individual.skills[i].firstUsed;
+          safeIndividualObject.skills[i].lastUsed = individual.skills[i].lastUsed;
+          for (var loc in individual.skills[i].locationLearned) {
+            if (individual.skills[i].locationLearned[loc]) {
+              safeIndividualObject.skills[i].locationLearned[loc] = individual.skills[i].locationLearned[loc];
             }
           }
         }
