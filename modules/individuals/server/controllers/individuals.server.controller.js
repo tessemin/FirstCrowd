@@ -135,12 +135,6 @@ exports.listCertifications = function(req, res) {
  */
 exports.individualByID = function(req, res, next, id) {
 
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).send({
-      message: 'Individual is invalid'
-    });
-  }
-
   Individual.findById(id).populate('user', 'displayName').exec(function (err, individual) {
     if (err) {
       return next(err);
@@ -174,7 +168,7 @@ exports.updateCertification = function(req, res) {
     });
   } else {
     return res.status(422).send({
-            message: errorHandler.getErrorMessage('Nothing to Update')
+      message: errorHandler.getErrorMessage('Nothing to Update')
     });
   }
 };
@@ -328,7 +322,6 @@ exports.getIndividual = function(req, res) {
           }
         }
       };
-      safeIndividualObject.degrees = [];
       for (var degree = 0; degree < individual.degrees.length; degree++) {
         if (individual.degrees[degree]) {
           safeIndividualObject.degrees[degree].schoolName = validator.escape(individual.degrees[degree].schoolName);
@@ -344,7 +337,6 @@ exports.getIndividual = function(req, res) {
           safeIndividualObject.degrees[degree].address.schoolZipCode = individual.degrees[degree].address.schoolZipCode;
         }
       }
-      safeIndividualObject.jobExperience = [];
       for (var exp = 0; exp < individual.jobExperience.length; exp++) {
         if (individual.jobExperience[exp]) {
           safeIndividualObject.jobExperience[exp].employer = validator.escape(individual.jobExperience[exp].employer);
@@ -359,7 +351,6 @@ exports.getIndividual = function(req, res) {
           }
         }
       }
-      safeIndividualObject.certification = [];
       for (var cert = 0; cert < individual.certification.length; cert++) {
         if (individual.certification[cert]) {
           safeIndividualObject.certification[cert].certificationName = validator.escape(individual.certification[cert].certificationName);
@@ -369,7 +360,6 @@ exports.getIndividual = function(req, res) {
           safeIndividualObject.certification[cert].description = validator.escape(individual.certification[cert].description);
         }
       }
-      safeIndividualObject.skills = [];
       for (var skill = 0; skill < individual.skills.length; skill++) {
         if (individual.skills[skill]) {
           safeIndividualObject.skills[skill].skill = validator.escape(individual.skills[skill].skill);
@@ -388,7 +378,7 @@ exports.getIndividual = function(req, res) {
 };
 
 /**
- * create and individual
+ * create an individual
  */
 exports.create = function(req, res) {
   
