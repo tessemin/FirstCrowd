@@ -320,7 +320,11 @@ exports.getIndividual = function(req, res) {
             city: validator.escape(individual.bio.address.city),
             streetAddress: validator.escape(individual.bio.address.streetAddress)
           }
-        }
+        },
+        degrees: [{}],
+        certification: [{}],
+        jobExperience: [{}],
+        skills: [{}]
       };
       for (var degree = 0; degree < individual.degrees.length; degree++) {
         if (individual.degrees[degree]) {
