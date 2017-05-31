@@ -10,7 +10,7 @@ var mongoose = require('mongoose'),
   
 var validateDate = function() {
   // todo add date validation
-  return false;
+  // return false;
 };
 /*
  * Individual Schema
