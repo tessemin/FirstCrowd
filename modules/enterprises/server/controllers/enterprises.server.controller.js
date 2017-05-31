@@ -15,9 +15,9 @@ var path = require('path'),
  * Find the Enterprise
  */
 var findEnterprise = function(req, res, callBack) {
-  var individualID = req.user.enterprise;
+  var enterpriseID = req.user.enterprise;
 
-  Enterprise.findById(individualID, function (err, enterprise) { 
+  Enterprise.findById(enterpriseID, function (err, enterprise) { 
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -164,7 +164,6 @@ exports.enterpriseByID = function(req, res, next, id) {
  * update Enterprise Profile
  */
 exports.updateProfile = function(req, res) {
-  console.log('hiiiiiiiiiiiiiiiiiiii');
   if (req.body) {
     getEnterprise(req, res, function (enterprise) {
       console.log(req.body);
@@ -256,3 +255,64 @@ exports.updateCustomers = function(req, res) {
     });
   }
 };
+
+/**
+ * get Enterprise object
+ */
+exports.getEnterprise = function(req, res) {
+  getEnterprise(req, res, function (enterprise) {
+    var safeEnterpriseObject = null;
+    if (enterprise) {
+      safeEnterpriseObject = {
+        profile: {
+          companyName: validator.escape(enterprise.profile.companyName),
+          website: validator.escape(enterprise.profile.website),
+          description: validator.escape(enterprise.profile.description),
+          industryClassification: [{}],
+          yearEstablished: enterprise.profile.yearEstablished,
+          employeeCount: enterprise.profile.employeeCount,
+          companyAddress: {
+            country: validator.escape(enterprise.profile.companyAddress.country),
+            countryCode: validator.escape(enterprise.profile.companyAddress.countryCode),
+            streetAddress: validator.escape(enterprise.profile.companyAddress.streetAddress),
+            city: validator.escape(enterprise.profile.companyAddress.city),
+            state: validator.escape(enterprise.profile.companyAddress.state),
+            zipCode: validator.escape(enterprise.profile.companyAddress.zipCode),
+          }
+        },
+        partners: {
+          supplier: [{}],
+          customer: [{}],
+          competitor: [{}]
+        }
+      };
+      for (var classify = 0; classify < enterprise.profile.industryClassification.length; classify++) {
+        if (enterprise.profile.industryClassification[classify]) {
+          safeEnterpriseObject.profile.industryClassification[classify] = venterprise.profile.industryClassification[classify];
+        }
+      }
+      for (var supply = 0; supply < enterprise.partners.supplier.length; supply++) {
+        if (enterprise.partners.supplier[supply]) {
+          safeEnterpriseObject.partners.supplier[supply]._id = enterprise.partners.supplier[supply]._id;
+          safeEnterpriseObject.partners.supplier[supply].companyName = validator.escape(enterprise.partners.supplier[supply].companyName);
+          safeEnterpriseObject.partners.supplier[supply].URL = validator.escape(enterprise.partners.supplier[supply].URL);
+        }
+      }
+      for (var cust = 0; cust < enterprise.partners.customer.length; cust++) {
+        if (enterprise.partners.customer[cust]) {
+          safeEnterpriseObject.partners.customer[cust]._id = enterprise.partners.customer[cust]._id;
+          safeEnterpriseObject.partners.customer[cust].companyName = validator.escape(enterprise.partners.customer[cust].companyName);
+          safeEnterpriseObject.partners.customer[cust].URL = validator.escape(enterprise.partners.customer[cust].URL);
+        }
+      }
+      for (var comp = 0; comp < enterprise.partners.competitor.length; comp++) {
+        if (enterprise.partners.competitor[comp]) {
+          safeEnterpriseObject.partners.competitor[comp]._id = enterprise.partners.competitor[comp]._id;
+          safeEnterpriseObject.partners.competitor[comp].companyName = validator.escape(enterprise.partners.competitor[comp].companyName);
+          safeEnterpriseObject.partners.competitor[comp].URL = validator.escape(enterprise.partners.competitor[comp].URL);
+        }
+      }
+    }
+    res.json(safeEnterpriseObject || null);
+  });
+}
