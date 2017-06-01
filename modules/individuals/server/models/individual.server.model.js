@@ -14,7 +14,7 @@ var validateDate = function(date) {
   console.log(date);
   date = validator.toDate(date) 
   console.log(date);
-  //return validator.isISO8601(date);
+  return validator.isISO8601(date);
 };
 /*
  * Individual Schema

@@ -380,8 +380,10 @@ exports.getEnterprise = function(req, res) {
           yearEstablished: enterprise.profile.yearEstablished,
           employeeCount: enterprise.profile.employeeCount,
           companyAddress: {
-            country: validator.escape(enterprise.profile.companyAddress.country),
-            countryCode: validator.escape(enterprise.profile.companyAddress.countryCode),
+            country: {
+              name: validator.escape(enterprise.profile.companyAddress.country),
+              code: validator.escape(enterprise.profile.companyAddress.countryCode)
+            },
             streetAddress: validator.escape(enterprise.profile.companyAddress.streetAddress),
             city: validator.escape(enterprise.profile.companyAddress.city),
             state: validator.escape(enterprise.profile.companyAddress.state),
