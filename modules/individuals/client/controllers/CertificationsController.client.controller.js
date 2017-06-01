@@ -19,6 +19,7 @@
     IndividualsService.getIndividual().$promise
       .then(function(data) {
         let certs = data.certification;
+        console.log(certs);
         for(let i = 0; i < certs.length; ++i) {
           addCertification();
           vm.certifications[i].certificationName = certs[i].certificationName;

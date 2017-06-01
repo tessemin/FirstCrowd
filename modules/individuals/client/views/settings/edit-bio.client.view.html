@@ -92,7 +92,7 @@
           
           <div class="form-group" show-errors>
             <label for="country">Country</label>
-            <select id="country" name="country" class="form-control" ng-model="vm.bio.address.country" ng-options="x.name for x in vm.countries" required>
+            <select id="country" name="country" class="form-control" ng-model="vm.bio.address.country" ng-options="x.code as x.name for x in vm.countries" required>
             </select>
             <div ng-messages="vm.bioForm.country.$error" role="alert">
               <p class="help-block error-text" ng-message="required">Country is required.</p>

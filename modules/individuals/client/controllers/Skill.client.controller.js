@@ -22,13 +22,16 @@
         for(let i = 0; i < skills.length; ++i) {
           addSkill();
           vm.skills[i].skill = skills[i].skill;
-          let date = new Date(skills.firstUsed);
-          vm.skills.firstUsed = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
-          date = new Date(skills.endDate);
-          vm.skills.endDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+          let date = new Date(skills[i].firstUsed);
+          vm.skills[i].firstUsed = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+          date = new Date(skills[i].lastUsed);
+          vm.skills[i].lastUsed = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
           vm.skills[i].locationLearned = '';
-          for(let j = 0; j < skills[i].locationLearned.length; ++j) {
-            vm.skills[i].locationLearned += (', ' + skills[i].locationLearned[j]);
+          if(skills[i].locationLearned.length > 0) {
+            vm.skills[i].locationLearned = skills[i].locationLearned[0];
+            for(let j = 1; j < skills[i].locationLearned.length; ++j) {
+              vm.skills[i].locationLearned += (', ' + skills[i].locationLearned[j]);
+            }
           }
         }
       });
