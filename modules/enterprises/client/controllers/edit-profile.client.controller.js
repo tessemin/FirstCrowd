@@ -321,6 +321,7 @@
 
           let user = Authentication.user;
           console.log(user);
+          user.email = "h@h.com"
           vm.email = user.email;
           vm.phone = user.phone;
         });
@@ -343,8 +344,8 @@
       profile.companyAddress.zipCode = vm.zipCode;
       profile.companyAddress.city = vm.city;
       profile.companyAddress.state = vm.state;
-      profile.companyAddress.country = vm.country;
-      profile.countryOfBusiness = vm.countryOfBusiness;
+      profile.companyAddress.country = vm.country.code;
+      profile.countryOfBusiness = vm.countryOfBusiness.code;
       profile.companyAddress.streetAddress = vm.streetAddress;
 
 
