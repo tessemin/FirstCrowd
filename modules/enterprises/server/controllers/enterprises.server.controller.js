@@ -161,8 +161,8 @@ exports.updateProfile = function(req, res) {
   if (req.body) {
     getEnterprise(req, res, function (enterprise) {
       
-      req.body.profile.countryOfBusinessCode = req.body.profile.countryOfBusiness.code;
-      req.body.profile.countryOfBusiness = req.body.profile.countryOfBusiness.name;
+      req.body.profile.countryOfBusinessCode = req.body.profile.countryOfBusiness.code.toString();
+      req.body.profile.countryOfBusiness = req.body.profile.countryOfBusiness.name.toString();
       req.body.profile.companyAddress.countryCode = req.body.profile.companyAddress.country.code.toString();
       req.body.profile.companyAddress.country = req.body.profile.companyAddress.country.name.toString();
 
@@ -179,6 +179,8 @@ exports.updateProfile = function(req, res) {
           return res.status(422).send({
             message: errorHandler.getErrorMessage(err)
           });
+        } else {
+          return;
         }
       });
       
@@ -301,33 +303,41 @@ exports.getEnterprise = function(req, res) {
           competitor: [{}]
         }
       };
-      for (var classify = 0; classify < enterprise.profile.classification.length; classify++) {
-        if (enterprise.profile.classification[classify]) {
-          safeEnterpriseObject.profile.classification[classify] = enterprise.profile.classification[classify];
+      if (enterprise.profile.classification) {
+        for (var classify = 0; classify < enterprise.profile.classification.length; classify++) {
+          if (enterprise.profile.classification[classify]) {
+            safeEnterpriseObject.profile.classification[classify] = enterprise.profile.classification[classify];
+          }
         }
       }
-      for (var supply = 0; supply < enterprise.partners.supplier.length; supply++) {
-        if (enterprise.partners.supplier[supply]) {
-          safeEnterpriseObject.partners.supplier[supply]._id = enterprise.partners.supplier[supply]._id;
-          safeEnterpriseObject.partners.supplier[supply].companyName = validator.escape(enterprise.partners.supplier[supply].companyName);
-          safeEnterpriseObject.partners.supplier[supply].URL = validator.escape(enterprise.partners.supplier[supply].URL);
+      if (enterprise.partners.supplier) {
+        for (var supply = 0; supply < enterprise.partners.supplier.length; supply++) {
+          if (enterprise.partners.supplier[supply]) {
+            safeEnterpriseObject.partners.supplier[supply]._id = enterprise.partners.supplier[supply]._id;
+            safeEnterpriseObject.partners.supplier[supply].companyName = validator.escape(enterprise.partners.supplier[supply].companyName);
+            safeEnterpriseObject.partners.supplier[supply].URL = validator.escape(enterprise.partners.supplier[supply].URL);
+          }
+        }
+      
+      if (enterprise.partners.customer) {
+        for (var cust = 0; cust < enterprise.partners.customer.length; cust++) {
+          if (enterprise.partners.customer[cust]) {
+            safeEnterpriseObject.partners.customer[cust]._id = enterprise.partners.customer[cust]._id;
+            safeEnterpriseObject.partners.customer[cust].companyName = validator.escape(enterprise.partners.customer[cust].companyName);
+            safeEnterpriseObject.partners.customer[cust].URL = validator.escape(enterprise.partners.customer[cust].URL);
+          }
         }
       }
-      for (var cust = 0; cust < enterprise.partners.customer.length; cust++) {
-        if (enterprise.partners.customer[cust]) {
-          safeEnterpriseObject.partners.customer[cust]._id = enterprise.partners.customer[cust]._id;
-          safeEnterpriseObject.partners.customer[cust].companyName = validator.escape(enterprise.partners.customer[cust].companyName);
-          safeEnterpriseObject.partners.customer[cust].URL = validator.escape(enterprise.partners.customer[cust].URL);
-        }
-      }
-      for (var comp = 0; comp < enterprise.partners.competitor.length; comp++) {
-        if (enterprise.partners.competitor[comp]) {
-          safeEnterpriseObject.partners.competitor[comp]._id = enterprise.partners.competitor[comp]._id;
-          safeEnterpriseObject.partners.competitor[comp].companyName = validator.escape(enterprise.partners.competitor[comp].companyName);
-          safeEnterpriseObject.partners.competitor[comp].URL = validator.escape(enterprise.partners.competitor[comp].URL);
+      if (enterprise.partners.competitor) {
+        for (var comp = 0; comp < enterprise.partners.competitor.length; comp++) {
+          if (enterprise.partners.competitor[comp]) {
+            safeEnterpriseObject.partners.competitor[comp]._id = enterprise.partners.competitor[comp]._id;
+            safeEnterpriseObject.partners.competitor[comp].companyName = validator.escape(enterprise.partners.competitor[comp].companyName);
+            safeEnterpriseObject.partners.competitor[comp].URL = validator.escape(enterprise.partners.competitor[comp].URL);
+          }
         }
       }
     }
     res.json(safeEnterpriseObject || null);
   });
-}
+};
