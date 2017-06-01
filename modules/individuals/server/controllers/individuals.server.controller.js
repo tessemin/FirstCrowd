@@ -332,7 +332,7 @@ exports.getIndividual = function(req, res) {
         if (individual.degrees[degree]) {
           safeIndividualObject.degrees[degree]._id = individual.degrees[degree]._id;
           safeIndividualObject.degrees[degree].schoolName = validator.escape(individual.degrees[degree].schoolName);
-          safeIndividualObject.degrees[degree].degreeLevel = validator.escape(individual.degrees[degree].degreeLevel);
+          safeIndividualObject.degrees[degree].degreeLevel = individual.degrees[degree].degreeLevel;
           safeIndividualObject.degrees[degree].startDate = individual.degrees[degree].startDate;
           safeIndividualObject.degrees[degree].endDate = individual.degrees[degree].endDate;
           safeIndividualObject.degrees[degree].concentration = validator.escape(individual.degrees[degree].concentration);
