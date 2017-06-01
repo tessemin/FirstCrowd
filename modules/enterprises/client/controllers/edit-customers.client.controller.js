@@ -53,7 +53,7 @@
       vm.selected.companyName = vm.selectedCompany;
 
       if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'vm.customersForm');
+        $scope.$broadcast('show-errors-check-validity', 'vm.customerForm');
         return false;
       }
 
