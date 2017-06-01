@@ -83,7 +83,7 @@
             
             <div class="form-group" show-errors>
               <label for="schoolCountry{{$index}}">School Country</label>
-              <select id="schoolCountry{{$index}}" name="schoolCountry{{$index}}" class="form-control" ng-model="vm.degrees[$index].address.schoolCountry" ng-options="x.name for x in vm.countries" required>
+              <select id="schoolCountry{{$index}}" name="schoolCountry{{$index}}" class="form-control" ng-model="vm.degrees[$index].address.schoolCountry" ng-options="x.name for x in vm.countries track by vm.countries.code" required>
               </select>
               <div ng-messages="vm.educationForm['schoolCountry'+$index].$error" role="alert">
                 <p class="help-block error-text" ng-message="required">School Country is required.</p>

@@ -22,8 +22,9 @@
           addDegree();
           vm.degrees[i] = degrees[i];
           vm.degrees[i].address = degrees[i].address;
-          vm.degrees[i].address.schoolCountry = degrees[i].address.schoolCountry;
+          vm.degrees[i].address.schoolCountry = "AR";
         }
+        console.log(vm.degrees);
       });
     
     function addDegree() {
@@ -38,10 +39,7 @@
           schoolCity: '',
           schoolState: '',
           schoolZipCode: '',
-          schoolCountry: {
-            name: '',
-            code: ''
-          }
+          schoolCountry: ''
         }
       });
     }
