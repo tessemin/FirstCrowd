@@ -163,10 +163,16 @@ exports.updateProfile = function(req, res) {
       if (req.body.profile.countryOfBusiness) {
         req.body.profile.countryOfBusinessCode = req.body.profile.countryOfBusiness.code.toString();
         req.body.profile.countryOfBusiness = req.body.profile.countryOfBusiness.name.toString();
+      } else {
+        req.body.profile.countryOfBusinessCode = '';
+        req.body.profile.countryOfBusiness = '';
       }
       if (req.body.profile.companyAddress.country) {
       req.body.profile.companyAddress.countryCode = req.body.profile.companyAddress.country.code.toString();
       req.body.profile.companyAddress.country = req.body.profile.companyAddress.country.name.toString();
+      } else {
+        req.body.profile.companyAddress.countryCode = '';
+        req.body.profile.companyAddress.country = '';
       }
       
       req.user.email = req.body.email;

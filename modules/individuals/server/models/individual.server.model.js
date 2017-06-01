@@ -11,7 +11,9 @@ var mongoose = require('mongoose'),
   
 var validateDate = function(date) {
   // todo add date validation
-  console.log(validator);
+  console.log(date);
+  date = validator.toDate(date) 
+  console.log(date);
   //return validator.isISO8601(date);
 };
 /*
