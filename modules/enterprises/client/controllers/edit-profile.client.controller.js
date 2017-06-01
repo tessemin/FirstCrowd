@@ -11,7 +11,7 @@
   function EnterpriseProfileController ($scope, $state, $window, Authentication, EnterprisesService, Notification) {
     var vm = this;
     vm.saveProfile = saveProfile;
-    vm.changeCountryOfBusiness = changeCountryOfBusiness;
+
     vm.ret = {
       profile:{
         companyAddress:{}
@@ -318,12 +318,8 @@
           vm.state = res.companyAddress.state;
           vm.streetAddress = res.companyAddress.streetAddress;
 
-
           vm.country = countryByCode(res.companyAddress.country);
           vm.countryOfBusiness = countryByCode(res.countryOfBusiness);
-
-          console.log(vm.country);
-          console.log(vm.countryOfBusiness);
 
           let user = Authentication.user;
           console.log(Authentication.user);
@@ -369,11 +365,5 @@
       console.log(vm.ret);
 
     }
-
-    function changeCountryOfBusiness(item){
-      console.log(vm.countryOfBusiness);
-      vm.countryOfBusiness = item;
-    }
-
   }
 }());
