@@ -23,23 +23,23 @@
           
           <div class="form-group" show-errors>
             <label for="phone">Phone</label>
-            <input type="tel" id="phone" name="phone" class="form-control" ng-model="vm.user.phone" placeholder="Phone Number" required>
+            <input type="tel" id="phone" name="phone" class="form-control" ng-model="vm.user.phone" placeholder="Phone Number">
             <div ng-messages="vm.userForm.phone.$error" role="alert">
-              <p class="help-block error-text" ng-message="required">Email address is required.</p>
-              <p class="help-block error-text" ng-message="tel">Email address is invalid.</p>
+              <p class="help-block error-text" ng-message="required">Phone Number is required.</p>
+              <p class="help-block error-text" ng-message="tel">Phone Number is invalid.</p>
             </div>
           </div>
           
           <div class="form-group">
             <label control-label" for="contactPreference">Contact Preference</label>
             <div class="radio">
-              <label for="phone">
+              <label for="phoneContact">
                 <input class="form-check" name="contactPreference" id="phoneContact" value="phone" type="radio" ng-model="vm.user.contactPreference" required>
                 Phone
               </label>
             </div>
             <div class="radio">
-              <label for="email">
+              <label for="emailContact">
                 <input class="form-check" name="contactPreference" id="emailContact" value="email" type="radio" ng-model="vm.user.contactPreference">
                 Email
               </label>

@@ -10,10 +10,30 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
   
 var validateDate = function(date) {
-  //console.log(!(validator.isISO8601(date)))
-  //return !(validator.isISO8601(date));
-  return true;
+  return date instanceof Date
 };
+
+var validateStartLessThanEnd = function(endDate) {
+  var startDate = null;
+  if (this.startDate) {
+    startDate = this.startDate;
+  } else if (this.dateIssued) {
+    startDate = this.dateIssued;
+  } else if (this.firstUsed) {
+    startDate = this.firstUsed;
+  } else {
+    return false;
+  }
+  return ((endDate) > (startDate));
+}
+
+var validateAge = function(birthday){
+  return true;
+  console.log(birthday);
+  console.log(Date.today().add({years:-130}));
+  console.log(birthday);
+  return birthday > Date.today().add({years:-130});
+}
 /*
  * Individual Schema
  */
@@ -26,7 +46,8 @@ var IndividualUserSchema = new Schema({
     dateOfBirth: {
       type: Date,
       default: '',
-      trim: true
+      trim: true,
+      validate: [validateAge, 'Date of Birth must be before 130 years prior to todays date']
     },
     sex: {
       type: String,
@@ -86,7 +107,10 @@ var IndividualUserSchema = new Schema({
       type: Date,
       default: null,
       trim: true,
-      validate: [validateDate, 'End Date is not in the correct form']
+      validate: [
+        { validator: validateDate, msg: 'End Date is not in the correct form' },
+        { validator: validateStartLessThanEnd, msg: 'End Date is less than the start date' }
+      ]
     },
     concentration: {
       type: String,
@@ -95,11 +119,6 @@ var IndividualUserSchema = new Schema({
     },
     address: {
       schoolCountry: {
-        type: String,
-        default: '',
-        trim: true
-      },
-      schoolCountryCode: {
         type: String,
         default: '',
         trim: true
@@ -157,7 +176,10 @@ var IndividualUserSchema = new Schema({
       type: Date,
       default: null,
       trim: true,
-      validate: [validateDate, 'End Date is not in the correct form']
+      validate: [
+        { validator: validateDate, msg: 'End Date is not in the correct form' },
+        { validator: validateStartLessThanEnd, msg: 'End Date is less than the start date' }
+      ]
     }
   }],
   certification: [{
@@ -181,7 +203,10 @@ var IndividualUserSchema = new Schema({
       type: Date,
       default: null,
       trim: true,
-      validate: [validateDate, 'Date Expired is not in the correct form']
+      validate: [
+        { validator: validateDate, msg: 'Date Expired is not in the correct form' },
+        { validator: validateStartLessThanEnd, msg: 'Date Expired is less than the Date Issued' }
+      ]
     },
     description: {
       type: String,
@@ -205,7 +230,10 @@ var IndividualUserSchema = new Schema({
       type: Date,
       default: null,
       trim: true,
-      validate: [validateDate, 'End Date is not in the correct form']
+      validate: [
+        { validator: validateDate, msg: 'End Date is not in the correct form' },
+        { validator: validateStartLessThanEnd, msg: 'End Date is less than the date Start' }
+      ]
     },
     locationLearned: [{
       type: String,
