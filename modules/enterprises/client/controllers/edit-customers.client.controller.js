@@ -14,27 +14,33 @@
     vm.selected = {};
     vm.selectedURL = null;
     vm.selectedCompany = null;
+    vm.selectedId = null;
+
     vm.saveCustomer = saveCustomer;
     vm.edit = edit;
     vm.cancel = cancel;
 
     vm.customer = [
       {
+        _id: 1,
         companyName: 'FACEBOOK',
         URL: 'www.facebook.com'
       },
       {
+        _id: 2,
         companyName: 'GOOGLE',
         URL: 'www.google.com'
       }
     ];
 
     function edit(item) {
+      vm.selectedId = item._id;
       vm.selectedURL = item.URL;
       vm.selectedCompany = item.companyName;
     }
 
     function cancel() {
+      vm.selectedId = null;
       vm.selectedURL = null;
       vm.selectedCompany = null;
     }
@@ -42,6 +48,7 @@
     // UpdateCustomers Enterprise
     function saveCustomer(isValid) {
 
+      vm.selected._id = vm.selectedId;
       vm.selected.URL = vm.selectedURL;
       vm.selected.companyName = vm.selectedCompany;
 
@@ -53,7 +60,6 @@
       EnterprisesService.updateCustomersFromForm(vm.selected)
         .then(onUpdateCustomersSuccess)
         .catch(onUpdateCustomersError);
-
     }
 
     function onUpdateCustomersSuccess(response) {

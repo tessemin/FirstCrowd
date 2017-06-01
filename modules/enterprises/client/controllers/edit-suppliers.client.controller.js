@@ -14,27 +14,33 @@
     vm.selected = {};
     vm.selectedURL = null;
     vm.selectedCompany = null;
+    vm.selectedId = null;
+
     vm.saveSupplier = saveSupplier;
     vm.edit = edit;
     vm.cancel = cancel;
 
     vm.supplier = [
       {
+        _id: 4,
         companyName: 'jeff',
         URL: 'www.bawls.com'
       },
       {
+        _id: 6,
         companyName: 'yuki',
         URL: 'www.pawlbs.com'
       }
     ];
 
     function edit(item) {
+      vm.selectedId = item._id;
       vm.selectedURL = item.URL;
       vm.selectedCompany = item.companyName;
     }
 
     function cancel() {
+      vm.selectedId = null;
       vm.selectedURL = null;
       vm.selectedCompany = null;
     }
@@ -42,10 +48,9 @@
     // UpdateSuppliers Enterprise
     function saveSupplier(isValid) {
 
+      vm.selected._id = vm.selectedId;
       vm.selected.URL = vm.selectedURL;
       vm.selected.companyName = vm.selectedCompany;
-
-      console.log(vm.selected);
 
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'vm.suppliersForm');
@@ -55,7 +60,6 @@
       EnterprisesService.updateSuppliersFromForm(vm.selected)
         .then(onUpdateSuppliersSuccess)
         .catch(onUpdateSuppliersError);
-
     }
 
     function onUpdateSuppliersSuccess(response) {
