@@ -135,7 +135,7 @@ exports.listCertifications = function(req, res) {
  */
 exports.individualByID = function(req, res, next, id) {
 
-  Individual.findById(id).populate('user', 'displayName').exec(function (err, individual) {
+  /* Individual.findById(id).populate('user', 'displayName').exec(function (err, individual) {
     if (err) {
       return next(err);
     } else if (!individual) {
@@ -145,7 +145,7 @@ exports.individualByID = function(req, res, next, id) {
     }
     req.individual = individual;
     next();
-  });
+  }); */
 };
 
 /**
@@ -313,15 +313,7 @@ exports.getIndividual = function(req, res) {
             streetAddress: validator.escape(individual.bio.address.streetAddress)
           }
         },
-        degrees: [{
-          address: {
-            schoolCountry: '',
-            schoolStreetAddress: '',
-            schoolCity : '',
-            schoolState: '',
-            schoolZipCode: ''
-          }
-        }],
+        degrees: [{}],
         certification: [{}],
         jobExperience: [{}],
         skills: [{
@@ -330,12 +322,15 @@ exports.getIndividual = function(req, res) {
       };
       for (var degree = 0; degree < individual.degrees.length; degree++) {
         if (individual.degrees[degree]) {
+          safeIndividualObject.degrees[degree] = new Object();
+          console.log(individual.degrees[degree]);
           safeIndividualObject.degrees[degree]._id = individual.degrees[degree]._id;
           safeIndividualObject.degrees[degree].schoolName = validator.escape(individual.degrees[degree].schoolName);
           safeIndividualObject.degrees[degree].degreeLevel = individual.degrees[degree].degreeLevel;
           safeIndividualObject.degrees[degree].startDate = individual.degrees[degree].startDate;
           safeIndividualObject.degrees[degree].endDate = individual.degrees[degree].endDate;
           safeIndividualObject.degrees[degree].concentration = validator.escape(individual.degrees[degree].concentration);
+          safeIndividualObject.degrees[degree].address = new Object();
           safeIndividualObject.degrees[degree].address.schoolCountry = validator.escape(individual.degrees[degree].address.schoolCountry);
           safeIndividualObject.degrees[degree].address.schoolStreetAddress = validator.escape(individual.degrees[degree].address.schoolStreetAddress);
           safeIndividualObject.degrees[degree].address.schoolCity = validator.escape(individual.degrees[degree].address.schoolCity);
@@ -345,6 +340,7 @@ exports.getIndividual = function(req, res) {
       }
       for (var exp = 0; exp < individual.jobExperience.length; exp++) {
         if (individual.jobExperience[exp]) {
+          safeIndividualObject.jobExperience[exp] = new Object();
           safeIndividualObject.jobExperience[exp]._id = individual.jobExperience[exp]._id;
           safeIndividualObject.jobExperience[exp].employer = validator.escape(individual.jobExperience[exp].employer);
           safeIndividualObject.jobExperience[exp].description = validator.escape(individual.jobExperience[exp].description);
@@ -360,6 +356,7 @@ exports.getIndividual = function(req, res) {
       }
       for (var cert = 0; cert < individual.certification.length; cert++) {
         if (individual.certification[cert]) {
+          safeIndividualObject.certification[cert] = new Object();
           safeIndividualObject.certification[cert]._id = individual.certification[cert]._id;
           safeIndividualObject.certification[cert].certificationName = validator.escape(individual.certification[cert].certificationName);
           safeIndividualObject.certification[cert].institution = validator.escape(individual.certification[cert].institution);
@@ -370,6 +367,7 @@ exports.getIndividual = function(req, res) {
       }
       for (var i = 0; i < individual.skills.length; i++) {
         if (individual.skills[i]) {
+          safeIndividualObject.skills[i] = new Object();
           safeIndividualObject.skills[i]._id = individual.skills[i]._id;
           safeIndividualObject.skills[i].skill = validator.escape(individual.skills[i].skill);
           safeIndividualObject.skills[i].firstUsed = individual.skills[i].firstUsed;
