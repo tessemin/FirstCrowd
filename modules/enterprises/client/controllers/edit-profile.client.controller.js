@@ -11,25 +11,15 @@
   function EnterpriseProfileController ($scope, $state, $window, Authentication, EnterprisesService, Notification) {
     var vm = this;
     vm.saveProfile = saveProfile;
+    vm.ret = {
+      profile:{
+        companyAddress:{}
+      }
+    };
 
-    // Populate data
-    EnterprisesService.getEnterprise().$promise
-      .then(function(data) {
-        console.log('hi ' + data);
-        // let enterprises = data.enterprises;
-        // vm.enterprise.companyName = enterprises.companyName;
-        // vm.enterprise.companyAddress = enterprises.companyAddress;
-        // vm.enterprise.state = enterprises.phone;
-      });
+    autopopulateForms();
 
-    let user = Authentication.user;
-    // vm.enterprise.firstName = user.firstName;
-    // vm.enterprise.middleName = user.middleName;
-    // vm.enterprise.lastName = user.lastName;
-    // vm.enterprise.email = enterprises.email;
-    // vm.enterprise.phone = enterprises.phone;
-
-    vm.countries = [
+    vm.countryList = [
       { name: 'Afghanistan', code: 'AF' },
       { name: 'Åland Islands', code: 'AX' },
       { name: 'Albania', code: 'AL' },
@@ -276,7 +266,7 @@
     ];
 
 
-    vm.classifications = [
+    vm.classificationList = [
       'gardening',
       'money management',
       'counselor',
@@ -286,12 +276,16 @@
 
     // UpdateProfile Enterprise
     function saveProfile(isValid) {
+
+
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'vm.enterpriseForm');
         return false;
       }
 
-      EnterprisesService.updateProfileFromForm(vm.enterprise)
+      saveProfileItems();
+
+      EnterprisesService.updateProfileFromForm(vm.ret)
         .then(onUpdateProfileSuccess)
         .catch(onUpdateProfileError);
 
@@ -304,5 +298,63 @@
     function onUpdateProfileError(response) {
       Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Update failed! Profile not updated!' });
     }
+
+    function autopopulateForms() {
+      EnterprisesService.getEnterprise()
+        .then(function(response) {
+
+          console.log(response.profile);
+          let res = response.profile;
+
+          vm.companyName = res.companyName;
+          vm.URL = res.URL;
+          vm.employeeCount = res.employeeCount;
+          vm.yearEstablished = res.yearEstablished;
+          vm.description = res.description;
+          vm.companyName = res.companyName;
+          vm.zipCode = res.companyAddress.zipCode;
+          vm.city = res.companyAddress.city;
+          vm.state = res.companyAddress.state;
+          vm.country = res.companyAddress.country;
+          vm.countryOfBusiness = res.countryOfBusiness;
+          vm.streetAddress = res.companyAddress.streetAddress;
+
+          let user = Authentication.user;
+          console.log(user);
+          vm.email = user.email;
+          vm.phone = user.phone;
+        });
+    }
+
+    function saveProfileItems() {
+
+      console.log(vm.country);
+      console.log(vm.countryOfBusiness);
+
+      let profile = {
+        companyAddress: {}
+      };
+      profile.companyName = vm.companyName;
+      profile.URL = vm.URL;
+      profile.employeeCount = vm.employeeCount;
+      profile.yearEstablished  = vm.yearEstablished;
+      profile.description = vm.description;
+      profile.companyName = vm.companyName;
+      profile.companyAddress.zipCode = vm.zipCode;
+      profile.companyAddress.city = vm.city;
+      profile.companyAddress.state = vm.state;
+      profile.companyAddress.country = vm.country;
+      profile.countryOfBusiness = vm.countryOfBusiness;
+      profile.companyAddress.streetAddress = vm.streetAddress;
+
+
+      profile.email = vm.email;
+      profile.phone = vm.phone;
+
+
+      vm.ret.profile = profile;
+
+    }
+
   }
 }());

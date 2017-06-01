@@ -5,7 +5,7 @@
         <div>
           <div class="form-group" show-errors>
             <label for="companyName">Company Name</label>
-            <input type="text" id="companyName" name="companyName" class="form-control" ng-model="vm.enterprise.profile.companyName" placeholder="Company Name" required autofocus>
+            <input type="text" id="companyName" name="companyName" class="form-control" ng-model="vm.companyName" placeholder="Company Name" required autofocus>
             <div ng-messages="vm.enterpriseForm.companyName.$error" role="alert">
               <p class="help-block error-text" ng-message="required">Company name is required.</p>
             </div>
@@ -13,15 +13,15 @@
 
           <div class="form-group" show-errors>
             <label for="streetAddress">Company Address</label>
-            <input type="text" id="streetAddress" name="streetAddress" class="form-control" ng-model="vm.enterprise.profile.companyAddress.streetAddress" placeholder="Company Address" required>
+            <input type="text" id="streetAddress" name="streetAddress" class="form-control" ng-model="vm.streetAddress" placeholder="Company Address" required>
             <div ng-messages="vm.enterpriseForm.streetAddress.$error" role="alert">
               <p class="help-block error-text" ng-message="required">Company Address is required.</p>
             </div>
           </div>
-          
+
           <div class="form-group" show-errors>
             <label for="city">City</label>
-            <input type="text" id="city" name="city" class="form-control" ng-model="vm.enterprise.profile.companyAddress.city" placeholder="Company Address" required>
+            <input type="text" id="city" name="city" class="form-control" ng-model="vm.city" placeholder="Company Address" required>
             <div ng-messages="vm.enterpriseForm.city.$error" role="alert">
               <p class="help-block error-text" ng-message="required">City is required.</p>
             </div>
@@ -29,7 +29,7 @@
 
           <div class="form-group" show-errors>
             <label for="state">State / Province</label>
-            <input type="text" id="state" name="state" class="form-control" ng-model="vm.enterprise.profile.companyAddress.state" placeholder="State / Province" required>
+            <input type="text" id="state" name="state" class="form-control" ng-model="vm.state" placeholder="State / Province" required>
             <div ng-messages="vm.enterpriseForm.state.$error" role="alert">
               <p class="help-block error-text" ng-message="required">State / Province is required.</p>
             </div>
@@ -37,7 +37,7 @@
 
           <div class="form-group" show-errors>
             <label for="zipCode">Zip Code / Mail Code</label>
-            <input type="text" id="zipCode" name="zipCode" class="form-control" ng-model="vm.enterprise.profile.companyAddress.zipCode" placeholder="Zip Code" required>
+            <input type="text" id="zipCode" name="zipCode" class="form-control" ng-model="vm.zipCode" placeholder="Zip Code" required>
             <div ng-messages="vm.enterpriseForm.zipCode.$error" role="alert">
               <p class="help-block error-text" ng-message="required">Zip Code is required.</p>
               <p class="help-block error-text" ng-message="zipCode">Zip Code is invalid.</p>
@@ -46,7 +46,7 @@
 
           <div class="form-group" show-errors>
             <label for="country">Country</label>
-            <select id="country" name="country" class="form-control" ng-model="vm.enterprise.profile.companyAddress.country" ng-options="x as x.name for x in vm.countries" required>
+            <select id="country" name="country" class="form-control" ng-model="vm.country" ng-options="x as x.name for x in vm.countryList" required>
             </select>
             <div ng-messages="vm.enterpriseForm.country.$error" role="alert">
               <p class="help-block error-text" ng-message="required">Country is required.</p>
@@ -55,7 +55,7 @@
 
           <div class="form-group" show-errors>
             <label for="email">Email</label>
-            <input type="email" id="email" name="email" class="form-control" ng-model="vm.enterprise.email" placeholder="Email" lowercase required>
+            <input type="email" id="email" name="email" class="form-control" ng-model="vm.email" placeholder="Email" lowercase required>
             <div ng-messages="vm.userForm.email.$error" role="alert">
               <p class="help-block error-text" ng-message="required">Email address is required.</p>
               <p class="help-block error-text" ng-message="email">Email address is invalid.</p>
@@ -64,8 +64,7 @@
 
           <div class="form-group" show-errors>
             <label for="phone">Phone</label>
-            <!-- <input type='tel' pattern='[\+]\d{2}[\(]\d{2}[\)]\d{4}[\-]\d{4}' title='Phone Number (Format: +99(99)9999-9999)'> -->
-            <input type="tel" id="phone" name="phone" class="form-control" ng-model="vm.enterprise.phone" placeholder="Phone" required>
+            <input type="tel" id="phone" name="phone" class="form-control" ng-model="vm.phone" placeholder="Phone" required>
             <div ng-messages="vm.userForm.phone.$error" role="alert">
               <p class="help-block error-text" ng-message="required">Phone address is required.</p>
               <p class="help-block error-text" ng-message="phone">Phone address is invalid.</p>
@@ -74,27 +73,23 @@
 
           <div class="form-group" show-errors>
             <label for="website">Website</label>
-            <input type="text" id="website" name="website" class="form-control" ng-model="vm.enterprise.profile.URL" placeholder="Website" required>
+            <input type="text" id="website" name="website" class="form-control" ng-model="vm.URL" placeholder="Website" required>
           </div>
 
           <div class="form-group" show-errors>
             <label for="description">Business Description</label>
-            <textarea id="description" name="description"  placeholder="Description" class="form-control" ng-model="vm.enterprise.profile.description" form="vm.enterpriseForm" required></textarea>
-            <!-- <input type="text" id="description" name="description" class="form-control"  placeholder="Description" required> -->
+            <textarea id="description" name="description"  placeholder="Description" class="form-control" ng-model="vm.description" form="vm.enterpriseForm" required></textarea>
           </div>
-
-
-
 
           <div class="form-group" show-errors>
             <label for="classifications">Industry Classifications</label>
-            <select id="classifications" name="classifications" class="form-control" ng-model="vm.enterprise.profile.classifications" ng-options="x for x in vm.classifications" required>
+            <select id="classifications" name="classifications" class="form-control" ng-model="vm.classifications" ng-options="x for x in vm.classificationList" required>
             </select>
           </div>
 
           <div class="form-group" show-errors>
             <label for="countryOfBusiness">Primary Country Of Business</label>
-            <select id="countryOfBusiness" name="countryOfBusiness" class="form-control" ng-model="vm.enterprise.profile.countryOfBusiness" ng-options="x as x.name for x in vm.countries" required>
+            <select id="countryOfBusiness" name="countryOfBusiness" class="form-control" ng-model="vm.countryOfBusiness" ng-options="x as x.name for x in vm.countryList" required>
             </select>
             <div ng-messages="vm.enterpriseForm.countryOfBusiness.$error" role="alert">
               <p class="help-block error-text" ng-message="required">Country Of Business is required.</p>
@@ -103,7 +98,7 @@
 
           <div class="form-group" show-errors>
             <label for="yearEstablished">Year Established</label>
-            <input type="number" id="yearEstablished" name="yearEstablished" class="form-control" ng-model="vm.enterprise.profile.yearEstablished" placeholder="yearEstablished" required>
+            <input type="number" id="yearEstablished" name="yearEstablished" class="form-control" ng-model="vm.yearEstablished" placeholder="yearEstablished" required>
             <div ng-messages="vm.enterpriseForm.yearEstablished.$error" role="alert">
               <p class="help-block error-text" ng-message="required">Year is required.</p>
             </div>
@@ -111,7 +106,7 @@
 
           <div class="form-group" show-errors>
             <label for="employeeCount">Employee Count</label>
-            <input type="number" id="employeeCount" name="employeeCount" class="form-control" ng-model="vm.enterprise.profile.employeeCount" placeholder="EmployeeCount" required>
+            <input type="number" id="employeeCount" name="employeeCount" class="form-control" ng-model="vm.employeeCount" placeholder="EmployeeCount" required>
             <div ng-messages="vm.enterpriseForm.employeeCount.$error" role="alert">
               <p class="help-block error-text" ng-message="required">Employee Count is required.</p>
             </div>
