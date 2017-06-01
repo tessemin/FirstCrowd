@@ -6,11 +6,13 @@
 var mongoose = require('mongoose'),
   path = require('path'),
   config = require(path.resolve('./config/config')),
+  validator = require('validator'),
   Schema = mongoose.Schema;
   
-var validateDate = function() {
+var validateDate = function(date) {
   // todo add date validation
-  // return false;
+  console.log(validator);
+  //return validator.isISO8601(date);
 };
 /*
  * Individual Schema

@@ -181,9 +181,12 @@ exports.updateEducation = function(req, res) {
     console.log(req.body);
     getIndividual(req, res, function(individual) {
       for (var i in req.body) {
-        if (req.body[i].address.country) {
-          req.body[i].address.schoolCountryCode = req.body[i].address.schoolCountry.code;
-          req.body[i].address.schoolCountry = req.body[i].address.schoolCountry.name;
+        if (req.body[i].address.schoolCountry) {
+          req.body[i].address.schoolCountryCode = req.body[i].address.schoolCountry.code.toString();
+          req.body[i].address.schoolCountry = req.body[i].address.schoolCountry.name.toString();
+        } else {
+          req.body[i].address.schoolCountryCode = '';
+          req.body[i].address.country = '';
         }
       }
       individual.degrees = req.body;
@@ -271,8 +274,8 @@ exports.updateExperience = function(req, res) {
 exports.updateBio = function(req, res) {
   if (req.body) {
     getIndividual(req, res, function(individual) {
-      req.body.address.countryCode = req.body.address.country.code;
-      req.body.address.country = req.body.address.country.name;
+      req.body.address.countryCode = req.body.address.country.code.toString();
+      req.body.address.country = req.body.address.country.name.toString();
       individual.bio = req.body;
       req.user.firstName = req.body.firstName;
       req.user.middleName = req.body.middleName;
