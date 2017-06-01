@@ -318,7 +318,7 @@ exports.getEnterprise = function(req, res) {
             safeEnterpriseObject.partners.supplier[supply].URL = validator.escape(enterprise.partners.supplier[supply].URL);
           }
         }
-
+      }
         if (enterprise.partners.customer) {
           for (var cust = 0; cust < enterprise.partners.customer.length; cust++) {
             if (enterprise.partners.customer[cust]) {
@@ -339,6 +339,5 @@ exports.getEnterprise = function(req, res) {
         }
       }
       res.json(safeEnterpriseObject || null);
-    }
   });
 };
