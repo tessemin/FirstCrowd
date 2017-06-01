@@ -347,9 +347,8 @@
       profile.companyAddress.streetAddress = vm.streetAddress;
 
 
-      profile.email = vm.email;
-      profile.phone = vm.phone;
-
+      vm.ret.email = vm.email;
+      vm.ret.phone = vm.phone;
 
       vm.ret.profile = profile;
 
