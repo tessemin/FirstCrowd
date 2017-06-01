@@ -11,7 +11,24 @@
   function BioController ($scope, $state, IndividualsService, Authentication, Notification) {
     var vm = this;
     
-    vm.bio = {};
+    vm.bio = {
+      firstName: '',
+      middleName: '',
+      lastName: '',
+      dateOfBirth: '',
+      sex: '',
+      profession: '',
+      address: {
+        streetAddress: '',
+        city: '',
+        state: '',
+        zipCode: '',
+        country: {
+          name: '',
+          code: ''
+        }
+      }
+    };
     vm.updateBio = updateBio;
     
     // Populate bio data

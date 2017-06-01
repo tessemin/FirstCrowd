@@ -34,7 +34,13 @@
     
     
     function addCertification() {
-      vm.certifications.push({});
+      vm.certifications.push({
+        certificationName: '',
+        institution: '',
+        dateIssued: '',
+        dateExpired: '',
+        description: ''
+      });
     }
     
     function removeCertification(index) {

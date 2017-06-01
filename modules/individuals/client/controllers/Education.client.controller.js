@@ -17,21 +17,12 @@
     IndividualsService.getIndividual().$promise
       .then(function(data) {
         let degrees = data.degrees;
+        console.log(degrees);
         for(let i = 0; i < degrees.length; ++i) {
           addDegree();
-          vm.degrees[i].degreeLevel = degrees[i].degreeLevel;
-          vm.degrees[i].schoolName = degrees[i].schoolName;
-          let date = '';
-          if(degrees[i].startDate) {
-            date = new Date(degrees[i].startDate);
-            vm.degrees[i].startDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
-          }
-          if(degrees[i].endDate) {
-            date = new Date(degrees[i].endDate);
-            vm.degrees[i].endDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
-          }
-          vm.degrees[i].concentration = degrees[i].concentration;
-         // vm.degrees[i].address = degrees[i].address;
+          vm.degrees[i] = degrees[i];
+          vm.degrees[i].address = degrees[i].address;
+          vm.degrees[i].address.schoolCountry = degrees[i].address.schoolCountry;
         }
       });
     
@@ -47,10 +38,12 @@
           schoolCity: '',
           schoolState: '',
           schoolZipCode: '',
-          schoolCountry: ''
+          schoolCountry: {
+            name: '',
+            code: ''
+          }
         }
       });
-      console.log(vm.degrees);
     }
     
     function removeDegree(index) {
@@ -70,17 +63,6 @@
 
         return false;
       }
-      for(let i = 0; i < vm.degrees.length; ++i) {
-  /*      let addy = {
-          schoolStreetAddress: vm.degrees[i].schoolStreetAddress,
-          schoolCity: vm.degrees[i].schoolCity,
-          schoolState: vm.degrees[i].schoolState,
-          schoolZipCode: vm.degrees[i].schoolZipCode,
-          schoolCountry: vm.degrees[i].schoolCountry
-        };
-        vm.degrees[i].address = addy;( */
-      }
-      console.log(vm.degrees);
       
       IndividualsService.updateEducationFromForm(vm.degrees)
         .then(onUpdateEducationSuccess)
