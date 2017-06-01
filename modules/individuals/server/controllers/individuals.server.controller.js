@@ -325,7 +325,16 @@ exports.getIndividual = function(req, res) {
           }
         },
         degrees: [{
-          address: [{}]
+          address: {
+            schoolCountry: {
+              name: '',
+              code: ''
+            },
+            schoolStreetAddress: '',
+            schoolCity : '',
+            schoolState: '',
+            schoolZipCode: ''
+          }
         }],
         certification: [{}],
         jobExperience: [{}],
@@ -341,8 +350,8 @@ exports.getIndividual = function(req, res) {
           safeIndividualObject.degrees[degree].startDate = individual.degrees[degree].startDate;
           safeIndividualObject.degrees[degree].endDate = individual.degrees[degree].endDate;
           safeIndividualObject.degrees[degree].concentration = validator.escape(individual.degrees[degree].concentration);
-          safeIndividualObject.degrees[degree].address.schoolCountry = validator.escape(individual.degrees[degree].address.schoolCountry);
-          safeIndividualObject.degrees[degree].address.schoolCountryCode = validator.escape(individual.degrees[degree].address.schoolCountryCode);
+          safeIndividualObject.degrees[degree].address.schoolCountry.name = validator.escape(individual.degrees[degree].address.schoolCountry);
+          safeIndividualObject.degrees[degree].address.schoolCountry.code = validator.escape(individual.degrees[degree].address.schoolCountryCode);
           safeIndividualObject.degrees[degree].address.schoolStreetAddress = validator.escape(individual.degrees[degree].address.schoolStreetAddress);
           safeIndividualObject.degrees[degree].address.schoolCity = validator.escape(individual.degrees[degree].address.schoolCity);
           safeIndividualObject.degrees[degree].address.schoolState = validator.escape(individual.degrees[degree].address.schoolState);
