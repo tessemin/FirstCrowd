@@ -350,7 +350,7 @@ exports.getIndividual = function(req, res) {
           for (var skil in individual.jobExperience[exp].skills) {
             if (individual.jobExperience[exp].skills[skil]) {
               safeIndividualObject.jobExperience[exp].skills = new Object();
-              safeIndividualObject.jobExperience[exp].skills[skil] = validator.escape(individual.jobExperience[exp].skills[skil]);
+              safeIndividualObject.jobExperience[exp].skills[skil] = individual.jobExperience[exp].skills[skil];
             }
           }
         }
