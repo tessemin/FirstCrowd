@@ -10,11 +10,8 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
   
 var validateDate = function(date) {
-  // todo add date validation
-  console.log(date);
-  date = validator.toDate(date) 
-  console.log(date);
-  return validator.isISO8601(date);
+  console.log(!(validator.isISO8601(date)))
+  //return !(validator.isISO8601(date));
 };
 /*
  * Individual Schema
