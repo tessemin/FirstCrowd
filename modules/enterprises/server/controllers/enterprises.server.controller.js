@@ -160,20 +160,6 @@ exports.enterpriseByID = function(req, res, next, id) {
 exports.updateProfile = function(req, res) {
   if (req.body) {
     getEnterprise(req, res, function (enterprise) {
-      if (req.body.profile.countryOfBusiness) {
-        req.body.profile.countryOfBusinessCode = req.body.profile.countryOfBusiness.code.toString();
-        req.body.profile.countryOfBusiness = req.body.profile.countryOfBusiness.name.toString();
-      } else {
-        req.body.profile.countryOfBusinessCode = '';
-        req.body.profile.countryOfBusiness = '';
-      }
-      if (req.body.profile.companyAddress.country) {
-      req.body.profile.companyAddress.countryCode = req.body.profile.companyAddress.country.code.toString();
-      req.body.profile.companyAddress.country = req.body.profile.companyAddress.country.name.toString();
-      } else {
-        req.body.profile.companyAddress.countryCode = '';
-        req.body.profile.companyAddress.country = '';
-      }
       
       req.user.email = req.body.email;
       req.user.phone = req.body.phone;
@@ -381,7 +367,6 @@ exports.getEnterprise = function(req, res) {
           employeeCount: enterprise.profile.employeeCount,
           companyAddress: {
             country: validator.escape(enterprise.profile.companyAddress.country),
-            countryCode: validator.escape(enterprise.profile.companyAddress.countryCode),
             streetAddress: validator.escape(enterprise.profile.companyAddress.streetAddress),
             city: validator.escape(enterprise.profile.companyAddress.city),
             state: validator.escape(enterprise.profile.companyAddress.state),
