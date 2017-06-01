@@ -10,8 +10,9 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
   
 var validateDate = function(date) {
-  console.log(!(validator.isISO8601(date)))
+  //console.log(!(validator.isISO8601(date)))
   //return !(validator.isISO8601(date));
+  return true;
 };
 /*
  * Individual Schema
@@ -38,11 +39,6 @@ var IndividualUserSchema = new Schema({
     },
     address: {
       country: {
-        type: String,
-        default: '',
-        trim: true
-      },
-      countryCode: {
         type: String,
         default: '',
         trim: true

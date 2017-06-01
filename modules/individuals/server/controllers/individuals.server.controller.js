@@ -179,15 +179,7 @@ exports.updateCertification = function(req, res) {
 exports.updateEducation = function(req, res) {
   if (req.body) {
     getIndividual(req, res, function(individual) {
-      for (var i in req.body) {
-        if (req.body[i].address.schoolCountry) {
-          req.body[i].address.schoolCountryCode = req.body[i].address.schoolCountry.code.toString();
-          req.body[i].address.schoolCountry = req.body[i].address.schoolCountry.name.toString();
-        } else {
-          req.body[i].address.schoolCountryCode = '';
-          req.body[i].address.country = '';
-        }
-      }
+
       individual.degrees = req.body;
       
       individual.save(function (err) {
@@ -273,8 +265,6 @@ exports.updateExperience = function(req, res) {
 exports.updateBio = function(req, res) {
   if (req.body) {
     getIndividual(req, res, function(individual) {
-      req.body.address.countryCode = req.body.address.country.code.toString();
-      req.body.address.country = req.body.address.country.name.toString();
       individual.bio = req.body;
       req.user.firstName = req.body.firstName;
       req.user.middleName = req.body.middleName;
@@ -316,10 +306,7 @@ exports.getIndividual = function(req, res) {
           dateOfBirth: individual.bio.dateOfBirth,
           profession: validator.escape(individual.bio.profession),
           address: {
-            country: {
-              name: validator.escape(individual.bio.address.country),
-              code: validator.escape(individual.bio.address.countryCode)
-            },
+            country: validator.escape(individual.bio.address.country),
             zipCode: individual.bio.address.zipCode,
             state: validator.escape(individual.bio.address.state),
             city: validator.escape(individual.bio.address.city),
@@ -328,10 +315,7 @@ exports.getIndividual = function(req, res) {
         },
         degrees: [{
           address: {
-            schoolCountry: {
-              name: '',
-              code: ''
-            },
+            schoolCountry: '',
             schoolStreetAddress: '',
             schoolCity : '',
             schoolState: '',
@@ -352,8 +336,7 @@ exports.getIndividual = function(req, res) {
           safeIndividualObject.degrees[degree].startDate = individual.degrees[degree].startDate;
           safeIndividualObject.degrees[degree].endDate = individual.degrees[degree].endDate;
           safeIndividualObject.degrees[degree].concentration = validator.escape(individual.degrees[degree].concentration);
-          safeIndividualObject.degrees[degree].address.schoolCountry.name = validator.escape(individual.degrees[degree].address.schoolCountry);
-          safeIndividualObject.degrees[degree].address.schoolCountry.code = validator.escape(individual.degrees[degree].address.schoolCountryCode);
+          safeIndividualObject.degrees[degree].address.schoolCountry = validator.escape(individual.degrees[degree].address.schoolCountry);
           safeIndividualObject.degrees[degree].address.schoolStreetAddress = validator.escape(individual.degrees[degree].address.schoolStreetAddress);
           safeIndividualObject.degrees[degree].address.schoolCity = validator.escape(individual.degrees[degree].address.schoolCity);
           safeIndividualObject.degrees[degree].address.schoolState = validator.escape(individual.degrees[degree].address.schoolState);
