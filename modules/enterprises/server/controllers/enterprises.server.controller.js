@@ -358,18 +358,18 @@ exports.getEnterprise = function(req, res) {
     if (enterprise) {
       safeEnterpriseObject = {
         profile: {
-          companyName: validator.escape(enterprise.profile.companyName),
-          URL: validator.escape(enterprise.profile.URL),
-          countryOfBusiness: validator.escape(enterprise.profile.countryOfBusiness),
-          description: validator.escape(enterprise.profile.description),
+          companyName: enterprise.profile.companyName,
+          URL: enterprise.profile.URL,
+          countryOfBusiness: enterprise.profile.countryOfBusiness,
+          description: enterprise.profile.description,
           industryClassification: [],
           yearEstablished: enterprise.profile.yearEstablished,
           employeeCount: enterprise.profile.employeeCount,
           companyAddress: {
-            country: validator.escape(enterprise.profile.companyAddress.country),
-            streetAddress: validator.escape(enterprise.profile.companyAddress.streetAddress),
-            city: validator.escape(enterprise.profile.companyAddress.city),
-            state: validator.escape(enterprise.profile.companyAddress.state),
+            country: enterprise.profile.companyAddress.country,
+            streetAddress: enterprise.profile.companyAddress.streetAddress,
+            city: enterprise.profile.companyAddress.city,
+            state: enterprise.profile.companyAddress.state,
             zipCode: enterprise.profile.companyAddress.zipCode
           }
         },
@@ -392,8 +392,8 @@ exports.getEnterprise = function(req, res) {
           if (enterprise.partners.supplier[supply]) {
             safeEnterpriseObject.partners.supplier[supply] = new Object();
             safeEnterpriseObject.partners.supplier[supply]._id = enterprise.partners.supplier[supply]._id;
-            safeEnterpriseObject.partners.supplier[supply].companyName = validator.escape(enterprise.partners.supplier[supply].companyName);
-            safeEnterpriseObject.partners.supplier[supply].URL = validator.escape(enterprise.partners.supplier[supply].URL);
+            safeEnterpriseObject.partners.supplier[supply].companyName = enterprise.partners.supplier[supply].companyName;
+            safeEnterpriseObject.partners.supplier[supply].URL = enterprise.partners.supplier[supply].URL;
           }
         }
       }
@@ -402,8 +402,8 @@ exports.getEnterprise = function(req, res) {
           if (enterprise.partners.customer[cust]) {
             safeEnterpriseObject.partners.customer[cust] = new Object();
             safeEnterpriseObject.partners.customer[cust]._id = enterprise.partners.customer[cust]._id;
-            safeEnterpriseObject.partners.customer[cust].companyName = validator.escape(enterprise.partners.customer[cust].companyName);
-            safeEnterpriseObject.partners.customer[cust].URL = validator.escape(enterprise.partners.customer[cust].URL);
+            safeEnterpriseObject.partners.customer[cust].companyName = enterprise.partners.customer[cust].companyName;
+            safeEnterpriseObject.partners.customer[cust].URL = enterprise.partners.customer[cust].URL;
           }
         }
       }
@@ -412,8 +412,8 @@ exports.getEnterprise = function(req, res) {
           if (enterprise.partners.competitor[comp]) {
             safeEnterpriseObject.partners.competitor[comp] = new Object();
             safeEnterpriseObject.partners.competitor[comp]._id = enterprise.partners.competitor[comp]._id;
-            safeEnterpriseObject.partners.competitor[comp].companyName = validator.escape(enterprise.partners.competitor[comp].companyName);
-            safeEnterpriseObject.partners.competitor[comp].URL = validator.escape(enterprise.partners.competitor[comp].URL);
+            safeEnterpriseObject.partners.competitor[comp].companyName = enterprise.partners.competitor[comp].companyName;
+            safeEnterpriseObject.partners.competitor[comp].URL = enterprise.partners.competitor[comp].URL;
           }
         }
       }
