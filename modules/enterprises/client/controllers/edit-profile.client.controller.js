@@ -11,6 +11,7 @@
   function EnterpriseProfileController ($scope, $state, $window, Authentication, EnterprisesService, Notification) {
     var vm = this;
     vm.saveProfile = saveProfile;
+    vm.changeCountryOfBusiness = changeCountryOfBusiness;
     vm.ret = {
       profile:{
         companyAddress:{}
@@ -315,17 +316,30 @@
           vm.zipCode = res.companyAddress.zipCode;
           vm.city = res.companyAddress.city;
           vm.state = res.companyAddress.state;
-          vm.country = res.companyAddress.country;
-          vm.countryOfBusiness = res.countryOfBusiness;
           vm.streetAddress = res.companyAddress.streetAddress;
+
+
+          vm.country = countryByCode(res.companyAddress.country);
+          vm.countryOfBusiness = countryByCode(res.countryOfBusiness);
+
+          console.log(vm.country);
+          console.log(vm.countryOfBusiness);
 
           let user = Authentication.user;
           console.log(Authentication.user);
-          // vm.email = '111@222.com';
-          // vm.phone = 111;
+
           vm.email = user.email;
           vm.phone = user.phone;
         });
+    }
+
+    function countryByCode(code){
+      for(let i = 0; i < vm.countryList.length; i++){
+        if(code === vm.countryList[i].code){
+          return vm.countryList[i];
+        }
+      }
+      return '';
     }
 
     function saveProfileItems() {
@@ -342,16 +356,23 @@
       profile.companyAddress.zipCode = vm.zipCode;
       profile.companyAddress.city = vm.city;
       profile.companyAddress.state = vm.state;
+      profile.companyAddress.streetAddress = vm.streetAddress;
+
       profile.companyAddress.country = vm.country.code;
       profile.countryOfBusiness = vm.countryOfBusiness.code;
-      profile.companyAddress.streetAddress = vm.streetAddress;
 
 
       vm.ret.email = vm.email;
       vm.ret.phone = vm.phone;
 
       vm.ret.profile = profile;
+      console.log(vm.ret);
 
+    }
+
+    function changeCountryOfBusiness(item){
+      console.log(vm.countryOfBusiness);
+      vm.countryOfBusiness = item;
     }
 
   }

@@ -89,7 +89,7 @@
 
           <div class="form-group" show-errors>
             <label for="countryOfBusiness">Primary Country Of Business</label>
-            <select id="countryOfBusiness" name="countryOfBusiness" class="form-control" ng-model="vm.countryOfBusiness" ng-options="x as x.name for x in vm.countryList" required>
+            <select id="countryOfBusiness" name="countryOfBusiness" class="form-control" ng-model="vm.countryOfBusiness" ng-options="x as x.name for x in vm.countryList track by x.code" required>
             </select>
             <div ng-messages="vm.enterpriseForm.countryOfBusiness.$error" role="alert">
               <p class="help-block error-text" ng-message="required">Country Of Business is required.</p>
