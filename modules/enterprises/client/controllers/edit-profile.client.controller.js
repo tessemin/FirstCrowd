@@ -320,17 +320,15 @@
           vm.streetAddress = res.companyAddress.streetAddress;
 
           let user = Authentication.user;
-          console.log(user);
-          user.email = "h@h.com"
+          console.log(Authentication.user);
+          // vm.email = '111@222.com';
+          // vm.phone = 111;
           vm.email = user.email;
           vm.phone = user.phone;
         });
     }
 
     function saveProfileItems() {
-
-      console.log(vm.country);
-      console.log(vm.countryOfBusiness);
 
       let profile = {
         companyAddress: {}
