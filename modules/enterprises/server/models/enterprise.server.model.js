@@ -25,10 +25,6 @@ var EnterpriseUserSchema = new Schema({
       type: String,
       default: ''
     },
-    countryOfBusinessCode: {
-      type: String,
-      default: ''
-    },
     URL: {
       type: String,
       default: ''
@@ -51,11 +47,6 @@ var EnterpriseUserSchema = new Schema({
     },
     companyAddress: {
       country: {
-        type: String,
-        default: '',
-        trim: true
-      },
-      countryCode: {
         type: String,
         default: '',
         trim: true
