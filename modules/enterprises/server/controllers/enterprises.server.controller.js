@@ -374,9 +374,9 @@ exports.getEnterprise = function(req, res) {
           }
         },
         partners: {
-          supplier: [{}],
-          customer: [{}],
-          competitor: [{}]
+          supplier: [],
+          customer: [],
+          competitor: []
         }
       };
       if (enterprise.profile.classification) {
