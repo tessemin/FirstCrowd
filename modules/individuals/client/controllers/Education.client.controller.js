@@ -21,10 +21,9 @@
         for(let i = 0; i < degrees.length; ++i) {
           addDegree();
           vm.degrees[i] = degrees[i];
-          vm.degrees[i].address = degrees[i].address;
-          vm.degrees[i].address.schoolCountry = "AR";
+          vm.degrees[i].startDate = new Date(degrees[i].startDate);
+          vm.degrees[i].endDate = new Date(degrees[i].endDate);
         }
-        console.log(vm.degrees);
       });
     
     function addDegree() {
@@ -58,9 +57,11 @@
 
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'vm.educationForm');
-
+        Notification.error({ message: 'Check the form for errors!' });
         return false;
       }
+      
+      console.log(vm.degrees);
       
       IndividualsService.updateEducationFromForm(vm.degrees)
         .then(onUpdateEducationSuccess)

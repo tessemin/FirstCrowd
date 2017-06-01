@@ -25,19 +25,19 @@
             
             <div class="form-group" show-errors>
               <label for="startDate{{$index}}">First Date Attended</label>
-              <input type="text" id="startDate{{$index}}" name="startDate{{$index}}" class="form-control" ng-model="vm.degrees[$index].startDate" placeholder="First Date Attended" required>
+              <input type="date" id="startDate{{$index}}" name="startDate{{$index}}" class="form-control" ng-model="vm.degrees[$index].startDate" placeholder="yyyy-mm-dd" required>
               <div ng-messages="vm.educationForm['startDate'+$index].$error" role="alert">
                 <p class="help-block error-text" ng-message="required">First Date Attended is required.</p>
-                <p class="help-block error-text" ng-message="startDate{{$index}}">First Date Attended is invalid.</p>
+                <p class="help-block error-text" ng-message="date">First Date Attended is invalid.</p>
               </div>
             </div>
             
             <div class="form-group" show-errors>
               <label for="endDate{{$index}}">Last Date Attended</label>
-              <input type="text" id="endDate{{$index}}" name="endDate{{$index}}" class="form-control" ng-model="vm.degrees[$index].endDate" placeholder="Last Date Attended" required>
+              <input type="date" id="endDate{{$index}}" name="endDate{{$index}}" class="form-control" ng-model="vm.degrees[$index].endDate" placeholder="yyyy-mm-dd" required>
               <div ng-messages="vm.educationForm['endDate'+$index].$error" role="alert">
                 <p class="help-block error-text" ng-message="required">Last Date Attended is required.</p>
-                <p class="help-block error-text" ng-message="endDate{{$index}}">Last Date Attended is invalid.</p>
+                <p class="help-block error-text" ng-message="date">Last Date Attended is invalid.</p>
               </div>
             </div>
             
@@ -83,7 +83,7 @@
             
             <div class="form-group" show-errors>
               <label for="schoolCountry{{$index}}">School Country</label>
-              <select id="schoolCountry{{$index}}" name="schoolCountry{{$index}}" class="form-control" ng-model="vm.degrees[$index].address.schoolCountry" ng-options="x.name for x in vm.countries track by vm.countries.code" required>
+              <select id="schoolCountry{{$index}}" name="schoolCountry{{$index}}" class="form-control" ng-model="vm.degrees[$index].address.schoolCountry" ng-options="x.code as x.name for x in vm.countries" required>
               </select>
               <div ng-messages="vm.educationForm['schoolCountry'+$index].$error" role="alert">
                 <p class="help-block error-text" ng-message="required">School Country is required.</p>
