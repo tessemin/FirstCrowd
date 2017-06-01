@@ -19,6 +19,8 @@ var validateStartLessThanEnd = function(endDate) {
     startDate = this.startDate;
   } else if (this.dateIssued) {
     startDate = this.dateIssued;
+  } else if (this.firstUsed) {
+    startDate = this.firstUsed;
   } else {
     return false;
   }
@@ -27,6 +29,10 @@ var validateStartLessThanEnd = function(endDate) {
 
 var validateAge = function(birthday){
   return true;
+  console.log(birthday);
+  console.log(Date.today().add({years:-130}));
+  console.log(birthday);
+  return birthday > Date.today().add({years:-130});
 }
 /*
  * Individual Schema
@@ -224,7 +230,10 @@ var IndividualUserSchema = new Schema({
       type: Date,
       default: null,
       trim: true,
-      validate: [validateDate, 'End Date is not in the correct form']
+      validate: [
+        { validator: validateDate, msg: 'End Date is not in the correct form' },
+        { validator: validateStartLessThanEnd, msg: 'End Date is less than the date Start' }
+      ]
     },
     locationLearned: [{
       type: String,
