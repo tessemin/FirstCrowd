@@ -318,7 +318,7 @@ exports.getIndividual = function(req, res) {
           address: {
             country: {
               name: validator.escape(individual.bio.address.country),
-              code: countryCode: validator.escape(individual.bio.address.countryCode)
+              code: validator.escape(individual.bio.address.countryCode)
             } 
             zipCode: individual.bio.address.zipCode,
             state: validator.escape(individual.bio.address.state),
