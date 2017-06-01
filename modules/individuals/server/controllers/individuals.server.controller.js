@@ -349,6 +349,7 @@ exports.getIndividual = function(req, res) {
           safeIndividualObject.jobExperience[exp].endDate = individual.jobExperience[exp].endDate;
           for (var skil in individual.jobExperience[exp].skills) {
             if (individual.jobExperience[exp].skills[skil]) {
+              safeIndividualObject.jobExperience[exp].skills = new Object();
               safeIndividualObject.jobExperience[exp].skills[skil] = validator.escape(individual.jobExperience[exp].skills[skil]);
             }
           }
@@ -374,6 +375,7 @@ exports.getIndividual = function(req, res) {
           safeIndividualObject.skills[i].lastUsed = individual.skills[i].lastUsed;
           for (var loc in individual.skills[i].locationLearned) {
             if (individual.skills[i].locationLearned[loc]) {
+              safeIndividualObject.skills[i].locationLearned = new Object();
               safeIndividualObject.skills[i].locationLearned[loc] = individual.skills[i].locationLearned[loc];
             }
           }

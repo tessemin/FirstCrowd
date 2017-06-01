@@ -382,6 +382,7 @@ exports.getEnterprise = function(req, res) {
       if (enterprise.profile.classification) {
         for (var classify = 0; classify < enterprise.profile.classification.length; classify++) {
           if (enterprise.profile.classification[classify]) {
+            safeEnterpriseObject.profile.classification = new Object();
             safeEnterpriseObject.profile.classification[classify] = enterprise.profile.classification[classify];
           }
         }
