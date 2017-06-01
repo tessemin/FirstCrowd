@@ -31,13 +31,26 @@
             vm.degrees[i].endDate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
           }
           vm.degrees[i].concentration = degrees[i].concentration;
-          console.log(degrees[i].address);
-          vm.degrees[i].address = degrees[i].address;
+         // vm.degrees[i].address = degrees[i].address;
         }
       });
     
     function addDegree() {
-      vm.degrees.push({});
+      vm.degrees.push({
+        degreeLevel: '',
+        schoolName: '',
+        startDate: '',
+        endDate: '',
+        concentration: '',
+        address: {
+          schoolStreetAddress: '',
+          schoolCity: '',
+          schoolState: '',
+          schoolZipCode: '',
+          schoolCountry: ''
+        }
+      });
+      console.log(vm.degrees);
     }
     
     function removeDegree(index) {
@@ -48,6 +61,40 @@
 
     vm.degreeLevels = ['Middle School', 'Highschool', 'Associate\'s Degree', 'Bachelor\'s Degree', 'Master\'s Degree', 'Doctoral Degree'];
 
+    
+    // Update a user education
+    function updateEducation(isValid) {
+
+      if (!isValid) {
+        $scope.$broadcast('show-errors-check-validity', 'vm.educationForm');
+
+        return false;
+      }
+      for(let i = 0; i < vm.degrees.length; ++i) {
+  /*      let addy = {
+          schoolStreetAddress: vm.degrees[i].schoolStreetAddress,
+          schoolCity: vm.degrees[i].schoolCity,
+          schoolState: vm.degrees[i].schoolState,
+          schoolZipCode: vm.degrees[i].schoolZipCode,
+          schoolCountry: vm.degrees[i].schoolCountry
+        };
+        vm.degrees[i].address = addy;( */
+      }
+      console.log(vm.degrees);
+      
+      IndividualsService.updateEducationFromForm(vm.degrees)
+        .then(onUpdateEducationSuccess)
+        .catch(onUpdateEducationError);
+    }
+    
+    function onUpdateEducationSuccess(response) {
+      Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Education updated!' });
+    }
+    
+    function onUpdateEducationError(response) {
+      Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Update failed! Education not updated!' });
+    }
+    
     vm.countries = [
       { name: 'Afghanistan', code: 'AF' },
       { name: 'Åland Islands', code: 'AX' },
@@ -293,27 +340,5 @@
       { name: 'Zambia', code: 'ZM' },
       { name: 'Zimbabwe', code: 'ZW' }
     ];
-    
-    // Update a user education
-    function updateEducation(isValid) {
-
-      if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'vm.educationForm');
-
-        return false;
-      }
-      
-      IndividualsService.updateEducationFromForm(vm.degrees)
-        .then(onUpdateEducationSuccess)
-        .catch(onUpdateEducationError);
-    }
-    
-    function onUpdateEducationSuccess(response) {
-      Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Education updated!' });
-    }
-    
-    function onUpdateEducationError(response) {
-      Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Update failed! Education not updated!' });
-    }
   }
 }());

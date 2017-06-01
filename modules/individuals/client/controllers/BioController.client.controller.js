@@ -18,7 +18,7 @@
     IndividualsService.getIndividual().$promise
       .then(function(data) {
         let bio = data.bio;
-        if(bio.dateOfBirth) {
+        if (bio.dateOfBirth) {
           let date = new Date(bio.dateOfBirth);
           vm.bio.dateOfBirth = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
         }

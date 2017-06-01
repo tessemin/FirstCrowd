@@ -177,10 +177,9 @@ exports.updateCertification = function(req, res) {
  * Individual Education update
  */
 exports.updateEducation = function(req, res) {
-  console.log(req.body);
   if (req.body) {
+    console.log(req.body);
     getIndividual(req, res, function(individual) {
-      console.log(req.body);
       for (var i in req.body) {
         if (req.body[i].address.country) {
           req.body[i].address.schoolCountryCode = req.body[i].address.schoolCountry.code;
