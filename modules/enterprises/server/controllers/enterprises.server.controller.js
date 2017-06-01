@@ -4,20 +4,20 @@
  * Module dependencies.
  */
 var path = require('path'),
-  mongoose = require('mongoose'),
-  Enterprise = mongoose.model('Enterprise'),
-  errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
-  _ = require('lodash'),
-  validator = require('validator'),
-  superEnterprise = null;
-  
+    mongoose = require('mongoose'),
+    Enterprise = mongoose.model('Enterprise'),
+    errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
+    _ = require('lodash'),
+    validator = require('validator'),
+    superEnterprise = null;
+
 /**
  * Find the Enterprise
  */
 var findEnterprise = function(req, res, callBack) {
   var enterpriseID = req.user.enterprise;
 
-  Enterprise.findById(enterpriseID, function (err, enterprise) { 
+  Enterprise.findById(enterpriseID, function (err, enterprise) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -57,8 +57,8 @@ var getEnterprise = function(req, res, callBack) {
 exports.create = function(req, res) {
   var enterprise = new Enterprise(req.body);
   enterprise.user = req.user;
-  
-// todo add display name as company name
+
+  // todo add display name as company name
 
   enterprise.save(function(err) {
     if (err) {
@@ -142,16 +142,16 @@ exports.list = function(req, res) {
 exports.enterpriseByID = function(req, res, next, id) {
 
   /* Enterprise.findById(id).populate('user', 'displayName').exec(function (err, enterprise) {
-    if (err) {
-      return next(err);
-    } else if (!enterprise) {
-      return res.status(404).send({
-        message: 'No Enterprise with that identifier has been found'
-      });
-    }
-    req.enterprise = enterprise;
-    next();
-  }); */
+   if (err) {
+   return next(err);
+   } else if (!enterprise) {
+   return res.status(404).send({
+   message: 'No Enterprise with that identifier has been found'
+   });
+   }
+   req.enterprise = enterprise;
+   next();
+   }); */
 };
 
 /**
@@ -160,7 +160,7 @@ exports.enterpriseByID = function(req, res, next, id) {
 exports.updateProfile = function(req, res) {
   if (req.body) {
     getEnterprise(req, res, function (enterprise) {
-      
+
       req.body.profile.countryOfBusinessCode = req.body.profile.countryOfBusiness.code.toString();
       req.body.profile.countryOfBusiness = req.body.profile.countryOfBusiness.name.toString();
       req.body.profile.companyAddress.countryCode = req.body.profile.companyAddress.country.code.toString();
@@ -168,12 +168,12 @@ exports.updateProfile = function(req, res) {
 
       req.user.email = req.body.email;
       req.user.phone = req.body.phone;
-      
+
       delete req.body.email;
       delete req.body.phone;
 
       enterprise.profile = req.body.profile;
-      
+
       req.user.save(function (err) {
         if (err) {
           return res.status(422).send({
@@ -183,7 +183,7 @@ exports.updateProfile = function(req, res) {
           return;
         }
       });
-      
+
       enterprise.save(function (err) {
         if (err) {
           return res.status(422).send({
@@ -318,26 +318,27 @@ exports.getEnterprise = function(req, res) {
             safeEnterpriseObject.partners.supplier[supply].URL = validator.escape(enterprise.partners.supplier[supply].URL);
           }
         }
-      
-      if (enterprise.partners.customer) {
-        for (var cust = 0; cust < enterprise.partners.customer.length; cust++) {
-          if (enterprise.partners.customer[cust]) {
-            safeEnterpriseObject.partners.customer[cust]._id = enterprise.partners.customer[cust]._id;
-            safeEnterpriseObject.partners.customer[cust].companyName = validator.escape(enterprise.partners.customer[cust].companyName);
-            safeEnterpriseObject.partners.customer[cust].URL = validator.escape(enterprise.partners.customer[cust].URL);
+
+        if (enterprise.partners.customer) {
+          for (var cust = 0; cust < enterprise.partners.customer.length; cust++) {
+            if (enterprise.partners.customer[cust]) {
+              safeEnterpriseObject.partners.customer[cust]._id = enterprise.partners.customer[cust]._id;
+              safeEnterpriseObject.partners.customer[cust].companyName = validator.escape(enterprise.partners.customer[cust].companyName);
+              safeEnterpriseObject.partners.customer[cust].URL = validator.escape(enterprise.partners.customer[cust].URL);
+            }
+          }
+        }
+        if (enterprise.partners.competitor) {
+          for (var comp = 0; comp < enterprise.partners.competitor.length; comp++) {
+            if (enterprise.partners.competitor[comp]) {
+              safeEnterpriseObject.partners.competitor[comp]._id = enterprise.partners.competitor[comp]._id;
+              safeEnterpriseObject.partners.competitor[comp].companyName = validator.escape(enterprise.partners.competitor[comp].companyName);
+              safeEnterpriseObject.partners.competitor[comp].URL = validator.escape(enterprise.partners.competitor[comp].URL);
+            }
           }
         }
       }
-      if (enterprise.partners.competitor) {
-        for (var comp = 0; comp < enterprise.partners.competitor.length; comp++) {
-          if (enterprise.partners.competitor[comp]) {
-            safeEnterpriseObject.partners.competitor[comp]._id = enterprise.partners.competitor[comp]._id;
-            safeEnterpriseObject.partners.competitor[comp].companyName = validator.escape(enterprise.partners.competitor[comp].companyName);
-            safeEnterpriseObject.partners.competitor[comp].URL = validator.escape(enterprise.partners.competitor[comp].URL);
-          }
-        }
-      }
+      res.json(safeEnterpriseObject || null);
     }
-    res.json(safeEnterpriseObject || null);
   });
 };
