@@ -160,12 +160,15 @@ exports.enterpriseByID = function(req, res, next, id) {
 exports.updateProfile = function(req, res) {
   if (req.body) {
     getEnterprise(req, res, function (enterprise) {
-
-      req.body.profile.countryOfBusinessCode = req.body.profile.countryOfBusiness.code.toString();
-      req.body.profile.countryOfBusiness = req.body.profile.countryOfBusiness.name.toString();
+      if (req.body.profile.countryOfBusiness) {
+        req.body.profile.countryOfBusinessCode = req.body.profile.countryOfBusiness.code.toString();
+        req.body.profile.countryOfBusiness = req.body.profile.countryOfBusiness.name.toString();
+      }
+      if (req.body.profile.companyAddress.country) {
       req.body.profile.companyAddress.countryCode = req.body.profile.companyAddress.country.code.toString();
       req.body.profile.companyAddress.country = req.body.profile.companyAddress.country.name.toString();
-
+      }
+      
       req.user.email = req.body.email;
       req.user.phone = req.body.phone;
 
@@ -207,7 +210,34 @@ exports.updateProfile = function(req, res) {
 exports.updateSuppliers = function(req, res) {
   if (req.body) {
     getEnterprise(req, res, function (enterprise) {
-      console.log(req.body);
+      if (req.body._id) { // update 
+        if (enterprise.partners.supplier) {
+          var brakeout = false;
+          for (var index = 0; index < enterprise.partners.supplier.length && !brakeout; index++) {
+            if (enterprise.partners.supplier[index]._id === req.body._id) {
+              enterprise.partners.supplier[index] = req.body;
+              brakeout = true;
+            }
+          }
+          if (!brakeout) {
+            return res.status(422).send({
+              message: errorHandler.getErrorMessage('No enterprise suppliers with that ID found')
+            });
+          }
+        } else {
+          return res.status(422).send({
+            message: errorHandler.getErrorMessage('No enterprise suppliers, can\'t find by ID')
+          });
+        }
+      } else { // make new Competitors
+        if (enterprise.partners.supplier) { // supplier is not empty
+          delete req.body._id;
+          enterprise.partners.supplier[enterprise.partners.supplier.length] = req.body;
+        } else { // supplier is empty
+          delete req.body._id;
+          enterprise.partners.supplier[0] = req.body;
+        }
+      }
       enterprise.save(function (err) {
         if (err) {
           return res.status(422).send({
@@ -231,7 +261,34 @@ exports.updateSuppliers = function(req, res) {
 exports.updateCompetitors = function(req, res) {
   if (req.body) {
     getEnterprise(req, res, function (enterprise) {
-      console.log(req.body);
+      if (req.body._id) { // update 
+        if (enterprise.partners.competitor) {
+          var brakeout = false;
+          for (var index = 0; index < enterprise.partners.competitor.length && !brakeout; index++) {
+            if (enterprise.partners.competitor[index]._id === req.body._id) {
+              enterprise.partners.competitor[index] = req.body;
+              brakeout = true;
+            }
+          }
+          if (!brakeout) {
+            return res.status(422).send({
+              message: errorHandler.getErrorMessage('No enterprise competitors with that ID found')
+            });
+          }
+        } else {
+          return res.status(422).send({
+            message: errorHandler.getErrorMessage('No enterprise competitors, can\'t find by ID')
+          });
+        }
+      } else { // make new Competitors
+        if (enterprise.partners.competitor) { // competitor is not empty
+          delete req.body._id;
+          enterprise.partners.competitor[enterprise.partners.competitor.length] = req.body;
+        } else { // competitor is empty
+          delete req.body._id;
+          enterprise.partners.competitor[0] = req.body;
+        }
+      }
       enterprise.save(function (err) {
         if (err) {
           return res.status(422).send({
@@ -255,7 +312,34 @@ exports.updateCompetitors = function(req, res) {
 exports.updateCustomers = function(req, res) {
   if (req.body) {
     getEnterprise(req, res, function (enterprise) {
-      console.log(req.body);
+      if (req.body._id) { // update 
+        if (enterprise.partners.customer) {
+          var brakeout = false;
+          for (var index = 0; index < enterprise.partners.customer.length && !brakeout; index++) {
+            if (enterprise.partners.customer[index]._id === req.body._id) {
+              enterprise.partners.customer[index] = req.body;
+              brakeout = true;
+            }
+          }
+          if (!brakeout) {
+            return res.status(422).send({
+              message: errorHandler.getErrorMessage('No enterprise customers with that ID found')
+            });
+          }
+        } else {
+          return res.status(422).send({
+            message: errorHandler.getErrorMessage('No enterprise customers, can\'t find by ID')
+          });
+        }
+      } else { // make new Competitors
+        if (enterprise.partners.customer) { // customer is not empty
+          delete req.body._id;
+          enterprise.partners.customer[enterprise.partners.competitor.length] = req.body;
+        } else { // customersis empty
+          delete req.body._id;
+          enterprise.partners.customer[0] = req.body;
+        }
+      }
       enterprise.save(function (err) {
         if (err) {
           return res.status(422).send({
@@ -284,6 +368,7 @@ exports.getEnterprise = function(req, res) {
         profile: {
           companyName: validator.escape(enterprise.profile.companyName),
           URL: validator.escape(enterprise.profile.URL),
+          countryOfBusiness: validator.escape(enterprise.profile.countryOfBusiness),
           description: validator.escape(enterprise.profile.description),
           industryClassification: [{}],
           yearEstablished: enterprise.profile.yearEstablished,
@@ -319,25 +404,25 @@ exports.getEnterprise = function(req, res) {
           }
         }
       }
-        if (enterprise.partners.customer) {
-          for (var cust = 0; cust < enterprise.partners.customer.length; cust++) {
-            if (enterprise.partners.customer[cust]) {
-              safeEnterpriseObject.partners.customer[cust]._id = enterprise.partners.customer[cust]._id;
-              safeEnterpriseObject.partners.customer[cust].companyName = validator.escape(enterprise.partners.customer[cust].companyName);
-              safeEnterpriseObject.partners.customer[cust].URL = validator.escape(enterprise.partners.customer[cust].URL);
-            }
-          }
-        }
-        if (enterprise.partners.competitor) {
-          for (var comp = 0; comp < enterprise.partners.competitor.length; comp++) {
-            if (enterprise.partners.competitor[comp]) {
-              safeEnterpriseObject.partners.competitor[comp]._id = enterprise.partners.competitor[comp]._id;
-              safeEnterpriseObject.partners.competitor[comp].companyName = validator.escape(enterprise.partners.competitor[comp].companyName);
-              safeEnterpriseObject.partners.competitor[comp].URL = validator.escape(enterprise.partners.competitor[comp].URL);
-            }
+      if (enterprise.partners.customer) {
+        for (var cust = 0; cust < enterprise.partners.customer.length; cust++) {
+          if (enterprise.partners.customer[cust]) {
+            safeEnterpriseObject.partners.customer[cust]._id = enterprise.partners.customer[cust]._id;
+            safeEnterpriseObject.partners.customer[cust].companyName = validator.escape(enterprise.partners.customer[cust].companyName);
+            safeEnterpriseObject.partners.customer[cust].URL = validator.escape(enterprise.partners.customer[cust].URL);
           }
         }
       }
-      res.json(safeEnterpriseObject || null);
+      if (enterprise.partners.competitor) {
+        for (var comp = 0; comp < enterprise.partners.competitor.length; comp++) {
+          if (enterprise.partners.competitor[comp]) {
+            safeEnterpriseObject.partners.competitor[comp]._id = enterprise.partners.competitor[comp]._id;
+            safeEnterpriseObject.partners.competitor[comp].companyName = validator.escape(enterprise.partners.competitor[comp].companyName);
+            safeEnterpriseObject.partners.competitor[comp].URL = validator.escape(enterprise.partners.competitor[comp].URL);
+          }
+        }
+      }
+    }
+    res.json(safeEnterpriseObject || null);
   });
 };
