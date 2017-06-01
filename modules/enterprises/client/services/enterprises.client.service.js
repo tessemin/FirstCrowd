@@ -31,7 +31,7 @@
         method: 'POST',
         url: 'api/enterprises/customers/'
       },
-      getEnterprise: {
+      getEnterpriseItems: {
         method: 'GET',
         url: 'api/enterprises/getEnterprise'
       }
@@ -49,6 +49,9 @@
       },
       updateCompetitorsFromForm: function (competitors) {
         return this.updateCompetitors(competitors).$promise;
+      },
+      getEnterprise: function () {
+        return this.getEnterpriseItems().$promise;
       }
     });
 
