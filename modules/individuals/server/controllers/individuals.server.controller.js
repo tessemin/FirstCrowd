@@ -6,10 +6,14 @@
 var path = require('path'),
   mongoose = require('mongoose'),
   Individual = mongoose.model('Individual'),
+  User = mongoose.model('User'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
+  coreController = require(path.resolve('./modules/core/server/controllers/core.server.controller')),
   _ = require('lodash'),
   validator = require('validator'),
   superIndividual = null;
+  
+var whitelistedFields = ['firstName', 'lastName', 'contactPreference', 'email', 'phone', 'username', 'middleName'];
   
 /**
  * Find the Individual
@@ -265,13 +269,11 @@ exports.updateExperience = function(req, res) {
 exports.updateBio = function(req, res) {
   if (req.body) {
     getIndividual(req, res, function(individual) {
+      let user = new User(req.user);
       individual.bio = req.body;
-      req.user.firstName = req.body.firstName;
-      req.user.middleName = req.body.middleName;
-      req.user.lastName = req.body.lastName;
-      req.user.displayName = req.body.firstName + ' ' + req.body.lastName;
+      user = _.extend(user, _.pick(req.body, whitelistedFields));
       
-      req.user.save(function (err) {
+      individual.save(function (err) {
         if (err) {
           return res.status(422).send({
             message: errorHandler.getErrorMessage(err)
@@ -279,13 +281,13 @@ exports.updateBio = function(req, res) {
         }
       });
       
-      individual.save(function (err) {
+      user.save(function (err) {
         if (err) {
           return res.status(422).send({
             message: errorHandler.getErrorMessage(err)
           });
         } else {
-          res.jsonp(individual);
+          coreController.renderIndex(req, res);
         }
       });
     });

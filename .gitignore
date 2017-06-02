@@ -36,6 +36,7 @@ _site/
 
 # General
 # =======
+*.js~
 *.log
 *.csv
 *.dat
