@@ -7,6 +7,7 @@ var path = require('path'),
   mongoose = require('mongoose'),
   Individual = mongoose.model('Individual'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
+  coreController = require(path.resolve('./modules/core/server/controllers/core.server.controller')),
   _ = require('lodash'),
   validator = require('validator'),
   superIndividual = null;
@@ -271,7 +272,7 @@ exports.updateBio = function(req, res) {
       req.user.lastName = req.body.lastName;
       req.user.displayName = req.body.firstName + ' ' + req.body.lastName;
       
-      req.user.save(function (err) {
+      individual.save(function (err) {
         if (err) {
           return res.status(422).send({
             message: errorHandler.getErrorMessage(err)
@@ -279,13 +280,13 @@ exports.updateBio = function(req, res) {
         }
       });
       
-      individual.save(function (err) {
+      user.save(function (err) {
         if (err) {
           return res.status(422).send({
             message: errorHandler.getErrorMessage(err)
           });
         } else {
-          res.jsonp(individual);
+          coreController.renderIndex(req, res);
         }
       });
     });

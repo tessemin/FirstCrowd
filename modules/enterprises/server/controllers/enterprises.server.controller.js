@@ -6,7 +6,10 @@
 var path = require('path'),
     mongoose = require('mongoose'),
     Enterprise = mongoose.model('Enterprise'),
+    User = mongoose.model('User'),
+    passport = require('passport'),
     errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
+    coreController = require(path.resolve('./modules/core/server/controllers/core.server.controller')),
     _ = require('lodash'),
     validator = require('validator'),
     superEnterprise = null;
@@ -160,32 +163,31 @@ exports.enterpriseByID = function(req, res, next, id) {
 exports.updateProfile = function(req, res) {
   if (req.body) {
     getEnterprise(req, res, function (enterprise) {
+      var user = new User(req.user);
       
-      req.user.email = req.body.email;
-      req.user.phone = req.body.phone;
+      user.email = req.body.email;
+      user.phone = req.body.phone;
 
       delete req.body.email;
       delete req.body.phone;
 
       enterprise.profile = req.body.profile;
 
-      req.user.save(function (err) {
-        if (err) {
-          return res.status(422).send({
-            message: errorHandler.getErrorMessage(err)
-          });
-        } else {
-          return;
-        }
-      });
-
       enterprise.save(function (err) {
         if (err) {
           return res.status(422).send({
             message: errorHandler.getErrorMessage(err)
           });
+        }
+      });
+      
+      user.save(function (err) {
+        if (err) {
+          return res.status(422).send({
+            message: errorHandler.getErrorMessage(err)
+          });
         } else {
-          res.jsonp(enterprise);
+          coreController.renderIndex(req, res);
         }
       });
     });
@@ -362,7 +364,7 @@ exports.getEnterprise = function(req, res) {
           URL: enterprise.profile.URL,
           countryOfBusiness: enterprise.profile.countryOfBusiness,
           description: enterprise.profile.description,
-          industryClassification: [],
+          industryClassification: enterprise.profile.classification,
           yearEstablished: enterprise.profile.yearEstablished,
           employeeCount: enterprise.profile.employeeCount,
           companyAddress: {
@@ -379,14 +381,6 @@ exports.getEnterprise = function(req, res) {
           competitor: []
         }
       };
-      if (enterprise.profile.classification) {
-        for (var classify = 0; classify < enterprise.profile.classification.length; classify++) {
-          if (enterprise.profile.classification[classify]) {
-            safeEnterpriseObject.profile.classification = new Object();
-            safeEnterpriseObject.profile.classification[classify] = enterprise.profile.classification[classify];
-          }
-        }
-      }
       if (enterprise.partners.supplier) {
         for (var supply = 0; supply < enterprise.partners.supplier.length; supply++) {
           if (enterprise.partners.supplier[supply]) {
