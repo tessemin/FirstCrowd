@@ -15,18 +15,11 @@
       type: 'dropdown',
       userRole: 'individual'
     });
-
+    
     // Add the dropdown list item
     menuService.addSubMenuItem('topbar', 'individuals', {
-      title: 'List Individuals',
-      state: 'individuals.list'
-    });
-
-    // Add the dropdown create item
-    menuService.addSubMenuItem('topbar', 'individuals', {
-      title: 'Create Individual',
-      state: 'individuals.create',
-      userRole: 'individual'
+      title: 'Edit Profile',
+      state: 'individuals.profile'
     });
   }
 }());
