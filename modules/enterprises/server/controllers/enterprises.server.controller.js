@@ -210,7 +210,7 @@ exports.updateSuppliers = function(req, res) {
         if (enterprise.partners.supplier) {
           var brakeout = false;
           for (var index = 0; index < enterprise.partners.supplier.length && !brakeout; index++) {
-            if (enterprise.partners.supplier[index]._id === req.body._id) {
+            if (enterprise.partners.supplier[index]._id.toString() === req.body._id.toString()) {
               enterprise.partners.supplier[index] = req.body;
               brakeout = true;
             }
@@ -256,7 +256,7 @@ exports.updateCompetitors = function(req, res) {
         if (enterprise.partners.competitor) {
           var brakeout = false;
           for (var index = 0; index < enterprise.partners.competitor.length && !brakeout; index++) {
-            if (enterprise.partners.competitor[index]._id === req.body._id) {
+            if (enterprise.partners.competitor[index]._id.toString() === req.body._id.toString()) {
               enterprise.partners.competitor[index] = req.body;
               brakeout = true;
             }
@@ -301,13 +301,17 @@ exports.updateCompetitors = function(req, res) {
  * update Enterprise Customers
  */
 exports.updateCustomers = function(req, res) {
+  console.log(req.body);
   if (req.body) {
     getEnterprise(req, res, function (enterprise) {
       if (req.body._id) { // update 
         if (enterprise.partners.customer) {
           var brakeout = false;
           for (var index = 0; index < enterprise.partners.customer.length && !brakeout; index++) {
-            if (enterprise.partners.customer[index]._id === req.body._id) {
+            console.log(req.body._id);
+            console.log(enterprise.partners.customer[index]._id);
+            if (enterprise.partners.customer[index]._id.toString() === req.body._id.toString()) {
+              console.log('here')
               enterprise.partners.customer[index] = req.body;
               brakeout = true;
             }
