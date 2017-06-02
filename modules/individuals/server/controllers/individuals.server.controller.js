@@ -321,7 +321,7 @@ exports.getIndividual = function(req, res) {
         certification: [{}],
         jobExperience: [{}],
         skills: [{
-          locationLearned: [{}]
+          locationLearned: []
         }]
       };
       for (var degree = 0; degree < individual.degrees.length; degree++) {

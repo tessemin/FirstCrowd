@@ -274,16 +274,8 @@
       'chief executive officer'
     ];
 
-    vm.classClick = classClick;
-
-    function classClick(item) {
-      console.log(vm.classifications);
-    }
-
-
     // UpdateProfile Enterprise
     function saveProfile(isValid) {
-
 
       if (!isValid) {
         $scope.$broadcast('show-errors-check-validity', 'vm.enterpriseForm');
@@ -310,8 +302,8 @@
       EnterprisesService.getEnterprise()
         .then(function(response) {
 
-          console.log(response.profile);
           let res = response.profile;
+          console.log(res);
 
           vm.companyName = res.companyName;
           vm.URL = res.URL;
@@ -322,16 +314,12 @@
           vm.zipCode = res.companyAddress.zipCode;
           vm.city = res.companyAddress.city;
           vm.state = res.companyAddress.state;
+          vm.classifications = res.classifications;
           vm.streetAddress = res.companyAddress.streetAddress;
           vm.country = countryByCode(res.companyAddress.country);
           vm.countryOfBusiness = countryByCode(res.countryOfBusiness);
 
-          vm.classifications = res.classifications;
-
-
           let user = Authentication.user;
-
-          console.log(Authentication.user);
 
           vm.email = user.email;
           vm.phone = user.phone;
@@ -350,10 +338,9 @@
     function saveProfileItems() {
 
       let profile = {
-        companyAddress: {}
+        companyAddress: {},
+        classifications: []
       };
-
-      console.log(vm.classifications);
 
       profile.companyName = vm.companyName;
       profile.URL = vm.URL;
