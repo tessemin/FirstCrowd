@@ -19,6 +19,7 @@
     vm.saveSupplier = saveSupplier;
     vm.edit = edit;
     vm.cancel = cancel;
+    vm.delete = deleteItem;
 
     createList();
 
@@ -27,6 +28,17 @@
       vm.selectedId = item._id;
       vm.selectedURL = item.URL;
       vm.selectedCompany = item.companyName;
+    }
+
+    function deleteItem(item) {
+      item.companyName = '';
+      item.URL = '';
+
+      console.log(item);
+
+      EnterprisesService.updateSuppliersFromForm(item)
+        .then(onUpdateSuppliersSuccess)
+        .catch(onUpdateSuppliersError);
     }
 
     function cancel() {

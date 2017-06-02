@@ -18,6 +18,7 @@
 
     vm.saveCompetitor = saveCompetitor;
     vm.edit = edit;
+    vm.deleteItem = deleteItem;
     vm.cancel = cancel;
 
     createList();
@@ -27,6 +28,17 @@
       vm.selectedId = item._id;
       vm.selectedURL = item.URL;
       vm.selectedCompany = item.companyName;
+    }
+
+    function deleteItem(item) {
+      item.companyName = '';
+      item.URL = '';
+
+      console.log(item);
+
+      EnterprisesService.updateCompetitorsFromForm(item)
+        .then(onUpdateCompetitorsSuccess)
+        .catch(onUpdateCompetitorsError);
     }
 
     function cancel() {
