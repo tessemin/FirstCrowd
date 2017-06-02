@@ -13,6 +13,8 @@ var path = require('path'),
     _ = require('lodash'),
     validator = require('validator'),
     superEnterprise = null;
+    
+var whitelistedFields = ['contactPreference', 'email', 'phone', 'username', 'middleName'];
 
 /**
  * Find the Enterprise
@@ -165,8 +167,7 @@ exports.updateProfile = function(req, res) {
     getEnterprise(req, res, function (enterprise) {
       var user = new User(req.user);
       
-      user.email = req.body.email;
-      user.phone = req.body.phone;
+      user = _.extend(user, _.pick(req.body, whitelistedFields));
 
       delete req.body.email;
       delete req.body.phone;
