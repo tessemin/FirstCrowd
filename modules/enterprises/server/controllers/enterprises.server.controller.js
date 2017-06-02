@@ -4,17 +4,17 @@
  * Module dependencies.
  */
 var path = require('path'),
-    mongoose = require('mongoose'),
-    Enterprise = mongoose.model('Enterprise'),
-    User = mongoose.model('User'),
-    passport = require('passport'),
-    errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
-    coreController = require(path.resolve('./modules/core/server/controllers/core.server.controller')),
-    _ = require('lodash'),
-    validator = require('validator'),
-    superEnterprise = null;
+  mongoose = require('mongoose'),
+  Enterprise = mongoose.model('Enterprise'),
+  User = mongoose.model('User'),
+  passport = require('passport'),
+  errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
+  coreController = require(path.resolve('./modules/core/server/controllers/core.server.controller')),
+  _ = require('lodash'),
+  validator = require('validator'),
+  superEnterprise = null;
 
-var whitelistedFields = ['contactPreference', 'email', 'phone', 'username', 'middleName'];
+var whitelistedFields = ['contactPreference', 'email', 'phone', 'username', 'middleName', 'displayName'];
 
 /**
  * Find the Enterprise
@@ -165,15 +165,16 @@ exports.enterpriseByID = function(req, res, next, id) {
 exports.updateProfile = function(req, res) {
   if (req.body) {
     getEnterprise(req, res, function (enterprise) {
+      
+      req.user.displayName = req.body.profile.companyName;
+      
       var user = new User(req.user);
-
+      
       user = _.extend(user, _.pick(req.body, whitelistedFields));
-
       req.user = user;
-
+      
       delete req.body.email;
       delete req.body.phone;
-      console.log(req.body.profile);
       enterprise.profile = req.body.profile;
 
       enterprise.save(function (err) {
@@ -212,7 +213,7 @@ exports.updateSuppliers = function(req, res) {
           var brakeout = false;
           for (var index = 0; index < enterprise.partners.supplier.length && !brakeout; index++) {
             if (enterprise.partners.supplier[index]._id.toString() === req.body._id.toString()) {
-              if (req.body.URL == '' && req.body.companyName == '') {
+              if (req.body.URL === '' && req.body.companyName === '') {
                 enterprise.partners.supplier.splice(index, 1);
               } else {
                 enterprise.partners.supplier[index] = req.body;
@@ -391,43 +392,12 @@ exports.getEnterprise = function(req, res) {
           }
         },
         partners: {
-          supplier: [],
-          customer: [],
-          competitor: []
+          supplier: enterprise.partners.supplier,
+          customer: enterprise.partners.customer,
+          competitor: enterprise.partners.competitor
         }
       };
-      if (enterprise.partners.supplier) {
-        for (var supply = 0; supply < enterprise.partners.supplier.length; supply++) {
-          if (enterprise.partners.supplier[supply]) {
-            safeEnterpriseObject.partners.supplier[supply] = new Object();
-            safeEnterpriseObject.partners.supplier[supply]._id = enterprise.partners.supplier[supply]._id;
-            safeEnterpriseObject.partners.supplier[supply].companyName = enterprise.partners.supplier[supply].companyName;
-            safeEnterpriseObject.partners.supplier[supply].URL = enterprise.partners.supplier[supply].URL;
-          }
-        }
-      }
-      if (enterprise.partners.customer) {
-        for (var cust = 0; cust < enterprise.partners.customer.length; cust++) {
-          if (enterprise.partners.customer[cust]) {
-            safeEnterpriseObject.partners.customer[cust] = new Object();
-            safeEnterpriseObject.partners.customer[cust]._id = enterprise.partners.customer[cust]._id;
-            safeEnterpriseObject.partners.customer[cust].companyName = enterprise.partners.customer[cust].companyName;
-            safeEnterpriseObject.partners.customer[cust].URL = enterprise.partners.customer[cust].URL;
-          }
-        }
-      }
-      if (enterprise.partners.competitor) {
-        for (var comp = 0; comp < enterprise.partners.competitor.length; comp++) {
-          if (enterprise.partners.competitor[comp]) {
-            safeEnterpriseObject.partners.competitor[comp] = new Object();
-            safeEnterpriseObject.partners.competitor[comp]._id = enterprise.partners.competitor[comp]._id;
-            safeEnterpriseObject.partners.competitor[comp].companyName = enterprise.partners.competitor[comp].companyName;
-            safeEnterpriseObject.partners.competitor[comp].URL = enterprise.partners.competitor[comp].URL;
-          }
-        }
-      }
     }
-    console.log(safeEnterpriseObject);
     res.json(safeEnterpriseObject || null);
   });
 };

@@ -317,63 +317,11 @@ exports.getIndividual = function(req, res) {
             streetAddress: individual.bio.address.streetAddress
           }
         },
-        degrees: [{}],
-        certification: [{}],
-        jobExperience: [{}],
-        skills: [{
-          locationLearned: []
-        }]
+        degrees: individual.degrees,
+        certification: individual.certification,
+        jobExperience: individual.jobExperience,
+        skills: individual.skills
       };
-      for (var degree = 0; degree < individual.degrees.length; degree++) {
-        if (individual.degrees[degree]) {
-          safeIndividualObject.degrees[degree] = new Object();
-          safeIndividualObject.degrees[degree]._id = individual.degrees[degree]._id;
-          safeIndividualObject.degrees[degree].schoolName = individual.degrees[degree].schoolName;
-          safeIndividualObject.degrees[degree].degreeLevel = individual.degrees[degree].degreeLevel;
-          safeIndividualObject.degrees[degree].startDate = individual.degrees[degree].startDate;
-          safeIndividualObject.degrees[degree].endDate = individual.degrees[degree].endDate;
-          safeIndividualObject.degrees[degree].concentration = individual.degrees[degree].concentration;
-          safeIndividualObject.degrees[degree].address = new Object();
-          safeIndividualObject.degrees[degree].address.schoolCountry = individual.degrees[degree].address.schoolCountry;
-          safeIndividualObject.degrees[degree].address.schoolStreetAddress = individual.degrees[degree].address.schoolStreetAddress;
-          safeIndividualObject.degrees[degree].address.schoolCity = individual.degrees[degree].address.schoolCity;
-          safeIndividualObject.degrees[degree].address.schoolState = individual.degrees[degree].address.schoolState;
-          safeIndividualObject.degrees[degree].address.schoolZipCode = individual.degrees[degree].address.schoolZipCode;
-        }
-      }
-      for (var exp = 0; exp < individual.jobExperience.length; exp++) {
-        if (individual.jobExperience[exp]) {
-          safeIndividualObject.jobExperience[exp] = new Object();
-          safeIndividualObject.jobExperience[exp]._id = individual.jobExperience[exp]._id;
-          safeIndividualObject.jobExperience[exp].employer = individual.jobExperience[exp].employer;
-          safeIndividualObject.jobExperience[exp].description = individual.jobExperience[exp].description;
-          safeIndividualObject.jobExperience[exp].jobTitle = individual.jobExperience[exp].jobTitle;
-          safeIndividualObject.jobExperience[exp].startDate = individual.jobExperience[exp].startDate;
-          safeIndividualObject.jobExperience[exp].endDate = individual.jobExperience[exp].endDate;
-          safeIndividualObject.jobExperience[exp].skills = individual.jobExperience[exp].skills;
-        }
-      }
-      for (var cert = 0; cert < individual.certification.length; cert++) {
-        if (individual.certification[cert]) {
-          safeIndividualObject.certification[cert] = new Object();
-          safeIndividualObject.certification[cert]._id = individual.certification[cert]._id;
-          safeIndividualObject.certification[cert].certificationName = individual.certification[cert].certificationName;
-          safeIndividualObject.certification[cert].institution = individual.certification[cert].institution;
-          safeIndividualObject.certification[cert].dateIssued = individual.certification[cert].dateIssued;
-          safeIndividualObject.certification[cert].dateExpired = individual.certification[cert].dateExpired;
-          safeIndividualObject.certification[cert].description = individual.certification[cert].description;
-        }
-      }
-      for (var i = 0; i < individual.skills.length; i++) {
-        if (individual.skills[i]) {
-          safeIndividualObject.skills[i] = new Object();
-          safeIndividualObject.skills[i]._id = individual.skills[i]._id;
-          safeIndividualObject.skills[i].skill = individual.skills[i].skill;
-          safeIndividualObject.skills[i].firstUsed = individual.skills[i].firstUsed;
-          safeIndividualObject.skills[i].lastUsed = individual.skills[i].lastUsed;
-          safeIndividualObject.skills[i].locationLearned = individual.skills[i].locationLearned;
-        }
-      }
     }
     res.json(safeIndividualObject || null);
   });
