@@ -168,6 +168,8 @@ exports.updateProfile = function(req, res) {
       var user = new User(req.user);
       
       user = _.extend(user, _.pick(req.body, whitelistedFields));
+      
+      req.user = user;
 
       delete req.body.email;
       delete req.body.phone;
@@ -203,7 +205,6 @@ exports.updateProfile = function(req, res) {
  * update Enterprise Suppliers
  */
 exports.updateSuppliers = function(req, res) {
-  if (req.body) {
     getEnterprise(req, res, function (enterprise) {
       if (req.body._id) { // update 
         if (enterprise.partners.supplier) {
@@ -243,11 +244,6 @@ exports.updateSuppliers = function(req, res) {
         }
       });
     });
-  } else {
-    return res.status(422).send({
-      message: errorHandler.getErrorMessage('Nothing to Update')
-    });
-  }
 };
 
 /**

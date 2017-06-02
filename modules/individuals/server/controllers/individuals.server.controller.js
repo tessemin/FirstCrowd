@@ -273,6 +273,8 @@ exports.updateBio = function(req, res) {
       individual.bio = req.body;
       user = _.extend(user, _.pick(req.body, whitelistedFields));
       
+      req.user = user;
+      
       individual.save(function (err) {
         if (err) {
           return res.status(422).send({
