@@ -17,6 +17,8 @@
       .state('individuals.resume', {
         url: '/resume',
         templateUrl: '/modules/individuals/client/views/resume.client.view.html',
+        controller: 'ResumeController',
+        controllerAs: 'vm',
         data: {
           pageTitle: 'View Your Resume'
         }

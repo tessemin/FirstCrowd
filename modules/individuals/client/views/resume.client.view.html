@@ -1,3 +1,28 @@
-<div>
-  Resume!
+<div ng-controller="ResumeController as vm">
+  <section class="row">
+    <div class="col-xs-offset-1 col-xs-10">
+      <p>
+        {{vm.user.firstName}} {{vm.user.middleName}} {{vm.user.lastName}}, {{vm.individual.bio.profession}}<br/>
+        {{vm.user.email}} {{vm.user.phone}}
+      </p>
+      <p>
+        {{vm.individual.bio.address.streetAddress}}<br/>
+        {{vm.individual.bio.address.city}} {{vm.individual.bio.address.state}}
+        {{vm.individual.bio.address.zipCode}} {{vm.individual.bio.address.country}}
+      </p>
+      <div class="resume-component" ng-repeat="degree in vm.individual.degrees">
+        {{degree.degreeLevel}} in {{degree.concentration}} from {{degree.schoolName}}, year
+      </div>
+      <div class="resume-component" ng-repeat="cert in vm.individual.certification">
+        {{cert.certificationName}} Certification from {{cert.institution}}, year - year</br>
+      </div>
+      <div class="resume-component" ng-repeat="job in vm.individual.jobExperience">
+        {{job.jobTitle}} for {{job.employer}}, year - year<br/>
+        <span ng-repeat="skill in job.skills">{{skill}}, </span><br/>
+        {{job.description}}
+      </div>
+      <div class="resume-component" ng-repeat="skill in vm.individual.skills track by $index">
+      </div>
+    </div>
+  </section>
 </div>
