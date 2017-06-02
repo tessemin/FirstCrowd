@@ -18,25 +18,25 @@
 
     vm.saveCustomer = saveCustomer;
     vm.edit = edit;
+    vm.delete = deleteItem;
     vm.cancel = cancel;
 
-    vm.customer = [
-      {
-        _id: 1,
-        companyName: 'FACEBOOK',
-        URL: 'www.facebook.com'
-      },
-      {
-        _id: 2,
-        companyName: 'GOOGLE',
-        URL: 'www.google.com'
-      }
-    ];
+    createList();
 
     function edit(item) {
+      vm.company = item.companyName;
       vm.selectedId = item._id;
       vm.selectedURL = item.URL;
       vm.selectedCompany = item.companyName;
+    }
+
+    function deleteItem(item) {
+      item.companyName = '';
+      item.URL = '';
+
+      EnterprisesService.updateCustomersFromForm(item)
+        .then(onUpdateCustomersSuccess)
+        .catch(onUpdateCustomersError);
     }
 
     function cancel() {
@@ -64,11 +64,20 @@
 
     function onUpdateCustomersSuccess(response) {
       Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Customers updated!' });
-
+      createList();
+      cancel();
     }
 
     function onUpdateCustomersError(response) {
       Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Update failed! Customers not updated!' });
+      createList();
+    }
+
+    function createList() {
+      EnterprisesService.getEnterprise()
+        .then(function(response) {
+          vm.customer = response.partners.customer;
+        });
     }
   }
 }());

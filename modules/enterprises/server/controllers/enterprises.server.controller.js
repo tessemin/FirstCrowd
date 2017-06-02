@@ -13,7 +13,7 @@ var path = require('path'),
     _ = require('lodash'),
     validator = require('validator'),
     superEnterprise = null;
-    
+
 var whitelistedFields = ['contactPreference', 'email', 'phone', 'username', 'middleName'];
 
 /**
@@ -166,8 +166,10 @@ exports.updateProfile = function(req, res) {
   if (req.body) {
     getEnterprise(req, res, function (enterprise) {
       var user = new User(req.user);
-      
+
       user = _.extend(user, _.pick(req.body, whitelistedFields));
+
+      req.user = user;
 
       delete req.body.email;
       delete req.body.phone;
@@ -181,7 +183,7 @@ exports.updateProfile = function(req, res) {
           });
         }
       });
-      
+
       user.save(function (err) {
         if (err) {
           return res.status(422).send({
@@ -205,12 +207,16 @@ exports.updateProfile = function(req, res) {
 exports.updateSuppliers = function(req, res) {
   if (req.body) {
     getEnterprise(req, res, function (enterprise) {
-      if (req.body._id) { // update 
+      if (req.body._id) { // update
         if (enterprise.partners.supplier) {
           var brakeout = false;
           for (var index = 0; index < enterprise.partners.supplier.length && !brakeout; index++) {
-            if (enterprise.partners.supplier[index]._id === req.body._id) {
-              enterprise.partners.supplier[index] = req.body;
+            if (enterprise.partners.supplier[index]._id.toString() === req.body._id.toString()) {
+              if (req.body.URL == '' && req.body.companyName == '') {
+                enterprise.partners.supplier.splice(index, 1);
+              } else {
+                enterprise.partners.supplier[index] = req.body;
+              }
               brakeout = true;
             }
           }
@@ -256,12 +262,16 @@ exports.updateSuppliers = function(req, res) {
 exports.updateCompetitors = function(req, res) {
   if (req.body) {
     getEnterprise(req, res, function (enterprise) {
-      if (req.body._id) { // update 
+      if (req.body._id) { // update
         if (enterprise.partners.competitor) {
           var brakeout = false;
           for (var index = 0; index < enterprise.partners.competitor.length && !brakeout; index++) {
-            if (enterprise.partners.competitor[index]._id === req.body._id) {
-              enterprise.partners.competitor[index] = req.body;
+            if (enterprise.partners.competitor[index]._id.toString() === req.body._id.toString()) {
+              if (req.body.URL === '' && req.body.companyName === '') {
+                enterprise.partners.competitor.splice(index, 1);
+              } else {
+                enterprise.partners.competitor[index] = req.body;
+              }
               brakeout = true;
             }
           }
@@ -307,12 +317,16 @@ exports.updateCompetitors = function(req, res) {
 exports.updateCustomers = function(req, res) {
   if (req.body) {
     getEnterprise(req, res, function (enterprise) {
-      if (req.body._id) { // update 
+      if (req.body._id) { // update
         if (enterprise.partners.customer) {
           var brakeout = false;
           for (var index = 0; index < enterprise.partners.customer.length && !brakeout; index++) {
-            if (enterprise.partners.customer[index]._id === req.body._id) {
-              enterprise.partners.customer[index] = req.body;
+            if (enterprise.partners.customer[index]._id.toString() === req.body._id.toString()) {
+              if (req.body.URL === '' && req.body.companyName === '') { // delete
+                enterprise.partners.customer.splice(index, 1);
+              } else { // update
+                enterprise.partners.customer[index] = req.body;
+              }
               brakeout = true;
             }
           }
@@ -329,7 +343,7 @@ exports.updateCustomers = function(req, res) {
       } else { // make new Competitors
         if (enterprise.partners.customer) { // customer is not empty
           delete req.body._id;
-          enterprise.partners.customer[enterprise.partners.competitor.length] = req.body;
+          enterprise.partners.customer[enterprise.partners.customer.length] = req.body;
         } else { // customersis empty
           delete req.body._id;
           enterprise.partners.customer[0] = req.body;

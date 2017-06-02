@@ -1,20 +1,9 @@
 <section class="row">
-  <h4 class="col-sm-10"><label>Supply Company Names</label></h4>
-  <label class="col-sm-2">Edit / Delete</label>
-    <div class="list-group">
-      <div ng-repeat="item in vm.supplier">
-      <a href="//{{item.URL}}" class="list-group-item col-sm-10" ng-mouseover="hoverEdit = true" ng-mouseleave="hoverEdit = false">
-        <h5 ng-bind="item.companyName">
-          <h5 ng-show="hoverEdit" class="website-prompt">Visit {{item.URL}}</h5>
-        </h5>
-      </a>
-      <span ng-click="vm.edit(item)" class="col-sm-2 glyphicon glyphicon-pencil edit-icon"></span>
-      </div>
-    </div>
   <div class="col-md-12">
     <form name="vm.supplierForm" class="form-horizontal" ng-submit="vm.saveSupplier(vm.supplierForm.$valid)" novalidate>
       <fieldset>
         <div class="form-group" show-errors>
+          <h3>{{vm.selectedId ? 'Edit Customer ' + vm.company:'New Customer'}}</h3>
           <label for="companyName">Company Name</label>
           <input type="text" id="companyName" name="companyName" class="form-control" ng-model="vm.selectedCompany" placeholder="Company Name" required autofocus>
           <div ng-messages="vm.supplierForm.companyName.$error" role="alert">
@@ -29,10 +18,25 @@
           </div>
         </div>
         <div class="text-center">
-          <button type="submit" class="btn btn-success">Save</button>
+          <button type="submit" class="btn btn-success">{{vm.selectedId ? 'Update ' + vm.company:'Save'}}</button>
           <div ng-click="vm.cancel()" class="btn btn-default">Cancel</div>
         </div>
       </fieldset>
     </form>
+  </div>
+
+  <h4 class="col-sm-10"><label>{{vm.supplier.length !== 0 ? 'Supplier Company Names' : 'There are no suppliers listed'}}</label></h4>
+  <label class="col-xs-1">{{vm.supplier.length !== 0 ? 'Edit' : '' }}</label>
+  <label class="col-xs-1">{{vm.supplier.length !== 0 ? 'Delete' : '' }}</label>
+  <div class="list-group">
+    <div ng-repeat="item in vm.supplier">
+      <a href="//{{item.URL}}" class="list-group-item col-sm-10" ng-mouseover="hoverEdit = true" ng-mouseleave="hoverEdit = false">
+        <h5 ng-bind="item.companyName">
+          <h5 ng-show="hoverEdit" class="website-prompt">Visit {{item.URL}}</h5>
+        </h5>
+      </a>
+      <span ng-click="vm.edit(item)" class="col-xs-1 glyphicon glyphicon-pencil edit-icon"></span>
+      <span ng-click="vm.delete(item)" class="col-xs-1 glyphicon glyphicon-trash edit-icon"></span>
+    </div>
   </div>
 </section>

@@ -83,7 +83,7 @@
 
           <div class="form-group" show-errors>
             <label for="classifications">Industry Classifications</label>
-            <select id="classifications" name="classifications" class="form-control" ng-model="vm.classifications" ng-options="x for x in vm.classificationList" required>
+            <select id="classifications" name="classifications" class="form-control" ng-model="vm.classifications" ng-click="vm.classClick(vm.classifications)" ng-options="x for x in vm.classificationList track by x" required>
             </select>
           </div>
 
