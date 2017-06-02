@@ -12,8 +12,8 @@
     menuService.addMenuItem('topbar', {
       title: 'Enterprises',
       state: 'enterprises',
-      type: 'dropdown'
-      // roles: ['ent']
+      type: 'dropdown',
+      roles: ['enterprise']
     });
 
     // Add the dropdown list item
@@ -33,6 +33,13 @@
     //
     // custom menu items
     //
+    menuService.addMenuItem('topbar', {
+      title: 'Enterprise Graph',
+      state: 'enterprises.graph',
+      // type: 'dropdown',
+      roles: ['enterprise']
+    });
+
     menuService.addMenu('enterprise', {
       roles: ['*']
     });

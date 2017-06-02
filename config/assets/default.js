@@ -26,6 +26,7 @@ module.exports = {
         'public/lib/owasp-password-strength-test/owasp-password-strength-test.js',
 	// added packages
         'public/lib/angular-bootstrap-multiselect/dist/angular-bootstrap-multiselect.js',
+        'public/lib/d3/d3.js'
         // endbower
       ],
       tests: ['public/lib/angular-mocks/angular-mocks.js']
