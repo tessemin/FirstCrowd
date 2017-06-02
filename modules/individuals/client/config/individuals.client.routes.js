@@ -14,6 +14,13 @@
         url: '/individuals',
         templateUrl: '/modules/individuals/client/views/settings/individuals.client.view.html'
       })
+      .state('individuals.resume', {
+        url: '/resume',
+        templateUrl: '/modules/individuals/client/views/resume.client.view.html',
+        data: {
+          pageTitle: 'View Your Resume'
+        }
+      })
       .state('individuals.profile', {
         url: '/profile',
         templateUrl: '/modules/users/client/views/settings/edit-profile.client.view.html',
