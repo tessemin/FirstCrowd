@@ -212,8 +212,8 @@ exports.updateSuppliers = function(req, res) {
           var brakeout = false;
           for (var index = 0; index < enterprise.partners.supplier.length && !brakeout; index++) {
             if (enterprise.partners.supplier[index]._id.toString() === req.body._id.toString()) {
-              if (req.bod.URL === null && req.bod.companyName === null) {
-                enterprise.partners.supplier[index] = null;
+              if (req.body.URL == '' && req.body.companyName == '') {
+                enterprise.partners.supplier.splice(index, 1);
               } else {
                 enterprise.partners.supplier[index] = req.body;
               }
@@ -267,8 +267,8 @@ exports.updateCompetitors = function(req, res) {
           var brakeout = false;
           for (var index = 0; index < enterprise.partners.competitor.length && !brakeout; index++) {
             if (enterprise.partners.competitor[index]._id.toString() === req.body._id.toString()) {
-              if (req.bod.URL === null && req.bod.companyName === null) {
-                enterprise.partners.competitor[index] = null;
+              if (req.body.URL === '' && req.body.companyName === '') {
+                enterprise.partners.competitor.splice(index, 1);
               } else {
                 enterprise.partners.competitor[index] = req.body;
               }
@@ -322,9 +322,9 @@ exports.updateCustomers = function(req, res) {
           var brakeout = false;
           for (var index = 0; index < enterprise.partners.customer.length && !brakeout; index++) {
             if (enterprise.partners.customer[index]._id.toString() === req.body._id.toString()) {
-              if (req.bod.URL === null && req.bod.companyName === null) {
-                enterprise.partners.customer[index] = null;
-              } else {
+              if (req.body.URL === '' && req.body.companyName === '') { // delete
+                enterprise.partners.customer.splice(index, 1);
+              } else { // update
                 enterprise.partners.customer[index] = req.body;
               }
               brakeout = true;
