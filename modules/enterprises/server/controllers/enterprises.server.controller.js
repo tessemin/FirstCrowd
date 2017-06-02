@@ -173,7 +173,7 @@ exports.updateProfile = function(req, res) {
 
       delete req.body.email;
       delete req.body.phone;
-
+      console.log(req.body.profile);
       enterprise.profile = req.body.profile;
 
       enterprise.save(function (err) {
@@ -379,7 +379,7 @@ exports.getEnterprise = function(req, res) {
           URL: enterprise.profile.URL,
           countryOfBusiness: enterprise.profile.countryOfBusiness,
           description: enterprise.profile.description,
-          industryClassification: enterprise.profile.classification,
+          classifications: enterprise.profile.classifications,
           yearEstablished: enterprise.profile.yearEstablished,
           employeeCount: enterprise.profile.employeeCount,
           companyAddress: {
@@ -427,6 +427,7 @@ exports.getEnterprise = function(req, res) {
         }
       }
     }
+    console.log(safeEnterpriseObject);
     res.json(safeEnterpriseObject || null);
   });
 };
