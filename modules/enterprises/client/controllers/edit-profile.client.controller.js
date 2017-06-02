@@ -322,6 +322,7 @@
           vm.countryOfBusiness = countryByCode(res.countryOfBusiness);
 
           let user = Authentication.user;
+
           console.log(Authentication.user);
 
           vm.email = user.email;
@@ -343,6 +344,7 @@
       let profile = {
         companyAddress: {}
       };
+
       profile.companyName = vm.companyName;
       profile.URL = vm.URL;
       profile.employeeCount = vm.employeeCount;
@@ -356,7 +358,6 @@
 
       profile.companyAddress.country = vm.country.code;
       profile.countryOfBusiness = vm.countryOfBusiness.code;
-
 
       vm.ret.email = vm.email;
       vm.ret.phone = vm.phone;

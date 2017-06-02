@@ -20,20 +20,10 @@
     vm.edit = edit;
     vm.cancel = cancel;
 
-    vm.supplier = [
-      {
-        _id: 4,
-        companyName: 'jeff',
-        URL: 'www.bawls.com'
-      },
-      {
-        _id: 6,
-        companyName: 'yuki',
-        URL: 'www.pawlbs.com'
-      }
-    ];
+    createList();
 
     function edit(item) {
+      vm.company = item.companyName;
       vm.selectedId = item._id;
       vm.selectedURL = item.URL;
       vm.selectedCompany = item.companyName;
@@ -64,10 +54,20 @@
 
     function onUpdateSuppliersSuccess(response) {
       Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Suppliers updated!' });
+      createList();
+      cancel();
     }
 
     function onUpdateSuppliersError(response) {
       Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Update failed! Suppliers not updated!' });
+      createList();
+    }
+
+    function createList() {
+      EnterprisesService.getEnterprise()
+        .then(function(response) {
+          vm.supplier = response.partners.supplier;
+        });
     }
   }
 }());

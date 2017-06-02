@@ -20,20 +20,10 @@
     vm.edit = edit;
     vm.cancel = cancel;
 
-    vm.competitor = [
-      {
-        _id: 8,
-        companyName: 'jeff',
-        URL: 'www.bawls.com'
-      },
-      {
-        _id: 9,
-        companyName: 'yuki',
-        URL: 'www.pawlbs.com'
-      }
-    ];
+    createList();
 
     function edit(item) {
+      vm.company = item.companyName;
       vm.selectedId = item._id;
       vm.selectedURL = item.URL;
       vm.selectedCompany = item.companyName;
@@ -64,10 +54,20 @@
 
     function onUpdateCompetitorsSuccess(response) {
       Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Competitors updated!' });
+      createList();
+      cancel();
     }
 
     function onUpdateCompetitorsError(response) {
       Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Update failed! Competitors not updated!' });
+      createList();
+    }
+
+    function createList() {
+      EnterprisesService.getEnterprise()
+        .then(function(response) {
+          vm.competitor = response.partners.competitor;
+        });
     }
   }
 }());
