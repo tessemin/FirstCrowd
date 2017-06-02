@@ -205,13 +205,18 @@ exports.updateProfile = function(req, res) {
  * update Enterprise Suppliers
  */
 exports.updateSuppliers = function(req, res) {
+  if (req.body) {
     getEnterprise(req, res, function (enterprise) {
       if (req.body._id) { // update 
         if (enterprise.partners.supplier) {
           var brakeout = false;
           for (var index = 0; index < enterprise.partners.supplier.length && !brakeout; index++) {
             if (enterprise.partners.supplier[index]._id.toString() === req.body._id.toString()) {
-              enterprise.partners.supplier[index] = req.body;
+              if (req.bod.URL === null && req.bod.companyName === null) {
+                enterprise.partners.supplier[index] = null;
+              } else {
+                enterprise.partners.supplier[index] = req.body;
+              }
               brakeout = true;
             }
           }
@@ -244,6 +249,11 @@ exports.updateSuppliers = function(req, res) {
         }
       });
     });
+  } else {
+    return res.status(422).send({
+      message: errorHandler.getErrorMessage('Nothing to Update')
+    });
+  }
 };
 
 /**
@@ -257,7 +267,11 @@ exports.updateCompetitors = function(req, res) {
           var brakeout = false;
           for (var index = 0; index < enterprise.partners.competitor.length && !brakeout; index++) {
             if (enterprise.partners.competitor[index]._id.toString() === req.body._id.toString()) {
-              enterprise.partners.competitor[index] = req.body;
+              if (req.bod.URL === null && req.bod.companyName === null) {
+                enterprise.partners.competitor[index] = null;
+              } else {
+                enterprise.partners.competitor[index] = req.body;
+              }
               brakeout = true;
             }
           }
@@ -301,18 +315,18 @@ exports.updateCompetitors = function(req, res) {
  * update Enterprise Customers
  */
 exports.updateCustomers = function(req, res) {
-  console.log(req.body);
   if (req.body) {
     getEnterprise(req, res, function (enterprise) {
       if (req.body._id) { // update 
         if (enterprise.partners.customer) {
           var brakeout = false;
           for (var index = 0; index < enterprise.partners.customer.length && !brakeout; index++) {
-            console.log(req.body._id);
-            console.log(enterprise.partners.customer[index]._id);
             if (enterprise.partners.customer[index]._id.toString() === req.body._id.toString()) {
-              console.log('here')
-              enterprise.partners.customer[index] = req.body;
+              if (req.bod.URL === null && req.bod.companyName === null) {
+                enterprise.partners.customer[index] = null;
+              } else {
+                enterprise.partners.customer[index] = req.body;
+              }
               brakeout = true;
             }
           }

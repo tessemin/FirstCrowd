@@ -28,11 +28,9 @@ var validateStartLessThanEnd = function(endDate) {
 }
 
 var validateAge = function(birthday){
-  return true;
-  console.log(birthday);
-  console.log(Date.today().add({years:-130}));
-  console.log(birthday);
-  return birthday > Date.today().add({years:-130});
+  let cutOff = new Date();
+  cutOff.setFullYear(cutOff.getFullYear() - 130);
+  return birthday >= cutOff;
 }
 /*
  * Individual Schema
@@ -47,7 +45,7 @@ var IndividualUserSchema = new Schema({
       type: Date,
       default: '',
       trim: true,
-      validate: [validateAge, 'Date of Birth must be before 130 years prior to todays date']
+      validate: [validateAge, 'Date of Birth must be at least 130 years prior to todays date']
     },
     sex: {
       type: String,
