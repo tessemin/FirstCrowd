@@ -49,7 +49,7 @@
     
     vm.updateEducation = updateEducation;
 
-    vm.degreeLevels = ['Middle School', 'Highschool', 'Associate\'s Degree', 'Bachelor\'s Degree', 'Master\'s Degree', 'Doctoral Degree'];
+    vm.degreeLevels = ['Middle School Diploma', 'Highschool Diploma', 'Associate\'s Degree', 'Bachelor\'s Degree', 'Master\'s Degree', 'Doctoral Degree'];
 
     
     // Update a user education
