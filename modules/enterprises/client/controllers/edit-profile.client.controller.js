@@ -274,6 +274,12 @@
       'chief executive officer'
     ];
 
+    vm.classClick = classClick;
+
+    function classClick(item) {
+      console.log(vm.classifications);
+    }
+
 
     // UpdateProfile Enterprise
     function saveProfile(isValid) {
@@ -317,9 +323,11 @@
           vm.city = res.companyAddress.city;
           vm.state = res.companyAddress.state;
           vm.streetAddress = res.companyAddress.streetAddress;
-
           vm.country = countryByCode(res.companyAddress.country);
           vm.countryOfBusiness = countryByCode(res.countryOfBusiness);
+
+          vm.classifications = res.classifications;
+
 
           let user = Authentication.user;
 
@@ -345,8 +353,11 @@
         companyAddress: {}
       };
 
+      console.log(vm.classifications);
+
       profile.companyName = vm.companyName;
       profile.URL = vm.URL;
+      profile.classifications = vm.classifications;
       profile.employeeCount = vm.employeeCount;
       profile.yearEstablished  = vm.yearEstablished;
       profile.description = vm.description;

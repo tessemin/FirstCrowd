@@ -18,7 +18,7 @@
 
     vm.saveCompetitor = saveCompetitor;
     vm.edit = edit;
-    vm.deleteItem = deleteItem;
+    vm.delete = deleteItem;
     vm.cancel = cancel;
 
     createList();
@@ -33,8 +33,6 @@
     function deleteItem(item) {
       item.companyName = '';
       item.URL = '';
-
-      console.log(item);
 
       EnterprisesService.updateCompetitorsFromForm(item)
         .then(onUpdateCompetitorsSuccess)

@@ -34,8 +34,6 @@
       item.companyName = '';
       item.URL = '';
 
-      console.log(item);
-
       EnterprisesService.updateSuppliersFromForm(item)
         .then(onUpdateSuppliersSuccess)
         .catch(onUpdateSuppliersError);
