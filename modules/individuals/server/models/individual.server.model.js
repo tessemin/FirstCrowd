@@ -10,7 +10,7 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
   
 var validateDate = function(date) {
-  return date instanceof Date
+  return date instanceof Date;
 };
 
 var validateStartLessThanEnd = function(endDate) {
@@ -25,13 +25,13 @@ var validateStartLessThanEnd = function(endDate) {
     return false;
   }
   return ((endDate) > (startDate));
-}
+};
 
-var validateAge = function(birthday){
+var validateAge = function(birthday) {
   let cutOff = new Date();
   cutOff.setFullYear(cutOff.getFullYear() - 130);
   return birthday >= cutOff;
-}
+};
 /*
  * Individual Schema
  */

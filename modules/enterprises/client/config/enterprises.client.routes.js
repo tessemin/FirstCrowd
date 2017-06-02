@@ -16,6 +16,16 @@
         controller: 'SideMenuController',
         controllerAs: 'vm'
       })
+      .state('enterprises.graph', {
+        url: '/graph',
+        templateUrl: '/modules/enterprises/client/views/graph.client.view.html',
+        controller: 'EnterpriseGraphController',
+        controllerAs: 'vm',
+        data: {
+          roles: ['enterprise'],
+          pageTitle: 'Enterprise Graph'
+        }
+      })
       .state('enterprises.profile', {
         url: '/profile',
         templateUrl: '/modules/enterprises/client/views/form-profile.client.view.html',

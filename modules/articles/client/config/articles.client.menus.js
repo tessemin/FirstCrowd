@@ -9,12 +9,6 @@
 
   function menuConfig(menuService) {
     menuService.addMenuItem('topbar', {
-      title: 'Enterprise Graph',
-      state: 'home',
-      // type: 'dropdown',
-      roles: ['*']
-    });
-    menuService.addMenuItem('topbar', {
       title: 'List Task',
       state: 'home',
       // type: 'dropdown',
