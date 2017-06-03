@@ -1,0 +1,3628 @@
+{
+  "section": {
+    "0": {
+      "code": "A",
+      "name": "Agriculture, forestry and fishing",
+      "division": {
+        "0": {
+          "code": "01",
+          "name": "Crop and animal production, hunting and related service activities",
+          "group": {
+            "0": {
+              "code": "011",
+              "name": "Growing of non-perennial crops",
+              "class": {
+                "0": {
+                  "code": "0111",
+                  "name": "Growing of cereals (except rice), leguminous crops and oil seeds"
+                },
+                "1": {
+                  "code": "0112",
+                  "name": "Growing of rice"
+                },
+                "2": {
+                  "code": "0113",
+                  "name": "Growing of vegetables and melons, roots and tubers"
+                },
+                "3": {
+                  "code": "0114",
+                  "name": "Growing of sugar cane"
+                },
+                "4": {
+                  "code": "0115",
+                  "name": "Growing of tobacco"
+                },
+                "5": {
+                  "code": "0116",
+                  "name": "Growing of fibre crops"
+                },
+                "6": {
+                  "code": "0119",
+                  "name": "Growing of other non-perennial crops"
+                }
+              }
+            },
+            "1": {
+              "code": "012",
+              "name": "Growing of perennial crops",
+              "class": {
+                "0": {
+                  "code": "0121",
+                  "name": "Growing of grapes"
+                },
+                "1": {
+                  "code": "0122",
+                  "name": "Growing of tropical and subtropical fruits"
+                },
+                "2": {
+                  "code": "0123",
+                  "name": "Growing of citrus fruits"
+                },
+                "3": {
+                  "code": "0124",
+                  "name": "Growing of pome fruits and stone fruits"
+                },
+                "4": {
+                  "code": "0125",
+                  "name": "Growing of other tree and bush fruits and nuts"
+                },
+                "5": {
+                  "code": "0126",
+                  "name": "Growing of oleaginous fruits"
+                },
+                "6": {
+                  "code": "0127",
+                  "name": "Growing of beverage crops"
+                },
+                "7": {
+                  "code": "0128",
+                  "name": "Growing of spices, aromatic, drug and pharmaceutical crops"
+                },
+                "8": {
+                  "code": "0129",
+                  "name": "Growing of other perennial crops"
+                }
+              }
+            },
+            "2": {
+              "code": "013",
+              "name": "Plant propagation",
+              "class": {
+                "0": {
+                  "code": "0130",
+                  "name": "Plant propagation"
+                }
+              }
+            },
+            "3": {
+              "code": "014",
+              "name": "Animal production",
+              "class": {
+                "0": {
+                  "code": "0141",
+                  "name": "Raising of cattle and buffaloes"
+                },
+                "1": {
+                  "code": "0142",
+                  "name": "Raising of horses and other equines"
+                },
+                "2": {
+                  "code": "0143",
+                  "name": "Raising of camels and camelids"
+                },
+                "3": {
+                  "code": "0144",
+                  "name": "Raising of sheep and goats"
+                },
+                "4": {
+                  "code": "0145",
+                  "name": "Raising of swine/pigs"
+                },
+                "5": {
+                  "code": "0146",
+                  "name": "Raising of poultry"
+                },
+                "6": {
+                  "code": "0149",
+                  "name": "Raising of other animals"
+                }
+              }
+            },
+            "4": {
+              "code": "015",
+              "name": "Mixed farming",
+              "class": {
+                "0": {
+                  "code": "0150",
+                  "name": "Mixed farming"
+                }
+              }
+            },
+            "5": {
+              "code": "016",
+              "name": "Support activities to agriculture and post-harvest crop activities",
+              "class": {
+                "0": {
+                  "code": "0161",
+                  "name": "Support activities for crop production"
+                },
+                "1": {
+                  "code": "0162",
+                  "name": "Support activities for animal production"
+                },
+                "2": {
+                  "code": "0163",
+                  "name": "Post-harvest crop activities"
+                },
+                "3": {
+                  "code": "0164",
+                  "name": "Seed processing for propagation"
+                }
+              }
+            },
+            "6": {
+              "code": "017",
+              "name": "Hunting, trapping and related service activities",
+              "class": {
+                "0": {
+                  "code": "0170",
+                  "name": "Hunting, trapping and related service activities"
+                }
+              }
+            },
+            "7": {
+              "code": "02",
+              "name": "Forestry and logging"
+            },
+            "8": {
+              "code": "021",
+              "name": "Silviculture and other forestry activities",
+              "class": {
+                "0": {
+                  "code": "0210",
+                  "name": "Silviculture and other forestry activities"
+                }
+              }
+            },
+            "9": {
+              "code": "022",
+              "name": "Logging",
+              "class": {
+                "0": {
+                  "code": "0220",
+                  "name": "Logging"
+                }
+              }
+            },
+            "10": {
+              "code": "023",
+              "name": "Gathering of non-wood forest products",
+              "class": {
+                "0": {
+                  "code": "0230",
+                  "name": "Gathering of non-wood forest products"
+                }
+              }
+            },
+            "11": {
+              "code": "024",
+              "name": "Support services to forestry",
+              "class": {
+                "0": {
+                  "code": "0240",
+                  "name": "Support services to forestry"
+                }
+              }
+            },
+            "12": {
+              "code": "03",
+              "name": "Fishing and aquaculture"
+            },
+            "13": {
+              "code": "031",
+              "name": "Fishing",
+              "class": {
+                "0": {
+                  "code": "0311",
+                  "name": "Marine fishing"
+                },
+                "1": {
+                  "code": "0312",
+                  "name": "Freshwater fishing"
+                }
+              }
+            },
+            "14": {
+              "code": "032",
+              "name": "Aquaculture",
+              "class": {
+                "0": {
+                  "code": "0321",
+                  "name": "Marine aquaculture"
+                },
+                "1": {
+                  "code": "0322",
+                  "name": "Freshwater aquaculture"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "1": {
+      "code": "B",
+      "name": "Mining and quarrying",
+      "division": {
+        "0": {
+          "code": "05",
+          "name": "Mining of coal and lignite",
+          "group": {
+            "0": {
+              "code": "051",
+              "name": "Mining of hard coal",
+              "class": {
+                "0": {
+                  "code": "0510",
+                  "name": "Mining of hard coal"
+                }
+              }
+            },
+            "1": {
+              "code": "052",
+              "name": "Mining of lignite",
+              "class": {
+                "0": {
+                  "code": "0520",
+                  "name": "Mining of lignite"
+                }
+              }
+            },
+            "2": {
+              "code": "06",
+              "name": "Extraction of crude petroleum and natural gas"
+            },
+            "3": {
+              "code": "061",
+              "name": "Extraction of crude petroleum",
+              "class": {
+                "0": {
+                  "code": "0610",
+                  "name": "Extraction of crude petroleum"
+                }
+              }
+            },
+            "4": {
+              "code": "062",
+              "name": "Extraction of natural gas",
+              "class": {
+                "0": {
+                  "code": "0620",
+                  "name": "Extraction of natural gas"
+                }
+              }
+            },
+            "5": {
+              "code": "07",
+              "name": "Mining of metal ores"
+            },
+            "6": {
+              "code": "071",
+              "name": "Mining of iron ores",
+              "class": {
+                "0": {
+                  "code": "0710",
+                  "name": "Mining of iron ores"
+                }
+              }
+            },
+            "7": {
+              "code": "072",
+              "name": "Mining of non-ferrous metal ores",
+              "class": {
+                "0": {
+                  "code": "0721",
+                  "name": "Mining of uranium and thorium ores"
+                },
+                "1": {
+                  "code": "0729",
+                  "name": "Mining of other non-ferrous metal ores"
+                }
+              }
+            },
+            "8": {
+              "code": "08",
+              "name": "Other mining and quarrying"
+            },
+            "9": {
+              "code": "081",
+              "name": "Quarrying of stone, sand and clay",
+              "class": {
+                "0": {
+                  "code": "0810",
+                  "name": "Quarrying of stone, sand and clay"
+                }
+              }
+            },
+            "10": {
+              "code": "089",
+              "name": "Mining and quarrying n.e.c.",
+              "class": {
+                "0": {
+                  "code": "0891",
+                  "name": "Mining of chemical and fertilizer minerals"
+                },
+                "1": {
+                  "code": "0892",
+                  "name": "Extraction of peat"
+                },
+                "2": {
+                  "code": "0893",
+                  "name": "Extraction of salt"
+                },
+                "3": {
+                  "code": "0899",
+                  "name": "Other mining and quarrying n.e.c."
+                }
+              }
+            },
+            "11": {
+              "code": "09",
+              "name": "Mining support service activities"
+            },
+            "12": {
+              "code": "091",
+              "name": "Support activities for petroleum and natural gas extraction",
+              "class": {
+                "0": {
+                  "code": "0910",
+                  "name": "Support activities for petroleum and natural gas extraction"
+                }
+              }
+            },
+            "13": {
+              "code": "099",
+              "name": "Support activities for other mining and quarrying",
+              "class": {
+                "0": {
+                  "code": "0990",
+                  "name": "Support activities for other mining and quarrying"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "2": {
+      "code": "C",
+      "name": "Manufacturing",
+      "division": {
+        "0": {
+          "code": "10",
+          "name": "Manufacture of food products",
+          "group": {
+            "0": {
+              "code": "101",
+              "name": "Processing and preserving of meat",
+              "class": {
+                "0": {
+                  "code": "1010",
+                  "name": "Processing and preserving of meat"
+                }
+              }
+            },
+            "1": {
+              "code": "102",
+              "name": "Processing and preserving of fish, crustaceans and molluscs",
+              "class": {
+                "0": {
+                  "code": "1020",
+                  "name": "Processing and preserving of fish, crustaceans and molluscs"
+                }
+              }
+            },
+            "2": {
+              "code": "103",
+              "name": "Processing and preserving of fruit and vegetables",
+              "class": {
+                "0": {
+                  "code": "1030",
+                  "name": "Processing and preserving of fruit and vegetables"
+                }
+              }
+            },
+            "3": {
+              "code": "104",
+              "name": "Manufacture of vegetable and animal oils and fats",
+              "class": {
+                "0": {
+                  "code": "1040",
+                  "name": "Manufacture of vegetable and animal oils and fats"
+                }
+              }
+            },
+            "4": {
+              "code": "105",
+              "name": "Manufacture of dairy products",
+              "class": {
+                "0": {
+                  "code": "1050",
+                  "name": "Manufacture of dairy products"
+                }
+              }
+            },
+            "5": {
+              "code": "106",
+              "name": "Manufacture of grain mill products, starches and starch products",
+              "class": {
+                "0": {
+                  "code": "1061",
+                  "name": "Manufacture of grain mill products"
+                },
+                "1": {
+                  "code": "1062",
+                  "name": "Manufacture of starches and starch products"
+                }
+              }
+            },
+            "6": {
+              "code": "107",
+              "name": "Manufacture of other food products",
+              "class": {
+                "0": {
+                  "code": "1071",
+                  "name": "Manufacture of bakery products"
+                },
+                "1": {
+                  "code": "1072",
+                  "name": "Manufacture of sugar"
+                },
+                "2": {
+                  "code": "1073",
+                  "name": "Manufacture of cocoa, chocolate and sugar confectionery"
+                },
+                "3": {
+                  "code": "1074",
+                  "name": "Manufacture of macaroni, noodles, couscous and similar farinaceous products"
+                },
+                "4": {
+                  "code": "1075",
+                  "name": "Manufacture of prepared meals and dishes"
+                },
+                "5": {
+                  "code": "1079",
+                  "name": "Manufacture of other food products n.e.c."
+                }
+              }
+            },
+            "7": {
+              "code": "108",
+              "name": "Manufacture of prepared animal feeds",
+              "class": {
+                "0": {
+                  "code": "1080",
+                  "name": "Manufacture of prepared animal feeds"
+                }
+              }
+            },
+            "8": {
+              "code": "11",
+              "name": "Manufacture of beverages"
+            },
+            "9": {
+              "code": "110",
+              "name": "Manufacture of beverages",
+              "class": {
+                "0": {
+                  "code": "1101",
+                  "name": "Distilling, rectifying and blending of spirits"
+                },
+                "1": {
+                  "code": "1102",
+                  "name": "Manufacture of wines"
+                },
+                "2": {
+                  "code": "1103",
+                  "name": "Manufacture of malt liquors and malt"
+                },
+                "3": {
+                  "code": "1104",
+                  "name": "Manufacture of soft drinks; production of mineral waters and other bottled waters"
+                }
+              }
+            },
+            "10": {
+              "code": "12",
+              "name": "Manufacture of tobacco products"
+            },
+            "11": {
+              "code": "120",
+              "name": "Manufacture of tobacco products",
+              "class": {
+                "0": {
+                  "code": "1200",
+                  "name": "Manufacture of tobacco products"
+                }
+              }
+            },
+            "12": {
+              "code": "13",
+              "name": "Manufacture of textiles"
+            },
+            "13": {
+              "code": "131",
+              "name": "Spinning, weaving and finishing of textiles",
+              "class": {
+                "0": {
+                  "code": "1311",
+                  "name": "Preparation and spinning of textile fibres"
+                },
+                "1": {
+                  "code": "1312",
+                  "name": "Weaving of textiles"
+                },
+                "2": {
+                  "code": "1313",
+                  "name": "Finishing of textiles"
+                }
+              }
+            },
+            "14": {
+              "code": "139",
+              "name": "Manufacture of other textiles",
+              "class": {
+                "0": {
+                  "code": "1391",
+                  "name": "Manufacture of knitted and crocheted fabrics"
+                },
+                "1": {
+                  "code": "1392",
+                  "name": "Manufacture of made-up textile articles, except apparel"
+                },
+                "2": {
+                  "code": "1393",
+                  "name": "Manufacture of carpets and rugs"
+                },
+                "3": {
+                  "code": "1394",
+                  "name": "Manufacture of cordage, rope, twine and netting"
+                },
+                "4": {
+                  "code": "1399",
+                  "name": "Manufacture of other textiles n.e.c."
+                }
+              }
+            },
+            "15": {
+              "code": "14",
+              "name": "Manufacture of wearing apparel"
+            },
+            "16": {
+              "code": "141",
+              "name": "Manufacture of wearing apparel, except fur apparel",
+              "class": {
+                "0": {
+                  "code": "1410",
+                  "name": "Manufacture of wearing apparel, except fur apparel"
+                }
+              }
+            },
+            "17": {
+              "code": "142",
+              "name": "Manufacture of articles of fur",
+              "class": {
+                "0": {
+                  "code": "1420",
+                  "name": "Manufacture of articles of fur"
+                }
+              }
+            },
+            "18": {
+              "code": "143",
+              "name": "Manufacture of knitted and crocheted apparel",
+              "class": {
+                "0": {
+                  "code": "1430",
+                  "name": "Manufacture of knitted and crocheted apparel"
+                }
+              }
+            },
+            "19": {
+              "code": "15",
+              "name": "Manufacture of leather and related products"
+            },
+            "20": {
+              "code": "151",
+              "name": "Tanning and dressing of leather; manufacture of luggage, handbags, saddlery and harness; dressing and dyeing of fur",
+              "class": {
+                "0": {
+                  "code": "1511",
+                  "name": "Tanning and dressing of leather; dressing and dyeing of fur"
+                },
+                "1": {
+                  "code": "1512",
+                  "name": "Manufacture of luggage, handbags and the like, saddlery and harness"
+                }
+              }
+            },
+            "21": {
+              "code": "152",
+              "name": "Manufacture of footwear",
+              "class": {
+                "0": {
+                  "code": "1520",
+                  "name": "Manufacture of footwear"
+                }
+              }
+            },
+            "22": {
+              "code": "16",
+              "name": "Manufacture of wood and of products of wood and cork, except furniture; manufacture of articles of straw and plaiting materials"
+            },
+            "23": {
+              "code": "161",
+              "name": "Sawmilling and planing of wood",
+              "class": {
+                "0": {
+                  "code": "1610",
+                  "name": "Sawmilling and planing of wood"
+                }
+              }
+            },
+            "24": {
+              "code": "162",
+              "name": "Manufacture of products of wood, cork, straw and plaiting materials",
+              "class": {
+                "0": {
+                  "code": "1621",
+                  "name": "Manufacture of veneer sheets and wood-based panels"
+                },
+                "1": {
+                  "code": "1622",
+                  "name": "Manufacture of builders' carpentry and joinery"
+                },
+                "2": {
+                  "code": "1623",
+                  "name": "Manufacture of wooden containers"
+                },
+                "3": {
+                  "code": "1629",
+                  "name": "Manufacture of other products of wood; manufacture of articles of cork, straw and plaiting materials"
+                }
+              }
+            },
+            "25": {
+              "code": "17",
+              "name": "Manufacture of paper and paper products"
+            },
+            "26": {
+              "code": "170",
+              "name": "Manufacture of paper and paper products",
+              "class": {
+                "0": {
+                  "code": "1701",
+                  "name": "Manufacture of pulp, paper and paperboard"
+                },
+                "1": {
+                  "code": "1702",
+                  "name": "Manufacture of corrugated paper and paperboard and of containers of paper and paperboard"
+                },
+                "2": {
+                  "code": "1709",
+                  "name": "Manufacture of other articles of paper and paperboard"
+                }
+              }
+            },
+            "27": {
+              "code": "18",
+              "name": "Printing and reproduction of recorded media"
+            },
+            "28": {
+              "code": "181",
+              "name": "Printing and service activities related to printing",
+              "class": {
+                "0": {
+                  "code": "1811",
+                  "name": "Printing"
+                },
+                "1": {
+                  "code": "1812",
+                  "name": "Service activities related to printing"
+                }
+              }
+            },
+            "29": {
+              "code": "182",
+              "name": "Reproduction of recorded media",
+              "class": {
+                "0": {
+                  "code": "1820",
+                  "name": "Reproduction of recorded media"
+                }
+              }
+            },
+            "30": {
+              "code": "19",
+              "name": "Manufacture of coke and refined petroleum products"
+            },
+            "31": {
+              "code": "191",
+              "name": "Manufacture of coke oven products",
+              "class": {
+                "0": {
+                  "code": "1910",
+                  "name": "Manufacture of coke oven products"
+                }
+              }
+            },
+            "32": {
+              "code": "192",
+              "name": "Manufacture of refined petroleum products",
+              "class": {
+                "0": {
+                  "code": "1920",
+                  "name": "Manufacture of refined petroleum products"
+                }
+              }
+            },
+            "33": {
+              "code": "20",
+              "name": "Manufacture of chemicals and chemical products"
+            },
+            "34": {
+              "code": "201",
+              "name": "Manufacture of basic chemicals, fertilizers and nitrogen compounds, plastics and synthetic rubber in primary forms",
+              "class": {
+                "0": {
+                  "code": "2011",
+                  "name": "Manufacture of basic chemicals"
+                },
+                "1": {
+                  "code": "2012",
+                  "name": "Manufacture of fertilizers and nitrogen compounds"
+                },
+                "2": {
+                  "code": "2013",
+                  "name": "Manufacture of plastics and synthetic rubber in primary forms"
+                }
+              }
+            },
+            "35": {
+              "code": "202",
+              "name": "Manufacture of other chemical products",
+              "class": {
+                "0": {
+                  "code": "2021",
+                  "name": "Manufacture of pesticides and other agrochemical products"
+                },
+                "1": {
+                  "code": "2022",
+                  "name": "Manufacture of paints, varnishes and similar coatings, printing ink and mastics"
+                },
+                "2": {
+                  "code": "2023",
+                  "name": "Manufacture of soap and detergents, cleaning and polishing preparations, perfumes and toilet preparations"
+                },
+                "3": {
+                  "code": "2029",
+                  "name": "Manufacture of other chemical products n.e.c."
+                }
+              }
+            },
+            "36": {
+              "code": "203",
+              "name": "Manufacture of man-made fibres",
+              "class": {
+                "0": {
+                  "code": "2030",
+                  "name": "Manufacture of man-made fibres"
+                }
+              }
+            },
+            "37": {
+              "code": "21",
+              "name": "Manufacture of basic pharmaceutical products and pharmaceutical preparations"
+            },
+            "38": {
+              "code": "210",
+              "name": "Manufacture of pharmaceuticals, medicinal chemical and botanical products",
+              "class": {
+                "0": {
+                  "code": "2100",
+                  "name": "Manufacture of pharmaceuticals, medicinal chemical and botanical products"
+                }
+              }
+            },
+            "39": {
+              "code": "22",
+              "name": "Manufacture of rubber and plastics products"
+            },
+            "40": {
+              "code": "221",
+              "name": "Manufacture of rubber products",
+              "class": {
+                "0": {
+                  "code": "2211",
+                  "name": "Manufacture of rubber tyres and tubes; retreading and rebuilding of rubber tyres"
+                },
+                "1": {
+                  "code": "2219",
+                  "name": "Manufacture of other rubber products"
+                }
+              }
+            },
+            "41": {
+              "code": "222",
+              "name": "Manufacture of plastics products",
+              "class": {
+                "0": {
+                  "code": "2220",
+                  "name": "Manufacture of plastics products"
+                }
+              }
+            },
+            "42": {
+              "code": "23",
+              "name": "Manufacture of other non-metallic mineral products"
+            },
+            "43": {
+              "code": "231",
+              "name": "Manufacture of glass and glass products",
+              "class": {
+                "0": {
+                  "code": "2310",
+                  "name": "Manufacture of glass and glass products"
+                }
+              }
+            },
+            "44": {
+              "code": "239",
+              "name": "Manufacture of non-metallic mineral products n.e.c.",
+              "class": {
+                "0": {
+                  "code": "2391",
+                  "name": "Manufacture of refractory products"
+                },
+                "1": {
+                  "code": "2392",
+                  "name": "Manufacture of clay building materials"
+                },
+                "2": {
+                  "code": "2393",
+                  "name": "Manufacture of other porcelain and ceramic products"
+                },
+                "3": {
+                  "code": "2394",
+                  "name": "Manufacture of cement, lime and plaster"
+                },
+                "4": {
+                  "code": "2395",
+                  "name": "Manufacture of articles of concrete, cement and plaster"
+                },
+                "5": {
+                  "code": "2396",
+                  "name": "Cutting, shaping and finishing of stone"
+                },
+                "6": {
+                  "code": "2399",
+                  "name": "Manufacture of other non-metallic mineral products n.e.c."
+                }
+              }
+            },
+            "45": {
+              "code": "24",
+              "name": "Manufacture of basic metals"
+            },
+            "46": {
+              "code": "241",
+              "name": "Manufacture of basic iron and steel",
+              "class": {
+                "0": {
+                  "code": "2410",
+                  "name": "Manufacture of basic iron and steel"
+                }
+              }
+            },
+            "47": {
+              "code": "242",
+              "name": "Manufacture of basic precious and other non-ferrous metals",
+              "class": {
+                "0": {
+                  "code": "2420",
+                  "name": "Manufacture of basic precious and other non-ferrous metals"
+                }
+              }
+            },
+            "48": {
+              "code": "243",
+              "name": "Casting of metals",
+              "class": {
+                "0": {
+                  "code": "2431",
+                  "name": "Casting of iron and steel"
+                },
+                "1": {
+                  "code": "2432",
+                  "name": "Casting of non-ferrous metals"
+                }
+              }
+            },
+            "49": {
+              "code": "25",
+              "name": "Manufacture of fabricated metal products, except machinery and equipment"
+            },
+            "50": {
+              "code": "251",
+              "name": "Manufacture of structural metal products, tanks, reservoirs and steam generators",
+              "class": {
+                "0": {
+                  "code": "2511",
+                  "name": "Manufacture of structural metal products"
+                },
+                "1": {
+                  "code": "2512",
+                  "name": "Manufacture of tanks, reservoirs and containers of metal"
+                },
+                "2": {
+                  "code": "2513",
+                  "name": "Manufacture of steam generators, except central heating hot water boilers"
+                }
+              }
+            },
+            "51": {
+              "code": "252",
+              "name": "Manufacture of weapons and ammunition",
+              "class": {
+                "0": {
+                  "code": "2520",
+                  "name": "Manufacture of weapons and ammunition"
+                }
+              }
+            },
+            "52": {
+              "code": "259",
+              "name": "Manufacture of other fabricated metal products; metalworking service activities",
+              "class": {
+                "0": {
+                  "code": "2591",
+                  "name": "Forging, pressing, stamping and roll-forming of metal; powder metallurgy"
+                },
+                "1": {
+                  "code": "2592",
+                  "name": "Treatment and coating of metals; machining"
+                },
+                "2": {
+                  "code": "2593",
+                  "name": "Manufacture of cutlery, hand tools and general hardware"
+                },
+                "3": {
+                  "code": "2599",
+                  "name": "Manufacture of other fabricated metal products n.e.c."
+                }
+              }
+            },
+            "53": {
+              "code": "26",
+              "name": "Manufacture of computer, electronic and optical products"
+            },
+            "54": {
+              "code": "261",
+              "name": "Manufacture of electronic components and boards",
+              "class": {
+                "0": {
+                  "code": "2610",
+                  "name": "Manufacture of electronic components and boards"
+                }
+              }
+            },
+            "55": {
+              "code": "262",
+              "name": "Manufacture of computers and peripheral equipment",
+              "class": {
+                "0": {
+                  "code": "2620",
+                  "name": "Manufacture of computers and peripheral equipment"
+                }
+              }
+            },
+            "56": {
+              "code": "263",
+              "name": "Manufacture of communication equipment",
+              "class": {
+                "0": {
+                  "code": "2630",
+                  "name": "Manufacture of communication equipment"
+                }
+              }
+            },
+            "57": {
+              "code": "264",
+              "name": "Manufacture of consumer electronics",
+              "class": {
+                "0": {
+                  "code": "2640",
+                  "name": "Manufacture of consumer electronics"
+                }
+              }
+            },
+            "58": {
+              "code": "265",
+              "name": "Manufacture of measuring, testing, navigating and control equipment; watches and clocks",
+              "class": {
+                "0": {
+                  "code": "2651",
+                  "name": "Manufacture of measuring, testing, navigating and control equipment"
+                },
+                "1": {
+                  "code": "2652",
+                  "name": "Manufacture of watches and clocks"
+                }
+              }
+            },
+            "59": {
+              "code": "266",
+              "name": "Manufacture of irradiation, electromedical and electrotherapeutic equipment",
+              "class": {
+                "0": {
+                  "code": "2660",
+                  "name": "Manufacture of irradiation, electromedical and electrotherapeutic equipment"
+                }
+              }
+            },
+            "60": {
+              "code": "267",
+              "name": "Manufacture of optical instruments and photographic equipment",
+              "class": {
+                "0": {
+                  "code": "2670",
+                  "name": "Manufacture of optical instruments and photographic equipment"
+                }
+              }
+            },
+            "61": {
+              "code": "268",
+              "name": "Manufacture of magnetic and optical media",
+              "class": {
+                "0": {
+                  "code": "2680",
+                  "name": "Manufacture of magnetic and optical media"
+                }
+              }
+            },
+            "62": {
+              "code": "27",
+              "name": "Manufacture of electrical equipment"
+            },
+            "63": {
+              "code": "271",
+              "name": "Manufacture of electric motors, generators, transformers and electricity distribution and control apparatus",
+              "class": {
+                "0": {
+                  "code": "2710",
+                  "name": "Manufacture of electric motors, generators, transformers and electricity distribution and control apparatus"
+                }
+              }
+            },
+            "64": {
+              "code": "272",
+              "name": "Manufacture of batteries and accumulators",
+              "class": {
+                "0": {
+                  "code": "2720",
+                  "name": "Manufacture of batteries and accumulators"
+                }
+              }
+            },
+            "65": {
+              "code": "273",
+              "name": "Manufacture of wiring and wiring devices",
+              "class": {
+                "0": {
+                  "code": "2731",
+                  "name": "Manufacture of fibre optic cables"
+                },
+                "1": {
+                  "code": "2732",
+                  "name": "Manufacture of other electronic and electric wires and cables"
+                },
+                "2": {
+                  "code": "2733",
+                  "name": "Manufacture of wiring devices"
+                }
+              }
+            },
+            "66": {
+              "code": "274",
+              "name": "Manufacture of electric lighting equipment",
+              "class": {
+                "0": {
+                  "code": "2740",
+                  "name": "Manufacture of electric lighting equipment"
+                }
+              }
+            },
+            "67": {
+              "code": "275",
+              "name": "Manufacture of domestic appliances",
+              "class": {
+                "0": {
+                  "code": "2750",
+                  "name": "Manufacture of domestic appliances"
+                }
+              }
+            },
+            "68": {
+              "code": "279",
+              "name": "Manufacture of other electrical equipment",
+              "class": {
+                "0": {
+                  "code": "2790",
+                  "name": "Manufacture of other electrical equipment"
+                }
+              }
+            },
+            "69": {
+              "code": "28",
+              "name": "Manufacture of machinery and equipment n.e.c."
+            },
+            "70": {
+              "code": "281",
+              "name": "Manufacture of general-purpose machinery",
+              "class": {
+                "0": {
+                  "code": "2811",
+                  "name": "Manufacture of engines and turbines, except aircraft, vehicle and cycle engines"
+                },
+                "1": {
+                  "code": "2812",
+                  "name": "Manufacture of fluid power equipment"
+                },
+                "2": {
+                  "code": "2813",
+                  "name": "Manufacture of other pumps, compressors, taps and valves"
+                },
+                "3": {
+                  "code": "2814",
+                  "name": "Manufacture of bearings, gears, gearing and driving elements"
+                },
+                "4": {
+                  "code": "2815",
+                  "name": "Manufacture of ovens, furnaces and furnace burners"
+                },
+                "5": {
+                  "code": "2816",
+                  "name": "Manufacture of lifting and handling equipment"
+                },
+                "6": {
+                  "code": "2817",
+                  "name": "Manufacture of office machinery and equipment (except computers and peripheral equipment)"
+                },
+                "7": {
+                  "code": "2818",
+                  "name": "Manufacture of power-driven hand tools"
+                },
+                "8": {
+                  "code": "2819",
+                  "name": "Manufacture of other general-purpose machinery"
+                }
+              }
+            },
+            "71": {
+              "code": "282",
+              "name": "Manufacture of special-purpose machinery",
+              "class": {
+                "0": {
+                  "code": "2821",
+                  "name": "Manufacture of agricultural and forestry machinery"
+                },
+                "1": {
+                  "code": "2822",
+                  "name": "Manufacture of metal-forming machinery and machine tools"
+                },
+                "2": {
+                  "code": "2823",
+                  "name": "Manufacture of machinery for metallurgy"
+                },
+                "3": {
+                  "code": "2824",
+                  "name": "Manufacture of machinery for mining, quarrying and construction"
+                },
+                "4": {
+                  "code": "2825",
+                  "name": "Manufacture of machinery for food, beverage and tobacco processing"
+                },
+                "5": {
+                  "code": "2826",
+                  "name": "Manufacture of machinery for textile, apparel and leather production"
+                },
+                "6": {
+                  "code": "2829",
+                  "name": "Manufacture of other special-purpose machinery"
+                }
+              }
+            },
+            "72": {
+              "code": "29",
+              "name": "Manufacture of motor vehicles, trailers and semi-trailers"
+            },
+            "73": {
+              "code": "291",
+              "name": "Manufacture of motor vehicles",
+              "class": {
+                "0": {
+                  "code": "2910",
+                  "name": "Manufacture of motor vehicles"
+                }
+              }
+            },
+            "74": {
+              "code": "292",
+              "name": "Manufacture of bodies (coachwork) for motor vehicles; manufacture of trailers and semi-trailers",
+              "class": {
+                "0": {
+                  "code": "2920",
+                  "name": "Manufacture of bodies (coachwork) for motor vehicles; manufacture of trailers and semi-trailers"
+                }
+              }
+            },
+            "75": {
+              "code": "293",
+              "name": "Manufacture of parts and accessories for motor vehicles",
+              "class": {
+                "0": {
+                  "code": "2930",
+                  "name": "Manufacture of parts and accessories for motor vehicles"
+                }
+              }
+            },
+            "76": {
+              "code": "30",
+              "name": "Manufacture of other transport equipment"
+            },
+            "77": {
+              "code": "301",
+              "name": "Building of ships and boats",
+              "class": {
+                "0": {
+                  "code": "3011",
+                  "name": "Building of ships and floating structures"
+                },
+                "1": {
+                  "code": "3012",
+                  "name": "Building of pleasure and sporting boats"
+                }
+              }
+            },
+            "78": {
+              "code": "302",
+              "name": "Manufacture of railway locomotives and rolling stock",
+              "class": {
+                "0": {
+                  "code": "3020",
+                  "name": "Manufacture of railway locomotives and rolling stock"
+                }
+              }
+            },
+            "79": {
+              "code": "303",
+              "name": "Manufacture of air and spacecraft and related machinery",
+              "class": {
+                "0": {
+                  "code": "3030",
+                  "name": "Manufacture of air and spacecraft and related machinery"
+                }
+              }
+            },
+            "80": {
+              "code": "304",
+              "name": "Manufacture of military fighting vehicles",
+              "class": {
+                "0": {
+                  "code": "3040",
+                  "name": "Manufacture of military fighting vehicles"
+                }
+              }
+            },
+            "81": {
+              "code": "309",
+              "name": "Manufacture of transport equipment n.e.c.",
+              "class": {
+                "0": {
+                  "code": "3091",
+                  "name": "Manufacture of motorcycles"
+                },
+                "1": {
+                  "code": "3092",
+                  "name": "Manufacture of bicycles and invalid carriages"
+                },
+                "2": {
+                  "code": "3099",
+                  "name": "Manufacture of other transport equipment n.e.c."
+                }
+              }
+            },
+            "82": {
+              "code": "31",
+              "name": "Manufacture of furniture"
+            },
+            "83": {
+              "code": "310",
+              "name": "Manufacture of furniture",
+              "class": {
+                "0": {
+                  "code": "3100",
+                  "name": "Manufacture of furniture"
+                }
+              }
+            },
+            "84": {
+              "code": "32",
+              "name": "Other manufacturing"
+            },
+            "85": {
+              "code": "321",
+              "name": "Manufacture of jewellery, bijouterie and related articles",
+              "class": {
+                "0": {
+                  "code": "3211",
+                  "name": "Manufacture of jewellery and related articles"
+                },
+                "1": {
+                  "code": "3212",
+                  "name": "Manufacture of imitation jewellery and related articles"
+                }
+              }
+            },
+            "86": {
+              "code": "322",
+              "name": "Manufacture of musical instruments",
+              "class": {
+                "0": {
+                  "code": "3220",
+                  "name": "Manufacture of musical instruments"
+                }
+              }
+            },
+            "87": {
+              "code": "323",
+              "name": "Manufacture of sports goods",
+              "class": {
+                "0": {
+                  "code": "3230",
+                  "name": "Manufacture of sports goods"
+                }
+              }
+            },
+            "88": {
+              "code": "324",
+              "name": "Manufacture of games and toys",
+              "class": {
+                "0": {
+                  "code": "3240",
+                  "name": "Manufacture of games and toys"
+                }
+              }
+            },
+            "89": {
+              "code": "325",
+              "name": "Manufacture of medical and dental instruments and supplies",
+              "class": {
+                "0": {
+                  "code": "3250",
+                  "name": "Manufacture of medical and dental instruments and supplies"
+                }
+              }
+            },
+            "90": {
+              "code": "329",
+              "name": "Other manufacturing n.e.c.",
+              "class": {
+                "0": {
+                  "code": "3290",
+                  "name": "Other manufacturing n.e.c."
+                }
+              }
+            },
+            "91": {
+              "code": "33",
+              "name": "Repair and installation of machinery and equipment"
+            },
+            "92": {
+              "code": "331",
+              "name": "Repair of fabricated metal products, machinery and equipment",
+              "class": {
+                "0": {
+                  "code": "3311",
+                  "name": "Repair of fabricated metal products"
+                },
+                "1": {
+                  "code": "3312",
+                  "name": "Repair of machinery"
+                },
+                "2": {
+                  "code": "3313",
+                  "name": "Repair of electronic and optical equipment"
+                },
+                "3": {
+                  "code": "3314",
+                  "name": "Repair of electrical equipment"
+                },
+                "4": {
+                  "code": "3315",
+                  "name": "Repair of transport equipment, except motor vehicles"
+                },
+                "5": {
+                  "code": "3319",
+                  "name": "Repair of other equipment"
+                }
+              }
+            },
+            "93": {
+              "code": "332",
+              "name": "Installation of industrial machinery and equipment",
+              "class": {
+                "0": {
+                  "code": "3320",
+                  "name": "Installation of industrial machinery and equipment"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "3": {
+      "code": "D",
+      "name": "Electricity, gas, steam and air conditioning supply",
+      "division": {
+        "0": {
+          "code": "35",
+          "name": "Electricity, gas, steam and air conditioning supply",
+          "group": {
+            "0": {
+              "code": "351",
+              "name": "Electric power generation, transmission and distribution",
+              "class": {
+                "0": {
+                  "code": "3510",
+                  "name": "Electric power generation, transmission and distribution"
+                }
+              }
+            },
+            "1": {
+              "code": "352",
+              "name": "Manufacture of gas; distribution of gaseous fuels through mains",
+              "class": {
+                "0": {
+                  "code": "3520",
+                  "name": "Manufacture of gas; distribution of gaseous fuels through mains"
+                }
+              }
+            },
+            "2": {
+              "code": "353",
+              "name": "Steam and air conditioning supply",
+              "class": {
+                "0": {
+                  "code": "3530",
+                  "name": "Steam and air conditioning supply"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "4": {
+      "code": "E",
+      "name": "Water supply; sewerage, waste management and remediation activities",
+      "division": {
+        "0": {
+          "code": "36",
+          "name": "Water collection, treatment and supply",
+          "group": {
+            "0": {
+              "code": "360",
+              "name": "Water collection, treatment and supply",
+              "class": {
+                "0": {
+                  "code": "3600",
+                  "name": "Water collection, treatment and supply"
+                }
+              }
+            },
+            "1": {
+              "code": "37",
+              "name": "Sewerage"
+            },
+            "2": {
+              "code": "370",
+              "name": "Sewerage",
+              "class": {
+                "0": {
+                  "code": "3700",
+                  "name": "Sewerage"
+                }
+              }
+            },
+            "3": {
+              "code": "38",
+              "name": "Waste collection, treatment and disposal activities; materials recovery"
+            },
+            "4": {
+              "code": "381",
+              "name": "Waste collection",
+              "class": {
+                "0": {
+                  "code": "3811",
+                  "name": "Collection of non-hazardous waste"
+                },
+                "1": {
+                  "code": "3812",
+                  "name": "Collection of hazardous waste"
+                }
+              }
+            },
+            "5": {
+              "code": "382",
+              "name": "Waste treatment and disposal",
+              "class": {
+                "0": {
+                  "code": "3821",
+                  "name": "Treatment and disposal of non-hazardous waste"
+                },
+                "1": {
+                  "code": "3822",
+                  "name": "Treatment and disposal of hazardous waste"
+                }
+              }
+            },
+            "6": {
+              "code": "383",
+              "name": "Materials recovery",
+              "class": {
+                "0": {
+                  "code": "3830",
+                  "name": "Materials recovery"
+                }
+              }
+            },
+            "7": {
+              "code": "39",
+              "name": "Remediation activities and other waste management services"
+            },
+            "8": {
+              "code": "390",
+              "name": "Remediation activities and other waste management services",
+              "class": {
+                "0": {
+                  "code": "3900",
+                  "name": "Remediation activities and other waste management services"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "5": {
+      "code": "F",
+      "name": "Construction",
+      "division": {
+        "0": {
+          "code": "41",
+          "name": "Construction of buildings",
+          "group": {
+            "0": {
+              "code": "410",
+              "name": "Construction of buildings",
+              "class": {
+                "0": {
+                  "code": "4100",
+                  "name": "Construction of buildings"
+                }
+              }
+            },
+            "1": {
+              "code": "42",
+              "name": "Civil engineering"
+            },
+            "2": {
+              "code": "421",
+              "name": "Construction of roads and railways",
+              "class": {
+                "0": {
+                  "code": "4210",
+                  "name": "Construction of roads and railways"
+                }
+              }
+            },
+            "3": {
+              "code": "422",
+              "name": "Construction of utility projects",
+              "class": {
+                "0": {
+                  "code": "4220",
+                  "name": "Construction of utility projects"
+                }
+              }
+            },
+            "4": {
+              "code": "429",
+              "name": "Construction of other civil engineering projects",
+              "class": {
+                "0": {
+                  "code": "4290",
+                  "name": "Construction of other civil engineering projects"
+                }
+              }
+            },
+            "5": {
+              "code": "43",
+              "name": "Specialized construction activities"
+            },
+            "6": {
+              "code": "431",
+              "name": "Demolition and site preparation",
+              "class": {
+                "0": {
+                  "code": "4311",
+                  "name": "Demolition"
+                },
+                "1": {
+                  "code": "4312",
+                  "name": "Site preparation"
+                }
+              }
+            },
+            "7": {
+              "code": "432",
+              "name": "Electrical, plumbing and other construction installation activities",
+              "class": {
+                "0": {
+                  "code": "4321",
+                  "name": "Electrical installation"
+                },
+                "1": {
+                  "code": "4322",
+                  "name": "Plumbing, heat and air-conditioning installation"
+                },
+                "2": {
+                  "code": "4329",
+                  "name": "Other construction installation"
+                }
+              }
+            },
+            "8": {
+              "code": "433",
+              "name": "Building completion and finishing",
+              "class": {
+                "0": {
+                  "code": "4330",
+                  "name": "Building completion and finishing"
+                }
+              }
+            },
+            "9": {
+              "code": "439",
+              "name": "Other specialized construction activities",
+              "class": {
+                "0": {
+                  "code": "4390",
+                  "name": "Other specialized construction activities"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "6": {
+      "code": "G",
+      "name": "Wholesale and retail trade; repair of motor vehicles and motorcycles",
+      "division": {
+        "0": {
+          "code": "45",
+          "name": "Wholesale and retail trade and repair of motor vehicles and motorcycles",
+          "group": {
+            "0": {
+              "code": "451",
+              "name": "Sale of motor vehicles",
+              "class": {
+                "0": {
+                  "code": "4510",
+                  "name": "Sale of motor vehicles"
+                }
+              }
+            },
+            "1": {
+              "code": "452",
+              "name": "Maintenance and repair of motor vehicles",
+              "class": {
+                "0": {
+                  "code": "4520",
+                  "name": "Maintenance and repair of motor vehicles"
+                }
+              }
+            },
+            "2": {
+              "code": "453",
+              "name": "Sale of motor vehicle parts and accessories",
+              "class": {
+                "0": {
+                  "code": "4530",
+                  "name": "Sale of motor vehicle parts and accessories"
+                }
+              }
+            },
+            "3": {
+              "code": "454",
+              "name": "Sale, maintenance and repair of motorcycles and related parts and accessories",
+              "class": {
+                "0": {
+                  "code": "4540",
+                  "name": "Sale, maintenance and repair of motorcycles and related parts and accessories"
+                }
+              }
+            },
+            "4": {
+              "code": "46",
+              "name": "Wholesale trade, except of motor vehicles and motorcycles"
+            },
+            "5": {
+              "code": "461",
+              "name": "Wholesale on a fee or contract basis",
+              "class": {
+                "0": {
+                  "code": "4610",
+                  "name": "Wholesale on a fee or contract basis"
+                }
+              }
+            },
+            "6": {
+              "code": "462",
+              "name": "Wholesale of agricultural raw materials and live animals",
+              "class": {
+                "0": {
+                  "code": "4620",
+                  "name": "Wholesale of agricultural raw materials and live animals"
+                }
+              }
+            },
+            "7": {
+              "code": "463",
+              "name": "Wholesale of food, beverages and tobacco",
+              "class": {
+                "0": {
+                  "code": "4630",
+                  "name": "Wholesale of food, beverages and tobacco"
+                }
+              }
+            },
+            "8": {
+              "code": "464",
+              "name": "Wholesale of household goods",
+              "class": {
+                "0": {
+                  "code": "4641",
+                  "name": "Wholesale of textiles, clothing and footwear"
+                },
+                "1": {
+                  "code": "4649",
+                  "name": "Wholesale of other household goods"
+                }
+              }
+            },
+            "9": {
+              "code": "465",
+              "name": "Wholesale of machinery, equipment and supplies",
+              "class": {
+                "0": {
+                  "code": "4651",
+                  "name": "Wholesale of computers, computer peripheral equipment and software"
+                },
+                "1": {
+                  "code": "4652",
+                  "name": "Wholesale of electronic and telecommunications equipment and parts"
+                },
+                "2": {
+                  "code": "4653",
+                  "name": "Wholesale of agricultural machinery, equipment and supplies"
+                },
+                "3": {
+                  "code": "4659",
+                  "name": "Wholesale of other machinery and equipment"
+                }
+              }
+            },
+            "10": {
+              "code": "466",
+              "name": "Other specialized wholesale",
+              "class": {
+                "0": {
+                  "code": "4661",
+                  "name": "Wholesale of solid, liquid and gaseous fuels and related products"
+                },
+                "1": {
+                  "code": "4662",
+                  "name": "Wholesale of metals and metal ores"
+                },
+                "2": {
+                  "code": "4663",
+                  "name": "Wholesale of construction materials, hardware, plumbing and heating equipment and supplies"
+                },
+                "3": {
+                  "code": "4669",
+                  "name": "Wholesale of waste and scrap and other products n.e.c."
+                }
+              }
+            },
+            "11": {
+              "code": "469",
+              "name": "Non-specialized wholesale trade",
+              "class": {
+                "0": {
+                  "code": "4690",
+                  "name": "Non-specialized wholesale trade"
+                }
+              }
+            },
+            "12": {
+              "code": "47",
+              "name": "Retail trade, except of motor vehicles and motorcycles"
+            },
+            "13": {
+              "code": "471",
+              "name": "Retail sale in non-specialized stores",
+              "class": {
+                "0": {
+                  "code": "4711",
+                  "name": "Retail sale in non-specialized stores with food, beverages or tobacco predominating"
+                },
+                "1": {
+                  "code": "4719",
+                  "name": "Other retail sale in non-specialized stores"
+                }
+              }
+            },
+            "14": {
+              "code": "472",
+              "name": "Retail sale of food, beverages and tobacco in specialized stores",
+              "class": {
+                "0": {
+                  "code": "4721",
+                  "name": "Retail sale of food in specialized stores"
+                },
+                "1": {
+                  "code": "4722",
+                  "name": "Retail sale of beverages in specialized stores"
+                },
+                "2": {
+                  "code": "4723",
+                  "name": "Retail sale of tobacco products in specialized stores"
+                }
+              }
+            },
+            "15": {
+              "code": "473",
+              "name": "Retail sale of automotive fuel in specialized stores",
+              "class": {
+                "0": {
+                  "code": "4730",
+                  "name": "Retail sale of automotive fuel in specialized stores"
+                }
+              }
+            },
+            "16": {
+              "code": "474",
+              "name": "Retail sale of information and communications equipment in specialized stores",
+              "class": {
+                "0": {
+                  "code": "4741",
+                  "name": "Retail sale of computers, peripheral units, software and telecommunications equipment in specialized stores"
+                },
+                "1": {
+                  "code": "4742",
+                  "name": "Retail sale of audio and video equipment in specialized stores"
+                }
+              }
+            },
+            "17": {
+              "code": "475",
+              "name": "Retail sale of other household equipment in specialized stores",
+              "class": {
+                "0": {
+                  "code": "4751",
+                  "name": "Retail sale of textiles in specialized stores"
+                },
+                "1": {
+                  "code": "4752",
+                  "name": "Retail sale of hardware, paints and glass in specialized stores"
+                },
+                "2": {
+                  "code": "4753",
+                  "name": "Retail sale of carpets, rugs, wall and floor coverings in specialized stores"
+                },
+                "3": {
+                  "code": "4759",
+                  "name": "Retail sale of electrical household appliances, furniture, lighting equipment and other household articles in specialized stores"
+                }
+              }
+            },
+            "18": {
+              "code": "476",
+              "name": "Retail sale of cultural and recreation goods in specialized stores",
+              "class": {
+                "0": {
+                  "code": "4761",
+                  "name": "Retail sale of books, newspapers and stationary in specialized stores"
+                },
+                "1": {
+                  "code": "4762",
+                  "name": "Retail sale of music and video recordings in specialized stores"
+                },
+                "2": {
+                  "code": "4763",
+                  "name": "Retail sale of sporting equipment in specialized stores"
+                },
+                "3": {
+                  "code": "4764",
+                  "name": "Retail sale of games and toys in specialized stores"
+                }
+              }
+            },
+            "19": {
+              "code": "477",
+              "name": "Retail sale of other goods in specialized stores",
+              "class": {
+                "0": {
+                  "code": "4771",
+                  "name": "Retail sale of clothing, footwear and leather articles in specialized stores"
+                },
+                "1": {
+                  "code": "4772",
+                  "name": "Retail sale of pharmaceutical and medical goods, cosmetic and toilet articles in specialized stores"
+                },
+                "2": {
+                  "code": "4773",
+                  "name": "Other retail sale of new goods in specialized stores"
+                },
+                "3": {
+                  "code": "4774",
+                  "name": "Retail sale of second-hand goods"
+                }
+              }
+            },
+            "20": {
+              "code": "478",
+              "name": "Retail sale via stalls and markets",
+              "class": {
+                "0": {
+                  "code": "4781",
+                  "name": "Retail sale via stalls and markets of food, beverages and tobacco products"
+                },
+                "1": {
+                  "code": "4782",
+                  "name": "Retail sale via stalls and markets of textiles, clothing and footwear"
+                },
+                "2": {
+                  "code": "4789",
+                  "name": "Retail sale via stalls and markets of other goods"
+                }
+              }
+            },
+            "21": {
+              "code": "479",
+              "name": "Retail trade not in stores, stalls or markets",
+              "class": {
+                "0": {
+                  "code": "4791",
+                  "name": "Retail sale via mail order houses or via Internet"
+                },
+                "1": {
+                  "code": "4799",
+                  "name": "Other retail sale not in stores, stalls or markets"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "7": {
+      "code": "H",
+      "name": "Transportation and storage",
+      "division": {
+        "0": {
+          "code": "49",
+          "name": "Land transport and transport via pipelines",
+          "group": {
+            "0": {
+              "code": "491",
+              "name": "Transport via railways",
+              "class": {
+                "0": {
+                  "code": "4911",
+                  "name": "Passenger rail transport, interurban"
+                },
+                "1": {
+                  "code": "4912",
+                  "name": "Freight rail transport"
+                }
+              }
+            },
+            "1": {
+              "code": "492",
+              "name": "Other land transport",
+              "class": {
+                "0": {
+                  "code": "4921",
+                  "name": "Urban and suburban passenger land transport"
+                },
+                "1": {
+                  "code": "4922",
+                  "name": "Other passenger land transport"
+                },
+                "2": {
+                  "code": "4923",
+                  "name": "Freight transport by road"
+                }
+              }
+            },
+            "2": {
+              "code": "493",
+              "name": "Transport via pipeline",
+              "class": {
+                "0": {
+                  "code": "4930",
+                  "name": "Transport via pipeline"
+                }
+              }
+            },
+            "3": {
+              "code": "50",
+              "name": "Water transport"
+            },
+            "4": {
+              "code": "501",
+              "name": "Sea and coastal water transport",
+              "class": {
+                "0": {
+                  "code": "5011",
+                  "name": "Sea and coastal passenger water transport"
+                },
+                "1": {
+                  "code": "5012",
+                  "name": "Sea and coastal freight water transport"
+                }
+              }
+            },
+            "5": {
+              "code": "502",
+              "name": "Inland water transport",
+              "class": {
+                "0": {
+                  "code": "5021",
+                  "name": "Inland passenger water transport"
+                },
+                "1": {
+                  "code": "5022",
+                  "name": "Inland freight water transport"
+                }
+              }
+            },
+            "6": {
+              "code": "51",
+              "name": "Air transport"
+            },
+            "7": {
+              "code": "511",
+              "name": "Passenger air transport",
+              "class": {
+                "0": {
+                  "code": "5110",
+                  "name": "Passenger air transport"
+                }
+              }
+            },
+            "8": {
+              "code": "512",
+              "name": "Freight air transport",
+              "class": {
+                "0": {
+                  "code": "5120",
+                  "name": "Freight air transport"
+                }
+              }
+            },
+            "9": {
+              "code": "52",
+              "name": "Warehousing and support activities for transportation"
+            },
+            "10": {
+              "code": "521",
+              "name": "Warehousing and storage",
+              "class": {
+                "0": {
+                  "code": "5210",
+                  "name": "Warehousing and storage"
+                }
+              }
+            },
+            "11": {
+              "code": "522",
+              "name": "Support activities for transportation",
+              "class": {
+                "0": {
+                  "code": "5221",
+                  "name": "Service activities incidental to land transportation"
+                },
+                "1": {
+                  "code": "5222",
+                  "name": "Service activities incidental to water transportation"
+                },
+                "2": {
+                  "code": "5223",
+                  "name": "Service activities incidental to air transportation"
+                },
+                "3": {
+                  "code": "5224",
+                  "name": "Cargo handling"
+                },
+                "4": {
+                  "code": "5229",
+                  "name": "Other transportation support activities"
+                }
+              }
+            },
+            "12": {
+              "code": "53",
+              "name": "Postal and courier activities"
+            },
+            "13": {
+              "code": "531",
+              "name": "Postal activities",
+              "class": {
+                "0": {
+                  "code": "5310",
+                  "name": "Postal activities"
+                }
+              }
+            },
+            "14": {
+              "code": "532",
+              "name": "Courier activities",
+              "class": {
+                "0": {
+                  "code": "5320",
+                  "name": "Courier activities"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "8": {
+      "code": "I",
+      "name": "Accommodation and food service activities",
+      "division": {
+        "0": {
+          "code": "55",
+          "name": "Accommodation",
+          "group": {
+            "0": {
+              "code": "551",
+              "name": "Short term accommodation activities",
+              "class": {
+                "0": {
+                  "code": "5510",
+                  "name": "Short term accommodation activities"
+                }
+              }
+            },
+            "1": {
+              "code": "552",
+              "name": "Camping grounds, recreational vehicle parks and trailer parks",
+              "class": {
+                "0": {
+                  "code": "5520",
+                  "name": "Camping grounds, recreational vehicle parks and trailer parks"
+                }
+              }
+            },
+            "2": {
+              "code": "559",
+              "name": "Other accommodation",
+              "class": {
+                "0": {
+                  "code": "5590",
+                  "name": "Other accommodation"
+                }
+              }
+            },
+            "3": {
+              "code": "56",
+              "name": "Food and beverage service activities"
+            },
+            "4": {
+              "code": "561",
+              "name": "Restaurants and mobile food service activities",
+              "class": {
+                "0": {
+                  "code": "5610",
+                  "name": "Restaurants and mobile food service activities"
+                }
+              }
+            },
+            "5": {
+              "code": "562",
+              "name": "Event catering and other food service activities",
+              "class": {
+                "0": {
+                  "code": "5621",
+                  "name": "Event catering"
+                },
+                "1": {
+                  "code": "5629",
+                  "name": "Other food service activities"
+                }
+              }
+            },
+            "6": {
+              "code": "563",
+              "name": "Beverage serving activities",
+              "class": {
+                "0": {
+                  "code": "5630",
+                  "name": "Beverage serving activities"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "9": {
+      "code": "J",
+      "name": "Information and communication",
+      "division": {
+        "0": {
+          "code": "58",
+          "name": "Publishing activities",
+          "group": {
+            "0": {
+              "code": "581",
+              "name": "Publishing of books, periodicals and other publishing activities",
+              "class": {
+                "0": {
+                  "code": "5811",
+                  "name": "Book publishing"
+                },
+                "1": {
+                  "code": "5812",
+                  "name": "Publishing of directories and mailing lists"
+                },
+                "2": {
+                  "code": "5813",
+                  "name": "Publishing of newspapers, journals and periodicals"
+                },
+                "3": {
+                  "code": "5819",
+                  "name": "Other publishing activities"
+                }
+              }
+            },
+            "1": {
+              "code": "582",
+              "name": "Software publishing",
+              "class": {
+                "0": {
+                  "code": "5820",
+                  "name": "Software publishing"
+                }
+              }
+            },
+            "2": {
+              "code": "59",
+              "name": "Motion picture, video and television programme production, sound recording and music publishing activities"
+            },
+            "3": {
+              "code": "591",
+              "name": "Motion picture, video and television programme activities",
+              "class": {
+                "0": {
+                  "code": "5911",
+                  "name": "Motion picture, video and television programme production activities"
+                },
+                "1": {
+                  "code": "5912",
+                  "name": "Motion picture, video and television programme post-production activities"
+                },
+                "2": {
+                  "code": "5913",
+                  "name": "Motion picture, video and television programme distribution activities"
+                },
+                "3": {
+                  "code": "5914",
+                  "name": "Motion picture projection activities"
+                }
+              }
+            },
+            "4": {
+              "code": "592",
+              "name": "Sound recording and music publishing activities",
+              "class": {
+                "0": {
+                  "code": "5920",
+                  "name": "Sound recording and music publishing activities"
+                }
+              }
+            },
+            "5": {
+              "code": "60",
+              "name": "Programming and broadcasting activities"
+            },
+            "6": {
+              "code": "601",
+              "name": "Radio broadcasting",
+              "class": {
+                "0": {
+                  "code": "6010",
+                  "name": "Radio broadcasting"
+                }
+              }
+            },
+            "7": {
+              "code": "602",
+              "name": "Television programming and broadcasting activities",
+              "class": {
+                "0": {
+                  "code": "6020",
+                  "name": "Television programming and broadcasting activities"
+                }
+              }
+            },
+            "8": {
+              "code": "61",
+              "name": "Telecommunications"
+            },
+            "9": {
+              "code": "611",
+              "name": "Wired telecommunications activities",
+              "class": {
+                "0": {
+                  "code": "6110",
+                  "name": "Wired telecommunications activities"
+                }
+              }
+            },
+            "10": {
+              "code": "612",
+              "name": "Wireless telecommunications activities",
+              "class": {
+                "0": {
+                  "code": "6120",
+                  "name": "Wireless telecommunications activities"
+                }
+              }
+            },
+            "11": {
+              "code": "613",
+              "name": "Satellite telecommunications activities",
+              "class": {
+                "0": {
+                  "code": "6130",
+                  "name": "Satellite telecommunications activities"
+                }
+              }
+            },
+            "12": {
+              "code": "619",
+              "name": "Other telecommunications activities",
+              "class": {
+                "0": {
+                  "code": "6190",
+                  "name": "Other telecommunications activities"
+                }
+              }
+            },
+            "13": {
+              "code": "62",
+              "name": "Computer programming, consultancy and related activities"
+            },
+            "14": {
+              "code": "620",
+              "name": "Computer programming, consultancy and related activities",
+              "class": {
+                "0": {
+                  "code": "6201",
+                  "name": "Computer programming activities"
+                },
+                "1": {
+                  "code": "6202",
+                  "name": "Computer consultancy and computer facilities management activities"
+                },
+                "2": {
+                  "code": "6209",
+                  "name": "Other information technology and computer service activities"
+                }
+              }
+            },
+            "15": {
+              "code": "63",
+              "name": "Information service activities"
+            },
+            "16": {
+              "code": "631",
+              "name": "Data processing, hosting and related activities; web portals",
+              "class": {
+                "0": {
+                  "code": "6311",
+                  "name": "Data processing, hosting and related activities"
+                },
+                "1": {
+                  "code": "6312",
+                  "name": "Web portals"
+                }
+              }
+            },
+            "17": {
+              "code": "639",
+              "name": "Other information service activities",
+              "class": {
+                "0": {
+                  "code": "6391",
+                  "name": "News agency activities"
+                },
+                "1": {
+                  "code": "6399",
+                  "name": "Other information service activities n.e.c."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "10": {
+      "code": "K",
+      "name": "Financial and insurance activities",
+      "division": {
+        "0": {
+          "code": "64",
+          "name": "Financial service activities, except insurance and pension funding",
+          "group": {
+            "0": {
+              "code": "641",
+              "name": "Monetary intermediation",
+              "class": {
+                "0": {
+                  "code": "6411",
+                  "name": "Central banking"
+                },
+                "1": {
+                  "code": "6419",
+                  "name": "Other monetary intermediation"
+                }
+              }
+            },
+            "1": {
+              "code": "642",
+              "name": "Activities of holding companies",
+              "class": {
+                "0": {
+                  "code": "6420",
+                  "name": "Activities of holding companies"
+                }
+              }
+            },
+            "2": {
+              "code": "643",
+              "name": "Trusts, funds and similar financial entities",
+              "class": {
+                "0": {
+                  "code": "6430",
+                  "name": "Trusts, funds and similar financial entities"
+                }
+              }
+            },
+            "3": {
+              "code": "649",
+              "name": "Other financial service activities, except insurance and pension funding activities",
+              "class": {
+                "0": {
+                  "code": "6491",
+                  "name": "Financial leasing"
+                },
+                "1": {
+                  "code": "6492",
+                  "name": "Other credit granting"
+                },
+                "2": {
+                  "code": "6499",
+                  "name": "Other financial service activities, except insurance and pension funding activities, n.e.c."
+                }
+              }
+            },
+            "4": {
+              "code": "65",
+              "name": "Insurance, reinsurance and pension funding, except compulsory social security"
+            },
+            "5": {
+              "code": "651",
+              "name": "Insurance",
+              "class": {
+                "0": {
+                  "code": "6511",
+                  "name": "Life insurance"
+                },
+                "1": {
+                  "code": "6512",
+                  "name": "Non-life insurance"
+                }
+              }
+            },
+            "6": {
+              "code": "652",
+              "name": "Reinsurance",
+              "class": {
+                "0": {
+                  "code": "6520",
+                  "name": "Reinsurance"
+                }
+              }
+            },
+            "7": {
+              "code": "653",
+              "name": "Pension funding",
+              "class": {
+                "0": {
+                  "code": "6530",
+                  "name": "Pension funding"
+                }
+              }
+            },
+            "8": {
+              "code": "66",
+              "name": "Activities auxiliary to financial service and insurance activities"
+            },
+            "9": {
+              "code": "661",
+              "name": "Activities auxiliary to financial service activities, except insurance and pension funding",
+              "class": {
+                "0": {
+                  "code": "6611",
+                  "name": "Administration of financial markets"
+                },
+                "1": {
+                  "code": "6612",
+                  "name": "Security and commodity contracts brokerage"
+                },
+                "2": {
+                  "code": "6619",
+                  "name": "Other activities auxiliary to financial service activities"
+                }
+              }
+            },
+            "10": {
+              "code": "662",
+              "name": "Activities auxiliary to insurance and pension funding",
+              "class": {
+                "0": {
+                  "code": "6621",
+                  "name": "Risk and damage evaluation"
+                },
+                "1": {
+                  "code": "6622",
+                  "name": "Activities of insurance agents and brokers"
+                },
+                "2": {
+                  "code": "6629",
+                  "name": "Other activities auxiliary to insurance and pension funding"
+                }
+              }
+            },
+            "11": {
+              "code": "663",
+              "name": "Fund management activities",
+              "class": {
+                "0": {
+                  "code": "6630",
+                  "name": "Fund management activities"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "11": {
+      "code": "L",
+      "name": "Real estate activities",
+      "division": {
+        "0": {
+          "code": "68",
+          "name": "Real estate activities",
+          "group": {
+            "0": {
+              "code": "681",
+              "name": "Real estate activities with own or leased property",
+              "class": {
+                "0": {
+                  "code": "6810",
+                  "name": "Real estate activities with own or leased property"
+                }
+              }
+            },
+            "1": {
+              "code": "682",
+              "name": "Real estate activities on a fee or contract basis",
+              "class": {
+                "0": {
+                  "code": "6820",
+                  "name": "Real estate activities on a fee or contract basis"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "12": {
+      "code": "M",
+      "name": "Professional, scientific and technical activities",
+      "division": {
+        "0": {
+          "code": "69",
+          "name": "Legal and accounting activities",
+          "group": {
+            "0": {
+              "code": "691",
+              "name": "Legal activities",
+              "class": {
+                "0": {
+                  "code": "6910",
+                  "name": "Legal activities"
+                }
+              }
+            },
+            "1": {
+              "code": "692",
+              "name": "Accounting, bookkeeping and auditing activities; tax consultancy",
+              "class": {
+                "0": {
+                  "code": "6920",
+                  "name": "Accounting, bookkeeping and auditing activities; tax consultancy"
+                }
+              }
+            },
+            "2": {
+              "code": "70",
+              "name": "Activities of head offices; management consultancy activities"
+            },
+            "3": {
+              "code": "701",
+              "name": "Activities of head offices",
+              "class": {
+                "0": {
+                  "code": "7010",
+                  "name": "Activities of head offices"
+                }
+              }
+            },
+            "4": {
+              "code": "702",
+              "name": "Management consultancy activities",
+              "class": {
+                "0": {
+                  "code": "7020",
+                  "name": "Management consultancy activities"
+                }
+              }
+            },
+            "5": {
+              "code": "71",
+              "name": "Architectural and engineering activities; technical testing and analysis"
+            },
+            "6": {
+              "code": "711",
+              "name": "Architectural and engineering activities and related technical consultancy",
+              "class": {
+                "0": {
+                  "code": "7110",
+                  "name": "Architectural and engineering activities and related technical consultancy"
+                }
+              }
+            },
+            "7": {
+              "code": "712",
+              "name": "Technical testing and analysis",
+              "class": {
+                "0": {
+                  "code": "7120",
+                  "name": "Technical testing and analysis"
+                }
+              }
+            },
+            "8": {
+              "code": "72",
+              "name": "Scientific research and development"
+            },
+            "9": {
+              "code": "721",
+              "name": "Research and experimental development on natural sciences and engineering",
+              "class": {
+                "0": {
+                  "code": "7210",
+                  "name": "Research and experimental development on natural sciences and engineering"
+                }
+              }
+            },
+            "10": {
+              "code": "722",
+              "name": "Research and experimental development on social sciences and humanities",
+              "class": {
+                "0": {
+                  "code": "7220",
+                  "name": "Research and experimental development on social sciences and humanities"
+                }
+              }
+            },
+            "11": {
+              "code": "73",
+              "name": "Advertising and market research"
+            },
+            "12": {
+              "code": "731",
+              "name": "Advertising",
+              "class": {
+                "0": {
+                  "code": "7310",
+                  "name": "Advertising"
+                }
+              }
+            },
+            "13": {
+              "code": "732",
+              "name": "Market research and public opinion polling",
+              "class": {
+                "0": {
+                  "code": "7320",
+                  "name": "Market research and public opinion polling"
+                }
+              }
+            },
+            "14": {
+              "code": "74",
+              "name": "Other professional, scientific and technical activities"
+            },
+            "15": {
+              "code": "741",
+              "name": "Specialized design activities",
+              "class": {
+                "0": {
+                  "code": "7410",
+                  "name": "Specialized design activities"
+                }
+              }
+            },
+            "16": {
+              "code": "742",
+              "name": "Photographic activities",
+              "class": {
+                "0": {
+                  "code": "7420",
+                  "name": "Photographic activities"
+                }
+              }
+            },
+            "17": {
+              "code": "749",
+              "name": "Other professional, scientific and technical activities n.e.c.",
+              "class": {
+                "0": {
+                  "code": "7490",
+                  "name": "Other professional, scientific and technical activities n.e.c."
+                }
+              }
+            },
+            "18": {
+              "code": "75",
+              "name": "Veterinary activities"
+            },
+            "19": {
+              "code": "750",
+              "name": "Veterinary activities",
+              "class": {
+                "0": {
+                  "code": "7500",
+                  "name": "Veterinary activities"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "13": {
+      "code": "N",
+      "name": "Administrative and support service activities",
+      "division": {
+        "0": {
+          "code": "77",
+          "name": "Rental and leasing activities",
+          "group": {
+            "0": {
+              "code": "771",
+              "name": "Renting and leasing of motor vehicles",
+              "class": {
+                "0": {
+                  "code": "7710",
+                  "name": "Renting and leasing of motor vehicles"
+                }
+              }
+            },
+            "1": {
+              "code": "772",
+              "name": "Renting and leasing of personal and household goods",
+              "class": {
+                "0": {
+                  "code": "7721",
+                  "name": "Renting and leasing of recreational and sports goods"
+                },
+                "1": {
+                  "code": "7722",
+                  "name": "Renting of video tapes and disks"
+                },
+                "2": {
+                  "code": "7729",
+                  "name": "Renting and leasing of other personal and household goods"
+                }
+              }
+            },
+            "2": {
+              "code": "773",
+              "name": "Renting and leasing of other machinery, equipment and tangible goods",
+              "class": {
+                "0": {
+                  "code": "7730",
+                  "name": "Renting and leasing of other machinery, equipment and tangible goods"
+                }
+              }
+            },
+            "3": {
+              "code": "774",
+              "name": "Leasing of intellectual property and similar products, except copyrighted works",
+              "class": {
+                "0": {
+                  "code": "7740",
+                  "name": "Leasing of intellectual property and similar products, except copyrighted works"
+                }
+              }
+            },
+            "4": {
+              "code": "78",
+              "name": "Employment activities"
+            },
+            "5": {
+              "code": "781",
+              "name": "Activities of employment placement agencies",
+              "class": {
+                "0": {
+                  "code": "7810",
+                  "name": "Activities of employment placement agencies"
+                }
+              }
+            },
+            "6": {
+              "code": "782",
+              "name": "Temporary employment agency activities",
+              "class": {
+                "0": {
+                  "code": "7820",
+                  "name": "Temporary employment agency activities"
+                }
+              }
+            },
+            "7": {
+              "code": "783",
+              "name": "Other human resources provision",
+              "class": {
+                "0": {
+                  "code": "7830",
+                  "name": "Other human resources provision"
+                }
+              }
+            },
+            "8": {
+              "code": "79",
+              "name": "Travel agency, tour operator, reservation service and related activities"
+            },
+            "9": {
+              "code": "791",
+              "name": "Travel agency and tour operator activities",
+              "class": {
+                "0": {
+                  "code": "7911",
+                  "name": "Travel agency activities"
+                },
+                "1": {
+                  "code": "7912",
+                  "name": "Tour operator activities"
+                }
+              }
+            },
+            "10": {
+              "code": "799",
+              "name": "Other reservation service and related activities",
+              "class": {
+                "0": {
+                  "code": "7990",
+                  "name": "Other reservation service and related activities"
+                }
+              }
+            },
+            "11": {
+              "code": "80",
+              "name": "Security and investigation activities"
+            },
+            "12": {
+              "code": "801",
+              "name": "Private security activities",
+              "class": {
+                "0": {
+                  "code": "8010",
+                  "name": "Private security activities"
+                }
+              }
+            },
+            "13": {
+              "code": "802",
+              "name": "Security systems service activities",
+              "class": {
+                "0": {
+                  "code": "8020",
+                  "name": "Security systems service activities"
+                }
+              }
+            },
+            "14": {
+              "code": "803",
+              "name": "Investigation activities",
+              "class": {
+                "0": {
+                  "code": "8030",
+                  "name": "Investigation activities"
+                }
+              }
+            },
+            "15": {
+              "code": "81",
+              "name": "Services to buildings and landscape activities"
+            },
+            "16": {
+              "code": "811",
+              "name": "Combined facilities support activities",
+              "class": {
+                "0": {
+                  "code": "8110",
+                  "name": "Combined facilities support activities"
+                }
+              }
+            },
+            "17": {
+              "code": "812",
+              "name": "Cleaning activities",
+              "class": {
+                "0": {
+                  "code": "8121",
+                  "name": "General cleaning of buildings"
+                },
+                "1": {
+                  "code": "8129",
+                  "name": "Other building and industrial cleaning activities"
+                }
+              }
+            },
+            "18": {
+              "code": "813",
+              "name": "Landscape care and maintenance service activities",
+              "class": {
+                "0": {
+                  "code": "8130",
+                  "name": "Landscape care and maintenance service activities"
+                }
+              }
+            },
+            "19": {
+              "code": "82",
+              "name": "Office administrative, office support and other business support activities"
+            },
+            "20": {
+              "code": "821",
+              "name": "Office administrative and support activities",
+              "class": {
+                "0": {
+                  "code": "8211",
+                  "name": "Combined office administrative service activities"
+                },
+                "1": {
+                  "code": "8219",
+                  "name": "Photocopying, document preparation and other specialized office support activities"
+                }
+              }
+            },
+            "21": {
+              "code": "822",
+              "name": "Activities of call centres",
+              "class": {
+                "0": {
+                  "code": "8220",
+                  "name": "Activities of call centres"
+                }
+              }
+            },
+            "22": {
+              "code": "823",
+              "name": "Organization of conventions and trade shows",
+              "class": {
+                "0": {
+                  "code": "8230",
+                  "name": "Organization of conventions and trade shows"
+                }
+              }
+            },
+            "23": {
+              "code": "829",
+              "name": "Business support service activities n.e.c.",
+              "class": {
+                "0": {
+                  "code": "8291",
+                  "name": "Activities of collection agencies and credit bureaus"
+                },
+                "1": {
+                  "code": "8292",
+                  "name": "Packaging activities"
+                },
+                "2": {
+                  "code": "8299",
+                  "name": "Other business support service activities n.e.c."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "14": {
+      "code": "O",
+      "name": "Public administration and defence; compulsory social security",
+      "division": {
+        "0": {
+          "code": "84",
+          "name": "Public administration and defence; compulsory social security",
+          "group": {
+            "0": {
+              "code": "841",
+              "name": "Administration of the State and the economic and social policy of the community",
+              "class": {
+                "0": {
+                  "code": "8411",
+                  "name": "General public administration activities"
+                },
+                "1": {
+                  "code": "8412",
+                  "name": "Regulation of the activities of providing health care, education, cultural services and other social services, excluding social security"
+                },
+                "2": {
+                  "code": "8413",
+                  "name": "Regulation of and contribution to more efficient operation of businesses"
+                }
+              }
+            },
+            "1": {
+              "code": "842",
+              "name": "Provision of services to the community as a whole",
+              "class": {
+                "0": {
+                  "code": "8421",
+                  "name": "Foreign affairs"
+                },
+                "1": {
+                  "code": "8422",
+                  "name": "Defence activities"
+                },
+                "2": {
+                  "code": "8423",
+                  "name": "Public order and safety activities"
+                }
+              }
+            },
+            "2": {
+              "code": "843",
+              "name": "Compulsory social security activities",
+              "class": {
+                "0": {
+                  "code": "8430",
+                  "name": "Compulsory social security activities"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "15": {
+      "code": "P",
+      "name": "Education",
+      "division": {
+        "0": {
+          "code": "85",
+          "name": "Education",
+          "group": {
+            "0": {
+              "code": "851",
+              "name": "Pre-primary and primary education",
+              "class": {
+                "0": {
+                  "code": "8510",
+                  "name": "Pre-primary and primary education"
+                }
+              }
+            },
+            "1": {
+              "code": "852",
+              "name": "Secondary education",
+              "class": {
+                "0": {
+                  "code": "8521",
+                  "name": "General secondary education"
+                },
+                "1": {
+                  "code": "8522",
+                  "name": "Technical and vocational secondary education"
+                }
+              }
+            },
+            "2": {
+              "code": "853",
+              "name": "Higher education",
+              "class": {
+                "0": {
+                  "code": "8530",
+                  "name": "Higher education"
+                }
+              }
+            },
+            "3": {
+              "code": "854",
+              "name": "Other education",
+              "class": {
+                "0": {
+                  "code": "8541",
+                  "name": "Sports and recreation education"
+                },
+                "1": {
+                  "code": "8542",
+                  "name": "Cultural education"
+                },
+                "2": {
+                  "code": "8549",
+                  "name": "Other education n.e.c."
+                }
+              }
+            },
+            "4": {
+              "code": "855",
+              "name": "Educational support activities",
+              "class": {
+                "0": {
+                  "code": "8550",
+                  "name": "Educational support activities"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "16": {
+      "code": "Q",
+      "name": "Human health and social work activities",
+      "division": {
+        "0": {
+          "code": "86",
+          "name": "Human health activities",
+          "group": {
+            "0": {
+              "code": "861",
+              "name": "Hospital activities",
+              "class": {
+                "0": {
+                  "code": "8610",
+                  "name": "Hospital activities"
+                }
+              }
+            },
+            "1": {
+              "code": "862",
+              "name": "Medical and dental practice activities",
+              "class": {
+                "0": {
+                  "code": "8620",
+                  "name": "Medical and dental practice activities"
+                }
+              }
+            },
+            "2": {
+              "code": "869",
+              "name": "Other human health activities",
+              "class": {
+                "0": {
+                  "code": "8690",
+                  "name": "Other human health activities"
+                }
+              }
+            },
+            "3": {
+              "code": "87",
+              "name": "Residential care activities"
+            },
+            "4": {
+              "code": "871",
+              "name": "Residential nursing care facilities",
+              "class": {
+                "0": {
+                  "code": "8710",
+                  "name": "Residential nursing care facilities"
+                }
+              }
+            },
+            "5": {
+              "code": "872",
+              "name": "Residential care activities for mental retardation, mental health and substance abuse",
+              "class": {
+                "0": {
+                  "code": "8720",
+                  "name": "Residential care activities for mental retardation, mental health and substance abuse"
+                }
+              }
+            },
+            "6": {
+              "code": "873",
+              "name": "Residential care activities for the elderly and disabled",
+              "class": {
+                "0": {
+                  "code": "8730",
+                  "name": "Residential care activities for the elderly and disabled"
+                }
+              }
+            },
+            "7": {
+              "code": "879",
+              "name": "Other residential care activities",
+              "class": {
+                "0": {
+                  "code": "8790",
+                  "name": "Other residential care activities"
+                }
+              }
+            },
+            "8": {
+              "code": "88",
+              "name": "Social work activities without accommodation"
+            },
+            "9": {
+              "code": "881",
+              "name": "Social work activities without accommodation for the elderly and disabled",
+              "class": {
+                "0": {
+                  "code": "8810",
+                  "name": "Social work activities without accommodation for the elderly and disabled"
+                }
+              }
+            },
+            "10": {
+              "code": "889",
+              "name": "Other social work activities without accommodation",
+              "class": {
+                "0": {
+                  "code": "8890",
+                  "name": "Other social work activities without accommodation"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "17": {
+      "code": "R",
+      "name": "Arts, entertainment and recreation",
+      "division": {
+        "0": {
+          "code": "90",
+          "name": "Creative, arts and entertainment activities",
+          "group": {
+            "0": {
+              "code": "900",
+              "name": "Creative, arts and entertainment activities",
+              "class": {
+                "0": {
+                  "code": "9000",
+                  "name": "Creative, arts and entertainment activities"
+                }
+              }
+            },
+            "1": {
+              "code": "91",
+              "name": "Libraries, archives, museums and other cultural activities"
+            },
+            "2": {
+              "code": "910",
+              "name": "Libraries, archives, museums and other cultural activities",
+              "class": {
+                "0": {
+                  "code": "9101",
+                  "name": "Library and archives activities"
+                },
+                "1": {
+                  "code": "9102",
+                  "name": "Museums activities and operation of historical sites and buildings"
+                },
+                "2": {
+                  "code": "9103",
+                  "name": "Botanical and zoological gardens and nature reserves activities"
+                }
+              }
+            },
+            "3": {
+              "code": "92",
+              "name": "Gambling and betting activities"
+            },
+            "4": {
+              "code": "920",
+              "name": "Gambling and betting activities",
+              "class": {
+                "0": {
+                  "code": "9200",
+                  "name": "Gambling and betting activities"
+                }
+              }
+            },
+            "5": {
+              "code": "93",
+              "name": "Sports activities and amusement and recreation activities"
+            },
+            "6": {
+              "code": "931",
+              "name": "Sports activities",
+              "class": {
+                "0": {
+                  "code": "9311",
+                  "name": "Operation of sports facilities"
+                },
+                "1": {
+                  "code": "9312",
+                  "name": "Activities of sports clubs"
+                },
+                "2": {
+                  "code": "9319",
+                  "name": "Other sports activities"
+                }
+              }
+            },
+            "7": {
+              "code": "932",
+              "name": "Other amusement and recreation activities",
+              "class": {
+                "0": {
+                  "code": "9321",
+                  "name": "Activities of amusement parks and theme parks"
+                },
+                "1": {
+                  "code": "9329",
+                  "name": "Other amusement and recreation activities n.e.c."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "18": {
+      "code": "S",
+      "name": "Other service activities",
+      "division": {
+        "0": {
+          "code": "94",
+          "name": "Activities of membership organizations",
+          "group": {
+            "0": {
+              "code": "941",
+              "name": "Activities of business, employers and professional membership organizations",
+              "class": {
+                "0": {
+                  "code": "9411",
+                  "name": "Activities of business and employers membership organizations"
+                },
+                "1": {
+                  "code": "9412",
+                  "name": "Activities of professional membership organizations"
+                }
+              }
+            },
+            "1": {
+              "code": "942",
+              "name": "Activities of trade unions",
+              "class": {
+                "0": {
+                  "code": "9420",
+                  "name": "Activities of trade unions"
+                }
+              }
+            },
+            "2": {
+              "code": "949",
+              "name": "Activities of other membership organizations",
+              "class": {
+                "0": {
+                  "code": "9491",
+                  "name": "Activities of religious organizations"
+                },
+                "1": {
+                  "code": "9492",
+                  "name": "Activities of political organizations"
+                },
+                "2": {
+                  "code": "9499",
+                  "name": "Activities of other membership organizations n.e.c."
+                }
+              }
+            },
+            "3": {
+              "code": "95",
+              "name": "Repair of computers and personal and household goods"
+            },
+            "4": {
+              "code": "951",
+              "name": "Repair of computers and communication equipment",
+              "class": {
+                "0": {
+                  "code": "9511",
+                  "name": "Repair of computers and peripheral equipment"
+                },
+                "1": {
+                  "code": "9512",
+                  "name": "Repair of communication equipment"
+                }
+              }
+            },
+            "5": {
+              "code": "952",
+              "name": "Repair of personal and household goods",
+              "class": {
+                "0": {
+                  "code": "9521",
+                  "name": "Repair of consumer electronics"
+                },
+                "1": {
+                  "code": "9522",
+                  "name": "Repair of household appliances and home and garden equipment"
+                },
+                "2": {
+                  "code": "9523",
+                  "name": "Repair of footwear and leather goods"
+                },
+                "3": {
+                  "code": "9524",
+                  "name": "Repair of furniture and home furnishings"
+                },
+                "4": {
+                  "code": "9529",
+                  "name": "Repair of other personal and household goods"
+                }
+              }
+            },
+            "6": {
+              "code": "96",
+              "name": "Other personal service activities"
+            },
+            "7": {
+              "code": "960",
+              "name": "Other personal service activities",
+              "class": {
+                "0": {
+                  "code": "9601",
+                  "name": "Washing and (dry-) cleaning of textile and fur products"
+                },
+                "1": {
+                  "code": "9602",
+                  "name": "Hairdressing and other beauty treatment"
+                },
+                "2": {
+                  "code": "9603",
+                  "name": "Funeral and related activities"
+                },
+                "3": {
+                  "code": "9609",
+                  "name": "Other personal service activities n.e.c."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "19": {
+      "code": "T",
+      "name": "Activities of households as employers; undifferentiated goods- and services-producing activities of households for own use",
+      "division": {
+        "0": {
+          "code": "97",
+          "name": "Activities of households as employers of domestic personnel",
+          "group": {
+            "0": {
+              "code": "970",
+              "name": "Activities of households as employers of domestic personnel",
+              "class": {
+                "0": {
+                  "code": "9700",
+                  "name": "Activities of households as employers of domestic personnel"
+                }
+              }
+            },
+            "1": {
+              "code": "98",
+              "name": "Undifferentiated goods- and services-producing activities of private households for own use"
+            },
+            "2": {
+              "code": "981",
+              "name": "Undifferentiated goods-producing activities of private households for own use",
+              "class": {
+                "0": {
+                  "code": "9810",
+                  "name": "Undifferentiated goods-producing activities of private households for own use"
+                }
+              }
+            },
+            "3": {
+              "code": "982",
+              "name": "Undifferentiated service-producing activities of private households for own use",
+              "class": {
+                "0": {
+                  "code": "9820",
+                  "name": "Undifferentiated service-producing activities of private households for own use"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "20": {
+      "code": "U",
+      "name": "Activities of extraterritorial organizations and bodies",
+      "division": {
+        "0": {
+          "code": "99",
+          "name": "Activities of extraterritorial organizations and bodies",
+          "group": {
+            "0": {
+              "code": "990",
+              "name": "Activities of extraterritorial organizations and bodies",
+              "class": {
+                "0": {
+                  "code": "9900",
+                  "name": "Activities of extraterritorial organizations and bodies"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
