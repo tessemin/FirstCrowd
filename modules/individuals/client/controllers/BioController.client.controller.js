@@ -6,9 +6,9 @@
     .module('individuals')
     .controller('BioController', BioController);
 
-  BioController.$inject = ['$scope', '$state', 'IndividualsService', 'Authentication', 'Notification'];
+  BioController.$inject = ['$scope', '$http', '$state', 'IndividualsService', 'Authentication', 'Notification'];
 
-  function BioController ($scope, $state, IndividualsService, Authentication, Notification) {
+  function BioController ($scope, $http, $state, IndividualsService, Authentication, Notification) {
     var vm = this;
     
     vm.bio = {
@@ -34,7 +34,6 @@
     // Populate bio data
     IndividualsService.getIndividual().$promise
       .then(function(data) {
-        console.log(data.bio);
         let bio = data.bio;
         if (bio.dateOfBirth) {
           let date = new Date(bio.dateOfBirth);
@@ -46,10 +45,8 @@
       });
       
     let user = Authentication.user;
-    console.log(user);
     vm.bio.firstName = user.firstName;
     vm.bio.middleName = user.middleName;
-    console.log(vm.bio.middleName);
     vm.bio.lastName = user.lastName;
     
     // Update a user education
@@ -73,6 +70,11 @@
     function onUpdateBioError(response) {
       Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Update failed! Bio not updated!' });
     }
+    
+    $http.get('/test.json')
+         .success(function(data){
+            console.log(data);
+          });
     
     vm.professions = [
       'Web Developer',

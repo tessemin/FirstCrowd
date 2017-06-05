@@ -11,14 +11,14 @@
         {{vm.individual.bio.address.zipCode}} {{vm.individual.bio.address.country}}
       </p>
       <div class="resume-component" ng-repeat="degree in vm.individual.degrees">
-        {{degree.degreeLevel}} in {{degree.concentration}} from {{degree.schoolName}}, year
+        {{degree.degreeLevel}} in {{degree.concentration}} from {{degree.schoolName}}, {{degree.endDate.substr(0, degree.endDate.indexOf('-'))}}
       </div>
       <div class="resume-component" ng-repeat="cert in vm.individual.certification">
-        {{cert.certificationName}} Certification from {{cert.institution}}, year - year</br>
+        {{cert.certificationName}} Certification from {{cert.institution}}, {{cert.dateIssued.substr(0, cert.dateIssued.indexOf('-'))}} - {{cert.dateExpired.substr(0, cert.dateExpired.indexOf('-'))}}</br>
       </div>
       <div class="resume-component" ng-repeat="job in vm.individual.jobExperience">
-        {{job.jobTitle}} for {{job.employer}}, year - year<br/>
-        <span ng-repeat="skill in job.skills">{{skill}}, </span><br/>
+        {{job.jobTitle}} for {{job.employer}}, {{job.startDate.substr(0, job.startDate.indexOf('-'))}} - {{job.endDate.substr(0, job.endDate.indexOf('-'))}}<br/>
+        <span ng-repeat="skill in job.skills">{{skill}}{{$last ? '.' : ','}} </span><br/>
         {{job.description}}
       </div>
       <div class="resume-component" ng-repeat="skill in vm.individual.skills track by $index">

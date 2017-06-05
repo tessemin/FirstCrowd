@@ -17,7 +17,6 @@
     IndividualsService.getIndividual().$promise
       .then(function(data) {
         let degrees = data.degrees;
-        console.log(degrees);
         for(let i = 0; i < degrees.length; ++i) {
           addDegree();
           vm.degrees[i] = degrees[i];
@@ -60,8 +59,6 @@
         Notification.error({ message: 'Check the form for errors!' });
         return false;
       }
-      
-      console.log(vm.degrees);
       
       IndividualsService.updateEducationFromForm(vm.degrees)
         .then(onUpdateEducationSuccess)

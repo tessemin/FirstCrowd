@@ -16,7 +16,6 @@
     IndividualsService.getIndividual().$promise
       .then(function(data) {
         vm.individual = data;
-        console.log(vm.individual);
       })
       .catch(function(data) {
         Notification.error({ message: response.data.message, title: 'Error retrieving resume data' });
