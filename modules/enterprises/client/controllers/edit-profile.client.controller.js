@@ -266,13 +266,43 @@
       { name: 'Zimbabwe', code: 'ZW' }
     ];
 
+    getClassificationList();
 
-    vm.classificationList = [
-      'gardening',
-      'money management',
-      'counselor',
-      'chief executive officer'
-    ];
+    function getClassificationList() {
+      fetch("https://raw.githubusercontent.com/tessemin/FirstCrowd/dev/modules/enterprises/client/classification.json")
+        .then(function(res) {
+          return res.json();
+        }).then(function(res) {
+          let ret = [];
+          let json = res.section;
+
+          for (let section in json) {
+            if (json.hasOwnProperty(section)) {
+              for (let division in json[section]) {
+                if (json[section].hasOwnProperty(division) && division === 'division') {
+                  for (let group in json[section][division][0]) {
+                    if (json[section][division][0].hasOwnProperty(group) && group === 'group') {
+                      for (let num in json[section][division][0][group]) {
+                        if (json[section][division][0][group].hasOwnProperty(num)) {
+                          // class is a reserved keyword, use 'clas' instead
+                          for (let clas in json[section][division][0][group][num]){
+                            if (json[section][division][0][group][num].hasOwnProperty(clas) && clas === 'class') {
+                              for (let obj in json[section][division][0][group][num][clas]) {
+                                ret.push(json[section][division][0][group][num][clas][obj]);
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+          vm.classificationList = ret;
+        });
+    }
 
     // UpdateProfile Enterprise
     function saveProfile(isValid) {
@@ -303,7 +333,6 @@
         .then(function(response) {
 
           let res = response.profile;
-          console.log(res);
 
           vm.companyName = res.companyName;
           vm.URL = res.URL;
@@ -361,7 +390,6 @@
       vm.ret.phone = vm.phone;
 
       vm.ret.profile = profile;
-      console.log(vm.ret);
 
     }
   }
