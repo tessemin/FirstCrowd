@@ -73,12 +73,36 @@
     
     $http.get('/test.json')
          .success(function(data){
-            console.log(data);
+            vm.occupations = data;
+            console.log(vm.occupations);
           });
     
     vm.professions = [
       'Web Developer',
       'Software Engineer'
+    ];
+    
+    vm.testoptions = [
+    {
+      name: 'Bob',
+      code: '0'
+    },
+    {
+      name: 'Steve',
+      code: '1'
+    },
+    {
+      name: 'Joe',
+      code: '2'
+    },
+    {
+      name: 'Sam',
+      code: '3'
+    },
+    {
+      name: 'Wally',
+      code: '4'
+    }
     ];
   
     // There is nothing interesting past this big honking array of countries.
