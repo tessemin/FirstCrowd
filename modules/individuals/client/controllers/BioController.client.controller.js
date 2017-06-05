@@ -34,7 +34,6 @@
     // Populate bio data
     IndividualsService.getIndividual().$promise
       .then(function(data) {
-        console.log(data.bio);
         let bio = data.bio;
         if (bio.dateOfBirth) {
           let date = new Date(bio.dateOfBirth);
@@ -46,10 +45,8 @@
       });
       
     let user = Authentication.user;
-    console.log(user);
     vm.bio.firstName = user.firstName;
     vm.bio.middleName = user.middleName;
-    console.log(vm.bio.middleName);
     vm.bio.lastName = user.lastName;
     
     // Update a user education

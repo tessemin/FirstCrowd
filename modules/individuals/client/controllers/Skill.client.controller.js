@@ -18,7 +18,6 @@
     IndividualsService.getIndividual().$promise
       .then(function(data) {
         let skills = data.skills;
-        console.log(data.skills);
         for(let i = 0; i < skills.length; ++i) {
           addSkill();
           vm.skills[i].skill = skills[i].skill;
