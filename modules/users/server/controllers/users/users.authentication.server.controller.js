@@ -39,14 +39,28 @@ exports.signup = function (req, res) {
       var enterpriseObj = new Enterprise();
       enterpriseObj.user = user.id;
       user.enterprise = enterpriseObj;
-      enterpriseObj.save();
+      enterpriseObj.save(function(err) {
+        if (err) {
+          return res.status(400).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        }
+      });
+      break;
     } else if (user.roles[i] === 'individual') {
       // adds and saves individual object and binds to user
       var individualObj = new Individual();
       console.log();
       individualObj.user = user.id;
-      individualObj.save();
       user.individual = individualObj;
+      individualObj.save(function(err) {
+        if (err) {
+          return res.status(400).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        }
+      });
+      break;
     }
   }
   

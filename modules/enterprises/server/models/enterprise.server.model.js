@@ -10,14 +10,23 @@ var mongoose = require('mongoose'),
   validator = require('validator');
   
 var validateYearEstablished = function(year) {
-  return (((new Date()).getFullYear() + 1) > year);
+  if (year === null){
+    return true;
+  }
+  return ((((new Date()).getFullYear() + 1) > year) && (year >= 0));
 };
 
 var validateBiggerThanZero = function(num) {
+  if (num === null){
+    return true;
+  }
   return num >= 0;
 };
 
 var validateURL = function(URL) {
+  if (URL === ''){
+    return true;
+  }
   return validator.isURL(URL);
 }
 
@@ -52,9 +61,8 @@ var EnterpriseUserSchema = new Schema({
       trim: true
     },
     classifications: [{ // an array
-      type: String,
-      default: '',
-      trim: true
+        type: Schema.Types.Mixed,
+        default: null
     }],
     yearEstablished: {
       type: Number,
@@ -133,7 +141,7 @@ var EnterpriseUserSchema = new Schema({
         type: String,
         default: '',
         trim: true,
-        validate: [validateURL, 'Website must be in correct form']
+        validate: [validateURL, 'Website must be in form: \'site.domain\'']
       }
     }]
   }
