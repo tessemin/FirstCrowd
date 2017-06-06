@@ -10,6 +10,9 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
   
 var validateDate = function(date) {
+  if (date === null) {
+    return true;
+  }
   return date instanceof Date;
 };
 
@@ -24,10 +27,16 @@ var validateStartLessThanEnd = function(endDate) {
   } else {
     return false;
   }
+  if (startDate === null && endDate === null) {
+    return true;
+  }
   return ((endDate) > (startDate));
 };
 
 var validateAge = function(birthday) {
+  if (birthday == null) {
+    return true;
+  }
   let cutOff = new Date();
   cutOff.setFullYear(cutOff.getFullYear() - 130);
   return birthday >= cutOff;
