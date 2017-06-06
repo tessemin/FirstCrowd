@@ -223,9 +223,8 @@ var IndividualUserSchema = new Schema({
   }],
   skills: [{
     skill: {
-      type: String,
-      default: '',
-      trim: true
+      type: Schema.Types.Mixed,
+      default: null
     },
     firstUsed: {
       type: Date,
