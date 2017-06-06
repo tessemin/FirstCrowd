@@ -55,7 +55,7 @@
           
           <div class="form-group" show-errors>
             <label for="profession">Professions</label>
-            <multiselect id="profession" name="profession" ng-model="vm.bio.profession" options="vm.testoptions" display-prop="name" id-prop="code" show-search="true" show-unselect-all="true" required></multiselect>
+            <multiselect id="profession" name="profession" ng-model="vm.bio.profession" options="vm.professions" show-search="true" search-limit="10" required></multiselect>
             </select>
           </div>
           
@@ -64,7 +64,6 @@
             <input type="text" id="streetAddress" name="streetAddress" class="form-control" ng-model="vm.bio.address.streetAddress" placeholder="Street Address" required>
             <div ng-messages="vm.bioForm.streetAddress.$error" role="alert">
               <p class="help-block error-text" ng-message="required">Street Address is required.</p>
-              <p class="help-block error-text" ng-message="dateOfBirth">Zip Code is invalid.</p>
             </div>
           </div>
           
