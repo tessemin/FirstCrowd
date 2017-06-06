@@ -16,16 +16,10 @@
       roles: ['enterprise']
     });
 
-    // Add the dropdown list item
-    menuService.addSubMenuItem('topbar', 'enterprises', {
-      title: 'List Enterprises',
-      state: 'enterprises.list'
-    });
-
     // Add the dropdown create item
     menuService.addSubMenuItem('topbar', 'enterprises', {
-      title: 'Create Enterprise',
-      state: 'enterprises.create'
+      title: 'Edit your Enterprise',
+      state: 'enterprises.profile'
       // roles: ['ent']
     });
 

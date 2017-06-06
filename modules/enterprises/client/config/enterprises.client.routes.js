@@ -75,44 +75,6 @@
           roles: ['enterprise'],
           pageTitle: 'Enterprises List'
         }
-      })
-      .state('enterprises.create', {
-        url: '/create',
-        templateUrl: '/modules/enterprises/client/views/form-enterprise.client.view.html',
-        controller: 'EnterprisesController',
-        controllerAs: 'vm',
-        resolve: {
-          enterpriseResolve: newEnterprise
-        },
-        data: {
-          roles: ['user', 'admin', 'enterprise'],
-          pageTitle: 'Enterprises Create'
-        }
-      })
-      .state('enterprises.edit', {
-        url: '/:enterpriseId/edit',
-        templateUrl: '/modules/enterprises/client/views/form-enterprise.client.view.html',
-        controller: 'EnterprisesController',
-        controllerAs: 'vm',
-        resolve: {
-          enterpriseResolve: getEnterprise
-        },
-        data: {
-          roles: ['user', 'admin'],
-          pageTitle: 'Edit Enterprise {{ enterpriseResolve.name }}'
-        }
-      })
-      .state('enterprises.view', {
-        url: '/:enterpriseId',
-        templateUrl: '/modules/enterprises/client/views/view-enterprise.client.view.html',
-        controller: 'EnterprisesController',
-        controllerAs: 'vm',
-        resolve: {
-          enterpriseResolve: getEnterprise
-        },
-        data: {
-          pageTitle: 'Enterprise {{ enterpriseResolve.name }}'
-        }
       });
   }
 

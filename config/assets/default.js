@@ -9,7 +9,7 @@ module.exports = {
         // bower:css
         'public/lib/bootstrap/dist/css/bootstrap.css',
         'public/lib/bootstrap/dist/css/bootstrap-theme.css',
-        'public/lib/angular-ui-notification/dist/angular-ui-notification.css'
+        'public/lib/angular-ui-notification/dist/angular-ui-notification.css',
         // endbower
       ],
       js: [
@@ -24,7 +24,7 @@ module.exports = {
         'public/lib/angular-ui-notification/dist/angular-ui-notification.js',
         'public/lib/angular-ui-router/release/angular-ui-router.js',
         'public/lib/owasp-password-strength-test/owasp-password-strength-test.js',
-	// added packages
+	      // added packages
         'public/lib/angular-bootstrap-multiselect/dist/angular-bootstrap-multiselect.js',
         'public/lib/d3/d3.js'
         // endbower
