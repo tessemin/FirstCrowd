@@ -81,11 +81,9 @@
             <textarea id="description" name="description" placeholder="Description" class="form-control" ng-model="vm.description" form="vm.enterpriseForm" required></textarea>
           </div>
 
-
           <div class="form-group" show-errors>
             <label for="classifications">Industry Classifications</label>
-            <multiselect ng-model="vm.classifications" options="vm.classificationList" show-search="true" show-unselect-all="true"></multiselect>
-            </select>
+            <multiselect id="classifications" name="classifications" ng-model="vm.classifications" options="vm.classificationList" display-prop="name" id-prop="code" show-search="true" show-unselect-all="true" search-limit="10" required></multiselect>
           </div>
 
           <div class="form-group" show-errors>
