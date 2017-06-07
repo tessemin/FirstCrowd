@@ -40,7 +40,7 @@
           vm.bio.dateOfBirth = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
         }
         vm.bio.sex = bio.sex;
-        vm.bio.profession = bio.profession;
+        vm.bio.profession = bio.profession.split(',');
         vm.bio.address = bio.address;
       });
       
