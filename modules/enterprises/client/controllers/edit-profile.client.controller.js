@@ -13,8 +13,8 @@
     vm.saveProfile = saveProfile;
 
     vm.ret = {
-      profile:{
-        companyAddress:{}
+      profile: {
+        companyAddress: {}
       }
     };
 
@@ -1997,9 +1997,9 @@
         });
     }
 
-    function countryByCode(code){
-      for(let i = 0; i < vm.countryList.length; i++){
-        if(code === vm.countryList[i].code){
+    function countryByCode(code) {
+      for (let i = 0; i < vm.countryList.length; i++) {
+        if (code === vm.countryList[i].code) {
           return vm.countryList[i];
         }
       }
@@ -2017,7 +2017,7 @@
       profile.URL = vm.URL;
       profile.classifications = vm.classifications;
       profile.employeeCount = vm.employeeCount;
-      profile.yearEstablished  = vm.yearEstablished;
+      profile.yearEstablished = vm.yearEstablished;
       profile.description = vm.description;
       profile.companyName = vm.companyName;
       profile.companyAddress.zipCode = vm.zipCode;
