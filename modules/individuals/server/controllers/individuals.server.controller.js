@@ -184,7 +184,7 @@ exports.updateEducation = function(req, res) {
   if (req.body) {
     getIndividual(req, res, function(individual) {
 
-      individual.degrees = req.body;
+      individual.schools = req.body;
       
       individual.save(function (err) {
         if (err) {
