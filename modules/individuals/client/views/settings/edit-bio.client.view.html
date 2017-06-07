@@ -54,7 +54,10 @@
           </div>
           
           <div class="form-group" show-errors>
-            <label for="profession">Professions</label>
+            <label for="profession">Professions</label><br/>
+            <span ng-repeat="job in vm.bio.profession as results track by $index">
+              {{vm.bio.profession[$index]}}{{$last ? '' : ', '}}
+            </span>
             <multiselect id="profession" name="profession" ng-model="vm.bio.profession" options="vm.professions" show-search="true" search-limit="10" required></multiselect>
             </select>
           </div>

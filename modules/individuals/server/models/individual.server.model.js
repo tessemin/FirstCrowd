@@ -27,7 +27,7 @@ var validateStartLessThanEnd = function(endDate) {
   } else {
     return false;
   }
-  if (startDate === null && endDate === null) {
+  if ((startDate === null && endDate === null) || endDate === null) {
     return true;
   }
   return ((endDate) > (startDate));
@@ -47,7 +47,8 @@ var validateAge = function(birthday) {
 var IndividualUserSchema = new Schema({
   user: {
     type: Schema.ObjectId,
-    ref: 'User'
+    ref: 'User',
+    required: 'Individual must be conected to a User'
   },
   bio: {
     dateOfBirth: {
@@ -93,12 +94,7 @@ var IndividualUserSchema = new Schema({
       }
     }
   },
-  degrees: [{
-    degreeLevel: {
-      type: String,
-      default: '',
-      trim: true
-    },
+  schools: [{
     schoolName: {
       type: String,
       default: '',
@@ -119,20 +115,22 @@ var IndividualUserSchema = new Schema({
         { validator: validateStartLessThanEnd, msg: 'End Date is less than the start date' }
       ]
     },
-    concentration: [{
-      type: String,
-      default: '',
-      trim: true
-    }],
-    major: [{
-      type: String,
-      default: '',
-      trim: true
-    }],
-    minor: [{
-      type: String,
-      default: '',
-      trim: true
+    degrees: [{
+      name: {
+        type: String,
+        default: '',
+        trim: true
+      },
+      degreeLevel: {
+        type: String,
+        default: '',
+        trim: true
+      },
+      concentration: [{
+        type: String,
+        default: '',
+        trim: true
+      }]
     }],
     address: {
       schoolCountry: {
