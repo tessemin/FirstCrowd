@@ -32,9 +32,57 @@ describe('Individual Model Unit Tests:', function() {
       individual = new Individual({
         name: 'Individual Name',
         user: user
+        bio: {
+          dateOfBirth: '09/25/1996',
+          sex: 'male',
+          profession: 'sharpening sticks',
+          address: {
+            country: 'Am',
+            streetAddress: '871 Raum Road',
+            city: 'herod',
+            state: 'IL',
+            zipCode: 62947
+          }
+        },
+        degrees: [{
+          degreeLevel: 'Associates',
+          schoolName: 'Southeaster Illinois College',
+          startDate: '03/10/2014',
+          endDate: '03/10/2016',
+          concentration: ['Algorithm Design','Data Structures'],
+          major: ['Computer Science'],
+          minor: ['Math', 'Engeneering', 'Chemistry'],
+          address: {
+            schoolCountry: 'Am',
+            schoolStreetAddress: '322 N College Road',
+            schoolCity: 'Harrisburg',
+            schoolState: 'Illinois',
+            schoolZipCode: 62946
+          }
+        },
+        {
+          degreeLevel: 'Bachelors',
+          schoolName: 'Sother Illinois University',
+          startDate: '08/10/2014',
+          concentration: ['Algorithm Design','Cloud Computing'],
+          major: ['Computer Science', 'Math'],
+          minor: ['Engeneering', 'Chemistry', 'Statistics'],
+          address: {
+            schoolCountry: 'Am',
+            schoolStreetAddress: '222 N University Drive',
+            schoolCity: 'Carbondale',
+            schoolState: 'Illinois',
+            schoolZipCode: 62901
+          }
+        }],
+        jobExperience: [{
+          
+        }
+        ]
       });
-
-      done();
+      individual.save(function() {
+        done();
+      }
     });
   });
 

@@ -119,11 +119,21 @@ var IndividualUserSchema = new Schema({
         { validator: validateStartLessThanEnd, msg: 'End Date is less than the start date' }
       ]
     },
-    concentration: {
+    concentration: [{
       type: String,
       default: '',
       trim: true
-    },
+    }],
+    major: [{
+      type: String,
+      default: '',
+      trim: true
+    }],
+    minor: [{
+      type: String,
+      default: '',
+      trim: true
+    }]
     address: {
       schoolCountry: {
         type: String,
@@ -248,11 +258,11 @@ var IndividualUserSchema = new Schema({
     }],
     tools: [{
       tool: Schema.Types.Mixed,
-      default: null
+      default: {}
     }],
     specialities: [{
       speciality: Schema.Types.Mixed,
-      default: null
+      default: {}
     }]
   }]
 });
