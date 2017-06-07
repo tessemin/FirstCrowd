@@ -1,0 +1,51 @@
+<!DOCTYPE>
+<html>
+<body>
+<pre id="display"></pre>
+<script>
+var myArray =[
+"Reading Comprehension",
+"Active Listening",
+"Writing",
+"Speaking",
+"Mathematics",
+"Science",
+"Critical Thinking",
+"Active Learning",
+"Learning Strategies",
+"Monitoring",
+"Social Perceptiveness",
+"Coordination",
+"Persuasion",
+"Negotiation",
+"Instructing",
+"Service Orientation",
+"Complex Problem Solving",
+"Operations Analysis",
+"Technology Design",
+"Equipment Selection",
+"Installation",
+"Programming",
+"Operation Monitoring",
+"Operation and Control",
+"Equipment Maintenance",
+"Troubleshooting",
+"Repairing",
+"Quality Control Analysis",
+"Judgment and Decision Making",
+"Systems Analysis",
+"Systems Evaluation",
+"Time Management",
+"Management of Financial Resources",
+"Management of Material Resources",
+"Management of Personnel Resources"]; // var name myArray
+jsonObj = {}
+for (var i = 0; i < myArray.length; i++) {
+  jsonObj[i] = {};
+  jsonObj[i].name = myArray[i];
+}
+
+document.getElementById('display').innerHTML = JSON.stringify(jsonObj, null, 2);
+</script>
+</body>
+</html>
