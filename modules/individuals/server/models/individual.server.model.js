@@ -245,6 +245,14 @@ var IndividualUserSchema = new Schema({
       type: String,
       default: '',
       trim: true
+    }],
+    tools: [{
+      tool: Schema.Types.Mixed,
+      default: null
+    }],
+    specialities: [{
+      speciality: Schema.Types.Mixed,
+      default: null
     }]
   }]
 });
