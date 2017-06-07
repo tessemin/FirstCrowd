@@ -17,7 +17,7 @@
     IndividualsService.getIndividual().$promise
       .then(function(data) {
         let degrees = data.degrees;
-        for(let i = 0; i < degrees.length; ++i) {
+        for (let i = 0; i < degrees.length; ++i) {
           addDegree();
           vm.degrees[i] = degrees[i];
           vm.degrees[i].startDate = new Date(degrees[i].startDate);

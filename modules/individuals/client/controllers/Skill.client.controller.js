@@ -18,7 +18,7 @@
     IndividualsService.getIndividual().$promise
       .then(function(data) {
         let skills = data.skills;
-        for(let i = 0; i < skills.length; ++i) {
+        for (let i = 0; i < skills.length; ++i) {
           addSkill();
           vm.skills[i].skill = skills[i].skill;
           let date = new Date(skills[i].firstUsed);
@@ -26,9 +26,9 @@
           date = new Date(skills[i].lastUsed);
           vm.skills[i].lastUsed = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
           vm.skills[i].locationLearned = '';
-          if(skills[i].locationLearned.length > 0) {
+          if (skills[i].locationLearned.length > 0) {
             vm.skills[i].locationLearned = skills[i].locationLearned[0];
-            for(let j = 1; j < skills[i].locationLearned.length; ++j) {
+            for (let j = 1; j < skills[i].locationLearned.length; ++j) {
               vm.skills[i].locationLearned += (', ' + skills[i].locationLearned[j]);
             }
           }

@@ -18,7 +18,7 @@
         vm.individual = data;
       })
       .catch(function(data) {
-        Notification.error({ message: response.data.message, title: 'Error retrieving resume data' });
+        Notification.error({ message: data.message, title: 'Error retrieving resume data' });
       });
   }
 }());

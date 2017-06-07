@@ -19,13 +19,13 @@
     IndividualsService.getIndividual().$promise
       .then(function(data) {
         let certs = data.certification;
-        for(let i = 0; i < certs.length; ++i) {
+        for (let i = 0; i < certs.length; ++i) {
           addCertification();
           vm.certifications[i].certificationName = certs[i].certificationName;
           vm.certifications[i].institution = certs[i].institution;
           vm.certifications[i].dateIssued = new Date(certs[i].dateIssued);
           // Do not generate default expiry date if none exists
-          if(certs[i].dateExpired) {
+          if (certs[i].dateExpired) {
             vm.certifications[i].dateExpired = new Date(certs[i].dateExpired);
           }
           vm.certifications[i].description = certs[i].description;
