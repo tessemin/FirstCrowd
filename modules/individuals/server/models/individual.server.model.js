@@ -133,7 +133,7 @@ var IndividualUserSchema = new Schema({
       type: String,
       default: '',
       trim: true
-    }]
+    }],
     address: {
       schoolCountry: {
         type: String,
@@ -234,7 +234,7 @@ var IndividualUserSchema = new Schema({
   skills: [{
     skill: {
       type: Schema.Types.Mixed,
-      default: null
+      default: {}
     },
     firstUsed: {
       type: Date,

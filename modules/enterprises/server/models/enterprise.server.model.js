@@ -62,7 +62,7 @@ var EnterpriseUserSchema = new Schema({
     },
     classifications: [{ // an array
         type: Schema.Types.Mixed,
-        default: null
+        default: {}
     }],
     yearEstablished: {
       type: Number,
