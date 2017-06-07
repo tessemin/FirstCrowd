@@ -1,0 +1,12 @@
+.node {
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+.node .selected {
+  stroke: red;
+}
+
+.link {
+  stroke: #999;
+}
