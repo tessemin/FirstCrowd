@@ -10,6 +10,7 @@ module.exports = {
         'public/lib/bootstrap/dist/css/bootstrap.css',
         'public/lib/bootstrap/dist/css/bootstrap-theme.css',
         'public/lib/angular-ui-notification/dist/angular-ui-notification.css',
+        'public/lib/angular-multi-select-tree/dist/angular-multi-select-tree-0.1.0.css'
         // endbower
       ],
       js: [
@@ -26,7 +27,9 @@ module.exports = {
         'public/lib/owasp-password-strength-test/owasp-password-strength-test.js',
 	      // added packages
         'public/lib/angular-bootstrap-multiselect/dist/angular-bootstrap-multiselect.js',
-        'public/lib/d3/d3.js'
+        'public/lib/d3/d3.js',
+        'public/lib/angular-multi-select-tree/dist/angular-multi-select-tree-0.1.0.js',
+        'public/lib/angular-multi-select-tree/dist/angular-multi-select-tree-0.1.0.tpl.js'
         // endbower
       ],
       tests: ['public/lib/angular-mocks/angular-mocks.js']

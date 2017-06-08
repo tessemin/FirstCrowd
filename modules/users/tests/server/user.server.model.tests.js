@@ -24,25 +24,43 @@ var user1,
 describe('User Model Unit Tests:', function () {
 
   before(function () {
+    Ent = new Enterprise();
+    Ind = new Individual();
     user1 = {
+      enterprise: Ent,
       firstName: 'Full',
       lastName: 'Name',
+      middleName: 'mid',
       displayName: 'Full Name',
+      phone: 123456789,
       email: 'test@test.com',
+      contactPreference: 'phone',
       username: 'username',
       password: 'M3@n.jsI$Aw3$0m3',
-      provider: 'local'
+      provider: 'local',
+      userRole: {
+        resourceOwner: true
+      }
     };
     // user2 is a clone of user1
     user2 = user1;
+    user2.individual = Ind;
     user3 = {
+      enterprise: Ent,
       firstName: 'Different',
+      middleName: 'Mild',
       lastName: 'User',
       displayName: 'Full Different Name',
       email: 'test3@test.com',
+      phone: 987654321,
+      contactPreference: 'email',
       username: 'different_username',
       password: 'Different_Password1!',
-      provider: 'local'
+      provider: 'local',
+      userRole: {
+        worker: true,
+        requester: true
+      }
     };
   });
 
@@ -732,5 +750,7 @@ describe('User Model Unit Tests:', function () {
 
   after(function (done) {
     User.remove().exec(done);
+    Ent.remove().exec(done);
+    Ind.remove().exec(done);
   });
 });

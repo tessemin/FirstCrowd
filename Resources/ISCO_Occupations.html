@@ -7023,7 +7023,7 @@ var myArray = [["2636","2460","Abbess"],
 ["2131","2211","Zoologist"]] // var name is myArray
 
 // for a more advanced json object
-/*var upperLevel = 0;
+var upperLevel = 0;
 var jsonObj = {};
 var i = 0;
 for (i = 0; i < myArray.length; i++) {
@@ -7051,7 +7051,8 @@ function levels(array, json, count, depth) {
       levels(array, json, count + 1, depth);
     }
   return;
-}*/
+}
+/*
 var jsonObj = {};
 for ( let i = 0; i< myArray.length; i++) {
   jsonObj[i] = {};
@@ -7065,7 +7066,7 @@ for ( let i = 0; i< myArray.length; i++) {
     name += myArray[i][count];
   }
   jsonObj[i].name = name
-}
+}*/
 
 document.getElementById('display').innerHTML = JSON.stringify(jsonObj, null, 2);
 
