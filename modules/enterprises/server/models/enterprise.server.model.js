@@ -10,25 +10,25 @@ var mongoose = require('mongoose'),
   validator = require('validator');
   
 var validateYearEstablished = function(year) {
-  if (year === null){
+  if (year === null) {
     return true;
   }
   return ((((new Date()).getFullYear() + 1) > year) && (year >= 0));
 };
 
 var validateBiggerThanZero = function(num) {
-  if (num === null){
+  if (num === null) {
     return true;
   }
   return num >= 0;
 };
 
 var validateURL = function(URL) {
-  if (URL === ''){
+  if (URL === '') {
     return true;
   }
   return validator.isURL(URL);
-}
+};
 
 /*
  * Enterprise Schema
@@ -61,8 +61,8 @@ var EnterpriseUserSchema = new Schema({
       trim: true
     },
     classifications: [{ // an array
-        type: Schema.Types.Mixed,
-        default: {}
+      type: Schema.Types.Mixed,
+      default: {}
     }],
     yearEstablished: {
       type: Number,

@@ -238,15 +238,15 @@ var IndividualUserSchema = new Schema({
       type: Date,
       default: null,
       trim: true,
-      validate: [validateDate, 'Start Date is not in the correct form']
+      validate: [validateDate, 'First used is not in the correct form']
     },
     lastUsed: {
       type: Date,
       default: null,
       trim: true,
       validate: [
-        { validator: validateDate, msg: 'End Date is not in the correct form' },
-        { validator: validateStartLessThanEnd, msg: 'End Date is less than the date Start' }
+        { validator: validateDate, msg: 'Last used is not in the correct form' },
+        { validator: validateStartLessThanEnd, msg: 'Last used is less than the First used' }
       ]
     },
     locationLearned: [{

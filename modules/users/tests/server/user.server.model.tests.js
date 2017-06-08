@@ -6,6 +6,8 @@
 var should = require('should'),
   mongoose = require('mongoose'),
   User = mongoose.model('User'),
+  Individual = mongoose.model('Individual'),
+  Enterprise = mongoose.model('Enterprise'),
   path = require('path'),
   config = require(path.resolve('./config/config'));
 

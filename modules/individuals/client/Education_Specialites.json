@@ -1,0 +1,4918 @@
+{
+  "0": {
+    "className": "Architecture",
+    "name": "Architectural Engineering"
+  },
+  "1": {
+    "className": "Architecture",
+    "name": "Architectural History and Criticism"
+  },
+  "2": {
+    "className": "Architecture",
+    "name": "Architectural Technology"
+  },
+  "3": {
+    "className": "Architecture",
+    "name": "Construction Engineering"
+  },
+  "4": {
+    "className": "Architecture",
+    "name": "Cultural Resource Management and Policy Analysis"
+  },
+  "5": {
+    "className": "Architecture",
+    "name": "Environmental Design"
+  },
+  "6": {
+    "className": "Architecture",
+    "name": "Historic Preservation and Conservation"
+  },
+  "7": {
+    "className": "Architecture",
+    "name": "Interior Architecture"
+  },
+  "8": {
+    "className": "Architecture",
+    "name": "Landscape Architecture"
+  },
+  "9": {
+    "className": "Architecture",
+    "name": "Urban, Community and Regional Planning"
+  },
+  "10": {
+    "className": "Architecture",
+    "name": "Other Architecture"
+  },
+  "11": {
+    "className": "Arts and Humanities",
+    "name": "African Languages and Societies"
+  },
+  "12": {
+    "className": "Arts and Humanities",
+    "name": "American Studies"
+  },
+  "13": {
+    "className": "Arts and Humanities",
+    "name": "American Studies: American Film Studies"
+  },
+  "14": {
+    "className": "Arts and Humanities",
+    "name": "American Studies: American Literature"
+  },
+  "15": {
+    "className": "Arts and Humanities",
+    "name": "American Studies: American Material Culture"
+  },
+  "16": {
+    "className": "Arts and Humanities",
+    "name": "American Studies: American Popular Culture"
+  },
+  "17": {
+    "className": "Arts and Humanities",
+    "name": "American Studies: Other American Studies"
+  },
+  "18": {
+    "className": "Arts and Humanities",
+    "name": "Appalachian Studies"
+  },
+  "19": {
+    "className": "Arts and Humanities",
+    "name": "Art and Design"
+  },
+  "20": {
+    "className": "Arts and Humanities",
+    "name": "Art and Design: Art and Materials Conservation"
+  },
+  "21": {
+    "className": "Arts and Humanities",
+    "name": "Art and Design: Book and Paper"
+  },
+  "22": {
+    "className": "Arts and Humanities",
+    "name": "Art and Design: Ceramic Arts"
+  },
+  "23": {
+    "className": "Arts and Humanities",
+    "name": "Art and Design: Fashion Design"
+  },
+  "24": {
+    "className": "Arts and Humanities",
+    "name": "Art and Design: Fiber, Textile, and Weaving Arts"
+  },
+  "25": {
+    "className": "Arts and Humanities",
+    "name": "Art and Design: Game Design"
+  },
+  "26": {
+    "className": "Arts and Humanities",
+    "name": "Art and Design: Graphic Design"
+  },
+  "27": {
+    "className": "Arts and Humanities",
+    "name": "Art and Design: Illustration"
+  },
+  "28": {
+    "className": "Arts and Humanities",
+    "name": "Art and Design: Industrial and Product Design"
+  },
+  "29": {
+    "className": "Arts and Humanities",
+    "name": "Art and Design: Interactive Arts"
+  },
+  "30": {
+    "className": "Arts and Humanities",
+    "name": "Art and Design: Interdisciplinary Arts and Media"
+  },
+  "31": {
+    "className": "Arts and Humanities",
+    "name": "Art and Design: Metal and Jewelry Arts"
+  },
+  "32": {
+    "className": "Arts and Humanities",
+    "name": "Art and Design: Painting"
+  },
+  "33": {
+    "className": "Arts and Humanities",
+    "name": "Art and Design: Printmaking"
+  },
+  "34": {
+    "className": "Arts and Humanities",
+    "name": "Art and Design: Sculpture"
+  },
+  "35": {
+    "className": "Arts and Humanities",
+    "name": "Art Practice"
+  },
+  "36": {
+    "className": "Arts and Humanities",
+    "name": "Audio Arts and Acoustics"
+  },
+  "37": {
+    "className": "Arts and Humanities",
+    "name": "Australian Studies"
+  },
+  "38": {
+    "className": "Arts and Humanities",
+    "name": "Basque Studies"
+  },
+  "39": {
+    "className": "Arts and Humanities",
+    "name": "Celtic Studies"
+  },
+  "40": {
+    "className": "Arts and Humanities",
+    "name": "Classics"
+  },
+  "41": {
+    "className": "Arts and Humanities",
+    "name": "Classics: Ancient History, Greek and Roman through Late Antiquity"
+  },
+  "42": {
+    "className": "Arts and Humanities",
+    "name": "Classics: Ancient Philosophy"
+  },
+  "43": {
+    "className": "Arts and Humanities",
+    "name": "Classics: Byzantine and Modern Greek"
+  },
+  "44": {
+    "className": "Arts and Humanities",
+    "name": "Classics: Classical Archaeology and Art History"
+  },
+  "45": {
+    "className": "Arts and Humanities",
+    "name": "Classics: Classical Literature and Philology"
+  },
+  "46": {
+    "className": "Arts and Humanities",
+    "name": "Classics: Indo-European Linguistics and Philology"
+  },
+  "47": {
+    "className": "Arts and Humanities",
+    "name": "Classics: Other Classics"
+  },
+  "48": {
+    "className": "Arts and Humanities",
+    "name": "Comparative Literature"
+  },
+  "49": {
+    "className": "Arts and Humanities",
+    "name": "Comparative Literature: Translation Studies"
+  },
+  "50": {
+    "className": "Arts and Humanities",
+    "name": "Creative Writing"
+  },
+  "51": {
+    "className": "Arts and Humanities",
+    "name": "Creative Writing: Fiction"
+  },
+  "52": {
+    "className": "Arts and Humanities",
+    "name": "Creative Writing: Nonfiction"
+  },
+  "53": {
+    "className": "Arts and Humanities",
+    "name": "Creative Writing: Poetry"
+  },
+  "54": {
+    "className": "Arts and Humanities",
+    "name": "Digital Humanities"
+  },
+  "55": {
+    "className": "Arts and Humanities",
+    "name": "Dutch Studies"
+  },
+  "56": {
+    "className": "Arts and Humanities",
+    "name": "East Asian Languages and Societies"
+  },
+  "57": {
+    "className": "Arts and Humanities",
+    "name": "East Asian Languages and Societies: Chinese Studies"
+  },
+  "58": {
+    "className": "Arts and Humanities",
+    "name": "East Asian Languages and Societies: Japanese Studies"
+  },
+  "59": {
+    "className": "Arts and Humanities",
+    "name": "East Asian Languages and Societies: Korean Studies"
+  },
+  "60": {
+    "className": "Arts and Humanities",
+    "name": "English Language and Literature"
+  },
+  "61": {
+    "className": "Arts and Humanities",
+    "name": "English Language and Literature: Children's and Young Adult Literature"
+  },
+  "62": {
+    "className": "Arts and Humanities",
+    "name": "English Language and Literature: Literature in English, Anglophone outside British Isles and North America"
+  },
+  "63": {
+    "className": "Arts and Humanities",
+    "name": "English Language and Literature: Literature in English, British Isles"
+  },
+  "64": {
+    "className": "Arts and Humanities",
+    "name": "English Language and Literature: Literature in English, North America"
+  },
+  "65": {
+    "className": "Arts and Humanities",
+    "name": "English Language and Literature: Literature in English, North America, Ethnic and Cultural Minority"
+  },
+  "66": {
+    "className": "Arts and Humanities",
+    "name": "English Language and Literature: Other English Language and Literature"
+  },
+  "67": {
+    "className": "Arts and Humanities",
+    "name": "European Languages and Societies"
+  },
+  "68": {
+    "className": "Arts and Humanities",
+    "name": "Feminist, Gender, and Sexuality Studies"
+  },
+  "69": {
+    "className": "Arts and Humanities",
+    "name": "Feminist, Gender, and Sexuality Studies: Lesbian, Gay, Bisexual, and Transgender Studies"
+  },
+  "70": {
+    "className": "Arts and Humanities",
+    "name": "Feminist, Gender, and Sexuality Studies: Women's Studies"
+  },
+  "71": {
+    "className": "Arts and Humanities",
+    "name": "Feminist, Gender, and Sexuality Studies: Other Feminist, Gender, and Sexuality Studies"
+  },
+  "72": {
+    "className": "Arts and Humanities",
+    "name": "Film and Media Studies"
+  },
+  "73": {
+    "className": "Arts and Humanities",
+    "name": "Film and Media Studies: Film Production"
+  },
+  "74": {
+    "className": "Arts and Humanities",
+    "name": "Film and Media Studies: Screenwriting"
+  },
+  "75": {
+    "className": "Arts and Humanities",
+    "name": "Film and Media Studies: Visual Studies"
+  },
+  "76": {
+    "className": "Arts and Humanities",
+    "name": "Film and Media Studies: Other Film and Media Studies"
+  },
+  "77": {
+    "className": "Arts and Humanities",
+    "name": "Fine Arts"
+  },
+  "78": {
+    "className": "Arts and Humanities",
+    "name": "French and Francophone Language and Literature"
+  },
+  "79": {
+    "className": "Arts and Humanities",
+    "name": "French and Francophone Language and Literature: French and Francophone Literature"
+  },
+  "80": {
+    "className": "Arts and Humanities",
+    "name": "French and Francophone Language and Literature: French Linguistics"
+  },
+  "81": {
+    "className": "Arts and Humanities",
+    "name": "French and Francophone Language and Literature: Other French and Francophone Language and Literature"
+  },
+  "82": {
+    "className": "Arts and Humanities",
+    "name": "German Language and Literature"
+  },
+  "83": {
+    "className": "Arts and Humanities",
+    "name": "German Language and Literature: German Linguistics"
+  },
+  "84": {
+    "className": "Arts and Humanities",
+    "name": "German Language and Literature: German Literature"
+  },
+  "85": {
+    "className": "Arts and Humanities",
+    "name": "German Language and Literature: Other German Language and Literature"
+  },
+  "86": {
+    "className": "Arts and Humanities",
+    "name": "History"
+  },
+  "87": {
+    "className": "Arts and Humanities",
+    "name": "History: African History"
+  },
+  "88": {
+    "className": "Arts and Humanities",
+    "name": "History: Asian History"
+  },
+  "89": {
+    "className": "Arts and Humanities",
+    "name": "History: Canadian History"
+  },
+  "90": {
+    "className": "Arts and Humanities",
+    "name": "History: Cultural History"
+  },
+  "91": {
+    "className": "Arts and Humanities",
+    "name": "History: Diplomatic History"
+  },
+  "92": {
+    "className": "Arts and Humanities",
+    "name": "History: European History"
+  },
+  "93": {
+    "className": "Arts and Humanities",
+    "name": "History: Genealogy"
+  },
+  "94": {
+    "className": "Arts and Humanities",
+    "name": "History: History of Gender"
+  },
+  "95": {
+    "className": "Arts and Humanities",
+    "name": "History: History of the Pacific Islands"
+  },
+  "96": {
+    "className": "Arts and Humanities",
+    "name": "History: History of Religion"
+  },
+  "97": {
+    "className": "Arts and Humanities",
+    "name": "History: History of Science, Technology, and Medicine"
+  },
+  "98": {
+    "className": "Arts and Humanities",
+    "name": "History: Intellectual History"
+  },
+  "99": {
+    "className": "Arts and Humanities",
+    "name": "History: Islamic World and Near East History"
+  },
+  "100": {
+    "className": "Arts and Humanities",
+    "name": "History: Labor History"
+  },
+  "101": {
+    "className": "Arts and Humanities",
+    "name": "History: Latin American History"
+  },
+  "102": {
+    "className": "Arts and Humanities",
+    "name": "History: Legal"
+  },
+  "103": {
+    "className": "Arts and Humanities",
+    "name": "History: Medieval History"
+  },
+  "104": {
+    "className": "Arts and Humanities",
+    "name": "History: Military History"
+  },
+  "105": {
+    "className": "Arts and Humanities",
+    "name": "History: Oral History"
+  },
+  "106": {
+    "className": "Arts and Humanities",
+    "name": "History: Political History"
+  },
+  "107": {
+    "className": "Arts and Humanities",
+    "name": "History: Public History"
+  },
+  "108": {
+    "className": "Arts and Humanities",
+    "name": "History: Social History"
+  },
+  "109": {
+    "className": "Arts and Humanities",
+    "name": "History: United States History"
+  },
+  "110": {
+    "className": "Arts and Humanities",
+    "name": "History: Women's History"
+  },
+  "111": {
+    "className": "Arts and Humanities",
+    "name": "History: Other History"
+  },
+  "112": {
+    "className": "Arts and Humanities",
+    "name": "History of Art, Architecture, and Archaeology"
+  },
+  "113": {
+    "className": "Arts and Humanities",
+    "name": "History of Art, Architecture, and Archaeology: American Art and Architecture"
+  },
+  "114": {
+    "className": "Arts and Humanities",
+    "name": "History of Art, Architecture, and Archaeology: Ancient, Medieval, Renaissance and Baroque Art and Architecture"
+  },
+  "115": {
+    "className": "Arts and Humanities",
+    "name": "History of Art, Architecture, and Archaeology: Asian Art and Architecture"
+  },
+  "116": {
+    "className": "Arts and Humanities",
+    "name": "History of Art, Architecture, and Archaeology: Contemporary Art"
+  },
+  "117": {
+    "className": "Arts and Humanities",
+    "name": "History of Art, Architecture, and Archaeology: Modern Art and Architecture"
+  },
+  "118": {
+    "className": "Arts and Humanities",
+    "name": "History of Art, Architecture, and Archaeology: Theory and Criticism"
+  },
+  "119": {
+    "className": "Arts and Humanities",
+    "name": "History of Art, Architecture, and Archaeology: Other History of Art, Architecture, and Archaeology"
+  },
+  "120": {
+    "className": "Arts and Humanities",
+    "name": "Italian Language and Literature"
+  },
+  "121": {
+    "className": "Arts and Humanities",
+    "name": "Italian Language and Literature: Italian Linguistics"
+  },
+  "122": {
+    "className": "Arts and Humanities",
+    "name": "Italian Language and Literature: Italian Literature"
+  },
+  "123": {
+    "className": "Arts and Humanities",
+    "name": "Italian Language and Literature: Other Italian Language and Literature"
+  },
+  "124": {
+    "className": "Arts and Humanities",
+    "name": "Jewish Studies"
+  },
+  "125": {
+    "className": "Arts and Humanities",
+    "name": "Jewish Studies: Yiddish Language and Literature"
+  },
+  "126": {
+    "className": "Arts and Humanities",
+    "name": "Latin American Languages and Societies"
+  },
+  "127": {
+    "className": "Arts and Humanities",
+    "name": "Latin American Languages and Societies: Caribbean Languages and Societies"
+  },
+  "128": {
+    "className": "Arts and Humanities",
+    "name": "Medieval Studies"
+  },
+  "129": {
+    "className": "Arts and Humanities",
+    "name": "Modern Languages"
+  },
+  "130": {
+    "className": "Arts and Humanities",
+    "name": "Modern Literature"
+  },
+  "131": {
+    "className": "Arts and Humanities",
+    "name": "Museum Studies"
+  },
+  "132": {
+    "className": "Arts and Humanities",
+    "name": "Music"
+  },
+  "133": {
+    "className": "Arts and Humanities",
+    "name": "Music: Composition"
+  },
+  "134": {
+    "className": "Arts and Humanities",
+    "name": "Music: Ethnomusicology"
+  },
+  "135": {
+    "className": "Arts and Humanities",
+    "name": "Music: Music Education"
+  },
+  "136": {
+    "className": "Arts and Humanities",
+    "name": "Music: Music Practice"
+  },
+  "137": {
+    "className": "Arts and Humanities",
+    "name": "Music: Music Theory"
+  },
+  "138": {
+    "className": "Arts and Humanities",
+    "name": "Music: Musicology"
+  },
+  "139": {
+    "className": "Arts and Humanities",
+    "name": "Music: Music Pedagogy"
+  },
+  "140": {
+    "className": "Arts and Humanities",
+    "name": "Music: Music Performance"
+  },
+  "141": {
+    "className": "Arts and Humanities",
+    "name": "Music: Music Therapy"
+  },
+  "142": {
+    "className": "Arts and Humanities",
+    "name": "Music: Other Music"
+  },
+  "143": {
+    "className": "Arts and Humanities",
+    "name": "Near Eastern Languages and Societies"
+  },
+  "144": {
+    "className": "Arts and Humanities",
+    "name": "Pacific Islands Languages and Societies"
+  },
+  "145": {
+    "className": "Arts and Humanities",
+    "name": "Pacific Islands Languages and Societies: Hawaiian Studies"
+  },
+  "146": {
+    "className": "Arts and Humanities",
+    "name": "Pacific Islands Languages and Societies: Melanesian Studies"
+  },
+  "147": {
+    "className": "Arts and Humanities",
+    "name": "Pacific Islands Languages and Societies: Micronesian Studies"
+  },
+  "148": {
+    "className": "Arts and Humanities",
+    "name": "Pacific Islands Languages and Societies: Polynesian Studies"
+  },
+  "149": {
+    "className": "Arts and Humanities",
+    "name": "Philosophy"
+  },
+  "150": {
+    "className": "Arts and Humanities",
+    "name": "Philosophy: Comparative Philosophy"
+  },
+  "151": {
+    "className": "Arts and Humanities",
+    "name": "Philosophy: Continental Philosophy"
+  },
+  "152": {
+    "className": "Arts and Humanities",
+    "name": "Philosophy: Epistemology"
+  },
+  "153": {
+    "className": "Arts and Humanities",
+    "name": "Philosophy: Esthetics"
+  },
+  "154": {
+    "className": "Arts and Humanities",
+    "name": "Philosophy: Ethics and Political Philosophy"
+  },
+  "155": {
+    "className": "Arts and Humanities",
+    "name": "Philosophy: Feminist Philosophy"
+  },
+  "156": {
+    "className": "Arts and Humanities",
+    "name": "Philosophy: History of Philosophy"
+  },
+  "157": {
+    "className": "Arts and Humanities",
+    "name": "Philosophy: Logic and Foundations of Mathematics"
+  },
+  "158": {
+    "className": "Arts and Humanities",
+    "name": "Philosophy: Metaphysics"
+  },
+  "159": {
+    "className": "Arts and Humanities",
+    "name": "Philosophy: Philosophy of Language"
+  },
+  "160": {
+    "className": "Arts and Humanities",
+    "name": "Philosophy: Philosophy of Mind"
+  },
+  "161": {
+    "className": "Arts and Humanities",
+    "name": "Philosophy: Philosophy of Science"
+  },
+  "162": {
+    "className": "Arts and Humanities",
+    "name": "Philosophy: Other Philosophy"
+  },
+  "163": {
+    "className": "Arts and Humanities",
+    "name": "Photography"
+  },
+  "164": {
+    "className": "Arts and Humanities",
+    "name": "Race, Ethnicity and Post-Colonial Studies"
+  },
+  "165": {
+    "className": "Arts and Humanities",
+    "name": "Race, Ethnicity and Post-Colonial Studies: African American Studies"
+  },
+  "166": {
+    "className": "Arts and Humanities",
+    "name": "Race, Ethnicity and Post-Colonial Studies: Asian American Studies"
+  },
+  "167": {
+    "className": "Arts and Humanities",
+    "name": "Race, Ethnicity and Post-Colonial Studies: Chicana/o Studies"
+  },
+  "168": {
+    "className": "Arts and Humanities",
+    "name": "Race, Ethnicity and Post-Colonial Studies: Ethnic Studies"
+  },
+  "169": {
+    "className": "Arts and Humanities",
+    "name": "Race, Ethnicity and Post-Colonial Studies: Indigenous Studies"
+  },
+  "170": {
+    "className": "Arts and Humanities",
+    "name": "Race, Ethnicity and Post-Colonial Studies: Latina/o Studies"
+  },
+  "171": {
+    "className": "Arts and Humanities",
+    "name": "Radio"
+  },
+  "172": {
+    "className": "Arts and Humanities",
+    "name": "Reading and Language"
+  },
+  "173": {
+    "className": "Arts and Humanities",
+    "name": "Religion"
+  },
+  "174": {
+    "className": "Arts and Humanities",
+    "name": "Religion: Biblical Studies"
+  },
+  "175": {
+    "className": "Arts and Humanities",
+    "name": "Religion: Buddhist Studies"
+  },
+  "176": {
+    "className": "Arts and Humanities",
+    "name": "Religion: Catholic Studies"
+  },
+  "177": {
+    "className": "Arts and Humanities",
+    "name": "Religion: Christianity"
+  },
+  "178": {
+    "className": "Arts and Humanities",
+    "name": "Religion: Christian Denominations and Sects"
+  },
+  "179": {
+    "className": "Arts and Humanities",
+    "name": "Religion: Comparative Methodologies and Theories"
+  },
+  "180": {
+    "className": "Arts and Humanities",
+    "name": "Religion: Ethics in Religion"
+  },
+  "181": {
+    "className": "Arts and Humanities",
+    "name": "Religion: Hindu Studies"
+  },
+  "182": {
+    "className": "Arts and Humanities",
+    "name": "Religion: History of Christianity"
+  },
+  "183": {
+    "className": "Arts and Humanities",
+    "name": "Religion: History of Religions of Eastern Origins"
+  },
+  "184": {
+    "className": "Arts and Humanities",
+    "name": "Religion: History of Religions of Western Origin"
+  },
+  "185": {
+    "className": "Arts and Humanities",
+    "name": "Religion: Islamic Studies"
+  },
+  "186": {
+    "className": "Arts and Humanities",
+    "name": "Religion: Liturgy and Worship"
+  },
+  "187": {
+    "className": "Arts and Humanities",
+    "name": "Religion: Missions and World Christianity"
+  },
+  "188": {
+    "className": "Arts and Humanities",
+    "name": "Religion: Mormon Studies"
+  },
+  "189": {
+    "className": "Arts and Humanities",
+    "name": "Religion: New Religious Movements"
+  },
+  "190": {
+    "className": "Arts and Humanities",
+    "name": "Religion: Practical Theology"
+  },
+  "191": {
+    "className": "Arts and Humanities",
+    "name": "Religion: Religious Thought, Theology and Philosophy of Religion"
+  },
+  "192": {
+    "className": "Arts and Humanities",
+    "name": "Religion: Other Religion"
+  },
+  "193": {
+    "className": "Arts and Humanities",
+    "name": "Rhetoric and Composition"
+  },
+  "194": {
+    "className": "Arts and Humanities",
+    "name": "Rhetoric and Composition: Rhetoric"
+  },
+  "195": {
+    "className": "Arts and Humanities",
+    "name": "Rhetoric and Composition: Other Rhetoric and Composition"
+  },
+  "196": {
+    "className": "Arts and Humanities",
+    "name": "Scandinavian Studies"
+  },
+  "197": {
+    "className": "Arts and Humanities",
+    "name": "Slavic Languages and Societies"
+  },
+  "198": {
+    "className": "Arts and Humanities",
+    "name": "Slavic Languages and Societies: Russian Linguistics"
+  },
+  "199": {
+    "className": "Arts and Humanities",
+    "name": "Slavic Languages and Societies: Russian Literature"
+  },
+  "200": {
+    "className": "Arts and Humanities",
+    "name": "South and Southeast Asian Languages and Societies"
+  },
+  "201": {
+    "className": "Arts and Humanities",
+    "name": "Spanish and Portuguese Language and Literature"
+  },
+  "202": {
+    "className": "Arts and Humanities",
+    "name": "Spanish and Portuguese Language and Literature: Latin American Literature"
+  },
+  "203": {
+    "className": "Arts and Humanities",
+    "name": "Spanish and Portuguese Language and Literature: Portuguese Literature"
+  },
+  "204": {
+    "className": "Arts and Humanities",
+    "name": "Spanish and Portuguese Language and Literature: Spanish Linguistics"
+  },
+  "205": {
+    "className": "Arts and Humanities",
+    "name": "Spanish and Portuguese Language and Literature: Spanish Literature"
+  },
+  "206": {
+    "className": "Arts and Humanities",
+    "name": "Spanish and Portuguese Language and Literature: Other Spanish and Portuguese Language and Literature"
+  },
+  "207": {
+    "className": "Arts and Humanities",
+    "name": "Technical and Professional Writing"
+  },
+  "208": {
+    "className": "Arts and Humanities",
+    "name": "Television"
+  },
+  "209": {
+    "className": "Arts and Humanities",
+    "name": "Theatre and Performance Studies"
+  },
+  "210": {
+    "className": "Arts and Humanities",
+    "name": "Theatre and Performance Studies: Acting"
+  },
+  "211": {
+    "className": "Arts and Humanities",
+    "name": "Theatre and Performance Studies: Dance"
+  },
+  "212": {
+    "className": "Arts and Humanities",
+    "name": "Theatre and Performance Studies: Dramatic Literature, Criticism and Theory"
+  },
+  "213": {
+    "className": "Arts and Humanities",
+    "name": "Theatre and Performance Studies: Performance Studies"
+  },
+  "214": {
+    "className": "Arts and Humanities",
+    "name": "Theatre and Performance Studies: Playwriting"
+  },
+  "215": {
+    "className": "Arts and Humanities",
+    "name": "Theatre and Performance Studies: Theatre History"
+  },
+  "216": {
+    "className": "Arts and Humanities",
+    "name": "Theatre and Performance Studies: Other Theatre and Performance Studies"
+  },
+  "217": {
+    "className": "Arts and Humanities",
+    "name": "Other Arts and Humanities"
+  },
+  "218": {
+    "className": "Arts and Humanities",
+    "name": "Other Languages, Societies, and Cultures"
+  },
+  "219": {
+    "className": "Business",
+    "name": "Accounting"
+  },
+  "220": {
+    "className": "Business",
+    "name": "Advertising and Promotion Management"
+  },
+  "221": {
+    "className": "Business",
+    "name": "Agribusiness"
+  },
+  "222": {
+    "className": "Business",
+    "name": "Arts Management"
+  },
+  "223": {
+    "className": "Business",
+    "name": "Business Administration, Management, and Operations"
+  },
+  "224": {
+    "className": "Business",
+    "name": "Business and Corporate Communications"
+  },
+  "225": {
+    "className": "Business",
+    "name": "Business Intelligence"
+  },
+  "226": {
+    "className": "Business",
+    "name": "Business Law, Public Responsibility, and Ethics"
+  },
+  "227": {
+    "className": "Business",
+    "name": "Corporate Finance"
+  },
+  "228": {
+    "className": "Business",
+    "name": "E-Commerce"
+  },
+  "229": {
+    "className": "Business",
+    "name": "Entrepreneurial and Small Business Operations"
+  },
+  "230": {
+    "className": "Business",
+    "name": "Fashion Business"
+  },
+  "231": {
+    "className": "Business",
+    "name": "Finance and Financial Management"
+  },
+  "232": {
+    "className": "Business",
+    "name": "Hospitality Administration and Management"
+  },
+  "233": {
+    "className": "Business",
+    "name": "Hospitality Administration and Management: Food and Beverage Management"
+  },
+  "234": {
+    "className": "Business",
+    "name": "Hospitality Administration and Management: Gaming and Casino Operations Management"
+  },
+  "235": {
+    "className": "Business",
+    "name": "Human Resources Management"
+  },
+  "236": {
+    "className": "Business",
+    "name": "Human Resources Management: Benefits and Compensation"
+  },
+  "237": {
+    "className": "Business",
+    "name": "Human Resources Management: Performance Management"
+  },
+  "238": {
+    "className": "Business",
+    "name": "Human Resources Management: Training and Development"
+  },
+  "239": {
+    "className": "Business",
+    "name": "Insurance"
+  },
+  "240": {
+    "className": "Business",
+    "name": "International Business"
+  },
+  "241": {
+    "className": "Business",
+    "name": "Labor Relations"
+  },
+  "242": {
+    "className": "Business",
+    "name": "Labor Relations: Collective Bargaining"
+  },
+  "243": {
+    "className": "Business",
+    "name": "Labor Relations: International and Comparative Labor Relations"
+  },
+  "244": {
+    "className": "Business",
+    "name": "Labor Relations: Unions"
+  },
+  "245": {
+    "className": "Business",
+    "name": "Management Information Systems"
+  },
+  "246": {
+    "className": "Business",
+    "name": "Management Sciences and Quantitative Methods"
+  },
+  "247": {
+    "className": "Business",
+    "name": "Marketing"
+  },
+  "248": {
+    "className": "Business",
+    "name": "Marketing: Art Direction"
+  },
+  "249": {
+    "className": "Business",
+    "name": "Nonprofit Administration and Management"
+  },
+  "250": {
+    "className": "Business",
+    "name": "Operations and Supply Chain Management"
+  },
+  "251": {
+    "className": "Business",
+    "name": "Organizational Behavior and Theory"
+  },
+  "252": {
+    "className": "Business",
+    "name": "Portfolio and Security Analysis"
+  },
+  "253": {
+    "className": "Business",
+    "name": "Real Estate"
+  },
+  "254": {
+    "className": "Business",
+    "name": "Recreation Business"
+  },
+  "255": {
+    "className": "Business",
+    "name": "Sales and Merchandising"
+  },
+  "256": {
+    "className": "Business",
+    "name": "Sports Management"
+  },
+  "257": {
+    "className": "Business",
+    "name": "Strategic Management Policy"
+  },
+  "258": {
+    "className": "Business",
+    "name": "Taxation"
+  },
+  "259": {
+    "className": "Business",
+    "name": "Technology and Innovation"
+  },
+  "260": {
+    "className": "Business",
+    "name": "Tourism and Travel"
+  },
+  "261": {
+    "className": "Business",
+    "name": "Other Business"
+  },
+  "262": {
+    "className": "Education",
+    "name": "Adult and Continuing Education"
+  },
+  "263": {
+    "className": "Education",
+    "name": "Art Education"
+  },
+  "264": {
+    "className": "Education",
+    "name": "Bilingual, Multilingual, and Multicultural Education"
+  },
+  "265": {
+    "className": "Education",
+    "name": "Community College Leadership"
+  },
+  "266": {
+    "className": "Education",
+    "name": "Curriculum and Instruction"
+  },
+  "267": {
+    "className": "Education",
+    "name": "Curriculum and Social Inquiry"
+  },
+  "268": {
+    "className": "Education",
+    "name": "Disability and Equity in Education"
+  },
+  "269": {
+    "className": "Education",
+    "name": "Disability and Equity in Education: Accessibility"
+  },
+  "270": {
+    "className": "Education",
+    "name": "Disability and Equity in Education: Gender Equity in Education"
+  },
+  "271": {
+    "className": "Education",
+    "name": "Early Childhood Education"
+  },
+  "272": {
+    "className": "Education",
+    "name": "Education Economics"
+  },
+  "273": {
+    "className": "Education",
+    "name": "Educational Administration and Supervision"
+  },
+  "274": {
+    "className": "Education",
+    "name": "Educational Administration and Supervision: Adult and Continuing Education Administration"
+  },
+  "275": {
+    "className": "Education",
+    "name": "Educational Administration and Supervision: Community College Education Administration"
+  },
+  "276": {
+    "className": "Education",
+    "name": "Educational Administration and Supervision: Elementary and Middle and Secondary Education Administration"
+  },
+  "277": {
+    "className": "Education",
+    "name": "Educational Administration and Supervision: Higher Education Administration"
+  },
+  "278": {
+    "className": "Education",
+    "name": "Educational Administration and Supervision: Special Education Administration"
+  },
+  "279": {
+    "className": "Education",
+    "name": "Educational Administration and Supervision: Urban Education"
+  },
+  "280": {
+    "className": "Education",
+    "name": "Educational Administration and Supervision: Other Educational Administration and Supervision"
+  },
+  "281": {
+    "className": "Education",
+    "name": "Educational Assessment, Evaluation, and Research"
+  },
+  "282": {
+    "className": "Education",
+    "name": "Educational Leadership"
+  },
+  "283": {
+    "className": "Education",
+    "name": "Educational Methods"
+  },
+  "284": {
+    "className": "Education",
+    "name": "Educational Psychology"
+  },
+  "285": {
+    "className": "Education",
+    "name": "Elementary Education"
+  },
+  "286": {
+    "className": "Education",
+    "name": "Gifted Education"
+  },
+  "287": {
+    "className": "Education",
+    "name": "Health and Physical Education"
+  },
+  "288": {
+    "className": "Education",
+    "name": "Higher Education"
+  },
+  "289": {
+    "className": "Education",
+    "name": "Higher Education: Scholarship of Teaching and Learning"
+  },
+  "290": {
+    "className": "Education",
+    "name": "Higher Education: University Extension"
+  },
+  "291": {
+    "className": "Education",
+    "name": "Home Economics"
+  },
+  "292": {
+    "className": "Education",
+    "name": "Humane Education"
+  },
+  "293": {
+    "className": "Education",
+    "name": "Indigenous Education"
+  },
+  "294": {
+    "className": "Education",
+    "name": "Instructional Media Design"
+  },
+  "295": {
+    "className": "Education",
+    "name": "International and Comparative Education"
+  },
+  "296": {
+    "className": "Education",
+    "name": "Language and Literacy Education"
+  },
+  "297": {
+    "className": "Education",
+    "name": "Liberal Studies"
+  },
+  "298": {
+    "className": "Education",
+    "name": "Online and Distance Education"
+  },
+  "299": {
+    "className": "Education",
+    "name": "Outdoor Education"
+  },
+  "300": {
+    "className": "Education",
+    "name": "Science and Mathematics Education"
+  },
+  "301": {
+    "className": "Education",
+    "name": "Secondary Education"
+  },
+  "302": {
+    "className": "Education",
+    "name": "Social and Philosophical Foundations of Education"
+  },
+  "303": {
+    "className": "Education",
+    "name": "Special Education and Teaching"
+  },
+  "304": {
+    "className": "Education",
+    "name": "Student Counseling and Personnel Services"
+  },
+  "305": {
+    "className": "Education",
+    "name": "Teacher Education and Professional Development"
+  },
+  "306": {
+    "className": "Education",
+    "name": "Teacher Education and Professional Development: Adult and Continuing Education and Teaching"
+  },
+  "307": {
+    "className": "Education",
+    "name": "Teacher Education and Professional Development: Elementary Education and Teaching"
+  },
+  "308": {
+    "className": "Education",
+    "name": "Teacher Education and Professional Development: Higher Education and Teaching"
+  },
+  "309": {
+    "className": "Education",
+    "name": "Teacher Education and Professional Development: Junior High, Intermediate, Middle School Education and Teaching"
+  },
+  "310": {
+    "className": "Education",
+    "name": "Teacher Education and Professional Development: Pre-Elementary, Early Childhood, Kindergarten Teacher Education"
+  },
+  "311": {
+    "className": "Education",
+    "name": "Teacher Education and Professional Development: Secondary Education and Teaching"
+  },
+  "312": {
+    "className": "Education",
+    "name": "Teacher Education and Professional Development: Other Teacher Education and Professional Development"
+  },
+  "313": {
+    "className": "Education",
+    "name": "Other Education"
+  },
+  "314": {
+    "className": "Education",
+    "name": "Vocational Education"
+  },
+  "315": {
+    "className": "Engineering",
+    "name": "Aerospace Engineering"
+  },
+  "316": {
+    "className": "Engineering",
+    "name": "Aerospace Engineering: Aerodynamics and Fluid Mechanics"
+  },
+  "317": {
+    "className": "Engineering",
+    "name": "Aerospace Engineering: Aeronautical Vehicles"
+  },
+  "318": {
+    "className": "Engineering",
+    "name": "Aerospace Engineering: Astrodynamics"
+  },
+  "319": {
+    "className": "Engineering",
+    "name": "Aerospace Engineering: Multi-Vehicle Systems and Air Traffic Control"
+  },
+  "320": {
+    "className": "Engineering",
+    "name": "Aerospace Engineering: Navigation, Guidance, Control and Dynamics"
+  },
+  "321": {
+    "className": "Engineering",
+    "name": "Aerospace Engineering: Propulsion and Power"
+  },
+  "322": {
+    "className": "Engineering",
+    "name": "Aerospace Engineering: Space Vehicles"
+  },
+  "323": {
+    "className": "Engineering",
+    "name": "Aerospace Engineering: Structures and Materials"
+  },
+  "324": {
+    "className": "Engineering",
+    "name": "Aerospace Engineering: Systems Engineering and Multidisciplinary Design Optimization"
+  },
+  "325": {
+    "className": "Engineering",
+    "name": "Aerospace Engineering: Other Aerospace Engineering"
+  },
+  "326": {
+    "className": "Engineering",
+    "name": "Automotive Engineering"
+  },
+  "327": {
+    "className": "Engineering",
+    "name": "Aviation"
+  },
+  "328": {
+    "className": "Engineering",
+    "name": "Aviation: Aviation and Space Education"
+  },
+  "329": {
+    "className": "Engineering",
+    "name": "Aviation: Aviation Safety and Security"
+  },
+  "330": {
+    "className": "Engineering",
+    "name": "Aviation: Maintenance Technology"
+  },
+  "331": {
+    "className": "Engineering",
+    "name": "Aviation: Management and Operations"
+  },
+  "332": {
+    "className": "Engineering",
+    "name": "Biomedical Engineering and Bioengineering"
+  },
+  "333": {
+    "className": "Engineering",
+    "name": "Biomedical Engineering and Bioengineering: Bioelectrical and Neuroengineering"
+  },
+  "334": {
+    "className": "Engineering",
+    "name": "Biomedical Engineering and Bioengineering: Bioimaging and Biomedical Optics"
+  },
+  "335": {
+    "className": "Engineering",
+    "name": "Biomedical Engineering and Bioengineering: Biological Engineering"
+  },
+  "336": {
+    "className": "Engineering",
+    "name": "Biomedical Engineering and Bioengineering: Biomaterials"
+  },
+  "337": {
+    "className": "Engineering",
+    "name": "Biomedical Engineering and Bioengineering: Biomechanics and Biotransport"
+  },
+  "338": {
+    "className": "Engineering",
+    "name": "Biomedical Engineering and Bioengineering: Biomedical Devices and Instrumentation"
+  },
+  "339": {
+    "className": "Engineering",
+    "name": "Biomedical Engineering and Bioengineering: Molecular, Cellular, and Tissue Engineering"
+  },
+  "340": {
+    "className": "Engineering",
+    "name": "Biomedical Engineering and Bioengineering: Systems and Integrative Engineering"
+  },
+  "341": {
+    "className": "Engineering",
+    "name": "Biomedical Engineering and Bioengineering: Vision Science"
+  },
+  "342": {
+    "className": "Engineering",
+    "name": "Biomedical Engineering and Bioengineering: Other Biomedical Engineering and Bioengineering"
+  },
+  "343": {
+    "className": "Engineering",
+    "name": "Bioresource and Agricultural Engineering"
+  },
+  "344": {
+    "className": "Engineering",
+    "name": "Chemical Engineering"
+  },
+  "345": {
+    "className": "Engineering",
+    "name": "Chemical Engineering: Biochemical and Biomolecular Engineering"
+  },
+  "346": {
+    "className": "Engineering",
+    "name": "Chemical Engineering: Catalysis and Reaction Engineering"
+  },
+  "347": {
+    "className": "Engineering",
+    "name": "Chemical Engineering: Complex Fluids"
+  },
+  "348": {
+    "className": "Engineering",
+    "name": "Chemical Engineering: Membrane Science"
+  },
+  "349": {
+    "className": "Engineering",
+    "name": "Chemical Engineering: Petroleum Engineering"
+  },
+  "350": {
+    "className": "Engineering",
+    "name": "Chemical Engineering: Polymer Science"
+  },
+  "351": {
+    "className": "Engineering",
+    "name": "Chemical Engineering: Process Control and Systems"
+  },
+  "352": {
+    "className": "Engineering",
+    "name": "Chemical Engineering: Thermodynamics"
+  },
+  "353": {
+    "className": "Engineering",
+    "name": "Chemical Engineering: Transport Phenomena"
+  },
+  "354": {
+    "className": "Engineering",
+    "name": "Chemical Engineering: Other Chemical Engineering"
+  },
+  "355": {
+    "className": "Engineering",
+    "name": "Civil and Environmental Engineering"
+  },
+  "356": {
+    "className": "Engineering",
+    "name": "Civil and Environmental Engineering: Civil Engineering"
+  },
+  "357": {
+    "className": "Engineering",
+    "name": "Civil and Environmental Engineering: Construction Engineering and Management"
+  },
+  "358": {
+    "className": "Engineering",
+    "name": "Civil and Environmental Engineering: Environmental Engineering"
+  },
+  "359": {
+    "className": "Engineering",
+    "name": "Civil and Environmental Engineering: Geotechnical Engineering"
+  },
+  "360": {
+    "className": "Engineering",
+    "name": "Civil and Environmental Engineering: Hydraulic Engineering"
+  },
+  "361": {
+    "className": "Engineering",
+    "name": "Civil and Environmental Engineering: Structural Engineering"
+  },
+  "362": {
+    "className": "Engineering",
+    "name": "Civil and Environmental Engineering: Transportation Engineering"
+  },
+  "363": {
+    "className": "Engineering",
+    "name": "Civil and Environmental Engineering: Other Civil and Environmental Engineering"
+  },
+  "364": {
+    "className": "Engineering",
+    "name": "Computational Engineering"
+  },
+  "365": {
+    "className": "Engineering",
+    "name": "Computer Engineering"
+  },
+  "366": {
+    "className": "Engineering",
+    "name": "Computer Engineering: Computer and Systems Architecture"
+  },
+  "367": {
+    "className": "Engineering",
+    "name": "Computer Engineering: Data Storage Systems"
+  },
+  "368": {
+    "className": "Engineering",
+    "name": "Computer Engineering: Digital Circuits"
+  },
+  "369": {
+    "className": "Engineering",
+    "name": "Computer Engineering: Digital Communications and Networking"
+  },
+  "370": {
+    "className": "Engineering",
+    "name": "Computer Engineering: Hardware Systems"
+  },
+  "371": {
+    "className": "Engineering",
+    "name": "Computer Engineering: Robotics"
+  },
+  "372": {
+    "className": "Engineering",
+    "name": "Computer Engineering: Other Computer Engineering"
+  },
+  "373": {
+    "className": "Engineering",
+    "name": "Electrical and Computer Engineering"
+  },
+  "374": {
+    "className": "Engineering",
+    "name": "Electrical and Computer Engineering: Biomedical"
+  },
+  "375": {
+    "className": "Engineering",
+    "name": "Electrical and Computer Engineering: Controls and Control Theory"
+  },
+  "376": {
+    "className": "Engineering",
+    "name": "Electrical and Computer Engineering: Electrical and Electronics"
+  },
+  "377": {
+    "className": "Engineering",
+    "name": "Electrical and Computer Engineering: Electromagnetics and Photonics"
+  },
+  "378": {
+    "className": "Engineering",
+    "name": "Electrical and Computer Engineering: Electronic Devices and Semiconductor Manufacturing"
+  },
+  "379": {
+    "className": "Engineering",
+    "name": "Electrical and Computer Engineering: Nanotechnology Fabrication"
+  },
+  "380": {
+    "className": "Engineering",
+    "name": "Electrical and Computer Engineering: Power and Energy"
+  },
+  "381": {
+    "className": "Engineering",
+    "name": "Electrical and Computer Engineering: Signal Processing"
+  },
+  "382": {
+    "className": "Engineering",
+    "name": "Electrical and Computer Engineering: Systems and Communications"
+  },
+  "383": {
+    "className": "Engineering",
+    "name": "Electrical and Computer Engineering: VLSI and Circuits, Embedded and Hardware Systems"
+  },
+  "384": {
+    "className": "Engineering",
+    "name": "Electrical and Computer Engineering: Other Electrical and Computer Engineering"
+  },
+  "385": {
+    "className": "Engineering",
+    "name": "Engineering Education"
+  },
+  "386": {
+    "className": "Engineering",
+    "name": "Engineering Science and Materials"
+  },
+  "387": {
+    "className": "Engineering",
+    "name": "Engineering Science and Materials: Dynamics and Dynamical Systems"
+  },
+  "388": {
+    "className": "Engineering",
+    "name": "Engineering Science and Materials: Engineering Mechanics"
+  },
+  "389": {
+    "className": "Engineering",
+    "name": "Engineering Science and Materials: Mechanics of Materials"
+  },
+  "390": {
+    "className": "Engineering",
+    "name": "Engineering Science and Materials: Other Engineering Science and Materials"
+  },
+  "391": {
+    "className": "Engineering",
+    "name": "Materials Science and Engineering"
+  },
+  "392": {
+    "className": "Engineering",
+    "name": "Materials Science and Engineering: Biology and Biomimetic Materials"
+  },
+  "393": {
+    "className": "Engineering",
+    "name": "Materials Science and Engineering: Ceramic Materials"
+  },
+  "394": {
+    "className": "Engineering",
+    "name": "Materials Science and Engineering: Metallurgy"
+  },
+  "395": {
+    "className": "Engineering",
+    "name": "Materials Science and Engineering: Polymer and Organic Materials"
+  },
+  "396": {
+    "className": "Engineering",
+    "name": "Materials Science and Engineering: Semiconductor and Optical Materials"
+  },
+  "397": {
+    "className": "Engineering",
+    "name": "Materials Science and Engineering: Structural Materials"
+  },
+  "398": {
+    "className": "Engineering",
+    "name": "Materials Science and Engineering: Other Materials Science and Engineering"
+  },
+  "399": {
+    "className": "Engineering",
+    "name": "Mechanical Engineering"
+  },
+  "400": {
+    "className": "Engineering",
+    "name": "Mechanical Engineering: Acoustics, Dynamics, and Controls"
+  },
+  "401": {
+    "className": "Engineering",
+    "name": "Mechanical Engineering: Applied Mechanics"
+  },
+  "402": {
+    "className": "Engineering",
+    "name": "Mechanical Engineering: Biomechanical Engineering"
+  },
+  "403": {
+    "className": "Engineering",
+    "name": "Mechanical Engineering: Computer-Aided Engineering and Design"
+  },
+  "404": {
+    "className": "Engineering",
+    "name": "Mechanical Engineering: Electro-Mechanical Systems"
+  },
+  "405": {
+    "className": "Engineering",
+    "name": "Mechanical Engineering: Energy Systems"
+  },
+  "406": {
+    "className": "Engineering",
+    "name": "Mechanical Engineering: Heat Transfer, Combustion"
+  },
+  "407": {
+    "className": "Engineering",
+    "name": "Mechanical Engineering: Manufacturing"
+  },
+  "408": {
+    "className": "Engineering",
+    "name": "Mechanical Engineering: Ocean Engineering"
+  },
+  "409": {
+    "className": "Engineering",
+    "name": "Mechanical Engineering: Tribology"
+  },
+  "410": {
+    "className": "Engineering",
+    "name": "Mechanical Engineering: Other Mechanical Engineering"
+  },
+  "411": {
+    "className": "Engineering",
+    "name": "Mining Engineering"
+  },
+  "412": {
+    "className": "Engineering",
+    "name": "Nanoscience and Nanotechnology"
+  },
+  "413": {
+    "className": "Engineering",
+    "name": "Nuclear Engineering"
+  },
+  "414": {
+    "className": "Engineering",
+    "name": "Operations Research, Systems Engineering and Industrial Engineering"
+  },
+  "415": {
+    "className": "Engineering",
+    "name": "Operations Research, Systems Engineering and Industrial Engineering: Ergonomics"
+  },
+  "416": {
+    "className": "Engineering",
+    "name": "Operations Research, Systems Engineering and Industrial Engineering: Industrial Engineering"
+  },
+  "417": {
+    "className": "Engineering",
+    "name": "Operations Research, Systems Engineering and Industrial Engineering: Industrial Technology"
+  },
+  "418": {
+    "className": "Engineering",
+    "name": "Operations Research, Systems Engineering and Industrial Engineering: Operational Research"
+  },
+  "419": {
+    "className": "Engineering",
+    "name": "Operations Research, Systems Engineering and Industrial Engineering: Systems Engineering"
+  },
+  "420": {
+    "className": "Engineering",
+    "name": "Operations Research, Systems Engineering and Industrial Engineering: Other Operations Research, Systems Engineering and Industrial Engineering"
+  },
+  "421": {
+    "className": "Engineering",
+    "name": "Risk Analysis"
+  },
+  "422": {
+    "className": "Engineering",
+    "name": "Other Engineering"
+  },
+  "423": {
+    "className": "Law",
+    "name": "Accounting Law"
+  },
+  "424": {
+    "className": "Law",
+    "name": "Administrative Law"
+  },
+  "425": {
+    "className": "Law",
+    "name": "Admiralty"
+  },
+  "426": {
+    "className": "Law",
+    "name": "Agency"
+  },
+  "427": {
+    "className": "Law",
+    "name": "Agriculture Law"
+  },
+  "428": {
+    "className": "Law",
+    "name": "Air and Space Law"
+  },
+  "429": {
+    "className": "Law",
+    "name": "Animal Law"
+  },
+  "430": {
+    "className": "Law",
+    "name": "Antitrust and Trade Regulation"
+  },
+  "431": {
+    "className": "Law",
+    "name": "Banking and Finance Law"
+  },
+  "432": {
+    "className": "Law",
+    "name": "Bankruptcy Law"
+  },
+  "433": {
+    "className": "Law",
+    "name": "Business Organizations Law"
+  },
+  "434": {
+    "className": "Law",
+    "name": "Civil Law"
+  },
+  "435": {
+    "className": "Law",
+    "name": "Civil Procedure"
+  },
+  "436": {
+    "className": "Law",
+    "name": "Civil Rights and Discrimination"
+  },
+  "437": {
+    "className": "Law",
+    "name": "Commercial Law"
+  },
+  "438": {
+    "className": "Law",
+    "name": "Common Law"
+  },
+  "439": {
+    "className": "Law",
+    "name": "Communications Law"
+  },
+  "440": {
+    "className": "Law",
+    "name": "Comparative and Foreign Law"
+  },
+  "441": {
+    "className": "Law",
+    "name": "Computer Law"
+  },
+  "442": {
+    "className": "Law",
+    "name": "Conflict of Laws"
+  },
+  "443": {
+    "className": "Law",
+    "name": "Constitutional Law"
+  },
+  "444": {
+    "className": "Law",
+    "name": "Construction Law"
+  },
+  "445": {
+    "className": "Law",
+    "name": "Consumer Protection Law"
+  },
+  "446": {
+    "className": "Law",
+    "name": "Contracts"
+  },
+  "447": {
+    "className": "Law",
+    "name": "Courts"
+  },
+  "448": {
+    "className": "Law",
+    "name": "Criminal Law"
+  },
+  "449": {
+    "className": "Law",
+    "name": "Criminal Procedure"
+  },
+  "450": {
+    "className": "Law",
+    "name": "Cultural Heritage Law"
+  },
+  "451": {
+    "className": "Law",
+    "name": "Disability Law"
+  },
+  "452": {
+    "className": "Law",
+    "name": "Disaster Law"
+  },
+  "453": {
+    "className": "Law",
+    "name": "Dispute Resolution and Arbitration"
+  },
+  "454": {
+    "className": "Law",
+    "name": "Education Law"
+  },
+  "455": {
+    "className": "Law",
+    "name": "Elder Law"
+  },
+  "456": {
+    "className": "Law",
+    "name": "Election Law"
+  },
+  "457": {
+    "className": "Law",
+    "name": "Energy and Utilities Law"
+  },
+  "458": {
+    "className": "Law",
+    "name": "Entertainment, Arts, and Sports Law"
+  },
+  "459": {
+    "className": "Law",
+    "name": "Environmental Law"
+  },
+  "460": {
+    "className": "Law",
+    "name": "Estates and Trusts"
+  },
+  "461": {
+    "className": "Law",
+    "name": "European Law"
+  },
+  "462": {
+    "className": "Law",
+    "name": "Evidence"
+  },
+  "463": {
+    "className": "Law",
+    "name": "Family Law"
+  },
+  "464": {
+    "className": "Law",
+    "name": "First Amendment"
+  },
+  "465": {
+    "className": "Law",
+    "name": "Food and Drug Law"
+  },
+  "466": {
+    "className": "Law",
+    "name": "Fourteenth Amendment"
+  },
+  "467": {
+    "className": "Law",
+    "name": "Fourth Amendment"
+  },
+  "468": {
+    "className": "Law",
+    "name": "Gaming Law"
+  },
+  "469": {
+    "className": "Law",
+    "name": "Government Contracts"
+  },
+  "470": {
+    "className": "Law",
+    "name": "Health Law and Policy"
+  },
+  "471": {
+    "className": "Law",
+    "name": "Housing Law"
+  },
+  "472": {
+    "className": "Law",
+    "name": "Human Rights Law"
+  },
+  "473": {
+    "className": "Law",
+    "name": "Immigration Law"
+  },
+  "474": {
+    "className": "Law",
+    "name": "Indian and Aboriginal Law"
+  },
+  "475": {
+    "className": "Law",
+    "name": "Insurance Law"
+  },
+  "476": {
+    "className": "Law",
+    "name": "Intellectual Property Law"
+  },
+  "477": {
+    "className": "Law",
+    "name": "International Humanitarian Law"
+  },
+  "478": {
+    "className": "Law",
+    "name": "International Law"
+  },
+  "479": {
+    "className": "Law",
+    "name": "International Trade Law"
+  },
+  "480": {
+    "className": "Law",
+    "name": "Internet Law"
+  },
+  "481": {
+    "className": "Law",
+    "name": "Judges"
+  },
+  "482": {
+    "className": "Law",
+    "name": "Jurisdiction"
+  },
+  "483": {
+    "className": "Law",
+    "name": "Jurisprudence"
+  },
+  "484": {
+    "className": "Law",
+    "name": "Juvenile Law"
+  },
+  "485": {
+    "className": "Law",
+    "name": "Labor and Employment Law"
+  },
+  "486": {
+    "className": "Law",
+    "name": "Land Use Law"
+  },
+  "487": {
+    "className": "Law",
+    "name": "Law and Economics"
+  },
+  "488": {
+    "className": "Law",
+    "name": "Law and Gender"
+  },
+  "489": {
+    "className": "Law",
+    "name": "Law and Philosophy"
+  },
+  "490": {
+    "className": "Law",
+    "name": "Law and Politics"
+  },
+  "491": {
+    "className": "Law",
+    "name": "Law and Psychology"
+  },
+  "492": {
+    "className": "Law",
+    "name": "Law and Race"
+  },
+  "493": {
+    "className": "Law",
+    "name": "Law and Society"
+  },
+  "494": {
+    "className": "Law",
+    "name": "Law Enforcement and Corrections"
+  },
+  "495": {
+    "className": "Law",
+    "name": "Law of the Sea"
+  },
+  "496": {
+    "className": "Law",
+    "name": "Legal Biography"
+  },
+  "497": {
+    "className": "Law",
+    "name": "Legal Education"
+  },
+  "498": {
+    "className": "Law",
+    "name": "Legal Ethics and Professional Responsibility"
+  },
+  "499": {
+    "className": "Law",
+    "name": "Legal History"
+  },
+  "500": {
+    "className": "Law",
+    "name": "Legal Profession"
+  },
+  "501": {
+    "className": "Law",
+    "name": "Legal Remedies"
+  },
+  "502": {
+    "className": "Law",
+    "name": "Legal Writing and Research"
+  },
+  "503": {
+    "className": "Law",
+    "name": "Legislation"
+  },
+  "504": {
+    "className": "Law",
+    "name": "Litigation"
+  },
+  "505": {
+    "className": "Law",
+    "name": "Marketing Law"
+  },
+  "506": {
+    "className": "Law",
+    "name": "Medical Jurisprudence"
+  },
+  "507": {
+    "className": "Law",
+    "name": "Military, War, and Peace"
+  },
+  "508": {
+    "className": "Law",
+    "name": "National Security Law"
+  },
+  "509": {
+    "className": "Law",
+    "name": "Natural Law"
+  },
+  "510": {
+    "className": "Law",
+    "name": "Natural Resources Law"
+  },
+  "511": {
+    "className": "Law",
+    "name": "Nonprofit Organizations Law"
+  },
+  "512": {
+    "className": "Law",
+    "name": "Oil, Gas, and Mineral Law"
+  },
+  "513": {
+    "className": "Law",
+    "name": "Organizations Law"
+  },
+  "514": {
+    "className": "Law",
+    "name": "President/Executive Department"
+  },
+  "515": {
+    "className": "Law",
+    "name": "Privacy Law"
+  },
+  "516": {
+    "className": "Law",
+    "name": "Property Law and Real Estate"
+  },
+  "517": {
+    "className": "Law",
+    "name": "Public Law and Legal Theory"
+  },
+  "518": {
+    "className": "Law",
+    "name": "Religion Law"
+  },
+  "519": {
+    "className": "Law",
+    "name": "Retirement Security Law"
+  },
+  "520": {
+    "className": "Law",
+    "name": "Rule of Law"
+  },
+  "521": {
+    "className": "Law",
+    "name": "Science and Technology Law"
+  },
+  "522": {
+    "className": "Law",
+    "name": "Second Amendment"
+  },
+  "523": {
+    "className": "Law",
+    "name": "Secured Transactions"
+  },
+  "524": {
+    "className": "Law",
+    "name": "Securities Law"
+  },
+  "525": {
+    "className": "Law",
+    "name": "Sexuality and the Law"
+  },
+  "526": {
+    "className": "Law",
+    "name": "Social Welfare Law"
+  },
+  "527": {
+    "className": "Law",
+    "name": "State and Local Government Law"
+  },
+  "528": {
+    "className": "Law",
+    "name": "Supreme Court of the United States"
+  },
+  "529": {
+    "className": "Law",
+    "name": "Tax Law"
+  },
+  "530": {
+    "className": "Law",
+    "name": "Taxation-Federal"
+  },
+  "531": {
+    "className": "Law",
+    "name": "Taxation-Federal Estate and Gift"
+  },
+  "532": {
+    "className": "Law",
+    "name": "Taxation-State and Local"
+  },
+  "533": {
+    "className": "Law",
+    "name": "Taxation-Transnational"
+  },
+  "534": {
+    "className": "Law",
+    "name": "Torts"
+  },
+  "535": {
+    "className": "Law",
+    "name": "Transnational Law"
+  },
+  "536": {
+    "className": "Law",
+    "name": "Transportation Law"
+  },
+  "537": {
+    "className": "Law",
+    "name": "Water Law"
+  },
+  "538": {
+    "className": "Law",
+    "name": "Workers' Compensation Law"
+  },
+  "539": {
+    "className": "Law",
+    "name": "Other Law"
+  },
+  "540": {
+    "className": "Life Sciences",
+    "name": "Agriculture"
+  },
+  "541": {
+    "className": "Life Sciences",
+    "name": "Agriculture: Agricultural Economics"
+  },
+  "542": {
+    "className": "Life Sciences",
+    "name": "Agriculture: Agricultural Education"
+  },
+  "543": {
+    "className": "Life Sciences",
+    "name": "Agriculture: Apiculture"
+  },
+  "544": {
+    "className": "Life Sciences",
+    "name": "Agriculture: Biosecurity"
+  },
+  "545": {
+    "className": "Life Sciences",
+    "name": "Agriculture: Viticulture and Oenology"
+  },
+  "546": {
+    "className": "Life Sciences",
+    "name": "Animal Sciences"
+  },
+  "547": {
+    "className": "Life Sciences",
+    "name": "Animal Sciences: Aquaculture and Fisheries"
+  },
+  "548": {
+    "className": "Life Sciences",
+    "name": "Animal Sciences: Dairy Science"
+  },
+  "549": {
+    "className": "Life Sciences",
+    "name": "Animal Sciences: Meat Science"
+  },
+  "550": {
+    "className": "Life Sciences",
+    "name": "Animal Sciences: Ornithology"
+  },
+  "551": {
+    "className": "Life Sciences",
+    "name": "Animal Sciences: Poultry or Avian Science"
+  },
+  "552": {
+    "className": "Life Sciences",
+    "name": "Animal Sciences: Sheep and Goat Science"
+  },
+  "553": {
+    "className": "Life Sciences",
+    "name": "Animal Sciences: Zoology"
+  },
+  "554": {
+    "className": "Life Sciences",
+    "name": "Animal Sciences: Other Animal Sciences"
+  },
+  "555": {
+    "className": "Life Sciences",
+    "name": "Biochemistry, Biophysics, and Structural Biology"
+  },
+  "556": {
+    "className": "Life Sciences",
+    "name": "Biochemistry, Biophysics, and Structural Biology: Biochemistry"
+  },
+  "557": {
+    "className": "Life Sciences",
+    "name": "Biochemistry, Biophysics, and Structural Biology: Biophysics"
+  },
+  "558": {
+    "className": "Life Sciences",
+    "name": "Biochemistry, Biophysics, and Structural Biology: Molecular Biology"
+  },
+  "559": {
+    "className": "Life Sciences",
+    "name": "Biochemistry, Biophysics, and Structural Biology: Structural Biology"
+  },
+  "560": {
+    "className": "Life Sciences",
+    "name": "Biochemistry, Biophysics, and Structural Biology: Other Biochemistry, Biophysics, and Structural Biology"
+  },
+  "561": {
+    "className": "Life Sciences",
+    "name": "Biodiversity"
+  },
+  "562": {
+    "className": "Life Sciences",
+    "name": "Bioinformatics"
+  },
+  "563": {
+    "className": "Life Sciences",
+    "name": "Biology"
+  },
+  "564": {
+    "className": "Life Sciences",
+    "name": "Biology: Integrative Biology"
+  },
+  "565": {
+    "className": "Life Sciences",
+    "name": "Biotechnology"
+  },
+  "566": {
+    "className": "Life Sciences",
+    "name": "Cell and Developmental Biology"
+  },
+  "567": {
+    "className": "Life Sciences",
+    "name": "Cell and Developmental Biology: Cancer Biology"
+  },
+  "568": {
+    "className": "Life Sciences",
+    "name": "Cell and Developmental Biology: Cell Anatomy"
+  },
+  "569": {
+    "className": "Life Sciences",
+    "name": "Cell and Developmental Biology: Cell Biology"
+  },
+  "570": {
+    "className": "Life Sciences",
+    "name": "Cell and Developmental Biology: Developmental Biology"
+  },
+  "571": {
+    "className": "Life Sciences",
+    "name": "Cell and Developmental Biology: Other Cell and Developmental Biology"
+  },
+  "572": {
+    "className": "Life Sciences",
+    "name": "Ecology and Evolutionary Biology"
+  },
+  "573": {
+    "className": "Life Sciences",
+    "name": "Ecology and Evolutionary Biology: Behavior and Ethology"
+  },
+  "574": {
+    "className": "Life Sciences",
+    "name": "Ecology and Evolutionary Biology: Desert Ecology"
+  },
+  "575": {
+    "className": "Life Sciences",
+    "name": "Ecology and Evolutionary Biology: Evolution"
+  },
+  "576": {
+    "className": "Life Sciences",
+    "name": "Ecology and Evolutionary Biology: Population Biology"
+  },
+  "577": {
+    "className": "Life Sciences",
+    "name": "Ecology and Evolutionary Biology: Terrestrial and Aquatic Ecology"
+  },
+  "578": {
+    "className": "Life Sciences",
+    "name": "Ecology and Evolutionary Biology: Other Ecology and Evolutionary Biology"
+  },
+  "579": {
+    "className": "Life Sciences",
+    "name": "Entomology"
+  },
+  "580": {
+    "className": "Life Sciences",
+    "name": "Food Science"
+  },
+  "581": {
+    "className": "Life Sciences",
+    "name": "Food Science: Food Biotechnology"
+  },
+  "582": {
+    "className": "Life Sciences",
+    "name": "Food Science: Food Chemistry"
+  },
+  "583": {
+    "className": "Life Sciences",
+    "name": "Food Science: Food Microbiology"
+  },
+  "584": {
+    "className": "Life Sciences",
+    "name": "Food Science: Food Processing"
+  },
+  "585": {
+    "className": "Life Sciences",
+    "name": "Food Science: Other Food Science"
+  },
+  "586": {
+    "className": "Life Sciences",
+    "name": "Forest Sciences"
+  },
+  "587": {
+    "className": "Life Sciences",
+    "name": "Forest Sciences: Forest Biology"
+  },
+  "588": {
+    "className": "Life Sciences",
+    "name": "Forest Sciences: Forest Management"
+  },
+  "589": {
+    "className": "Life Sciences",
+    "name": "Forest Sciences: Wood Science and Pulp, Paper Technology"
+  },
+  "590": {
+    "className": "Life Sciences",
+    "name": "Forest Sciences: Other Forestry and Forest Sciences"
+  },
+  "591": {
+    "className": "Life Sciences",
+    "name": "Genetics and Genomics"
+  },
+  "592": {
+    "className": "Life Sciences",
+    "name": "Genetics and Genomics: Computational Biology"
+  },
+  "593": {
+    "className": "Life Sciences",
+    "name": "Genetics and Genomics: Genetics"
+  },
+  "594": {
+    "className": "Life Sciences",
+    "name": "Genetics and Genomics: Genomics"
+  },
+  "595": {
+    "className": "Life Sciences",
+    "name": "Genetics and Genomics: Molecular Genetics"
+  },
+  "596": {
+    "className": "Life Sciences",
+    "name": "Genetics and Genomics: Other Genetics and Genomics"
+  },
+  "597": {
+    "className": "Life Sciences",
+    "name": "Immunology and Infectious Disease"
+  },
+  "598": {
+    "className": "Life Sciences",
+    "name": "Immunology and Infectious Disease: Immunity"
+  },
+  "599": {
+    "className": "Life Sciences",
+    "name": "Immunology and Infectious Disease: Immunology of Infectious Disease"
+  },
+  "600": {
+    "className": "Life Sciences",
+    "name": "Immunology and Infectious Disease: Immunopathology"
+  },
+  "601": {
+    "className": "Life Sciences",
+    "name": "Immunology and Infectious Disease: Immunoprophylaxis and Therapy"
+  },
+  "602": {
+    "className": "Life Sciences",
+    "name": "Immunology and Infectious Disease: Parasitology"
+  },
+  "603": {
+    "className": "Life Sciences",
+    "name": "Immunology and Infectious Disease: Other Immunology and Infectious Disease"
+  },
+  "604": {
+    "className": "Life Sciences",
+    "name": "Kinesiology"
+  },
+  "605": {
+    "className": "Life Sciences",
+    "name": "Kinesiology: Biomechanics"
+  },
+  "606": {
+    "className": "Life Sciences",
+    "name": "Kinesiology: Exercise Science"
+  },
+  "607": {
+    "className": "Life Sciences",
+    "name": "Kinesiology: Expeditionary Education"
+  },
+  "608": {
+    "className": "Life Sciences",
+    "name": "Kinesiology: Motor Control"
+  },
+  "609": {
+    "className": "Life Sciences",
+    "name": "Kinesiology: Psychology of Movement"
+  },
+  "610": {
+    "className": "Life Sciences",
+    "name": "Kinesiology: Other Kinesiology"
+  },
+  "611": {
+    "className": "Life Sciences",
+    "name": "Laboratory and Basic Science Research"
+  },
+  "612": {
+    "className": "Life Sciences",
+    "name": "Marine Biology"
+  },
+  "613": {
+    "className": "Life Sciences",
+    "name": "Microbiology"
+  },
+  "614": {
+    "className": "Life Sciences",
+    "name": "Microbiology: Bacteriology"
+  },
+  "615": {
+    "className": "Life Sciences",
+    "name": "Microbiology: Environmental Microbiology and Microbial Ecology"
+  },
+  "616": {
+    "className": "Life Sciences",
+    "name": "Microbiology: Microbial Physiology"
+  },
+  "617": {
+    "className": "Life Sciences",
+    "name": "Microbiology: Organismal Biological Physiology"
+  },
+  "618": {
+    "className": "Life Sciences",
+    "name": "Microbiology: Pathogenic Microbiology"
+  },
+  "619": {
+    "className": "Life Sciences",
+    "name": "Microbiology: Virology"
+  },
+  "620": {
+    "className": "Life Sciences",
+    "name": "Microbiology: Other Microbiology"
+  },
+  "621": {
+    "className": "Life Sciences",
+    "name": "Neuroscience and Neurobiology"
+  },
+  "622": {
+    "className": "Life Sciences",
+    "name": "Neuroscience and Neurobiology: Behavioral Neurobiology"
+  },
+  "623": {
+    "className": "Life Sciences",
+    "name": "Neuroscience and Neurobiology: Cognitive Neuroscience"
+  },
+  "624": {
+    "className": "Life Sciences",
+    "name": "Neuroscience and Neurobiology: Computational Neuroscience"
+  },
+  "625": {
+    "className": "Life Sciences",
+    "name": "Neuroscience and Neurobiology: Developmental Neuroscience"
+  },
+  "626": {
+    "className": "Life Sciences",
+    "name": "Neuroscience and Neurobiology: Molecular and Cellular Neuroscience"
+  },
+  "627": {
+    "className": "Life Sciences",
+    "name": "Neuroscience and Neurobiology: Systems Neuroscience"
+  },
+  "628": {
+    "className": "Life Sciences",
+    "name": "Neuroscience and Neurobiology: Other Neuroscience and Neurobiology"
+  },
+  "629": {
+    "className": "Life Sciences",
+    "name": "Nutrition"
+  },
+  "630": {
+    "className": "Life Sciences",
+    "name": "Nutrition: Comparative Nutrition"
+  },
+  "631": {
+    "className": "Life Sciences",
+    "name": "Nutrition: Human and Clinical Nutrition"
+  },
+  "632": {
+    "className": "Life Sciences",
+    "name": "Nutrition: International and Community Nutrition"
+  },
+  "633": {
+    "className": "Life Sciences",
+    "name": "Nutrition: Molecular, Genetic, and Biochemical Nutrition"
+  },
+  "634": {
+    "className": "Life Sciences",
+    "name": "Nutrition: Nutritional Epidemiology"
+  },
+  "635": {
+    "className": "Life Sciences",
+    "name": "Nutrition: Other Nutrition"
+  },
+  "636": {
+    "className": "Life Sciences",
+    "name": "Pharmacology, Toxicology and Environmental Health"
+  },
+  "637": {
+    "className": "Life Sciences",
+    "name": "Pharmacology, Toxicology and Environmental Health: Environmental Health"
+  },
+  "638": {
+    "className": "Life Sciences",
+    "name": "Pharmacology, Toxicology and Environmental Health: Medicinal Chemistry and Pharmaceutics"
+  },
+  "639": {
+    "className": "Life Sciences",
+    "name": "Pharmacology, Toxicology and Environmental Health: Pharmacology"
+  },
+  "640": {
+    "className": "Life Sciences",
+    "name": "Pharmacology, Toxicology and Environmental Health: Toxicology"
+  },
+  "641": {
+    "className": "Life Sciences",
+    "name": "Pharmacology, Toxicology and Environmental Health: Other Pharmacology, Toxicology and Environmental Health"
+  },
+  "642": {
+    "className": "Life Sciences",
+    "name": "Physiology"
+  },
+  "643": {
+    "className": "Life Sciences",
+    "name": "Physiology: Cellular and Molecular Physiology"
+  },
+  "644": {
+    "className": "Life Sciences",
+    "name": "Physiology: Comparative and Evolutionary Physiology"
+  },
+  "645": {
+    "className": "Life Sciences",
+    "name": "Physiology: Endocrinology"
+  },
+  "646": {
+    "className": "Life Sciences",
+    "name": "Physiology: Exercise Physiology"
+  },
+  "647": {
+    "className": "Life Sciences",
+    "name": "Physiology: Systems and Integrative Physiology"
+  },
+  "648": {
+    "className": "Life Sciences",
+    "name": "Physiology: Other Physiology"
+  },
+  "649": {
+    "className": "Life Sciences",
+    "name": "Plant Sciences"
+  },
+  "650": {
+    "className": "Life Sciences",
+    "name": "Plant Sciences: Agricultural Science"
+  },
+  "651": {
+    "className": "Life Sciences",
+    "name": "Plant Sciences: Agronomy and Crop Sciences"
+  },
+  "652": {
+    "className": "Life Sciences",
+    "name": "Plant Sciences: Botany"
+  },
+  "653": {
+    "className": "Life Sciences",
+    "name": "Plant Sciences: Bryology"
+  },
+  "654": {
+    "className": "Life Sciences",
+    "name": "Plant Sciences: Fruit Science"
+  },
+  "655": {
+    "className": "Life Sciences",
+    "name": "Plant Sciences: Horticulture"
+  },
+  "656": {
+    "className": "Life Sciences",
+    "name": "Plant Sciences: Plant Biology"
+  },
+  "657": {
+    "className": "Life Sciences",
+    "name": "Plant Sciences: Plant Breeding and Genetics"
+  },
+  "658": {
+    "className": "Life Sciences",
+    "name": "Plant Sciences: Plant Pathology"
+  },
+  "659": {
+    "className": "Life Sciences",
+    "name": "Plant Sciences: Weed Science"
+  },
+  "660": {
+    "className": "Life Sciences",
+    "name": "Plant Sciences: Other Plant Sciences"
+  },
+  "661": {
+    "className": "Life Sciences",
+    "name": "Research Methods in Life Sciences"
+  },
+  "662": {
+    "className": "Life Sciences",
+    "name": "Research Methods in Life Sciences: Animal Experimentation and Research"
+  },
+  "663": {
+    "className": "Life Sciences",
+    "name": "Systems Biology"
+  },
+  "664": {
+    "className": "Life Sciences",
+    "name": "Other Life Sciences"
+  },
+  "665": {
+    "className": "Medicine and Health Sciences",
+    "name": "Alternative and Complementary Medicine"
+  },
+  "666": {
+    "className": "Medicine and Health Sciences",
+    "name": "Analytical, Diagnostic and Therapeutic Techniques and Equipment"
+  },
+  "667": {
+    "className": "Medicine and Health Sciences",
+    "name": "Analytical, Diagnostic and Therapeutic Techniques and Equipment: Anesthesia and Analgesia"
+  },
+  "668": {
+    "className": "Medicine and Health Sciences",
+    "name": "Analytical, Diagnostic and Therapeutic Techniques and Equipment: Diagnosis"
+  },
+  "669": {
+    "className": "Medicine and Health Sciences",
+    "name": "Analytical, Diagnostic and Therapeutic Techniques and Equipment: Equipment and Supplies"
+  },
+  "670": {
+    "className": "Medicine and Health Sciences",
+    "name": "Analytical, Diagnostic and Therapeutic Techniques and Equipment: Investigative Techniques"
+  },
+  "671": {
+    "className": "Medicine and Health Sciences",
+    "name": "Analytical, Diagnostic and Therapeutic Techniques and Equipment: Surgical Procedures, Operative"
+  },
+  "672": {
+    "className": "Medicine and Health Sciences",
+    "name": "Analytical, Diagnostic and Therapeutic Techniques and Equipment: Therapeutics"
+  },
+  "673": {
+    "className": "Medicine and Health Sciences",
+    "name": "Analytical, Diagnostic and Therapeutic Techniques and Equipment: Other Analytical, Diagnostic and Therapeutic Techniques and Equipment"
+  },
+  "674": {
+    "className": "Medicine and Health Sciences",
+    "name": "Anatomy"
+  },
+  "675": {
+    "className": "Medicine and Health Sciences",
+    "name": "Anatomy: Animal Structures"
+  },
+  "676": {
+    "className": "Medicine and Health Sciences",
+    "name": "Anatomy: Body Regions"
+  },
+  "677": {
+    "className": "Medicine and Health Sciences",
+    "name": "Anatomy: Cardiovascular System"
+  },
+  "678": {
+    "className": "Medicine and Health Sciences",
+    "name": "Anatomy: Cells"
+  },
+  "679": {
+    "className": "Medicine and Health Sciences",
+    "name": "Anatomy: Digestive System"
+  },
+  "680": {
+    "className": "Medicine and Health Sciences",
+    "name": "Anatomy: Embryonic Structures"
+  },
+  "681": {
+    "className": "Medicine and Health Sciences",
+    "name": "Anatomy: Endocrine System"
+  },
+  "682": {
+    "className": "Medicine and Health Sciences",
+    "name": "Anatomy: Fluids and Secretions"
+  },
+  "683": {
+    "className": "Medicine and Health Sciences",
+    "name": "Anatomy: Hemic and Immune Systems"
+  },
+  "684": {
+    "className": "Medicine and Health Sciences",
+    "name": "Anatomy: Integumentary System"
+  },
+  "685": {
+    "className": "Medicine and Health Sciences",
+    "name": "Anatomy: Musculoskeletal System"
+  },
+  "686": {
+    "className": "Medicine and Health Sciences",
+    "name": "Anatomy: Nervous System"
+  },
+  "687": {
+    "className": "Medicine and Health Sciences",
+    "name": "Anatomy: Respiratory System"
+  },
+  "688": {
+    "className": "Medicine and Health Sciences",
+    "name": "Anatomy: Sense Organs"
+  },
+  "689": {
+    "className": "Medicine and Health Sciences",
+    "name": "Anatomy: Stomatognathic System"
+  },
+  "690": {
+    "className": "Medicine and Health Sciences",
+    "name": "Anatomy: Tissues"
+  },
+  "691": {
+    "className": "Medicine and Health Sciences",
+    "name": "Anatomy: Urogenital System"
+  },
+  "692": {
+    "className": "Medicine and Health Sciences",
+    "name": "Bioethics and Medical Ethics"
+  },
+  "693": {
+    "className": "Medicine and Health Sciences",
+    "name": "Chemicals and Drugs"
+  },
+  "694": {
+    "className": "Medicine and Health Sciences",
+    "name": "Chemicals and Drugs: Amino Acids, Peptides, and Proteins"
+  },
+  "695": {
+    "className": "Medicine and Health Sciences",
+    "name": "Chemicals and Drugs: Biological Factors"
+  },
+  "696": {
+    "className": "Medicine and Health Sciences",
+    "name": "Chemicals and Drugs: Biomedical and Dental Materials"
+  },
+  "697": {
+    "className": "Medicine and Health Sciences",
+    "name": "Chemicals and Drugs: Carbohydrates"
+  },
+  "698": {
+    "className": "Medicine and Health Sciences",
+    "name": "Chemicals and Drugs: Chemical Actions and Uses"
+  },
+  "699": {
+    "className": "Medicine and Health Sciences",
+    "name": "Chemicals and Drugs: Complex Mixtures"
+  },
+  "700": {
+    "className": "Medicine and Health Sciences",
+    "name": "Chemicals and Drugs: Enzymes and Coenzymes"
+  },
+  "701": {
+    "className": "Medicine and Health Sciences",
+    "name": "Chemicals and Drugs: Heterocyclic Compounds"
+  },
+  "702": {
+    "className": "Medicine and Health Sciences",
+    "name": "Chemicals and Drugs: Hormones, Hormone Substitutes, and Hormone Antagonists"
+  },
+  "703": {
+    "className": "Medicine and Health Sciences",
+    "name": "Chemicals and Drugs: Inorganic Chemicals"
+  },
+  "704": {
+    "className": "Medicine and Health Sciences",
+    "name": "Chemicals and Drugs: Lipids"
+  },
+  "705": {
+    "className": "Medicine and Health Sciences",
+    "name": "Chemicals and Drugs: Macromolecular Substances"
+  },
+  "706": {
+    "className": "Medicine and Health Sciences",
+    "name": "Chemicals and Drugs: Nucleic Acids, Nucleotides, and Nucleosides"
+  },
+  "707": {
+    "className": "Medicine and Health Sciences",
+    "name": "Chemicals and Drugs: Organic Chemicals"
+  },
+  "708": {
+    "className": "Medicine and Health Sciences",
+    "name": "Chemicals and Drugs: Pharmaceutical Preparations"
+  },
+  "709": {
+    "className": "Medicine and Health Sciences",
+    "name": "Chemicals and Drugs: Polycyclic Compounds"
+  },
+  "710": {
+    "className": "Medicine and Health Sciences",
+    "name": "Chemicals and Drugs: Other Chemicals and Drugs"
+  },
+  "711": {
+    "className": "Medicine and Health Sciences",
+    "name": "Communication Sciences and Disorders"
+  },
+  "712": {
+    "className": "Medicine and Health Sciences",
+    "name": "Communication Sciences and Disorders: Speech and Hearing Science"
+  },
+  "713": {
+    "className": "Medicine and Health Sciences",
+    "name": "Communication Sciences and Disorders: Speech Pathology and Audiology"
+  },
+  "714": {
+    "className": "Medicine and Health Sciences",
+    "name": "Dentistry"
+  },
+  "715": {
+    "className": "Medicine and Health Sciences",
+    "name": "Dentistry: Dental Hygiene"
+  },
+  "716": {
+    "className": "Medicine and Health Sciences",
+    "name": "Dentistry: Dental Materials"
+  },
+  "717": {
+    "className": "Medicine and Health Sciences",
+    "name": "Dentistry: Dental Public Health and Education"
+  },
+  "718": {
+    "className": "Medicine and Health Sciences",
+    "name": "Dentistry: Endodontics and Endodontology"
+  },
+  "719": {
+    "className": "Medicine and Health Sciences",
+    "name": "Dentistry: Oral and Maxillofacial Surgery"
+  },
+  "720": {
+    "className": "Medicine and Health Sciences",
+    "name": "Dentistry: Oral Biology and Oral Pathology"
+  },
+  "721": {
+    "className": "Medicine and Health Sciences",
+    "name": "Dentistry: Orthodontics and Orthodontology"
+  },
+  "722": {
+    "className": "Medicine and Health Sciences",
+    "name": "Dentistry: Pediatric Dentistry and Pedodontics"
+  },
+  "723": {
+    "className": "Medicine and Health Sciences",
+    "name": "Dentistry: Periodontics and Periodontology"
+  },
+  "724": {
+    "className": "Medicine and Health Sciences",
+    "name": "Dentistry: Prosthodontics and Prosthodontology"
+  },
+  "725": {
+    "className": "Medicine and Health Sciences",
+    "name": "Dentistry: Other Dentistry"
+  },
+  "726": {
+    "className": "Medicine and Health Sciences",
+    "name": "Dietetics and Clinical Nutrition"
+  },
+  "727": {
+    "className": "Medicine and Health Sciences",
+    "name": "Diseases"
+  },
+  "728": {
+    "className": "Medicine and Health Sciences",
+    "name": "Diseases: Animal Diseases"
+  },
+  "729": {
+    "className": "Medicine and Health Sciences",
+    "name": "Diseases: Bacterial Infections and Mycoses"
+  },
+  "730": {
+    "className": "Medicine and Health Sciences",
+    "name": "Diseases: Cardiovascular Diseases"
+  },
+  "731": {
+    "className": "Medicine and Health Sciences",
+    "name": "Diseases: Congenital, Hereditary, and Neonatal Diseases and Abnormalities"
+  },
+  "732": {
+    "className": "Medicine and Health Sciences",
+    "name": "Diseases: Digestive System Diseases"
+  },
+  "733": {
+    "className": "Medicine and Health Sciences",
+    "name": "Diseases: Disease Modeling"
+  },
+  "734": {
+    "className": "Medicine and Health Sciences",
+    "name": "Diseases: Disorders of Environmental Origin"
+  },
+  "735": {
+    "className": "Medicine and Health Sciences",
+    "name": "Diseases: Endocrine System Diseases"
+  },
+  "736": {
+    "className": "Medicine and Health Sciences",
+    "name": "Diseases: Eye Diseases"
+  },
+  "737": {
+    "className": "Medicine and Health Sciences",
+    "name": "Diseases: Female Urogenital Diseases and Pregnancy Complications"
+  },
+  "738": {
+    "className": "Medicine and Health Sciences",
+    "name": "Diseases: Hemic and Lymphatic Diseases"
+  },
+  "739": {
+    "className": "Medicine and Health Sciences",
+    "name": "Diseases: Immune System Diseases"
+  },
+  "740": {
+    "className": "Medicine and Health Sciences",
+    "name": "Diseases: Male Urogenital Diseases"
+  },
+  "741": {
+    "className": "Medicine and Health Sciences",
+    "name": "Diseases: Musculoskeletal Diseases"
+  },
+  "742": {
+    "className": "Medicine and Health Sciences",
+    "name": "Diseases: Neoplasms"
+  },
+  "743": {
+    "className": "Medicine and Health Sciences",
+    "name": "Diseases: Nervous System Diseases"
+  },
+  "744": {
+    "className": "Medicine and Health Sciences",
+    "name": "Diseases: Nutritional and Metabolic Diseases"
+  },
+  "745": {
+    "className": "Medicine and Health Sciences",
+    "name": "Diseases: Otorhinolaryngologic Diseases"
+  },
+  "746": {
+    "className": "Medicine and Health Sciences",
+    "name": "Diseases: Parasitic Diseases"
+  },
+  "747": {
+    "className": "Medicine and Health Sciences",
+    "name": "Diseases: Pathological Conditions, Signs and Symptoms"
+  },
+  "748": {
+    "className": "Medicine and Health Sciences",
+    "name": "Diseases: Respiratory Tract Diseases"
+  },
+  "749": {
+    "className": "Medicine and Health Sciences",
+    "name": "Diseases: Skin and Connective Tissue Diseases"
+  },
+  "750": {
+    "className": "Medicine and Health Sciences",
+    "name": "Diseases: Stomatognathic Diseases"
+  },
+  "751": {
+    "className": "Medicine and Health Sciences",
+    "name": "Diseases: Virus Diseases"
+  },
+  "752": {
+    "className": "Medicine and Health Sciences",
+    "name": "Health Information Technology"
+  },
+  "753": {
+    "className": "Medicine and Health Sciences",
+    "name": "Health Information Technology: Telemedicine"
+  },
+  "754": {
+    "className": "Medicine and Health Sciences",
+    "name": "Health and Medical Administration"
+  },
+  "755": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Education"
+  },
+  "756": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Education: Interprofessional Education"
+  },
+  "757": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Humanities"
+  },
+  "758": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Sciences"
+  },
+  "759": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Sciences: Biochemical Phenomena, Metabolism, and Nutrition"
+  },
+  "760": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Sciences: Biological Phenomena, Cell Phenomena, and Immunity"
+  },
+  "761": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Sciences: Chemical and Pharmacologic Phenomena"
+  },
+  "762": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Sciences: Circulatory and Respiratory Physiology"
+  },
+  "763": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Sciences: Digestive, Oral, and Skin Physiology"
+  },
+  "764": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Sciences: Genetic Phenomena"
+  },
+  "765": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Sciences: Genetic Processes"
+  },
+  "766": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Sciences: Genetic Structures"
+  },
+  "767": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Sciences: Medical Anatomy"
+  },
+  "768": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Sciences: Medical Biochemistry"
+  },
+  "769": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Sciences: Medical Biomathematics and Biometrics"
+  },
+  "770": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Sciences: Medical Biophysics"
+  },
+  "771": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Sciences: Medical Biotechnology"
+  },
+  "772": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Sciences: Medical Cell Biology"
+  },
+  "773": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Sciences: Medical Genetics"
+  },
+  "774": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Sciences: Medical Immunology"
+  },
+  "775": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Sciences: Medical Microbiology"
+  },
+  "776": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Sciences: Medical Molecular Biology"
+  },
+  "777": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Sciences: Medical Neurobiology"
+  },
+  "778": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Sciences: Medical Nutrition"
+  },
+  "779": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Sciences: Medical Pathology"
+  },
+  "780": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Sciences: Medical Pharmacology"
+  },
+  "781": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Sciences: Medical Physiology"
+  },
+  "782": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Sciences: Medical Toxicology"
+  },
+  "783": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Sciences: Musculoskeletal, Neural, and Ocular Physiology"
+  },
+  "784": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Sciences: Neurosciences"
+  },
+  "785": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Sciences: Physiological Processes"
+  },
+  "786": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Sciences: Reproductive and Urinary Physiology"
+  },
+  "787": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Sciences: Other Medical Sciences"
+  },
+  "788": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Specialties"
+  },
+  "789": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Specialties: Allergy and Immunology"
+  },
+  "790": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Specialties: Anesthesiology"
+  },
+  "791": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Specialties: Cardiology"
+  },
+  "792": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Specialties: Critical Care"
+  },
+  "793": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Specialties: Dermatology"
+  },
+  "794": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Specialties: Emergency Medicine"
+  },
+  "795": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Specialties: Endocrinology, Diabetes, and Metabolism"
+  },
+  "796": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Specialties: Family Medicine"
+  },
+  "797": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Specialties: Gastroenterology"
+  },
+  "798": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Specialties: Geriatrics"
+  },
+  "799": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Specialties: Hematology"
+  },
+  "800": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Specialties: Hepatology"
+  },
+  "801": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Specialties: Infectious Disease"
+  },
+  "802": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Specialties: Integrative Medicine"
+  },
+  "803": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Specialties: Internal Medicine"
+  },
+  "804": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Specialties: Nephrology"
+  },
+  "805": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Specialties: Neurology"
+  },
+  "806": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Specialties: Obstetrics and Gynecology"
+  },
+  "807": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Specialties: Oncology"
+  },
+  "808": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Specialties: Ophthalmology"
+  },
+  "809": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Specialties: Orthopedics"
+  },
+  "810": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Specialties: Osteopathic Medicine and Osteopathy"
+  },
+  "811": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Specialties: Otolaryngology"
+  },
+  "812": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Specialties: Palliative Care"
+  },
+  "813": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Specialties: Pathology"
+  },
+  "814": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Specialties: Pediatrics"
+  },
+  "815": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Specialties: Plastic Surgery"
+  },
+  "816": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Specialties: Podiatry"
+  },
+  "817": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Specialties: Preventive Medicine"
+  },
+  "818": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Specialties: Primary Care"
+  },
+  "819": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Specialties: Psychiatry"
+  },
+  "820": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Specialties: Pulmonology"
+  },
+  "821": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Specialties: Radiology"
+  },
+  "822": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Specialties: Rheumatology"
+  },
+  "823": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Specialties: Sleep Medicine"
+  },
+  "824": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Specialties: Sports Medicine"
+  },
+  "825": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Specialties: Surgery"
+  },
+  "826": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Specialties: Trauma"
+  },
+  "827": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Specialties: Tropical Medicine"
+  },
+  "828": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Specialties: Urology"
+  },
+  "829": {
+    "className": "Medicine and Health Sciences",
+    "name": "Medical Specialties: Other Medical Specialties"
+  },
+  "830": {
+    "className": "Medicine and Health Sciences",
+    "name": "Mental and Social Health"
+  },
+  "831": {
+    "className": "Medicine and Health Sciences",
+    "name": "Mental and Social Health: Animal-Assisted Therapy"
+  },
+  "832": {
+    "className": "Medicine and Health Sciences",
+    "name": "Mental and Social Health: Art Therapy"
+  },
+  "833": {
+    "className": "Medicine and Health Sciences",
+    "name": "Mental and Social Health: Clinical and Medical Social Work"
+  },
+  "834": {
+    "className": "Medicine and Health Sciences",
+    "name": "Mental and Social Health: Cognitive Behavioral Therapy"
+  },
+  "835": {
+    "className": "Medicine and Health Sciences",
+    "name": "Mental and Social Health: Community Health"
+  },
+  "836": {
+    "className": "Medicine and Health Sciences",
+    "name": "Mental and Social Health: Marriage and Family Therapy and Counseling"
+  },
+  "837": {
+    "className": "Medicine and Health Sciences",
+    "name": "Mental and Social Health: Psychiatric and Mental Health"
+  },
+  "838": {
+    "className": "Medicine and Health Sciences",
+    "name": "Mental and Social Health: Psychoanalysis and Psychotherapy"
+  },
+  "839": {
+    "className": "Medicine and Health Sciences",
+    "name": "Mental and Social Health: Substance Abuse and Addiction"
+  },
+  "840": {
+    "className": "Medicine and Health Sciences",
+    "name": "Mental and Social Health: Other Mental and Social Health"
+  },
+  "841": {
+    "className": "Medicine and Health Sciences",
+    "name": "Nanotechnology"
+  },
+  "842": {
+    "className": "Medicine and Health Sciences",
+    "name": "Nanotechnology: Nanomedicine"
+  },
+  "843": {
+    "className": "Medicine and Health Sciences",
+    "name": "Nursing"
+  },
+  "844": {
+    "className": "Medicine and Health Sciences",
+    "name": "Nursing: Critical Care Nursing"
+  },
+  "845": {
+    "className": "Medicine and Health Sciences",
+    "name": "Nursing: Family Practice Nursing"
+  },
+  "846": {
+    "className": "Medicine and Health Sciences",
+    "name": "Nursing: Geriatric Nursing"
+  },
+  "847": {
+    "className": "Medicine and Health Sciences",
+    "name": "Nursing: Maternal, Child Health and Neonatal Nursing"
+  },
+  "848": {
+    "className": "Medicine and Health Sciences",
+    "name": "Nursing: Nursing Administration"
+  },
+  "849": {
+    "className": "Medicine and Health Sciences",
+    "name": "Nursing: Nursing Midwifery"
+  },
+  "850": {
+    "className": "Medicine and Health Sciences",
+    "name": "Nursing: Occupational and Environmental Health Nursing"
+  },
+  "851": {
+    "className": "Medicine and Health Sciences",
+    "name": "Nursing: Pediatric Nursing"
+  },
+  "852": {
+    "className": "Medicine and Health Sciences",
+    "name": "Nursing: Perioperative, Operating Room and Surgical Nursing"
+  },
+  "853": {
+    "className": "Medicine and Health Sciences",
+    "name": "Nursing: Psychiatric and Mental Health Nursing"
+  },
+  "854": {
+    "className": "Medicine and Health Sciences",
+    "name": "Nursing: Public Health and Community Nursing"
+  },
+  "855": {
+    "className": "Medicine and Health Sciences",
+    "name": "Nursing: Other Nursing"
+  },
+  "856": {
+    "className": "Medicine and Health Sciences",
+    "name": "Optometry"
+  },
+  "857": {
+    "className": "Medicine and Health Sciences",
+    "name": "Organisms"
+  },
+  "858": {
+    "className": "Medicine and Health Sciences",
+    "name": "Organisms: Algae"
+  },
+  "859": {
+    "className": "Medicine and Health Sciences",
+    "name": "Organisms: Animals"
+  },
+  "860": {
+    "className": "Medicine and Health Sciences",
+    "name": "Organisms: Archaea"
+  },
+  "861": {
+    "className": "Medicine and Health Sciences",
+    "name": "Organisms: Bacteria"
+  },
+  "862": {
+    "className": "Medicine and Health Sciences",
+    "name": "Organisms: Fungi"
+  },
+  "863": {
+    "className": "Medicine and Health Sciences",
+    "name": "Organisms: Mesomycetozoea"
+  },
+  "864": {
+    "className": "Medicine and Health Sciences",
+    "name": "Organisms: Plants"
+  },
+  "865": {
+    "className": "Medicine and Health Sciences",
+    "name": "Organisms: Viruses"
+  },
+  "866": {
+    "className": "Medicine and Health Sciences",
+    "name": "Pharmacy and Pharmaceutical Sciences"
+  },
+  "867": {
+    "className": "Medicine and Health Sciences",
+    "name": "Pharmacy and Pharmaceutical Sciences: Medicinal and Pharmaceutical Chemistry"
+  },
+  "868": {
+    "className": "Medicine and Health Sciences",
+    "name": "Pharmacy and Pharmaceutical Sciences: Natural Products Chemistry and Pharmacognosy"
+  },
+  "869": {
+    "className": "Medicine and Health Sciences",
+    "name": "Pharmacy and Pharmaceutical Sciences: Pharmaceutics and Drug Design"
+  },
+  "870": {
+    "className": "Medicine and Health Sciences",
+    "name": "Pharmacy and Pharmaceutical Sciences: Pharmacoeconomics and Pharmaceutical Economics"
+  },
+  "871": {
+    "className": "Medicine and Health Sciences",
+    "name": "Pharmacy and Pharmaceutical Sciences: Pharmacy Administration, Policy and Regulation"
+  },
+  "872": {
+    "className": "Medicine and Health Sciences",
+    "name": "Pharmacy and Pharmaceutical Sciences: Other Pharmacy and Pharmaceutical Sciences"
+  },
+  "873": {
+    "className": "Medicine and Health Sciences",
+    "name": "Psychiatry and Psychology"
+  },
+  "874": {
+    "className": "Medicine and Health Sciences",
+    "name": "Psychiatry and Psychology: Behavior and Behavior Mechanisms"
+  },
+  "875": {
+    "className": "Medicine and Health Sciences",
+    "name": "Psychiatry and Psychology: Behavioral Disciplines and Activities"
+  },
+  "876": {
+    "className": "Medicine and Health Sciences",
+    "name": "Psychiatry and Psychology: Dance Movement Therapy"
+  },
+  "877": {
+    "className": "Medicine and Health Sciences",
+    "name": "Psychiatry and Psychology: Mental Disorders"
+  },
+  "878": {
+    "className": "Medicine and Health Sciences",
+    "name": "Psychiatry and Psychology: Psychological Phenomena and Processes"
+  },
+  "879": {
+    "className": "Medicine and Health Sciences",
+    "name": "Psychiatry and Psychology: Other Psychiatry and Psychology"
+  },
+  "880": {
+    "className": "Medicine and Health Sciences",
+    "name": "Public Health"
+  },
+  "881": {
+    "className": "Medicine and Health Sciences",
+    "name": "Public Health: Clinical Epidemiology"
+  },
+  "882": {
+    "className": "Medicine and Health Sciences",
+    "name": "Public Health: Community Health and Preventive Medicine"
+  },
+  "883": {
+    "className": "Medicine and Health Sciences",
+    "name": "Public Health: Environmental Public Health"
+  },
+  "884": {
+    "className": "Medicine and Health Sciences",
+    "name": "Public Health: Epidemiology"
+  },
+  "885": {
+    "className": "Medicine and Health Sciences",
+    "name": "Public Health: Health and Medical Physics"
+  },
+  "886": {
+    "className": "Medicine and Health Sciences",
+    "name": "Public Health: Health Services Administration"
+  },
+  "887": {
+    "className": "Medicine and Health Sciences",
+    "name": "Public Health: Health Services Research"
+  },
+  "888": {
+    "className": "Medicine and Health Sciences",
+    "name": "Public Health: Influenza Humans"
+  },
+  "889": {
+    "className": "Medicine and Health Sciences",
+    "name": "Public Health: Influenza Virus Vaccines"
+  },
+  "890": {
+    "className": "Medicine and Health Sciences",
+    "name": "Public Health: International Public Health"
+  },
+  "891": {
+    "className": "Medicine and Health Sciences",
+    "name": "Public Health: Maternal and Child Health"
+  },
+  "892": {
+    "className": "Medicine and Health Sciences",
+    "name": "Public Health: Occupational Health and Industrial Hygiene"
+  },
+  "893": {
+    "className": "Medicine and Health Sciences",
+    "name": "Public Health: Public Health Education and Promotion"
+  },
+  "894": {
+    "className": "Medicine and Health Sciences",
+    "name": "Public Health: Women's Health"
+  },
+  "895": {
+    "className": "Medicine and Health Sciences",
+    "name": "Public Health: Other Public Health"
+  },
+  "896": {
+    "className": "Medicine and Health Sciences",
+    "name": "Rehabilitation and Therapy"
+  },
+  "897": {
+    "className": "Medicine and Health Sciences",
+    "name": "Rehabilitation and Therapy: Kinesiotherapy"
+  },
+  "898": {
+    "className": "Medicine and Health Sciences",
+    "name": "Rehabilitation and Therapy: Movement and Mind-Body Therapies"
+  },
+  "899": {
+    "className": "Medicine and Health Sciences",
+    "name": "Rehabilitation and Therapy: Occupational Therapy"
+  },
+  "900": {
+    "className": "Medicine and Health Sciences",
+    "name": "Rehabilitation and Therapy: Orthotics and Prosthetics"
+  },
+  "901": {
+    "className": "Medicine and Health Sciences",
+    "name": "Rehabilitation and Therapy: Physical Therapy"
+  },
+  "902": {
+    "className": "Medicine and Health Sciences",
+    "name": "Rehabilitation and Therapy: Physiotherapy"
+  },
+  "903": {
+    "className": "Medicine and Health Sciences",
+    "name": "Rehabilitation and Therapy: Recreational Therapy"
+  },
+  "904": {
+    "className": "Medicine and Health Sciences",
+    "name": "Rehabilitation and Therapy: Respiratory Therapy"
+  },
+  "905": {
+    "className": "Medicine and Health Sciences",
+    "name": "Rehabilitation and Therapy: Somatic Bodywork and Related Therapeutic Practices"
+  },
+  "906": {
+    "className": "Medicine and Health Sciences",
+    "name": "Rehabilitation and Therapy: Vocational Rehabilitation Counseling"
+  },
+  "907": {
+    "className": "Medicine and Health Sciences",
+    "name": "Rehabilitation and Therapy: Other Rehabilitation and Therapy"
+  },
+  "908": {
+    "className": "Medicine and Health Sciences",
+    "name": "Sports Sciences"
+  },
+  "909": {
+    "className": "Medicine and Health Sciences",
+    "name": "Translational Medical Research"
+  },
+  "910": {
+    "className": "Medicine and Health Sciences",
+    "name": "Veterinary Medicine"
+  },
+  "911": {
+    "className": "Medicine and Health Sciences",
+    "name": "Veterinary Medicine: Comparative and Laboratory Animal Medicine"
+  },
+  "912": {
+    "className": "Medicine and Health Sciences",
+    "name": "Veterinary Medicine: Large or Food Animal and Equine Medicine"
+  },
+  "913": {
+    "className": "Medicine and Health Sciences",
+    "name": "Veterinary Medicine: Small or Companion Animal Medicine"
+  },
+  "914": {
+    "className": "Medicine and Health Sciences",
+    "name": "Veterinary Medicine: Veterinary Anatomy"
+  },
+  "915": {
+    "className": "Medicine and Health Sciences",
+    "name": "Veterinary Medicine: Veterinary Infectious Diseases"
+  },
+  "916": {
+    "className": "Medicine and Health Sciences",
+    "name": "Veterinary Medicine: Veterinary Microbiology and Immunobiology"
+  },
+  "917": {
+    "className": "Medicine and Health Sciences",
+    "name": "Veterinary Medicine: Veterinary Pathology and Pathobiology"
+  },
+  "918": {
+    "className": "Medicine and Health Sciences",
+    "name": "Veterinary Medicine: Veterinary Physiology"
+  },
+  "919": {
+    "className": "Medicine and Health Sciences",
+    "name": "Veterinary Medicine: Veterinary Preventive Medicine, Epidemiology, and Public Health"
+  },
+  "920": {
+    "className": "Medicine and Health Sciences",
+    "name": "Veterinary Medicine: Veterinary Toxicology and Pharmacology"
+  },
+  "921": {
+    "className": "Medicine and Health Sciences",
+    "name": "Veterinary Medicine: Other Veterinary Medicine"
+  },
+  "922": {
+    "className": "Medicine and Health Sciences",
+    "name": "Other Medicine and Health Sciences"
+  },
+  "923": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Applied Mathematics"
+  },
+  "924": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Applied Mathematics: Control Theory"
+  },
+  "925": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Applied Mathematics: Dynamic Systems"
+  },
+  "926": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Applied Mathematics: Non-linear Dynamics"
+  },
+  "927": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Applied Mathematics: Numerical Analysis and Computation"
+  },
+  "928": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Applied Mathematics: Ordinary Differential Equations and Applied Dynamics"
+  },
+  "929": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Applied Mathematics: Partial Differential Equations"
+  },
+  "930": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Applied Mathematics: Special Functions"
+  },
+  "931": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Applied Mathematics: Other Applied Mathematics"
+  },
+  "932": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Astrophysics and Astronomy"
+  },
+  "933": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Astrophysics and Astronomy: Cosmology, Relativity, and Gravity"
+  },
+  "934": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Astrophysics and Astronomy: External Galaxies"
+  },
+  "935": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Astrophysics and Astronomy: Instrumentation"
+  },
+  "936": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Astrophysics and Astronomy: Physical Processes"
+  },
+  "937": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Astrophysics and Astronomy: Stars, Interstellar Medium and the Galaxy"
+  },
+  "938": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Astrophysics and Astronomy: The Sun and the Solar System"
+  },
+  "939": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Astrophysics and Astronomy: Other Astrophysics and Astronomy"
+  },
+  "940": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Chemistry"
+  },
+  "941": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Chemistry: Analytical Chemistry"
+  },
+  "942": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Chemistry: Environmental Chemistry"
+  },
+  "943": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Chemistry: Inorganic Chemistry"
+  },
+  "944": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Chemistry: Materials Chemistry"
+  },
+  "945": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Chemistry: Medicinal-Pharmaceutical Chemistry"
+  },
+  "946": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Chemistry: Organic Chemistry"
+  },
+  "947": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Chemistry: Physical Chemistry"
+  },
+  "948": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Chemistry: Polymer Chemistry"
+  },
+  "949": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Chemistry: Radiochemistry"
+  },
+  "950": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Chemistry: Other Chemistry"
+  },
+  "951": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Computer Sciences"
+  },
+  "952": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Computer Sciences: Artificial Intelligence and Robotics"
+  },
+  "953": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Computer Sciences: Information Security"
+  },
+  "954": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Computer Sciences: Databases and Information Systems"
+  },
+  "955": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Computer Sciences: Graphics and Human Computer Interfaces"
+  },
+  "956": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Computer Sciences: Numerical Analysis and Scientific Computing"
+  },
+  "957": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Computer Sciences: OS and Networks"
+  },
+  "958": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Computer Sciences: Programming Languages and Compilers"
+  },
+  "959": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Computer Sciences: Software Engineering"
+  },
+  "960": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Computer Sciences: Systems Architecture"
+  },
+  "961": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Computer Sciences: Theory and Algorithms"
+  },
+  "962": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Computer Sciences: Other Computer Sciences"
+  },
+  "963": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Earth Sciences"
+  },
+  "964": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Earth Sciences: Biogeochemistry"
+  },
+  "965": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Earth Sciences: Cosmochemistry"
+  },
+  "966": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Earth Sciences: Geochemistry"
+  },
+  "967": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Earth Sciences: Geology"
+  },
+  "968": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Earth Sciences: Geomorphology"
+  },
+  "969": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Earth Sciences: Geophysics and Seismology"
+  },
+  "970": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Earth Sciences: Glaciology"
+  },
+  "971": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Earth Sciences: Hydrology"
+  },
+  "972": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Earth Sciences: Mineral Physics"
+  },
+  "973": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Earth Sciences: Paleobiology"
+  },
+  "974": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Earth Sciences: Paleontology"
+  },
+  "975": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Earth Sciences: Sedimentology"
+  },
+  "976": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Earth Sciences: Soil Science"
+  },
+  "977": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Earth Sciences: Speleology"
+  },
+  "978": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Earth Sciences: Stratigraphy"
+  },
+  "979": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Earth Sciences: Tectonics and Structure"
+  },
+  "980": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Earth Sciences: Volcanology"
+  },
+  "981": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Earth Sciences: Other Earth Sciences"
+  },
+  "982": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Environmental Sciences"
+  },
+  "983": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Environmental Sciences: Environmental Education"
+  },
+  "984": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Environmental Sciences: Environmental Health and Protection"
+  },
+  "985": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Environmental Sciences: Environmental Indicators and Impact Assessment"
+  },
+  "986": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Environmental Sciences: Environmental Monitoring"
+  },
+  "987": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Environmental Sciences: Natural Resource Economics"
+  },
+  "988": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Environmental Sciences: Natural Resources and Conservation"
+  },
+  "989": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Environmental Sciences: Natural Resources Management and Policy"
+  },
+  "990": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Environmental Sciences: Oil, Gas, and Energy"
+  },
+  "991": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Environmental Sciences: Sustainability"
+  },
+  "992": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Environmental Sciences: Water Resource Management"
+  },
+  "993": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Environmental Sciences: Other Environmental Sciences"
+  },
+  "994": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Mathematics"
+  },
+  "995": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Mathematics: Algebra"
+  },
+  "996": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Mathematics: Algebraic Geometry"
+  },
+  "997": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Mathematics: Analysis"
+  },
+  "998": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Mathematics: Discrete Mathematics and Combinatorics"
+  },
+  "999": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Mathematics: Dynamical Systems"
+  },
+  "1000": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Mathematics: Geometry and Topology"
+  },
+  "1001": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Mathematics: Harmonic Analysis and Representation"
+  },
+  "1002": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Mathematics: Logic and Foundations"
+  },
+  "1003": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Mathematics: Number Theory"
+  },
+  "1004": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Mathematics: Set Theory"
+  },
+  "1005": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Mathematics: Other Mathematics"
+  },
+  "1006": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Oceanography and Atmospheric Sciences and Meteorology"
+  },
+  "1007": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Oceanography and Atmospheric Sciences and Meteorology: Atmospheric Sciences"
+  },
+  "1008": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Oceanography and Atmospheric Sciences and Meteorology: Climate"
+  },
+  "1009": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Oceanography and Atmospheric Sciences and Meteorology: Fresh Water Studies"
+  },
+  "1010": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Oceanography and Atmospheric Sciences and Meteorology: Meteorology"
+  },
+  "1011": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Oceanography and Atmospheric Sciences and Meteorology: Oceanography"
+  },
+  "1012": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Oceanography and Atmospheric Sciences and Meteorology: Other Oceanography and Atmospheric Sciences and Meteorology"
+  },
+  "1013": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Physics"
+  },
+  "1014": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Physics: Atomic, Molecular and Optical Physics"
+  },
+  "1015": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Physics: Biological and Chemical Physics"
+  },
+  "1016": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Physics: Condensed Matter Physics"
+  },
+  "1017": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Physics: Elementary Particles and Fields and String Theory"
+  },
+  "1018": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Physics: Engineering Physics"
+  },
+  "1019": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Physics: Fluid Dynamics"
+  },
+  "1020": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Physics: Nuclear"
+  },
+  "1021": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Physics: Optics"
+  },
+  "1022": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Physics: Plasma and Beam Physics"
+  },
+  "1023": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Physics: Quantum Physics"
+  },
+  "1024": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Physics: Statistical, Nonlinear, and Soft Matter Physics"
+  },
+  "1025": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Physics: Other Physics"
+  },
+  "1026": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Statistics and Probability"
+  },
+  "1027": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Statistics and Probability: Applied Statistics"
+  },
+  "1028": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Statistics and Probability: Biometry"
+  },
+  "1029": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Statistics and Probability: Biostatistics"
+  },
+  "1030": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Statistics and Probability: Categorical Data Analysis"
+  },
+  "1031": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Statistics and Probability: Clinical Trials"
+  },
+  "1032": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Statistics and Probability: Design of Experiments and Sample Surveys"
+  },
+  "1033": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Statistics and Probability: Institutional and Historical"
+  },
+  "1034": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Statistics and Probability: Longitudinal Data Analysis and Time Series"
+  },
+  "1035": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Statistics and Probability: Microarrays"
+  },
+  "1036": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Statistics and Probability: Multivariate Analysis"
+  },
+  "1037": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Statistics and Probability: Probability"
+  },
+  "1038": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Statistics and Probability: Statistical Methodology"
+  },
+  "1039": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Statistics and Probability: Statistical Models"
+  },
+  "1040": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Statistics and Probability: Statistical Theory"
+  },
+  "1041": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Statistics and Probability: Survival Analysis"
+  },
+  "1042": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Statistics and Probability: Vital and Health Statistics"
+  },
+  "1043": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Statistics and Probability: Other Statistics and Probability"
+  },
+  "1044": {
+    "className": "Physical Sciences and Mathematics",
+    "name": "Other Physical Sciences and Mathematics"
+  },
+  "1045": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Agricultural and Resource Economics"
+  },
+  "1046": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Agricultural and Resource Economics: Food Security"
+  },
+  "1047": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Animal Studies"
+  },
+  "1048": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Anthropology"
+  },
+  "1049": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Anthropology: Archaeological Anthropology"
+  },
+  "1050": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Anthropology: Biological and Physical Anthropology"
+  },
+  "1051": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Anthropology: Folklore"
+  },
+  "1052": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Anthropology: Linguistic Anthropology"
+  },
+  "1053": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Anthropology: Social and Cultural Anthropology"
+  },
+  "1054": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Anthropology: Other Anthropology"
+  },
+  "1055": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Communication"
+  },
+  "1056": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Communication: Broadcast and Video Studies"
+  },
+  "1057": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Communication: Communication Technology and New Media"
+  },
+  "1058": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Communication: Critical and Cultural Studies"
+  },
+  "1059": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Communication: Gender, Race, Sexuality, and Ethnicity in Communication"
+  },
+  "1060": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Communication: Graphic Communications"
+  },
+  "1061": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Communication: Health Communication"
+  },
+  "1062": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Communication: International and Intercultural Communication"
+  },
+  "1063": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Communication: Interpersonal and Small Group Communication"
+  },
+  "1064": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Communication: Journalism Studies"
+  },
+  "1065": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Communication: Mass Communication"
+  },
+  "1066": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Communication: Organizational Communication"
+  },
+  "1067": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Communication: Public Relations and Advertising"
+  },
+  "1068": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Communication: Publishing"
+  },
+  "1069": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Communication: Social Influence and Political Communication"
+  },
+  "1070": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Communication: Social Media"
+  },
+  "1071": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Communication: Speech and Rhetorical Studies"
+  },
+  "1072": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Communication: Other Communication"
+  },
+  "1073": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Counseling"
+  },
+  "1074": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Counseling: Counselor Education"
+  },
+  "1075": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Economics"
+  },
+  "1076": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Economics: Behavioral Economics"
+  },
+  "1077": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Economics: Econometrics"
+  },
+  "1078": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Economics: Economic History"
+  },
+  "1079": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Economics: Economic Theory"
+  },
+  "1080": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Economics: Finance"
+  },
+  "1081": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Economics: Growth and Development"
+  },
+  "1082": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Economics: Health Economics"
+  },
+  "1083": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Economics: Income Distribution"
+  },
+  "1084": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Economics: Industrial Organization"
+  },
+  "1085": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Economics: International Economics"
+  },
+  "1086": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Economics: Labor Economics"
+  },
+  "1087": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Economics: Macroeconomics"
+  },
+  "1088": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Economics: Political Economy"
+  },
+  "1089": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Economics: Public Economics"
+  },
+  "1090": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Economics: Regional Economics"
+  },
+  "1091": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Economics: Other Economics"
+  },
+  "1092": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Environmental Studies"
+  },
+  "1093": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Food Studies"
+  },
+  "1094": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Geography"
+  },
+  "1095": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Geography: Geographic Information Sciences"
+  },
+  "1096": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Geography: Human Geography"
+  },
+  "1097": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Geography: Nature and Society Relations"
+  },
+  "1098": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Geography: Physical and Environmental Geography"
+  },
+  "1099": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Geography: Remote Sensing"
+  },
+  "1100": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Geography: Spatial Science"
+  },
+  "1101": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Geography: Other Geography"
+  },
+  "1102": {
+    "className": "Social and Behavioral Sciences",
+    "name": "International and Area Studies"
+  },
+  "1103": {
+    "className": "Social and Behavioral Sciences",
+    "name": "International and Area Studies: African Studies"
+  },
+  "1104": {
+    "className": "Social and Behavioral Sciences",
+    "name": "International and Area Studies: Asian Studies"
+  },
+  "1105": {
+    "className": "Social and Behavioral Sciences",
+    "name": "International and Area Studies: Eastern European Studies"
+  },
+  "1106": {
+    "className": "Social and Behavioral Sciences",
+    "name": "International and Area Studies: Latin American Studies"
+  },
+  "1107": {
+    "className": "Social and Behavioral Sciences",
+    "name": "International and Area Studies: Near and Middle Eastern Studies"
+  },
+  "1108": {
+    "className": "Social and Behavioral Sciences",
+    "name": "International and Area Studies: Soviet and Post-Soviet Studies"
+  },
+  "1109": {
+    "className": "Social and Behavioral Sciences",
+    "name": "International and Area Studies: Other International and Area Studies"
+  },
+  "1110": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Leadership Studies"
+  },
+  "1111": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Legal Studies"
+  },
+  "1112": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Legal Studies: Criminology and Criminal Justice"
+  },
+  "1113": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Legal Studies: Forensic Science and Technology"
+  },
+  "1114": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Legal Studies: Legal Theory"
+  },
+  "1115": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Legal Studies: Other Legal Studies"
+  },
+  "1116": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Leisure Studies"
+  },
+  "1117": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Library and Information Science"
+  },
+  "1118": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Library and Information Science: Archival Science"
+  },
+  "1119": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Library and Information Science: Cataloging and Metadata"
+  },
+  "1120": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Library and Information Science: Collection Development and Management"
+  },
+  "1121": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Library and Information Science: Information Literacy"
+  },
+  "1122": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Library and Information Science: Scholarly Communication"
+  },
+  "1123": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Library and Information Science: Scholarly Publishing"
+  },
+  "1124": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Linguistics"
+  },
+  "1125": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Linguistics: Anthropological Linguistics and Sociolinguistics"
+  },
+  "1126": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Linguistics: Applied Linguistics"
+  },
+  "1127": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Linguistics: Comparative and Historical Linguistics"
+  },
+  "1128": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Linguistics: Computational Linguistics"
+  },
+  "1129": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Linguistics: Discourse and Text Linguistics"
+  },
+  "1130": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Linguistics: First and Second Language Acquisition"
+  },
+  "1131": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Linguistics: Language Description and Documentation"
+  },
+  "1132": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Linguistics: Morphology"
+  },
+  "1133": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Linguistics: Phonetics and Phonology"
+  },
+  "1134": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Linguistics: Psycholinguistics and Neurolinguistics"
+  },
+  "1135": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Linguistics: Semantics and Pragmatics"
+  },
+  "1136": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Linguistics: Syntax"
+  },
+  "1137": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Linguistics: Typological Linguistics and Linguistic Diversity"
+  },
+  "1138": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Linguistics: Other Linguistics"
+  },
+  "1139": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Organization Development"
+  },
+  "1140": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Political Science"
+  },
+  "1141": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Political Science: American Politics"
+  },
+  "1142": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Political Science: Comparative Politics"
+  },
+  "1143": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Political Science: International Relations"
+  },
+  "1144": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Political Science: Models and Methods"
+  },
+  "1145": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Political Science: Political Theory"
+  },
+  "1146": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Political Science: Other Political Science"
+  },
+  "1147": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Psychology"
+  },
+  "1148": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Psychology: Applied Behavior Analysis"
+  },
+  "1149": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Psychology: Biological Psychology"
+  },
+  "1150": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Psychology: Child Psychology"
+  },
+  "1151": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Psychology: Clinical Psychology"
+  },
+  "1152": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Psychology: Cognition and Perception"
+  },
+  "1153": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Psychology: Cognitive Psychology"
+  },
+  "1154": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Psychology: Community Psychology"
+  },
+  "1155": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Psychology: Comparative Psychology"
+  },
+  "1156": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Psychology: Counseling Psychology"
+  },
+  "1157": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Psychology: Developmental Psychology"
+  },
+  "1158": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Psychology: Experimental Analysis of Behavior"
+  },
+  "1159": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Psychology: Health Psychology"
+  },
+  "1160": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Psychology: Industrial and Organizational Psychology"
+  },
+  "1161": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Psychology: Multicultural Psychology"
+  },
+  "1162": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Psychology: Pain Management"
+  },
+  "1163": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Psychology: Personality and Social Contexts"
+  },
+  "1164": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Psychology: Quantitative Psychology"
+  },
+  "1165": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Psychology: School Psychology"
+  },
+  "1166": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Psychology: Social Psychology"
+  },
+  "1167": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Psychology: Theory and Philosophy"
+  },
+  "1168": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Psychology: Transpersonal Psychology"
+  },
+  "1169": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Psychology: Other Psychology"
+  },
+  "1170": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Public Affairs, Public Policy and Public Administration"
+  },
+  "1171": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Public Affairs, Public Policy and Public Administration: Defense and Security Studies"
+  },
+  "1172": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Public Affairs, Public Policy and Public Administration: Economic Policy"
+  },
+  "1173": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Public Affairs, Public Policy and Public Administration: Education Policy"
+  },
+  "1174": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Public Affairs, Public Policy and Public Administration: Emergency and Disaster Management"
+  },
+  "1175": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Public Affairs, Public Policy and Public Administration: Energy Policy"
+  },
+  "1176": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Public Affairs, Public Policy and Public Administration: Environmental Policy"
+  },
+  "1177": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Public Affairs, Public Policy and Public Administration: Health Policy"
+  },
+  "1178": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Public Affairs, Public Policy and Public Administration: Infrastructure"
+  },
+  "1179": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Public Affairs, Public Policy and Public Administration: Military and Veterans Studies"
+  },
+  "1180": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Public Affairs, Public Policy and Public Administration: Peace and Conflict Studies"
+  },
+  "1181": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Public Affairs, Public Policy and Public Administration: Policy Design, Analysis, and Evaluation"
+  },
+  "1182": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Public Affairs, Public Policy and Public Administration: Policy History, Theory, and Methods"
+  },
+  "1183": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Public Affairs, Public Policy and Public Administration: Public Administration"
+  },
+  "1184": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Public Affairs, Public Policy and Public Administration: Public Affairs"
+  },
+  "1185": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Public Affairs, Public Policy and Public Administration: Public Policy"
+  },
+  "1186": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Public Affairs, Public Policy and Public Administration: Recreation, Parks and Tourism Administration"
+  },
+  "1187": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Public Affairs, Public Policy and Public Administration: Science and Technology Policy"
+  },
+  "1188": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Public Affairs, Public Policy and Public Administration: Social Policy"
+  },
+  "1189": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Public Affairs, Public Policy and Public Administration: Social Welfare"
+  },
+  "1190": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Public Affairs, Public Policy and Public Administration: Terrorism Studies"
+  },
+  "1191": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Public Affairs, Public Policy and Public Administration: Transportation"
+  },
+  "1192": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Public Affairs, Public Policy and Public Administration: Urban Studies"
+  },
+  "1193": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Public Affairs, Public Policy and Public Administration: Other Public Affairs, Public Policy and Public Administration"
+  },
+  "1194": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Science and Technology Studies"
+  },
+  "1195": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Social Statistics"
+  },
+  "1196": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Social Work"
+  },
+  "1197": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Sociology"
+  },
+  "1198": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Sociology: Civic and Community Engagement"
+  },
+  "1199": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Sociology: Community-Based Learning"
+  },
+  "1200": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Sociology: Community-Based Research"
+  },
+  "1201": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Sociology: Criminology"
+  },
+  "1202": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Sociology: Demography, Population, and Ecology"
+  },
+  "1203": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Sociology: Domestic and Intimate Partner Violence"
+  },
+  "1204": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Sociology: Educational Sociology"
+  },
+  "1205": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Sociology: Family, Life Course, and Society"
+  },
+  "1206": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Sociology: Gender and Sexuality"
+  },
+  "1207": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Sociology: Gerontology"
+  },
+  "1208": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Sociology: Human Ecology"
+  },
+  "1209": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Sociology: Inequality and Stratification"
+  },
+  "1210": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Sociology: Medicine and Health"
+  },
+  "1211": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Sociology: Place and Environment"
+  },
+  "1212": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Sociology: Politics and Social Change"
+  },
+  "1213": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Sociology: Quantitative, Qualitative, Comparative, and Historical Methodologies"
+  },
+  "1214": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Sociology: Race and Ethnicity"
+  },
+  "1215": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Sociology: Regional Sociology"
+  },
+  "1216": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Sociology: Rural Sociology"
+  },
+  "1217": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Sociology: Service Learning"
+  },
+  "1218": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Sociology: Social Control, Law, Crime, and Deviance"
+  },
+  "1219": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Sociology: Social Psychology and Interaction"
+  },
+  "1220": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Sociology: Sociology of Culture"
+  },
+  "1221": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Sociology: Sociology of Religion"
+  },
+  "1222": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Sociology: Theory, Knowledge and Science"
+  },
+  "1223": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Sociology: Tourism"
+  },
+  "1224": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Sociology: Work, Economy and Organizations"
+  },
+  "1225": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Sociology: Other Sociology"
+  },
+  "1226": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Sports Studies"
+  },
+  "1227": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Urban Studies and Planning"
+  },
+  "1228": {
+    "className": "Social and Behavioral Sciences",
+    "name": "Other Social and Behavioral Sciences"
+  }
+}

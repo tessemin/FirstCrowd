@@ -63,17 +63,25 @@ var validateUserRoleIsRequired = function() {
   return false;
 };
 
+var validateUserTypeIsRequired = function() {
+  if (this.enterprise || this.individual)
+    return true;
+  return false;
+}
+
 /**
  * User Schema
  */
 var UserSchema = new Schema({
   enterprise: {
     type: Schema.Types.ObjectId,
-    ref: 'Enterprise'
+    ref: 'Enterprise',
+    validate: [validateUserTypeIsRequired, 'Please provide one user type']
   },
   individual: {
     type: Schema.Types.ObjectId,
-    ref: 'Individual'
+    ref: 'Individual',
+    validate: [validateUserTypeIsRequired, 'Please provide one user type']
   },
   userRole: {
     type: {
@@ -129,7 +137,7 @@ var UserSchema = new Schema({
   phone: {
     type: Number,
     unique: true,
-    default: '',
+    default: null,
     trim: true
   },
   contactPreference: {
