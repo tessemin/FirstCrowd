@@ -10,28 +10,31 @@
   function EducationController($scope, $state, IndividualsService, Authentication, Notification) {
     var vm = this;
     
-    vm.degrees = [];
+    vm.schools = [];
+    vm.addSchool = addSchool;
     vm.addDegree = addDegree;
+    vm.removeSchool = removeSchool;
     vm.removeDegree = removeDegree;
     
+    // Fill in the form with current saved data on pageload
     IndividualsService.getIndividual().$promise
       .then(function(data) {
-        let degrees = data.degrees;
-        for (let i = 0; i < degrees.length; ++i) {
-          addDegree();
-          vm.degrees[i] = degrees[i];
-          vm.degrees[i].startDate = new Date(degrees[i].startDate);
-          vm.degrees[i].endDate = new Date(degrees[i].endDate);
+        for (let i = 0; i < data.schools.length; ++i) {
+          addSchool();
+          // Most data needs no special effort
+          vm.schools[i] = data.schools[i];
+          // Dates are strings, and need to be Dates
+          vm.schools[i].startDate = new Date(data.schools[i].startDate);
+          vm.schools[i].endDate = new Date(data.schools[i].endDate);
         }
       });
     
-    function addDegree() {
-      vm.degrees.push({
-        degreeLevel: '',
+    function addSchool() {
+      vm.schools.push({
         schoolName: '',
         startDate: '',
         endDate: '',
-        concentration: '',
+        degrees: [],
         address: {
           schoolStreetAddress: '',
           schoolCity: '',
@@ -42,13 +45,41 @@
       });
     }
     
-    function removeDegree(index) {
-      vm.degrees.splice(index, 1);
+    function removeSchool(schoolIndex) {
+      if (schoolIndex < vm.schools.length) {
+        vm.schools.splice(schoolIndex, 1);
+      } else {
+        Notification.error({message: 'Error removing school: school index does not exist!'});
+      }
+    }
+    
+    function addDegree(schoolIndex) {
+      if (schoolIndex < vm.schools.length) {
+        vm.schools[schoolIndex].degrees.push({
+          name: '',
+          degreeLevel: '',
+          concentration: ''
+        });
+      } else {
+        Notification.error({message: 'Error adding degree: school index does not exist!'});
+      }
+    }
+    
+    function removeDegree(schoolIndex, degreeIndex) {
+      if (schoolIndex < vm.schools.length) {
+        if (degreeIndex < vm.schools[schoolIndex].degrees.length) {
+          vm.schools[schoolIndex].degrees.splice(degreeIndex, 1);
+        } else {
+          Notification.error({message: 'Error removing degree: degree index does not exist!'});
+        }
+      } else {
+        Notification.error({message: 'Error removing degree: school index does not exist!'});
+      }
     }
     
     vm.updateEducation = updateEducation;
 
-    vm.degreeLevels = ['Middle School Diploma', 'Highschool Diploma', 'Associate\'s Degree', 'Bachelor\'s Degree', 'Master\'s Degree', 'Doctoral Degree'];
+    vm.degreeLevels = ['Middle School Diploma', 'Highschool Diploma', 'Associate\'s Degree', 'Associate of Arts', 'Associate of Science', 'Bachelor\'s Degree', 'Bachelor of Arts', 'Bachelor of Science Degree', 'Academic Minor', 'Master\'s Degree', 'Graduate Minor', 'Doctoral Degree'];
 
     
     // Update a user education
@@ -60,7 +91,7 @@
         return false;
       }
       
-      IndividualsService.updateEducationFromForm(vm.degrees)
+      IndividualsService.updateEducationFromForm(vm.schools)
         .then(onUpdateEducationSuccess)
         .catch(onUpdateEducationError);
     }
