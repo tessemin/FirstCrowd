@@ -78,7 +78,6 @@ describe('User CRUD tests', function () {
         if (signupErr) {
           return done(signupErr);
         }
-
         signupRes.body.username.should.equal(_user.username);
         signupRes.body.email.should.equal(_user.email);
         // Assert a proper profile image has been set, even if by default
