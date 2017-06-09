@@ -49,7 +49,7 @@
       if (schoolIndex < vm.schools.length) {
         vm.schools.splice(schoolIndex, 1);
       } else {
-        Notification.error({message: 'Error removing school: school index does not exist!'});
+        Notification.error({ message: 'Error removing school: school index does not exist!' });
       }
     }
     
@@ -61,7 +61,7 @@
           concentration: ''
         });
       } else {
-        Notification.error({message: 'Error adding degree: school index does not exist!'});
+        Notification.error({ message: 'Error adding degree: school index does not exist!' });
       }
     }
     
@@ -70,10 +70,10 @@
         if (degreeIndex < vm.schools[schoolIndex].degrees.length) {
           vm.schools[schoolIndex].degrees.splice(degreeIndex, 1);
         } else {
-          Notification.error({message: 'Error removing degree: degree index does not exist!'});
+          Notification.error({ message: 'Error removing degree: degree index does not exist!' });
         }
       } else {
-        Notification.error({message: 'Error removing degree: school index does not exist!'});
+        Notification.error({ message: 'Error removing degree: school index does not exist!' });
       }
     }
     
