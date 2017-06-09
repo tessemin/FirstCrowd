@@ -11,123 +11,84 @@
       scope: { data: '=' },
       link: function(scope, element, attrs) {
 
-        var width = 960,
-          height = 500;
+        var newcanvas = d3.select("#graph").append("canvas")
+              .attr("width", 800)
+              .attr("height", 600);
 
-        var svg = d3.select('#graph').append('svg')
-              .attr('width', width)
-              .attr('height', height);
+        var canvas = d3.select("canvas"),
+            context = canvas.node().getContext("2d"),
+            width = canvas.property("width"),
+            height = canvas.property("height"),
+            radius = 2.5,
+            transform = d3.zoomIdentity;
 
-        var graph = scope.data;
 
-        graph.links.forEach(function(d) {
-          d.source = graph.nodes[d.source];
-          d.target = graph.nodes[d.target];
-        });
+        console.log(context);
 
-        var link = svg.append('g')
-              .attr('class', 'link')
-              .selectAll('line')
-              .data(graph.links)
-              .enter().append('line')
-              .attr('x1', function(d) { return d.source.x; })
-              .attr('y1', function(d) { return d.source.y; })
-              .attr('x2', function(d) { return d.target.x; })
-              .attr('y2', function(d) { return d.target.y; });
+        var points = d3.range(2000).map(phyllotaxis(10));
 
-        var node = svg.append('g')
-              .attr('class', 'node')
-              .selectAll('circle')
-              .data(graph.nodes)
-              .enter().append('circle')
-              .attr('r', 10)
-              .attr('cx', function(d) { return d.x; })
-              .attr('cy', function(d) { return d.y; })
-              .call(d3.drag().on('drag', dragged));
+        canvas
+          .call(d3.drag().subject(dragsubject).on("drag", dragged))
+          .call(d3.zoom().scaleExtent([1 / 2, 8]).on("zoom", zoomed))
+          .call(render);
 
-        // var brush = svg.append('g')
-        //       .attr('class', 'brush')
-        //       .call(d3.brush()
-        //             .extent([[0, 0], [width, height]])
-        //             .on('start brush end', brushed));
-
-        // function brushed() {
-        //   var selection = d3.event.selection;
-        //   node.classed('selected', selection && function(d) {
-        //     return selection[0][0] <= d.x && d.x < selection[1][0]
-        //       && selection[0][1] <= d.y && d.y < selection[1][1];
-        //   });
-        // }
-
-        function dragged(d) {
-          d.x = d3.event.x;
-          d.y = d3.event.y;
-          d3.select(this).attr('cx', d.x).attr('cy', d.y);
-          link.filter(function(l) { return l.source === d; }).attr('x1', d.x).attr('y1', d.y);
-          link.filter(function(l) { return l.target === d; }).attr('x2', d.x).attr('y2', d.y);
+        function zoomed() {
+          transform = d3.event.transform;
+          render();
         }
 
+        function dragsubject() {
+          var i,
+              x = transform.invertX(d3.event.x),
+              y = transform.invertY(d3.event.y),
+              dx,
+              dy,
+              point;
 
-        //     let margin = parseInt(attrs.margin) || 20,
-        //         barHeight = parseInt(attrs.barHeight) || 20,
-        //         barPadding = parseInt(attrs.barPadding) || 5;
+          for (i = points.length - 1; i >= 0; --i) {
+            point = points[i];
+            dx = x - point[0];
+            dy = y - point[1];
+            if (dx * dx + dy * dy < radius * radius) {
+              point.x = transform.applyX(point[0]);
+              point.y = transform.applyY(point[1]);
+              return point;
+            }
+          }
+        }
 
-        //     let svg = d3.select(element[0])
-        //           .append('svg')
-        //           .style('width', '100%');
+        function dragged() {
+          d3.event.subject[0] = transform.invertX(d3.event.x);
+          d3.event.subject[1] = transform.invertY(d3.event.y);
+          render();
+        }
 
-        //     window.onresize = function() {
-        //       scope.$apply();
-        //     };
+        function render() {
+          context.save();
+          context.clearRect(0, 0, width, height);
+          context.beginPath();
+          context.translate(transform.x, transform.y);
+          context.scale(transform.k, transform.k);
+          points.forEach(drawPoint);
+          context.fill();
+          context.restore();
+        }
 
-        //     scope.$watch('data', function(newVals, oldVals) {
-        //       return scope.render(newVals);
-        //     }, true);
+        function drawPoint(point) {
+          context.moveTo(point[0] + radius, point[1]);
+          context.arc(point[0], point[1], radius, 0, 2 * Math.PI);
+        }
 
-        //     // Watch for resize event
-        //     scope.$watch(function() {
-        //       return angular.element($window)[0].innerWidth;
-        //     }, function() {
-        //       scope.render(scope.data);
-        //     });
-
-
-        //     scope.render = function(data) {
-        //       svg.selectAll('*').remove();
-        //       if (!data) return;
-
-        //  let width = d3.select(element[0]).node().offsetWidth - margin,
-        //     // calculate the height
-        //     height = data.length * (barHeight + barPadding),
-        //     // Use the category20() scale function for multicolor support
-        //      color = d3.scaleOrdinal(d3.schemeCategory20),
-        //     // our xScale
-        //     xScale = d3.scaleLinear()
-        //       .domain([0, d3.max(data, function(d) {
-        //         return d.score;
-        //       })])
-        //       .range([0, width]);
-
-        // // set the height based on the calculations above
-        // svg.attr('height', height);
-
-        // //create the rectangles for the bar chart
-        // svg.selectAll('rect')
-        //   .data(data).enter()
-        //     .append('rect')
-        //     .attr('height', barHeight)
-        //     .attr('width', 140)
-        //     .attr('x', Math.round(margin/2))
-        //     .attr('y', function(d,i) {
-        //       return i * (barHeight + barPadding);
-        //     })
-        //     .attr('fill', function(d) { return color(d.score); })
-        //     .transition()
-        //       .duration(1000)
-        //       .attr('width', function(d) {
-        //         return xScale(d.score);
-        //       });
-        //     };
+        function phyllotaxis(radius) {
+          var theta = Math.PI * (3 - Math.sqrt(5));
+          return function(i) {
+            var r = radius * Math.sqrt(i), a = theta * i;
+            return [
+              width / 2 + r * Math.cos(a),
+              height / 2 + r * Math.sin(a)
+            ];
+          };
+        }
       }
     };
   }
