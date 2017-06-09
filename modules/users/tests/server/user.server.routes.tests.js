@@ -47,8 +47,9 @@ describe('User CRUD tests', function () {
     };
 
     // Create a new user
+    var Ind = new Individual();
     _user = {
-      individual: new Individual(),
+      individual: Ind.id,
       firstName: 'Full',
       lastName: 'Name',
       displayName: 'Full Name',
@@ -57,6 +58,7 @@ describe('User CRUD tests', function () {
       userRole: {
         worker: true
       },
+      roles: ['user', 'individual'],
       password: credentials.password,
       provider: 'local'
     };

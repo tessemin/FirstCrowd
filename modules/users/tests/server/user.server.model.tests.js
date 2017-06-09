@@ -24,15 +24,15 @@ var user1,
 describe('User Model Unit Tests:', function () {
 
   before(function () {
-    Ent = new Enterprise();
-    Ind = new Individual();
+    var Ent = new Enterprise();
+    var Ind = new Individual();
     user1 = {
-      enterprise: Ent,
+      enterprise: Ent.id,
       firstName: 'Full',
       lastName: 'Name',
       middleName: 'mid',
       displayName: 'Full Name',
-      phone: 123456789,
+      phone: '123456789',
       email: 'test@test.com',
       contactPreference: 'phone',
       username: 'username',
@@ -40,19 +40,23 @@ describe('User Model Unit Tests:', function () {
       provider: 'local',
       userRole: {
         resourceOwner: true
-      }
+      },
+      roles: ['user', 'individual']
     };
     // user2 is a clone of user1
     user2 = user1;
-    user2.individual = Ind;
+    // replace enterprise with individual in user2
+    user2.individual = Ind.id;
+    delete user2.enterprise;
+    user2.roles = ['user', 'enterprise'];
     user3 = {
-      enterprise: Ent,
+      enterprise: Ent.id,
       firstName: 'Different',
       middleName: 'Mild',
       lastName: 'User',
       displayName: 'Full Different Name',
       email: 'test3@test.com',
-      phone: 987654321,
+      phone: '987654321',
       contactPreference: 'email',
       username: 'different_username',
       password: 'Different_Password1!',
@@ -60,7 +64,8 @@ describe('User Model Unit Tests:', function () {
       userRole: {
         worker: true,
         requester: true
-      }
+      },
+      roles: ['user', 'enterprise']
     };
   });
 
@@ -750,7 +755,5 @@ describe('User Model Unit Tests:', function () {
 
   after(function (done) {
     User.remove().exec(done);
-    Ent.remove().exec(done);
-    Ind.remove().exec(done);
   });
 });
