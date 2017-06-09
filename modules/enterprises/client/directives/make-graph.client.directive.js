@@ -37,31 +37,18 @@
           .on("click", handleClick);
 
         function handleMouseOver() {
-          d3.select(this).attr(
-            'r', radius * 2
-          ).style('fill', 'orange');
-          // Specify where to put label of text
+          d3.select(this).attr('r', radius * 2).style('fill', 'orange');
 
-          svg.append("text").attr('x', 400).attr('y', 300).attr('id', "t")
-            // .attr(
-          //   id: "t" + d.x + "-" + d.y + "-" + i,  // Create an id for text so we can select it later for removing on mouseout
-          //   x: function() { return xScale(d.x) - 30; },
-          //   y: function() { return yScale(d.y) - 15; }
-          // })
+          d3.select(this).append("text").attr('x', d3.select(this).attr('cx')).attr('y', d3.select(this).attr('cy'))
             .text(function() {
-              console.log('hi');
               return 'hi';
             });
         }
 
         function handleMouseOut() {
 
-      // Use D3 to select element, change color back to normal
           d3.select(this).attr('r', radius).style('fill', 'black');
 
-            // Select text by id and then remove
-
-            d3.select("#t").remove();  // Remove text location
         }
 
         function handleClick() {
