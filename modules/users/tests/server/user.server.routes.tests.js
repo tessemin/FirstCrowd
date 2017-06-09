@@ -6,6 +6,7 @@ var semver = require('semver'),
   path = require('path'),
   mongoose = require('mongoose'),
   User = mongoose.model('User'),
+  Individual = mongoose.model('Individual'),
   express = require(path.resolve('./config/lib/express'));
 
 /**
@@ -47,11 +48,15 @@ describe('User CRUD tests', function () {
 
     // Create a new user
     _user = {
+      individual: new Individual(),
       firstName: 'Full',
       lastName: 'Name',
       displayName: 'Full Name',
       email: 'test@test.com',
       username: credentials.usernameOrEmail,
+      userRole: {
+        worker: true
+      },
       password: credentials.password,
       provider: 'local'
     };

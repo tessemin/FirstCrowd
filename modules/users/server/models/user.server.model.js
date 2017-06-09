@@ -136,7 +136,11 @@ var UserSchema = new Schema({
   },
   phone: {
     type: Number,
-    unique: true,
+    index: { 
+      unique: true,
+      sparse: true // For this to work on a previously indexed field, the index must be dropped & the application restarted.
+      // sparse is for being able to add multiple users without this feild
+    },
     default: null,
     trim: true
   },
