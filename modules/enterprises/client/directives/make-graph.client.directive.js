@@ -11,83 +11,69 @@
       scope: { data: '=' },
       link: function(scope, element, attrs) {
 
-        var newcanvas = d3.select("#graph").append("canvas")
+        var newsvg = d3.select("#graph").append("svg")
               .attr("width", 800)
               .attr("height", 600);
 
-        var canvas = d3.select("canvas"),
-            context = canvas.node().getContext("2d"),
-            width = canvas.property("width"),
-            height = canvas.property("height"),
-            radius = 2.5,
-            transform = d3.zoomIdentity;
+        var svg = d3.select("svg"),
+            width = +svg.attr("width"),
+            height = +svg.attr("height"),
+            transform = d3.zoomIdentity;;
 
+        var points = scope.data.nodes;
+        console.log(points);
 
-        console.log(context);
+        var radius = 10;
+        var g = svg.append("g");
 
-        var points = d3.range(2000).map(phyllotaxis(10));
+        g.selectAll("circle")
+          .data(points)
+          .enter().append("circle")
+          .attr("cx", function(d) { return d.x; })
+          .attr("cy", function(d) { return d.y; })
+          .attr("r", radius)
+          .on("mouseover", handleMouseOver)
+          .on("mouseout", handleMouseOut)
+          .on("click", handleClick);
 
-        canvas
-          .call(d3.drag().subject(dragsubject).on("drag", dragged))
-          .call(d3.zoom().scaleExtent([1 / 2, 8]).on("zoom", zoomed))
-          .call(render);
+        function handleMouseOver() {
+          d3.select(this).attr(
+            'r', radius * 2
+          ).style('fill', 'orange');
+          // Specify where to put label of text
+
+          svg.append("text").attr('x', 400).attr('y', 300).attr('id', "t")
+            // .attr(
+          //   id: "t" + d.x + "-" + d.y + "-" + i,  // Create an id for text so we can select it later for removing on mouseout
+          //   x: function() { return xScale(d.x) - 30; },
+          //   y: function() { return yScale(d.y) - 15; }
+          // })
+            .text(function() {
+              console.log('hi');
+              return 'hi';
+            });
+        }
+
+        function handleMouseOut() {
+
+      // Use D3 to select element, change color back to normal
+          d3.select(this).attr('r', radius).style('fill', 'black');
+
+            // Select text by id and then remove
+
+            d3.select("#t").remove();  // Remove text location
+        }
+
+        function handleClick() {
+
+        }
+
+        svg.call(d3.zoom()
+                 .scaleExtent([1 / 2, 8])
+                 .on("zoom", zoomed));
 
         function zoomed() {
-          transform = d3.event.transform;
-          render();
-        }
-
-        function dragsubject() {
-          var i,
-              x = transform.invertX(d3.event.x),
-              y = transform.invertY(d3.event.y),
-              dx,
-              dy,
-              point;
-
-          for (i = points.length - 1; i >= 0; --i) {
-            point = points[i];
-            dx = x - point[0];
-            dy = y - point[1];
-            if (dx * dx + dy * dy < radius * radius) {
-              point.x = transform.applyX(point[0]);
-              point.y = transform.applyY(point[1]);
-              return point;
-            }
-          }
-        }
-
-        function dragged() {
-          d3.event.subject[0] = transform.invertX(d3.event.x);
-          d3.event.subject[1] = transform.invertY(d3.event.y);
-          render();
-        }
-
-        function render() {
-          context.save();
-          context.clearRect(0, 0, width, height);
-          context.beginPath();
-          context.translate(transform.x, transform.y);
-          context.scale(transform.k, transform.k);
-          points.forEach(drawPoint);
-          context.fill();
-          context.restore();
-        }
-
-        function drawPoint(point) {
-          context.moveTo(point[0] + radius, point[1]);
-          context.arc(point[0], point[1], radius, 0, 2 * Math.PI);
-        }
-
-        function phyllotaxis(radius) {
-          var theta = Math.PI * (3 - Math.sqrt(5));
-          return function(i) {
-            var r = radius * Math.sqrt(i), a = theta * i;
-            return [
-              width / 2 + r * Math.cos(a),
-              height / 2 + r * Math.sin(a)
-            ];
-          };
+          g.attr("transform", d3.event.transform);
         }
       }
     };
