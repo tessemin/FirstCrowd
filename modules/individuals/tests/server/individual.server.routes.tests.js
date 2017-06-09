@@ -40,19 +40,122 @@ describe('Individual CRUD tests', function () {
     // Create a new user
     user = new User({
       firstName: 'Full',
+      middleName: 'Mid',
       lastName: 'Name',
       displayName: 'Full Name',
       email: 'test@test.com',
-      username: credentials.username,
-      password: credentials.password,
-      provider: 'local'
+      username: 'username',
+      password: 'password',
+      userRole: {
+        worker: true
+      },
+      roles: [
+        'user',
+        'individual'
+      ],
+      phone: '123456789',
+      
     });
 
     // Save a user to the test db and create new Individual
     user.save(function () {
-      individual = {
-        name: 'Individual name'
-      };
+      individual = new Individual({
+        name: 'Individual Name',
+        user: user,
+        bio: {
+          dateOfBirth: '09/25/1996',
+          sex: 'male',
+          profession: 'sharpening sticks',
+          address: {
+            country: 'Am',
+            streetAddress: '871 Raum Road',
+            city: 'herod',
+            state: 'IL',
+            zipCode: '62947'
+          }
+        },
+        schools: [{
+          schoolName: 'Southeaster Illinois College',
+          startDate: '03/10/2014',
+          endDate: '03/10/2016',
+          degrees: [{
+            name: 'Computer Science',
+            degreeLevel: 'Associates',
+            concentration: ['Algorithm Design','Data Structures']
+          }],
+          address: {
+            schoolCountry: 'Am',
+            schoolStreetAddress: '322 N College Road',
+            schoolCity: 'Harrisburg',
+            schoolState: 'Illinois',
+            schoolZipCode: '62946'
+          }
+        }, {
+          schoolName: 'Sother Illinois University',
+          startDate: '08/10/2014',
+          degrees: [{
+            name: 'Computer Science',
+            degreeLevel: 'Associates',
+            concentration: ['Algorithm Design','Data Structures']
+          }],
+          address: {
+            schoolCountry: 'Am',
+            schoolStreetAddress: '222 N University Drive',
+            schoolCity: 'Carbondale',
+            schoolState: 'Illinois',
+            schoolZipCode: '62901'
+          }
+        }],
+        jobExperience: [{
+          employer: 'Cracker Barrel',
+          jobTitle: 'Server',
+          description: 'Serving food, cleaning, making drinks',
+          skills: ['balance', 'people skills', 'stressful situations', 'team player'],
+          startDate: '02/29/2016'
+        }],
+        certification: [{
+          certificationName: 'A+',
+          institution: 'SIU',
+          dateIssued: '09/25/1999',
+          dateExpired: '09/25/2025',
+          decription: 'competency of entry-level PC computer service professionalism'
+        },
+        {
+          certificationName: 'CMBB',
+          institution: 'SIU',
+          dateIssued: '01/01/2016',
+          decription: 'The ASQ Master Black Belt (MBB) certification is a mark of career excellence'
+        }],
+        skills: [{
+          skill: {
+            name: 'C++'
+          },
+          firstUsed: '03/1/2014',
+          locationLearned: ['SIC','SIU']
+        }, {
+          skill: {
+            name: 'Java'
+          },
+          firstUsed: '08/1/2016',
+          locationLearned: ['SIU'],
+          tools:[{
+            tool: {
+              name: 'calculators'
+            }
+          }, {
+            tool: {
+              name: 'computers'
+            }
+          }]
+        }],
+        specialities: [{
+          speciality: {
+            name: 'Artifical Intelligence'
+          }
+        }]
+      });
+      
+      user.individual = individual.id;
 
       done();
     });
@@ -109,6 +212,7 @@ describe('Individual CRUD tests', function () {
       .expect(403)
       .end(function (individualSaveErr, individualSaveRes) {
         // Call the assertion callback
+        console.log('important log info:' + individualSaveErr);
         done(individualSaveErr);
       });
   });
@@ -130,7 +234,7 @@ describe('Individual CRUD tests', function () {
         var userId = user.id;
 
         // Save a new Individual
-        agent.post('/api/individuals')
+        agent.post('individuals/api/individuals')
           .send(individual)
           .expect(400)
           .end(function (individualSaveErr, individualSaveRes) {

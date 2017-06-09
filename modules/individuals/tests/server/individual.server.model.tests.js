@@ -30,6 +30,10 @@ describe('Individual Model Unit Tests:', function() {
       userRole: {
         worker: true
       },
+      roles: [
+        'user',
+        'individual'
+      ],
       phone: '123456789',
       
     });
