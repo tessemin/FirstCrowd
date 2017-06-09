@@ -30,7 +30,7 @@ describe('Individual Model Unit Tests:', function() {
       userRole: {
         worker: true
       },
-      phone: 123456789,
+      phone: '123456789',
       
     });
     
@@ -46,7 +46,7 @@ describe('Individual Model Unit Tests:', function() {
           streetAddress: '871 Raum Road',
           city: 'herod',
           state: 'IL',
-          zipCode: 62947
+          zipCode: '62947'
         }
       },
       schools: [{
@@ -63,7 +63,7 @@ describe('Individual Model Unit Tests:', function() {
           schoolStreetAddress: '322 N College Road',
           schoolCity: 'Harrisburg',
           schoolState: 'Illinois',
-          schoolZipCode: 62946
+          schoolZipCode: '62946'
         }
       }, {
         schoolName: 'Sother Illinois University',
@@ -78,7 +78,7 @@ describe('Individual Model Unit Tests:', function() {
           schoolStreetAddress: '222 N University Drive',
           schoolCity: 'Carbondale',
           schoolState: 'Illinois',
-          schoolZipCode: 62901
+          schoolZipCode: '62901'
         }
       }],
       jobExperience: [{
@@ -135,7 +135,6 @@ describe('Individual Model Unit Tests:', function() {
     user.save(function() {
       individual.save(function() {
         done();
-        return;
       });
     });
   });
@@ -143,40 +142,36 @@ describe('Individual Model Unit Tests:', function() {
   describe('Method Save', function() {
     it('should be able to save without problems', function(done) {
       this.timeout(0);
-      return individual.save(function(err) {
+      individual.save(function(err) {
         should.not.exist(err);
         done();
-        return;
       });
     });
 
     it('should be able to show an error when try to save an unkown sex', function(done) {
       individual.bio.sex = 'glopglorp';
 
-      return individual.save(function(err) {
+      individual.save(function(err) {
         should.exist(err);
         done();
-        return;
       });
     });
     
     it('should be able to show an error when try to save with age greater than 130', function(done) {
       individual.bio.dateOfBirth = '01/01/1800';
 
-      return individual.save(function(err) {
+      individual.save(function(err) {
         should.exist(err);
         done();
-        return;
       });
     });
     
     it('should be able to show an error when try to save with date of birth in wrong form', function(done) {
       individual.bio.dateOfBirth = 'garbage';
 
-      return individual.save(function(err) {
+      individual.save(function(err) {
         should.exist(err);
         done();
-        return;
       });
     });
     
@@ -186,20 +181,18 @@ describe('Individual Model Unit Tests:', function() {
     it('should be able to show an error when try to save with degree start date in wrong form', function(done) {
       individual.schools[0].startDate = 'garbage';
 
-      return individual.save(function(err) {
+      individual.save(function(err) {
         should.exist(err);
         done();
-        return;
       });
     });
     
     it('should be able to show an error when try to save with degree end date in wrong form', function(done) {
       individual.schools[0].endDate = 'garbage';
 
-      return individual.save(function(err) {
+      individual.save(function(err) {
         should.exist(err);
         done();
-        return;
       });
     });
     
@@ -207,10 +200,9 @@ describe('Individual Model Unit Tests:', function() {
       individual.schools[0].endDate = '01/01/1999';
       individual.schools[0].startDate = '01/01/2005';
 
-      return individual.save(function(err) {
+      individual.save(function(err) {
         should.exist(err);
         done();
-        return;
       });
     });
     
@@ -220,20 +212,18 @@ describe('Individual Model Unit Tests:', function() {
     it('should be able to show an error when try to save with job experience start date in wrong form', function(done) {
       individual.jobExperience[0].startDate = 'garbage';
 
-      return individual.save(function(err) {
+      individual.save(function(err) {
         should.exist(err);
         done();
-        return;
       });
     });
     
     it('should be able to show an error when try to save with job experience end date in wrong form', function(done) {
       individual.jobExperience[0].endDate = 'garbage';
 
-      return individual.save(function(err) {
+      individual.save(function(err) {
         should.exist(err);
         done();
-        return;
       });
     });
     
@@ -241,10 +231,10 @@ describe('Individual Model Unit Tests:', function() {
       individual.jobExperience[0].endDate = '01/01/1999';
       individual.jobExperience[0].startDate = '01/01/2005';
 
-      return individual.save(function(err) {
+      individual.save(function(err) {
         should.exist(err);
         done();
-        return;
+        
       });
     });
     
@@ -254,20 +244,18 @@ describe('Individual Model Unit Tests:', function() {
     it('should be able to show an error when try to save with certification date issued in wrong form', function(done) {
       individual.certification[0].dateIssued = 'garbage';
 
-      return individual.save(function(err) {
+      individual.save(function(err) {
         should.exist(err);
         done();
-        return;
       });
     });
     
     it('should be able to show an error when try to save with certification date expired in wrong form', function(done) {
       individual.certification[0].dateExpired = 'garbage';
 
-      return individual.save(function(err) {
+      individual.save(function(err) {
         should.exist(err);
         done();
-        return;
       });
     });
     
@@ -275,10 +263,9 @@ describe('Individual Model Unit Tests:', function() {
       individual.certification[0].dateExpired = '01/01/1999';
       individual.certification[0].dateIssued = '01/01/2005';
 
-      return individual.save(function(err) {
+      individual.save(function(err) {
         should.exist(err);
         done();
-        return;
       });
     });
     
@@ -288,20 +275,18 @@ describe('Individual Model Unit Tests:', function() {
     it('should be able to show an error when try to save with skills first used in wrong form', function(done) {
       individual.skills[0].firstUsed = 'garbage';
 
-      return individual.save(function(err) {
+      individual.save(function(err) {
         should.exist(err);
         done();
-        return;
       });
     });
     
     it('should be able to show an error when try to save with skills last used in wrong form', function(done) {
       individual.skills[0].lastUsed = 'garbage';
 
-      return individual.save(function(err) {
+      individual.save(function(err) {
         should.exist(err);
         done();
-        return;
       });
     });
     
@@ -309,10 +294,9 @@ describe('Individual Model Unit Tests:', function() {
       individual.skills[0].lastUsed = '01/01/2006';
       individual.skills[0].firstUsed = '01/01/2005';
 
-      return individual.save(function(err) {
+      individual.save(function(err) {
         should.exist(err);
         done();
-        return;
       });
     });
   });
@@ -321,7 +305,6 @@ describe('Individual Model Unit Tests:', function() {
     Individual.remove().exec(function() {
       User.remove().exec(function() {
         done();
-        return;
       });
     });
   });
