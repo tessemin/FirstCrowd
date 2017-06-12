@@ -36,7 +36,8 @@ var validateURL = function(URL) {
 var EnterpriseUserSchema = new Schema({
   user: {
     type: Schema.ObjectId,
-    ref: 'User'
+    ref: 'User',
+    required: 'Cannot have a entperise without a user'
   },
   profile: {
     companyName: {
@@ -109,7 +110,8 @@ var EnterpriseUserSchema = new Schema({
       companyName: {
         type: String,
         default: '',
-        trim: true
+        trim: true,
+        required: 'Must have a company name to save this supplier'
       },
       URL: {
         type: String,
@@ -122,7 +124,8 @@ var EnterpriseUserSchema = new Schema({
       companyName: {
         type: String,
         default: '',
-        trim: true
+        trim: true,
+        required: 'Must have a company name to save this customer'
       },
       URL: {
         type: String,
@@ -135,7 +138,8 @@ var EnterpriseUserSchema = new Schema({
       companyName: {
         type: String,
         default: '',
-        trim: true
+        trim: true,
+        required: 'Must have a company name to save this competitor or peer'
       },
       URL: {
         type: String,

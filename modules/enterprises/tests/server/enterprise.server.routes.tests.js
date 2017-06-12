@@ -40,11 +40,21 @@ describe('Enterprise CRUD tests', function () {
     // Create a new user
     user = new User({
       firstName: 'Full',
+      middleName: 'Mid',
       lastName: 'Name',
       displayName: 'Full Name',
       email: 'test@test.com',
       username: credentials.username,
       password: credentials.password,
+      userRole: {
+        worker: true
+      },
+      roles: [
+        'user',
+        'enterprise'
+      ],
+      phone: '123456789',
+      contactPreference: 'phone',
       provider: 'local'
     });
 
