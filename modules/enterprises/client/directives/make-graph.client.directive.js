@@ -20,36 +20,53 @@
             height = +svg.attr("height"),
             transform = d3.zoomIdentity;;
 
-        var points = scope.data.nodes;
-        console.log(points);
-
+        var globalY = height;
         var radius = 10;
-        var g = svg.append("g");
 
-        g.selectAll("circle")
-          .data(points)
-          .enter().append("circle")
-          .attr("cx", function(d) { return d.x; })
-          .attr("cy", function(d) { return d.y; })
-          .attr("r", radius)
-          .on("mouseover", handleMouseOver)
-          .on("mouseout", handleMouseOut)
-          .on("click", handleClick);
+        var points = scope.data.nodes;
 
-        function handleMouseOver() {
+        var g = svg.append("g")
+              .selectAll("circle")
+              .data(points)
+              .enter().append("circle")
+              .attr("cx", function(d) { return d.x; })
+              .attr("cy", function(d) { return getY(); })
+              .attr("r", radius)
+              .on("mouseover", handleMouseOver)
+              .on("mouseout", handleMouseOut)
+              .on("click", handleClick);
+
+        function handleMouseOver(d, i) {
           d3.select(this).attr('r', radius * 2).style('fill', 'orange');
 
-          d3.select(this).append("text").attr('x', d3.select(this).attr('cx')).attr('y', d3.select(this).attr('cy'))
-            .text(function() {
-              return 'hi';
-            });
+
+          svg.append("text").attr({
+            id: "t" + d.x + "-" + d.y + "-" + i,  // Create an id for text so we can select it later for removing on mouseout
+            x: function() { return xScale(d.x) - 30; },
+            y: function() { return yScale(d.y) - 15; }
+          })
+            .text([1, 2, 3]);
+          // d3.select(this).append("text").attr('x', ).attr('y', )
+          //   .text(function() {
+          //     return 'hi';
+          //   });
         }
 
-        function handleMouseOut() {
-
+        function handleMouseOut(d, i) {
           d3.select(this).attr('r', radius).style('fill', 'black');
 
+          d3.select("#t" + d.x + "-" + d.y + "-" + i).remove();  // Remove text location
         }
+
+        function getY() {
+          var len = points.length + 1,
+              pixels = height / len;
+
+          globalY = globalY - pixels;
+
+          return globalY;
+        }
+
 
         function handleClick() {
 
@@ -61,6 +78,13 @@
 
         function zoomed() {
           g.attr("transform", d3.event.transform);
+        }
+
+        function getObject() {
+          return EnterprisesService.getEnterprise()
+            .then(function(response) {
+              return response.partners;
+            });
         }
       }
     };
