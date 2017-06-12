@@ -41,10 +41,10 @@
 
             g = svg.append("g")
               .selectAll("circle")
-              .data(item)
+              .data(obj[item])
               .enter().append("circle")
               .attr("cx", function(d) { return disp; })
-              .attr("cy", function(d) { return getY(item); })
+              .attr("cy", function(d) { return getY(obj, item); })
               .attr("r", radius)
               .on("mouseover", handleMouseOver)
               .on("mouseout", handleMouseOut)
@@ -62,16 +62,33 @@
           }
         });
 
+
+
+        var tooltip = d3.select('body').append('div')
+              .style('position','absolute')
+              .style('padding','0 10px')
+              .style('opacity',0)
+              .attr('id','tooltip');
+
         function handleMouseOver(d, i) {
           d3.select(this).attr('r', radius * 2).style('fill', 'orange');
 
+          console.log(d);
 
-          svg.append("text").attr({
-            id: "t" + d.x + "-" + d.y + "-" + i,  // Create an id for text so we can select it later for removing on mouseout
-            x: function() { return xScale(d.x) - 30; },
-            y: function() { return yScale(d.y) - 15; }
-          })
-            .text('hi');
+          tooltip.transition()
+            .style('opacity', .9)
+            .style('background', 'lightsteelblue');
+          tooltip.html(d.companyName + ": " + d.URL )
+            .style('left',(d3.event.pageX - 35) + 'px')
+            .style('top', (d3.event.pageY - 30) + 'px');
+
+
+          // svg.append("text").attr('id', 'tooltip')
+          //   .attr('x', function() { return d.x; })
+          //   .attr('y', function() { return d.y; })
+          //   .text('hi');
+            // .text(function() { return d.companyName; });
+
           // d3.select(this).append("text").attr('x', ).attr('y', )
           //   .text(function() {
           //     return 'hi';
@@ -81,11 +98,13 @@
         function handleMouseOut(d, i) {
           d3.select(this).attr('r', radius).style('fill', 'black');
 
-          d3.select("#t" + d.x + "-" + d.y + "-" + i).remove();  // Remove text location
+          tooltip.transition()
+            .style('opacity', 0);
+          // d3.select('#tooltip').remove();  // Remove text location
         }
 
-        function getY(item) {
-          var len = item.length + 1,
+        function getY(obj, item) {
+          var len = obj[item].length + 1,
               pixels = height / len;
 
           globalY = globalY - pixels;
