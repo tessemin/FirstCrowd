@@ -40,12 +40,20 @@ describe('Enterprise CRUD tests', function () {
     // Create a new user
     user = new User({
       firstName: 'Full',
+      middleName: 'Mid',
       lastName: 'Name',
       displayName: 'Full Name',
       email: 'test@test.com',
       username: credentials.username,
       password: credentials.password,
-      provider: 'local'
+      userRole: {
+        worker: true
+      },
+      roles: [
+        'user',
+        'individual'
+      ],
+      phone: '123456789',
     });
 
     // Save a user to the test db and create new Enterprise

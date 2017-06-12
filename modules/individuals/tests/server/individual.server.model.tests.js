@@ -19,14 +19,19 @@ var user,
  */
 describe('Individual Model Unit Tests:', function() {
   beforeEach(function(done) {
+    credentials = {
+      username: 'username',
+      password: 'M3@n.jsI$Aw3$0m3'
+    };
+    
     user = new User({
       firstName: 'Full',
       middleName: 'Mid',
       lastName: 'Name',
       displayName: 'Full Name',
       email: 'test@test.com',
-      username: 'username',
-      password: 'password',
+      username: credentials.username,
+      password: credentials.password,
       userRole: {
         worker: true
       },

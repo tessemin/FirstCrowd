@@ -44,8 +44,8 @@ describe('Individual CRUD tests', function () {
       lastName: 'Name',
       displayName: 'Full Name',
       email: 'test@test.com',
-      username: 'username',
-      password: 'password',
+      username: credentials.username,
+      password: credentials.password,
       userRole: {
         worker: true
       },
