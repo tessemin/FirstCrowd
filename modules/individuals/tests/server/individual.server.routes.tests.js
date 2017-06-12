@@ -118,13 +118,13 @@ describe('Individual CRUD tests', function () {
           institution: 'SIU',
           dateIssued: '09/25/1999',
           dateExpired: '09/25/2025',
-          decription: 'competency of entry-level PC computer service professionalism'
+          description: 'competency of entry-level PC computer service professionalism'
         },
         {
           certificationName: 'CMBB',
           institution: 'SIU',
           dateIssued: '01/01/2016',
-          decription: 'The ASQ Master Black Belt (MBB) certification is a mark of career excellence'
+          description: 'The ASQ Master Black Belt (MBB) certification is a mark of career excellence'
         }],
         skills: [{
           skill: {
