@@ -183,8 +183,6 @@ exports.updateCertification = function(req, res) {
 exports.updateEducation = function(req, res) {
   if (req.body) {
     getIndividual(req, res, function(individual) {
-      console.log('~~~~~~~~~~~~ Receiving At Education ~~~~~~~~~~~~~');
-      console.log('~~~~~~~~~~~~ ' + req.body + ' ~~~~~~~~~~~~~');
       individual.schools = req.body;
       
       individual.save(function (err) {

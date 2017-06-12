@@ -13,7 +13,7 @@ var _ = require('lodash'),
   User = mongoose.model('User'),
   validator = require('validator');
 
-var whitelistedFields = ['contactPreference', 'email', 'phone', 'username', 'middleName', 'displayName'];
+var whitelistedFields = ['contactPreference', 'email', 'phone', 'username', 'middleName', 'displayName', 'firstName', 'lastName'];
 
 /**
  * Update user details
@@ -147,21 +147,27 @@ exports.me = function (req, res) {
   var safeUserObject = null;
   if (req.user) {
     safeUserObject = {
-      userRole: validator.escape(req.user.userRole),
-      userType: validator.escape(req.user.userType),
-      displayName: validator.escape(req.user.displayName),
-      provider: validator.escape(req.user.provider),
-      username: validator.escape(req.user.username),
-      created: req.user.created.toString(),
+      userRole: req.user.userRole,
+      displayName: req.user.displayName,
+      provider: req.user.provider,
+      username: req.user.username,
+      created: req.user.created.toString,
       roles: req.user.roles,
       profileImageURL: req.user.profileImageURL,
-      email: validator.escape(req.user.email),
+      email: req.user.email,
       phone: req.user.phone,
-      contactPreference: validator.escape(req.user.contactPreference),
-      lastName: validator.escape(req.user.lastName),
-      firstName: validator.escape(req.user.firstName),
+      contactPreference: req.user.contactPreference,
+      lastName: req.user.lastName,
+      middleName: req.user.middleName,
+      firstName: req.user.firstName,
       additionalProvidersData: req.user.additionalProvidersData
     };
+    if (req.user.enterprise) {
+      safeUserObject.enterprise = req.user.enterprise;
+    }
+    if (req.user.individual) {
+      safeUserObject.individual = req.user.individual;
+    }
   }
   res.json(safeUserObject || null);
 };

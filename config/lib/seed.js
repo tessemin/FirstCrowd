@@ -129,10 +129,14 @@ module.exports.start = function start(options) {
   }
 
   var User = mongoose.model('User');
+  var Enterprise = mongoose.model('Enterprise');
   return new Promise(function (resolve, reject) {
-
-    var adminAccount = new User(seedOptions.seedAdmin);
-    var userAccount = new User(seedOptions.seedUser);
+    var adminOptions = seedOptions.seedAdmin;
+    adminOptions.enterprise = new Enterprise();
+    var userOptions = seedOptions.seedUser;
+    userOptions.enterprise = new Enterprise();
+    var adminAccount = new User(adminOptions);
+    var userAccount = new User(userOptions);
 
     // If production only seed admin if it does not exist
     if (process.env.NODE_ENV === 'production') {
