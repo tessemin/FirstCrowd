@@ -33,7 +33,7 @@ describe('Enterprise CRUD tests', function () {
   beforeEach(function (done) {
     // Create user credentials
     credentials = {
-      username: 'username',
+      usernameOrEmail: 'username',
       password: 'M3@n.jsI$Aw3$0m3'
     };
 
@@ -44,7 +44,7 @@ describe('Enterprise CRUD tests', function () {
       lastName: 'Name',
       displayName: 'Full Name',
       email: 'test@test.com',
-      username: credentials.username,
+      username: credentials.usernameOrEmail,
       password: credentials.password,
       userRole: {
         worker: true
@@ -57,18 +57,151 @@ describe('Enterprise CRUD tests', function () {
       contactPreference: 'phone',
       provider: 'local'
     });
+    
+    enterprise = new Enterprise({
+        profile: {
+          companyName: 'The Company',
+          countryOfBusiness: 'USA',
+          URL: 'web@sit.com',
+          description: 'A company that sells thinga-ma-jigs, and boopit/sprockets',
+          classifications: [{
+            name: 'Computer Software',
+            code: '11123'
+          },
+          {
+            name: 'agriculture',
+            code: '22222'
+          }],
+          yearEstablished: '2016',
+          employeeCount: '100',
+          companyAddress: {
+            country: 'Germany',
+            streetAddress: '625 Whaler St.',
+            city: 'Rosenburg',
+            state: '',
+            zipCode: '445544'
+          }
+        },
+        partners: {
+          supplier: [{
+            companyName: 'Nuts and bolts',
+            URL: 'nuts@bolts.com'
+          },
+          {
+            companyName: 'Dunder Mifflin Paper Co.',
+            URL: 'dunder.mifflin@paper.com'
+          }],
+          customer: [{
+            companyName: 'Cheese Factory 1',
+            URL: 'cheese@domain.axa'
+          }],
+          competitor: [{
+            companyName: 'What-cha-ma-callits',
+            URL: 'ma.callits@caller.com'
+          },
+          {
+            companyName: 'Hoodly-doos',
+            URL: 'hoodle@doo.doo'
+          },
+          {
+            companyName: 'Big Company',
+            URL: 'big@co.com'
+          }],
+        }
+    });
+    
+    user.enterprise = enterprise.id;
+    enterprise.user = user.id;
 
     // Save a user to the test db and create new Enterprise
-    user.save(function () {
-      enterprise = {
-        name: 'Enterprise name'
-      };
-
-      done();
+    user.save(function (err) {
+      if (err) {
+        console.log(err)
+      }
+      enterprise.save(function(err) {
+        if (err) {
+          console.log(err)
+        }
+        done();
+      });
     });
   });
+  
+  /*
+   * Profile
+   */
+  it.only('should be able to uppdate profile if logged in', function (done) {
+    agent.post('/api/auth/signin')
+      .send(credentials)
+      .expect(200)
+      .end(function (signinErr, signinRes) {
+        // Handle signin error
+        if (signinErr) {
+          return done(signinErr);
+        }
 
-  it('should be able to save a Enterprise if logged in', function (done) {
+        // Get the userId
+        var userId = user.id;
+        
+        var profile = { 
+          profile: {
+            companyName: 'Test Company Name',
+            countryOfBusiness: 'USA',
+            URL: 'web@sit.com',
+            description: 'A company that sells thinga-ma-jigs, and boopit/sprockets',
+            classifications: [{
+              name: 'Computer Software',
+              code: '11123'
+            },
+            {
+              name: 'agriculture',
+              code: '22222'
+            }],
+            yearEstablished: '2016',
+            employeeCount: '100',
+            companyAddress: {
+              country: 'Germany',
+              streetAddress: '625 Whaler St.',
+              city: 'Rosenburg',
+              state: '',
+              zipCode: '445544'
+            }
+          }
+        }
+
+        // Save a new profile
+        agent.post('/enterprises/api/enterprises/profile/')
+          .send(profile)
+          .expect(200)
+          .end(function (enterpriseSaveErr, enterpriseSaveRes) {
+            // Handle Enterprise save error
+            if (enterpriseSaveErr) {
+              return done(enterpriseSaveErr);
+            }
+            
+            // Get this Enterprise
+            agent.get('/enterprises/api/enterprises/getEnterprise/')
+              .end(function (enterprisesGetErr, enterprisesGetRes) {
+                // Handle Enterprises save error
+                if (enterprisesGetErr) {
+                  return done(enterprisesGetErr);
+                }
+
+                // Get Enterprise from res
+                console.log(enterprisesGetRes.body);
+                var enterprise = enterprisesGetRes.body;
+
+                // Set assertions
+                (enterprise.profile.companyName).should.match('Test Company Name');
+
+                // Call the assertion callback
+                done();
+              });
+          });
+      });
+  });
+  
+  it('should not be able to save a uppdate profile if not logged in', function (done) {
     agent.post('/api/auth/signin')
       .send(credentials)
       .expect(200)
