@@ -37,20 +37,32 @@ describe('Configuration Tests:', function () {
           username: 'user_config_test',
           provider: 'local',
           email: 'user_config_test_@localhost.com',
+          phone: '987654321',
           firstName: 'User',
           lastName: 'Local',
           displayName: 'User Local',
-          roles: ['user']
+          roles: ['user'],
+          userRole: {
+            worker: true,
+            requester: true,
+            resourceOwner: true
+          }
         };
 
         admin1 = {
           username: 'admin_config_test',
           provider: 'local',
           email: 'admin_config_test_@localhost.com',
+          phone: '12233445566',
           firstName: 'Admin',
           lastName: 'Local',
           displayName: 'Admin Local',
-          roles: ['user', 'admin']
+          roles: ['user', 'admin'],
+          userRole: {
+            worker: true,
+            requester: true,
+            resourceOwner: true
+          }
         };
 
         userFromSeedConfig = config.seedDB.options.seedUser;
@@ -107,6 +119,7 @@ describe('Configuration Tests:', function () {
 
         // There shouldn't be any errors
         should.not.exist(err);
+
         users.should.be.instanceof(Array).and.have.lengthOf(0);
 
         seed

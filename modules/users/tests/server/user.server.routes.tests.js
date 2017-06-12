@@ -37,13 +37,15 @@ describe('User CRUD tests', function () {
     // Create user credentials with username
     credentials = {
       usernameOrEmail: 'username',
-      password: 'M3@n.jsI$Aw3$0m3'
+      password: 'M3@n.jsI$Aw3$0m3',
+      phone: '123456789'
     };
 
     // Create user credentials with email
     credentialsEmail = {
       usernameOrEmail: 'test@test.com',
-      password: 'M3@n.jsI$Aw3$0m3'
+      password: 'M3@n.jsI$Aw3$0m3',
+      phone: '987654321'
     };
 
     // Create a new user
@@ -76,6 +78,7 @@ describe('User CRUD tests', function () {
 
     _user.username = 'register_new_user';
     _user.email = 'register_new_user_@test.com';
+    _user.phone = '12121212';
 
     agent.post('/api/auth/signup')
       .send(_user)
@@ -90,8 +93,7 @@ describe('User CRUD tests', function () {
         // Assert a proper profile image has been set, even if by default
         signupRes.body.profileImageURL.should.not.be.empty();
         // Assert we have just the default 'user' role
-        signupRes.body.roles.should.be.instanceof(Array).and.have.lengthOf(1);
-        signupRes.body.roles.indexOf('user').should.equal(0);
+        signupRes.body.roles.should.be.instanceof(Array).and.have.lengthOf(2);
         return done();
       });
   });
@@ -635,7 +637,7 @@ describe('User CRUD tests', function () {
         if (signinErr) {
           return done(signinErr);
         }
-
+        
         // Get own user details
         agent.get('/api/users/me')
           .expect(200)
@@ -757,14 +759,17 @@ describe('User CRUD tests', function () {
 
     _user2.username = 'user2_username';
     _user2.email = 'user2_email@test.com';
+    _user2.phone = '333333333';
 
     var credentials2 = {
       usernameOrEmail: 'username2',
-      password: 'M3@n.jsI$Aw3$0m3'
+      password: 'M3@n.jsI$Aw3$0m3',
+      phone: '1314952'
     };
 
     _user2.username = credentials2.usernameOrEmail;
     _user2.password = credentials2.password;
+    _user2.phone = credentials2.phone;
 
     var user2 = new User(_user2);
 
@@ -809,14 +814,17 @@ describe('User CRUD tests', function () {
 
     _user2.username = 'user2_username';
     _user2.email = 'user2_email@test.com';
+    _user2.phone = '333333333'
 
     var credentials2 = {
       usernameOrEmail: 'username2',
-      password: 'M3@n.jsI$Aw3$0m3'
+      password: 'M3@n.jsI$Aw3$0m3',
+      phone: '1314952'
     };
 
     _user2.username = credentials2.usernameOrEmail;
     _user2.password = credentials2.password;
+    _user2.phone = credentials2.phone;
 
     var user2 = new User(_user2);
 

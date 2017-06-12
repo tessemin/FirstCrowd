@@ -25,7 +25,8 @@ exports.signup = function (req, res) {
   // delete req.body.roles;
 
   // Init user and add missing fields
-  var user = new User(req.body);
+  var user = new User(req.body),
+    hasUserRole = false;
   user.provider = 'local';
   user.displayName = user.firstName + ' ' + user.lastName;
 
@@ -46,7 +47,6 @@ exports.signup = function (req, res) {
           });
         }
       });
-      break;
     } else if (user.roles[i] === 'individual') {
       // adds and saves individual object and binds to user
       var individualObj = new Individual();
@@ -60,16 +60,19 @@ exports.signup = function (req, res) {
           });
         }
       });
-      break;
+    } else if (user.roles[i] === 'user') {
+      hasUserRole = true;
     }
   }
   
   // always adds the user role to the user
-  user.roles.push('user');
-  
+  if (!hasUserRole) {
+    user.roles.push('user');
+  }
   // Then save the user
   user.save(function (err) {
     if (err) {
+      console.log(err);
       return res.status(422).send({
         message: errorHandler.getErrorMessage(err)
       });
@@ -100,7 +103,6 @@ exports.signin = function (req, res, next) {
       // Remove sensitive data before login
       user.password = undefined;
       user.salt = undefined;
-
       req.login(user, function (err) {
         if (err) {
           res.status(400).send(err);
