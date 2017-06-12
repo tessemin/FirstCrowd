@@ -21,7 +21,7 @@ var user,
 describe('Enterprise Model Unit Tests:', function() {
   beforeEach(function(done) {
     credentials = {
-      username: 'username',
+      usernameOrEmail: 'username',
       password: 'M3@n.jsI$Aw3$0m3'
     };
     
@@ -31,7 +31,7 @@ describe('Enterprise Model Unit Tests:', function() {
       lastName: 'Name',
       displayName: 'Full Name',
       email: 'test@test.com',
-      username: credentials.username,
+      username: credentials.usernameOrEmail,
       password: credentials.password,
       userRole: {
         worker: true

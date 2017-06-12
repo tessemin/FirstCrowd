@@ -113,7 +113,7 @@ exports.update = function(req, res) {
  * Delete an Enterprise
  */
 exports.delete = function(req, res) {
-  var enterprise = req.enterprise;
+  /* var enterprise = req.enterprise;
 
   enterprise.remove(function(err) {
     if (err) {
@@ -123,14 +123,14 @@ exports.delete = function(req, res) {
     } else {
       res.jsonp(enterprise);
     }
-  });
+  }); */
 };
 
 /**
  * List of Enterprises
  */
 exports.list = function(req, res) {
-  Enterprise.find().sort('-created').populate('user', 'displayName').exec(function(err, enterprises) {
+/*   Enterprise.find().sort('-created').populate('user', 'displayName').exec(function(err, enterprises) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -138,7 +138,7 @@ exports.list = function(req, res) {
     } else {
       res.jsonp(enterprises);
     }
-  });
+  }); */
 };
 
 /**
