@@ -51,9 +51,11 @@ describe('Enterprise CRUD tests', function () {
       },
       roles: [
         'user',
-        'individual'
+        'enterprise'
       ],
       phone: '123456789',
+      contactPreference: 'phone',
+      provider: 'local'
     });
 
     // Save a user to the test db and create new Enterprise

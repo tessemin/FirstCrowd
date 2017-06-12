@@ -12,7 +12,8 @@ var should = require('should'),
  * Globals
  */
 var user,
-  individual;
+  individual,
+  credentials;
 
 /**
  * Unit tests
@@ -37,10 +38,11 @@ describe('Individual Model Unit Tests:', function() {
       },
       roles: [
         'user',
-        'individual'
+        'enterprise'
       ],
       phone: '123456789',
-      
+      contactPreference: 'phone',
+      provider: 'local'
     });
     
     individual = new Individual({
@@ -141,8 +143,8 @@ describe('Individual Model Unit Tests:', function() {
     
     user.individual = individual.id;
 
-    user.save(function() {
-      individual.save(function() {
+    user.save(function(err) {
+      individual.save(function(err) {
         done();
       });
     });
