@@ -130,7 +130,7 @@ describe('Enterprise CRUD tests', function () {
   /*
    * Profile
    */
-  it.only('should be able to uppdate profile if logged in', function (done) {
+  it('should be able to uppdate profile if logged in', function (done) {
     agent.post('/api/auth/signin')
       .send(credentials)
       .expect(200)
