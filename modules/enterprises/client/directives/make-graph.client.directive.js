@@ -13,7 +13,6 @@
       scope: { data: '=' },
       link: function(scope, element, attrs) {
 
-
         var newsvg = d3.select("#graph").append("svg")
               .attr("width", 800)
               .attr("height", 600);
@@ -26,54 +25,75 @@
         var globalY = height;
         var radius = 10;
 
-        var g, g1, g2, g3;
+        var g1, g2, g3, c1, c2, c3;
         getObject().then(function (obj) {
 
-          var disp;
+          var disp, y;
           for (var item in obj){
             if (item === 'supplier') {
-              disp = 200;
+              disp = 100;
             } else if (item === 'competitor') {
-              disp = 400;
+              disp = 300;
             } else if (item === 'customer') {
-              disp = 600;
+              disp = 500;
             }
 
-            g = svg.append("g")
-              .selectAll("circle")
-              .data(obj[item])
-              .enter().append("circle")
-              .attr("cx", function(d) { return disp; })
-              .attr("cy", function(d) { return getY(obj, item); })
-              .attr("r", radius)
-              .on("mouseover", handleMouseOver)
-              .on("mouseout", handleMouseOut)
-              .on("click", handleClick);
+
+            var g = svg.append("g")
+                  .selectAll("rect")
+                  .data(obj[item])
+                  .enter().append("rect")
+                  .attr("x", function(d) { return disp; })
+                  .attr("y", function(d) { return getY(obj, item); })
+                  .attr("rx", 5)
+                  .attr("ry", 5)
+                  .attr("width", 90)
+                  .attr("height", 50)
+                  .style("fill", "white")
+                  .attr("stroke", "black")
+                  .attr("stroke-width", 3)
+                  .on("mouseover", handleMouseOver)
+                  .on("mouseout", handleMouseOut)
+                  .on("click", handleClick);
+
+            var c = svg.append("g")
+                  .selectAll("circle")
+                  .data(obj[item])
+                  .enter().append("circle")
+                  .attr("cx", function(d) { return disp + 10; })
+                  .attr("cy", function(d) { return getY(obj, item) + 10; })
+                  .attr("r", 10)
+                  .attr("fill", "white")
+                  .attr("stroke", "black")
+                  .attr("stroke-width", 3);
 
             if (item === 'supplier') {
               g1 = g;
+              c1 = c;
             } else if (item === 'competitor') {
               g2 = g;
+              c2 = c;
             } else if (item === 'customer') {
               g3 = g;
+              c3 = c;
             }
 
-            globalY = height;
           }
         });
 
+        function resetGlobalY(){
+          globalY = height;
+        }
 
-
-        var tooltip = d3.select('body').append('div')
-              .style('position','absolute')
-              .style('padding','0 10px')
-              .style('opacity',0)
-              .attr('id','tooltip');
 
         function handleMouseOver(d, i) {
-          d3.select(this).attr('r', radius * 2).style('fill', 'orange');
+          // d3.select(this).attr('r', radius * 2).style('fill', 'orange');
 
-          console.log(d);
+          var tooltip = d3.select('body').append('div')
+                .style('position','absolute')
+                .style('padding','0 10px')
+                .style('opacity',0)
+                .attr('id','tooltip');
 
           tooltip.transition()
             .style('opacity', .9)
@@ -81,26 +101,11 @@
           tooltip.html(d.companyName + ": " + d.URL )
             .style('left',(d3.event.pageX - 35) + 'px')
             .style('top', (d3.event.pageY - 30) + 'px');
-
-
-          // svg.append("text").attr('id', 'tooltip')
-          //   .attr('x', function() { return d.x; })
-          //   .attr('y', function() { return d.y; })
-          //   .text('hi');
-            // .text(function() { return d.companyName; });
-
-          // d3.select(this).append("text").attr('x', ).attr('y', )
-          //   .text(function() {
-          //     return 'hi';
-          //   });
         }
 
         function handleMouseOut(d, i) {
-          d3.select(this).attr('r', radius).style('fill', 'black');
-
-          tooltip.transition()
-            .style('opacity', 0);
-          // d3.select('#tooltip').remove();  // Remove text location
+          // d3.select(this).attr('r', radius).style('fill', 'steelblue');
+          d3.select('#tooltip').remove();  // Remove text location
         }
 
         function getY(obj, item) {
@@ -108,7 +113,11 @@
               pixels = height / len;
 
           globalY = globalY - pixels;
-
+          if (globalY - pixels === 0){
+            var y = globalY;
+            globalY = height;
+            return y;
+          }
           return globalY;
         }
 
@@ -122,6 +131,9 @@
                  .on("zoom", zoomed));
 
         function zoomed() {
+          c1.attr("transform", d3.event.transform);
+          c2.attr("transform", d3.event.transform);
+          c3.attr("transform", d3.event.transform);
           g1.attr("transform", d3.event.transform);
           g2.attr("transform", d3.event.transform);
           g3.attr("transform", d3.event.transform);
