@@ -128,6 +128,55 @@ describe('Enterprise CRUD tests', function () {
   });
   
   /*
+   * Get Enterprise
+   */
+  it('should be able to get the enterprise information if logged in', function (done) {
+    agent.post('/api/auth/signin')
+      .send(credentials)
+      .expect(200)
+      .end(function (signinErr, signinRes) {
+        // Handle signin error
+        if (signinErr) {
+          return done(signinErr);
+        }
+        
+        // Get this Enterprise
+        agent.get('/enterprises/api/enterprises/getEnterprise')
+          .end(function (enterprisesGetErr, enterprisesGetRes) {
+            // Handle Enterprises save error
+            if (enterprisesGetErr) {
+              return done(enterprisesGetErr);
+            }
+
+            // Get Enterprise from res
+            var resEnterprise = enterprisesGetRes.body;
+
+            // Set assertions
+            // pulled from get enteprrise
+            (resEnterprise.profile).should.have.properties(['companyName', 'URL', 'countryOfBusiness', 'description', 'classifications', 'yearEstablished', 'employeeCount', 'companyAddress']);
+            resEnterprise.should.have.property('partners');
+            resEnterprise.should.not.have.property('user');
+
+            // Call the assertion callback
+            done();
+          });
+        
+      })
+  });
+  
+  it.only('should not be able to get the enterprise information if not logged in', function (done) {
+    agent.get('/enterprises/api/enterprises/getEnterprise')
+      .end(function (err, res) {
+        if (err) {
+          return done(err);
+        }
+
+        (res.body).should.eql({});
+        return done();
+      });
+  });
+  
+  /*
    * Profile
    */
   it('should be able to uppdate profile if logged in', function (done) {
@@ -188,7 +237,6 @@ describe('Enterprise CRUD tests', function () {
                 }
 
                 // Get Enterprise from res
-                console.log(enterprisesGetRes.body);
                 var enterprise = enterprisesGetRes.body;
 
                 // Set assertions
@@ -201,58 +249,39 @@ describe('Enterprise CRUD tests', function () {
       });
   });
   
-  it('should not be able to save a uppdate profile if not logged in', function (done) {
-    agent.post('/api/auth/signin')
-      .send(credentials)
-      .expect(200)
-      .end(function (signinErr, signinRes) {
-        // Handle signin error
-        if (signinErr) {
-          return done(signinErr);
+  it('should not be able to save entperise profile if not signed in', function (done) {
+    
+    var profile = { 
+      profile: {
+        companyName: 'Test Company Name',
+        countryOfBusiness: 'USA',
+        URL: 'web@sit.com',
+        description: 'A company that sells thinga-ma-jigs, and boopit/sprockets',
+        classifications: [{
+          name: 'Computer Software',
+          code: '11123'
+        },
+        {
+          name: 'agriculture',
+          code: '22222'
+        }],
+        yearEstablished: '2016',
+        employeeCount: '100',
+        companyAddress: {
+          country: 'Germany',
+          streetAddress: '625 Whaler St.',
+          city: 'Rosenburg',
+          state: '',
+          zipCode: '445544'
         }
-
-        // Get the userId
-        var userId = user.id;
-
-        // Save a new Enterprise
-        agent.post('/api/enterprises')
-          .send(enterprise)
-          .expect(200)
-          .end(function (enterpriseSaveErr, enterpriseSaveRes) {
-            // Handle Enterprise save error
-            if (enterpriseSaveErr) {
-              return done(enterpriseSaveErr);
-            }
-
-            // Get a list of Enterprises
-            agent.get('/api/enterprises')
-              .end(function (enterprisesGetErr, enterprisesGetRes) {
-                // Handle Enterprises save error
-                if (enterprisesGetErr) {
-                  return done(enterprisesGetErr);
-                }
-
-                // Get Enterprises list
-                var enterprises = enterprisesGetRes.body;
-
-                // Set assertions
-                (enterprises[0].user._id).should.equal(userId);
-                (enterprises[0].name).should.match('Enterprise name');
-
-                // Call the assertion callback
-                done();
-              });
-          });
-      });
-  });
-
-  it('should not be able to save an Enterprise if not logged in', function (done) {
-    agent.post('/api/enterprises')
+      }
+    }
+    // Save a new Enterprise
+    agent.post('/enterprises/api/enterprises/profile/')
       .send(enterprise)
-      .expect(403)
-      .end(function (enterpriseSaveErr, enterpriseSaveRes) {
-        // Call the assertion callback
-        done(enterpriseSaveErr);
+      .expect(400)
+      .end(function () {
+        done();
       });
   });
 
