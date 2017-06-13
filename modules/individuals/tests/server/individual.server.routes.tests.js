@@ -44,17 +44,18 @@ describe('Individual CRUD tests', function () {
       lastName: 'Name',
       displayName: 'Full Name',
       email: 'test@test.com',
-      username: 'username',
-      password: 'password',
+      username: credentials.username,
+      password: credentials.password,
       userRole: {
         worker: true
       },
       roles: [
         'user',
-        'individual'
+        'enterprise'
       ],
       phone: '123456789',
-      
+      contactPreference: 'phone',
+      provider: 'local'
     });
 
     // Save a user to the test db and create new Individual
