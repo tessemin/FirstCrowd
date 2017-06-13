@@ -44,6 +44,10 @@ var findEnterprise = function(req, res, callBack) {
 var getEnterprise = function(req, res, callBack) {
   if (!superEnterprise) {
     findEnterprise(req, res, callBack);
+  } else if (!req.user) {
+    return res.status(400).send({
+      message: 'User is not logged in'
+    });
   } else if (superEnterprise.id !== req.user.enterprise) {
     if (!mongoose.Types.ObjectId.isValid(req.user.enterprise)) {
       return res.status(400).send({
@@ -60,7 +64,7 @@ var getEnterprise = function(req, res, callBack) {
  * Create a Enterprise
  */
 exports.create = function(req, res) {
-  var enterprise = new Enterprise(req.body);
+  /* var enterprise = new Enterprise(req.body);
   enterprise.user = req.user;
 
   // todo add display name as company name
@@ -73,7 +77,7 @@ exports.create = function(req, res) {
     } else {
       res.jsonp(enterprise);
     }
-  });
+  }); */
 };
 
 /**
@@ -94,7 +98,7 @@ exports.read = function(req, res) {
  * Update a Enterprise
  */
 exports.update = function(req, res) {
-  var enterprise = req.enterprise;
+  /* var enterprise = req.enterprise;
 
   enterprise = _.extend(enterprise, req.body);
 
@@ -106,7 +110,7 @@ exports.update = function(req, res) {
     } else {
       res.jsonp(enterprise);
     }
-  });
+  }); */
 };
 
 /**
@@ -182,18 +186,20 @@ exports.updateProfile = function(req, res) {
           return res.status(422).send({
             message: errorHandler.getErrorMessage(err)
           });
+        } else {
+          user.save(function (err) {
+            if (err) {
+              return res.status(422).send({
+                message: errorHandler.getErrorMessage(err)
+              });
+            } else {
+              coreController.renderIndex(req, res);
+            }
+          });
         }
       });
 
-      user.save(function (err) {
-        if (err) {
-          return res.status(422).send({
-            message: errorHandler.getErrorMessage(err)
-          });
-        } else {
-          coreController.renderIndex(req, res);
-        }
-      });
+      
     });
   } else {
     return res.status(422).send({
@@ -231,7 +237,7 @@ exports.updateSuppliers = function(req, res) {
             message: errorHandler.getErrorMessage('No enterprise suppliers, can\'t find by ID')
           });
         }
-      } else { // make new Competitors
+      } else { // make new Suppliers
         if (enterprise.partners.supplier) { // supplier is not empty
           delete req.body._id;
           enterprise.partners.supplier[enterprise.partners.supplier.length] = req.body;
