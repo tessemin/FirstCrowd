@@ -54,55 +54,55 @@ describe('Enterprise CRUD tests', function () {
       provider: 'local'
     });
     enterprise = new Enterprise({
-        profile: {
-          companyName: 'The Company',
-          countryOfBusiness: 'USA',
-          URL: 'web@sit.com',
-          description: 'A company that sells thinga-ma-jigs, and boopit/sprockets',
-          classifications: [{
-            name: 'Computer Software',
-            code: '11123'
-          },
-          {
-            name: 'agriculture',
-            code: '22222'
-          }],
-          yearEstablished: '2016',
-          employeeCount: '100',
-          companyAddress: {
-            country: 'Germany',
-            streetAddress: '625 Whaler St.',
-            city: 'Rosenburg',
-            state: '',
-            zipCode: '445544'
-          }
+      profile: {
+        companyName: 'The Company',
+        countryOfBusiness: 'USA',
+        URL: 'web@sit.com',
+        description: 'A company that sells thinga-ma-jigs, and boopit/sprockets',
+        classifications: [{
+          name: 'Computer Software',
+          code: '11123'
         },
-        partners: {
-          supplier: [{
-            companyName: 'Nuts and bolts',
-            URL: 'nuts.bolts.com'
-          },
-          {
-            companyName: 'Dunder Mifflin Paper Co.',
-            URL: 'dunder.mifflin.paper.com'
-          }],
-          customer: [{
-            companyName: 'Cheese Factory 1',
-            URL: 'cheesedomain.axa'
-          }],
-          competitor: [{
-            companyName: 'What-cha-ma-callits',
-            URL: 'ma.callits.com'
-          },
-          {
-            companyName: 'Hoodly-doos',
-            URL: 'hoodledoo.doo'
-          },
-          {
-            companyName: 'Big Company',
-            URL: 'bigco.com'
-          }],
+        {
+          name: 'agriculture',
+          code: '22222'
+        }],
+        yearEstablished: '2016',
+        employeeCount: '100',
+        companyAddress: {
+          country: 'Germany',
+          streetAddress: '625 Whaler St.',
+          city: 'Rosenburg',
+          state: '',
+          zipCode: '445544'
         }
+      },
+      partners: {
+        supplier: [{
+          companyName: 'Nuts and bolts',
+          URL: 'nuts.bolts.com'
+        },
+        {
+          companyName: 'Dunder Mifflin Paper Co.',
+          URL: 'dunder.mifflin.paper.com'
+        }],
+        customer: [{
+          companyName: 'Cheese Factory 1',
+          URL: 'cheesedomain.axa'
+        }],
+        competitor: [{
+          companyName: 'What-cha-ma-callits',
+          URL: 'ma.callits.com'
+        },
+        {
+          companyName: 'Hoodly-doos',
+          URL: 'hoodledoo.doo'
+        },
+        {
+          companyName: 'Big Company',
+          URL: 'bigco.com'
+        }]
+      }
     });
     user.enterprise = enterprise.id;
     enterprise.user = user.id;
@@ -147,11 +147,10 @@ describe('Enterprise CRUD tests', function () {
               // Call the assertion callback
               return done();
             });
-          
-        })
+        });
     });
     
-    it('should not be able to get the enterprise information if not logged in', function (done) {
+    it.only('should not be able to get the enterprise information if not logged in', function (done) {
       agent.get('/enterprises/api/enterprises/getEnterprise')
         .expect(400)
         .end(done);
@@ -199,7 +198,7 @@ describe('Enterprise CRUD tests', function () {
                 zipCode: '445544'
               }
             }
-          }
+          };
 
           // Save a new profile
           agent.post('/enterprises/api/enterprises/profile/')
@@ -232,7 +231,7 @@ describe('Enterprise CRUD tests', function () {
         });
     });
     
-     it('should not be able to uppdate an invalid profile', function (done) {
+    it('should not be able to uppdate an invalid profile', function (done) {
       agent.post('/api/auth/signin')
         .send(credentials)
         .expect(200)
@@ -307,7 +306,7 @@ describe('Enterprise CRUD tests', function () {
             zipCode: '445544'
           }
         }
-      }
+      };
       // Save a Enterprise profile
       agent.post('/enterprises/api/enterprises/profile/')
         .send(profile)
@@ -400,7 +399,7 @@ describe('Enterprise CRUD tests', function () {
               var enterprise = enterprisesGetRes.body;
 
               // Set assertions
-              enterprise.partners.supplier[0].companyName = ''
+              enterprise.partners.supplier[0].companyName = '';
               
               // Save a new supplier
               agent.post('/enterprises/api/enterprises/suppliers/')
@@ -427,7 +426,7 @@ describe('Enterprise CRUD tests', function () {
           var supplier = {
             companyName: 'New Company',
             URL: 'new@company.com'
-          }
+          };
           // Save a new supplier
           agent.post('/enterprises/api/enterprises/suppliers/')
             .send(supplier)
@@ -474,7 +473,7 @@ describe('Enterprise CRUD tests', function () {
           var supplier = {
             companyName: '',
             URL: 'new@company.com'
-          }
+          };
           // Save a new supplier
           agent.post('/enterprises/api/enterprises/suppliers/')
             .send(supplier)
@@ -500,7 +499,7 @@ describe('Enterprise CRUD tests', function () {
             _id: '3gh4hjwegbfjhsk',
             companyName: '',
             URL: 'new@company.com'
-          }
+          };
           // Save a new supplier
           agent.post('/enterprises/api/enterprises/suppliers/')
             .send(supplier)
@@ -513,7 +512,7 @@ describe('Enterprise CRUD tests', function () {
       var supplier = {
         companyName: '',
         URL: 'new@company.com'
-      }
+      };
       // Save a new supplier
       agent.post('/enterprises/api/enterprises/suppliers/')
         .send(supplier)
@@ -664,7 +663,7 @@ describe('Enterprise CRUD tests', function () {
               var enterprise = enterprisesGetRes.body;
 
               // Set assertions
-              enterprise.partners.competitor[0].companyName = ''
+              enterprise.partners.competitor[0].companyName = '';
               
               // Save a new competitor
               agent.post('/enterprises/api/enterprises/competitors/')
@@ -691,7 +690,7 @@ describe('Enterprise CRUD tests', function () {
           var competitor = {
             companyName: 'New Company',
             URL: 'new@company.com'
-          }
+          };
           // Save a new competitor
           agent.post('/enterprises/api/enterprises/competitors/')
             .send(competitor)
@@ -738,7 +737,7 @@ describe('Enterprise CRUD tests', function () {
           var competitor = {
             companyName: '',
             URL: 'new@company.com'
-          }
+          };
           // Save a new competitor
           agent.post('/enterprises/api/enterprises/competitors/')
             .send(competitor)
@@ -764,7 +763,7 @@ describe('Enterprise CRUD tests', function () {
             _id: '3gh4hjwegbfjhsk',
             companyName: '',
             URL: 'new@company.com'
-          }
+          };
           // Save a new competitor
           agent.post('/enterprises/api/enterprises/competitors/')
             .send(competitor)
@@ -777,7 +776,7 @@ describe('Enterprise CRUD tests', function () {
       var competitor = {
         companyName: '',
         URL: 'new@company.com'
-      }
+      };
       // Save a new competitor
       agent.post('/enterprises/api/enterprises/competitors/')
         .send(competitor)
@@ -928,7 +927,7 @@ describe('Enterprise CRUD tests', function () {
               var enterprise = enterprisesGetRes.body;
 
               // Set assertions
-              enterprise.partners.customer[0].companyName = ''
+              enterprise.partners.customer[0].companyName = '';
               
               // Save a new customer
               agent.post('/enterprises/api/enterprises/customers/')
@@ -955,7 +954,7 @@ describe('Enterprise CRUD tests', function () {
           var customer = {
             companyName: 'New Company',
             URL: 'new@company.com'
-          }
+          };
           // Save a new customer
           agent.post('/enterprises/api/enterprises/customers/')
             .send(customer)
@@ -1002,7 +1001,7 @@ describe('Enterprise CRUD tests', function () {
           var customer = {
             companyName: '',
             URL: 'new@company.com'
-          }
+          };
           // Save a new customer
           agent.post('/enterprises/api/enterprises/customers/')
             .send(customer)
@@ -1028,7 +1027,7 @@ describe('Enterprise CRUD tests', function () {
             _id: '3gh4hjwegbfjhsk',
             companyName: '',
             URL: 'new@company.com'
-          }
+          };
           // Save a new customer
           agent.post('/enterprises/api/enterprises/customers/')
             .send(customer)
@@ -1041,7 +1040,7 @@ describe('Enterprise CRUD tests', function () {
       var customer = {
         companyName: '',
         URL: 'new@company.com'
-      }
+      };
       // Save a new customer
       agent.post('/enterprises/api/enterprises/customers/')
         .send(customer)
@@ -1113,7 +1112,7 @@ describe('Enterprise CRUD tests', function () {
     if (User) {
       User.remove().exec(function () {
         if (Enterprise) {
-        Enterprise.remove().exec(done);
+          Enterprise.remove().exec(done);
         } else {
           done();
         }

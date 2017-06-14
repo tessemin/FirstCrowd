@@ -46,55 +46,55 @@ describe('Enterprise Model Unit Tests:', function() {
     });
     
     enterprise = new Enterprise({
-        profile: {
-          companyName: 'The Company',
-          countryOfBusiness: 'USA',
-          URL: 'web@sit.com',
-          description: 'A company that sells thinga-ma-jigs, and boopit/sprockets',
-          classifications: [{
-            name: 'Computer Software',
-            code: '11123'
-          },
-          {
-            name: 'agriculture',
-            code: '22222'
-          }],
-          yearEstablished: '2016',
-          employeeCount: '100',
-          companyAddress: {
-            country: 'Germany',
-            streetAddress: '625 Whaler St.',
-            city: 'Rosenburg',
-            state: '',
-            zipCode: '445544'
-          }
+      profile: {
+        companyName: 'The Company',
+        countryOfBusiness: 'USA',
+        URL: 'web@sit.com',
+        description: 'A company that sells thinga-ma-jigs, and boopit/sprockets',
+        classifications: [{
+          name: 'Computer Software',
+          code: '11123'
         },
-        partners: {
-          supplier: [{
-            companyName: 'Nuts and bolts',
-            URL: 'nuts@bolts.com'
-          },
-          {
-            companyName: 'Dunder Mifflin Paper Co.',
-            URL: 'dunder.mifflin@paper.com'
-          }],
-          customer: [{
-            companyName: 'Cheese Factory 1',
-            URL: 'cheese@domain.axa'
-          }],
-          competitor: [{
-            companyName: 'What-cha-ma-callits',
-            URL: 'ma.callits@caller.com'
-          },
-          {
-            companyName: 'Hoodly-doos',
-            URL: 'hoodle@doo.doo'
-          },
-          {
-            companyName: 'Big Company',
-            URL: 'big@co.com'
-          }],
+        {
+          name: 'agriculture',
+          code: '22222'
+        }],
+        yearEstablished: '2016',
+        employeeCount: '100',
+        companyAddress: {
+          country: 'Germany',
+          streetAddress: '625 Whaler St.',
+          city: 'Rosenburg',
+          state: '',
+          zipCode: '445544'
         }
+      },
+      partners: {
+        supplier: [{
+          companyName: 'Nuts and bolts',
+          URL: 'nuts@bolts.com'
+        },
+        {
+          companyName: 'Dunder Mifflin Paper Co.',
+          URL: 'dunder.mifflin@paper.com'
+        }],
+        customer: [{
+          companyName: 'Cheese Factory 1',
+          URL: 'cheese@domain.axa'
+        }],
+        competitor: [{
+          companyName: 'What-cha-ma-callits',
+          URL: 'ma.callits@caller.com'
+        },
+        {
+          companyName: 'Hoodly-doos',
+          URL: 'hoodle@doo.doo'
+        },
+        {
+          companyName: 'Big Company',
+          URL: 'big@co.com'
+        }]
+      }
     });
     
     user.enterprise = enterprise.id;
@@ -159,7 +159,7 @@ describe('Enterprise Model Unit Tests:', function() {
     });
     
     it('should be able to show an error when try to save yearEstablished greater than current year', function(done) {
-      var date = new Date()
+      var date = new Date();
       enterprise.profile.yearEstablished = date.getFullYear() + 1;
 
       enterprise.save(function(err) {
