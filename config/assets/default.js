@@ -25,7 +25,7 @@ module.exports = {
         'public/lib/angular-ui-notification/dist/angular-ui-notification.js',
         'public/lib/angular-ui-router/release/angular-ui-router.js',
         'public/lib/owasp-password-strength-test/owasp-password-strength-test.js',
-	      // added packages
+        // added packages
         'public/lib/angular-bootstrap-multiselect/dist/angular-bootstrap-multiselect.js',
         'public/lib/d3/d3.js',
         'public/lib/angular-multi-select-tree/dist/angular-multi-select-tree-0.1.0.js',
