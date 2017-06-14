@@ -20,7 +20,6 @@ var whitelistedFields = ['firstName', 'lastName', 'contactPreference', 'email', 
  */
 var findIndividual = function(req, res, callBack) {
   var individualID = req.user.individual;
-
   Individual.findById(individualID, function (err, individual) { 
     if (err) {
       return res.status(400).send({
@@ -43,6 +42,10 @@ var findIndividual = function(req, res, callBack) {
 var getIndividual = function(req, res, callBack) {
   if (!superIndividual) {
     findIndividual(req, res, callBack);
+  } else if (!req.user) {
+    return res.status(400).send({
+      message: 'User is not logged in'
+    });
   } else if (superIndividual.id !== req.user.individual) {
     if (!mongoose.Types.ObjectId.isValid(req.user.individual)) {
       return res.status(400).send({
