@@ -150,7 +150,7 @@ describe('Enterprise CRUD tests', function () {
         });
     });
     
-    it.only('should not be able to get the enterprise information if not logged in', function (done) {
+    it('should not be able to get the enterprise information if not logged in', function (done) {
       agent.get('/enterprises/api/enterprises/getEnterprise')
         .expect(400)
         .end(done);
