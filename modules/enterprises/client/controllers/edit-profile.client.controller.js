@@ -1974,7 +1974,7 @@
       EnterprisesService.getEnterprise()
         .then(function(response) {
 
-          let res = response.profile;
+          var res = response.profile;
 
           vm.companyName = res.companyName;
           vm.URL = res.URL;
@@ -1990,7 +1990,7 @@
           vm.country = countryByCode(res.companyAddress.country);
           vm.countryOfBusiness = countryByCode(res.countryOfBusiness);
 
-          let user = Authentication.user;
+          var user = Authentication.user;
 
           vm.email = user.email;
           vm.phone = user.phone;
@@ -1998,7 +1998,7 @@
     }
 
     function countryByCode(code) {
-      for (let i = 0; i < vm.countryList.length; i++) {
+      for (var i = 0; i < vm.countryList.length; i++) {
         if (code === vm.countryList[i].code) {
           return vm.countryList[i];
         }
@@ -2008,7 +2008,7 @@
 
     function saveProfileItems() {
 
-      let profile = {
+      var profile = {
         companyAddress: {},
         classifications: []
       };

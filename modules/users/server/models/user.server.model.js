@@ -67,7 +67,7 @@ var validateUserTypeIsRequired = function() {
   if (this.enterprise || this.individual)
     return true;
   return false;
-}
+};
 
 /**
  * User Schema

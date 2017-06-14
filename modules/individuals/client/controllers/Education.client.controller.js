@@ -19,7 +19,7 @@
     // Fill in the form with current saved data on pageload
     IndividualsService.getIndividual().$promise
       .then(function(data) {
-        for (let i = 0; i < data.schools.length; ++i) {
+        for (var i = 0; i < data.schools.length; ++i) {
           addSchool();
           // Most data needs no special effort
           vm.schools[i] = data.schools[i];

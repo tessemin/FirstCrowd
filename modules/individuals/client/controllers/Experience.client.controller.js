@@ -16,8 +16,8 @@
     
     IndividualsService.getIndividual().$promise
       .then(function(data) {
-        let work = data.jobExperience;
-        for (let i = 0; i < work.length; ++i) {
+        var work = data.jobExperience;
+        for (var i = 0; i < work.length; ++i) {
           addExperience();
           vm.experiences[i].employer = work[i].employer;
           vm.experiences[i].jobTitle = work[i].jobTitle;
