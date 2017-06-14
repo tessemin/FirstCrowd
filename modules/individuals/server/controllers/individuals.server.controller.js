@@ -19,9 +19,7 @@ var whitelistedFields = ['firstName', 'lastName', 'contactPreference', 'email', 
  * Find the Individual
  */
 var findIndividual = function(req, res, callBack) {
-  console.log('trying findIndividual\nreq: ' + JSON.stringify(req, null, ' ') + '\n');
   var individualID = req.user.individual;
-  console.log('findIndividual\n');
   Individual.findById(individualID, function (err, individual) { 
     if (err) {
       return res.status(400).send({
@@ -186,10 +184,8 @@ exports.updateCertification = function(req, res) {
  * Individual Education update
  */
 exports.updateEducation = function(req, res) {
-//  console.log('Request body in server:\n' + JSON.stringify(req.body, null, ' ') + '\n');
   if (req.body) {
     getIndividual(req, res, function(individual) {
-      console.log('got individual?\n' + JSON.stringify(individual) + '\n');
       individual.schools = req.body;
       
       individual.save(function (err) {
@@ -307,9 +303,7 @@ exports.updateBio = function(req, res) {
 };
 
 exports.getIndividual = function(req, res) {
-  console.log('\n\nIn getindividual 1\n\n');
   getIndividual(req, res, function(individual) {
-    console.log('\n\n\n\n\nIn getIndividual\n\n\n\n\n\n\n\n\n');
     var safeIndividualObject = null;
     if (individual) {
       safeIndividualObject = {

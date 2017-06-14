@@ -72,7 +72,6 @@ exports.signup = function (req, res) {
   // Then save the user
   user.save(function (err) {
     if (err) {
-      console.log('422 whens saving user\n\n');
       return res.status(422).send({
         message: errorHandler.getErrorMessage(err)
       });
@@ -96,10 +95,8 @@ exports.signup = function (req, res) {
  * Signin after passport authentication
  */
 exports.signin = function (req, res, next) {
-  console.log(req.body);
   passport.authenticate('local', function (err, user, info) {
     if (err || !user) {
-      console.log('err passporting user\n' + user + '\n' + 'Error: ' + err + '\n');
       res.status(422).send(info);
     } else {
       // Remove sensitive data before login

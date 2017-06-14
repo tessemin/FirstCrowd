@@ -173,7 +173,7 @@ describe('Individual CRUD tests:', function () {
   // Saving new individuals is part of the user unit tests;
   // it's done when creating a new user
   
-  it.only('should be able to get the users Individual if logged in', function (done) {
+  it('should be able to get the users Individual if logged in', function (done) {
     agent.post('/api/auth/signin')
       .send(credentials)
       .expect(200)
@@ -191,10 +191,9 @@ describe('Individual CRUD tests:', function () {
             // Get Individual from res
             var individual = individualGetRes.body;
 
-            // Set assertions
-            console.log(individualGetRes.body);
+            // Check individual's accuracy
             (individual.bio.profession).should.match('sharpening sticks');
-
+            
             // Call the assertion callback
             done();
           });
@@ -202,35 +201,16 @@ describe('Individual CRUD tests:', function () {
   });
   
   it('should not be able to get the users Individual if not logged in', function (done) {
-    agent.post('/individuals/api/individuals/getIndividual/')
-      .send()
-      .expect(403)
+    agent.get('/individuals/api/individuals/getIndividual/')
+      .expect(400)
       .end(function (individualGetErr, individualGetRes) {
+        // Call the assertion callback
         done(individualGetErr);
       });
   });
   
-  it('should be able to save an individuals Certifications', function (done) {
-    agent.post('/api/auth/signin')
-      .send(credentials)
-      .expect(200)
-      .end(function (signinErr, signinRes) {
-        // Handle signin error
-        if (signinErr) {
-          return done(signinErr);
-        }
-        // code goes here not below! force synchronicity!
-      });
-    console.log(individual.certification);
-    agent.post('/individuals/api/individuals/certifications/')
-      .send(individual.certification)
-      .expect(200)
-      .end(function (individualCertificationErr, individualCertificationRes) {
-        done(individualCertificationErr);
-      });
-  });
-  
-  it('should be able to save an individuals Education', function (done) {
+  it('should be able to save an individual\'s Certifications', function (done) {
+    // Login before saving certifications
     agent.post('/api/auth/signin')
       .send(credentials)
       .expect(200)
@@ -238,48 +218,114 @@ describe('Individual CRUD tests:', function () {
         // Handle signin error
         if (signinErr) {
           console.log(signinErr);
-          console.log('BIG PROBLEM');
         } else {
-          console.log('HUGE CONCERNS');
-          console.log('user: ' + JSON.stringify(signinRes.body) + '\n');
+          individual.certification[0].certificationName = 'Planet Hacker Commendation of Merit';
+          
+          agent.post('/individuals/api/individuals/certifications/')
+            .send(individual.certification)
+            .end(function (individualEducationErr, individualEducationRes) {
+              (individualEducationRes.body.certification[0].certificationName).should.eql('Planet Hacker Commendation of Merit');
+              done(individualEducationErr);
+            });
         }
       });
-      
-    individual.schools[0].schoolName = 'Ohio State University';
-    
-    agent.post('/individuals/api/individuals/education/')
-      .send(individual.schools)
-      .end(function (individualEducationErr, individualEducationRes) {
-        console.log('\n'+JSON.stringify(individualEducationRes.body, null, 2));
-        (individualEducationRes.body[0].schoolName).should.eql('Ohio State University');
-        done(individualEducationErr);
+  });
+  
+  it('should be able to save an individual\'s Education', function (done) {
+    agent.post('/api/auth/signin')
+      .send(credentials)
+      .expect(200)
+      .end(function (signinErr, signinRes) {
+        // Handle signin error
+        if (signinErr) {
+          console.log(signinErr);
+        } else {
+          individual.schools[0].schoolName = 'SpaceMaster AstroAcademy';
+          
+          agent.post('/individuals/api/individuals/education/')
+            .send(individual.schools)
+            .end(function (individualEducationErr, individualEducationRes) {
+              (individualEducationRes.body.schools[0].schoolName).should.eql('SpaceMaster AstroAcademy');
+              done(individualEducationErr);
+            });
+        }
       });
   });
   
   it('should be able to save an individuals Skills', function (done) {
-    agent.post('/individuals/api/individuals/skills/')
-      .send(individual.skills)
+    agent.post('/api/auth/signin')
+      .send(credentials)
       .expect(200)
-      .end(function (individualSkillsErr, individualSkillsRes) {
-        done(individualSkillsErr);
+      .end(function (signinErr, signinRes) {
+        // Handle signin error
+        if (signinErr) {
+          console.log(signinErr);
+        } else {
+            var testSkills = [{
+            skill: 'Space piloting',
+            firstUsed: '03/1/2059',
+            locationLearned: 'Earth, Mars'
+          }];
+      
+          agent.post('/individuals/api/individuals/skills/')
+            .send(testSkills)
+            .expect(200)
+            .end(function (individualSkillsErr, individualSkillsRes) {
+              (individualSkillsRes.body.skills[0].locationLearned[0]).should.eql('Earth');
+              (individualSkillsRes.body.skills[0].locationLearned[1]).should.eql('Mars');
+              done(individualSkillsErr);
+            });
+        }
       });
   });
   
   it('should be able to save an individuals Experiences', function (done) {
-    agent.post('/individuals/api/individuals/experiences/')
-      .send(individual.jobExperience)
+    // Login before saving certifications
+    agent.post('/api/auth/signin')
+      .send(credentials)
       .expect(200)
-      .end(function (individualExperiencesErr, individualExperiencesRes) {
-        done(individualExperiencesErr);
+      .end(function (signinErr, signinRes) {
+        // Handle signin error
+        if (signinErr) {
+          console.log(signinErr);
+        } else {
+          var testExperience = [{
+            employer: 'Centauri Institute of Ethical Xenobiology',
+            jobTitle: 'Pilot',
+            description: 'Fly spaceships',
+            skills: 'Piloting, Conversation',
+            startDate: '02/29/2059'
+          }];
+          
+          agent.post('/individuals/api/individuals/experiences/')
+            .send(testExperience)
+            .expect(200)
+            .end(function (individualExperiencesErr, individualExperiencesRes) {
+              (individualExperiencesRes.body.jobExperience[0].employer).should.eql('Centauri Institute of Ethical Xenobiology');
+              done(individualExperiencesErr);
+            });
+        }
       });
   });
   
   it('should be able to save an individuals Bio', function (done) {
-    agent.post('/individuals/api/individuals/bio/')
-      .send(individual.bio)
+    agent.post('/api/auth/signin')
+      .send(credentials)
       .expect(200)
-      .end(function (individualBioErr, individualBioRes) {
-        done(individualBioErr);
+      .end(function (signinErr, signinRes) {
+        // Handle signin error
+        if (signinErr) {
+          console.log(signinErr);
+        } else {
+          individual.bio.profession = 'Pilot';
+          
+          agent.post('/individuals/api/individuals/bio/')
+            .send(individual.bio)
+            .expect(200)
+            .end(function (individualBioErr, individualBioRes) {
+              done(individualBioErr);
+            });
+        }
       });
     
   });
