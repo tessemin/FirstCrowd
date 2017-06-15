@@ -13,16 +13,30 @@
       title: 'Enterprises',
       state: 'enterprises',
       type: 'dropdown',
-      roles: ['enterprise']
+      roles: ['enterprise'],
+      userRoles: ['*']
     });
 
     // Add the dropdown create item
     menuService.addSubMenuItem('topbar', 'enterprises', {
-      title: 'Edit your Enterprise',
+      title: 'Edit Company Profile',
       state: 'enterprises.profile'
-      // roles: ['ent']
     });
-
+    
+    menuService.addSubMenuItem('topbar', 'enterprises', {
+      title: 'Edit Suppliers',
+      state: 'enterprises.supplier'
+    });
+    
+    menuService.addSubMenuItem('topbar', 'enterprises', {
+      title: 'Edit Customers',
+      state: 'enterprises.customer'
+    });
+    
+    menuService.addSubMenuItem('topbar', 'enterprises', {
+      title: 'Edit Competitors',
+      state: 'enterprises.competitor'
+    });
 
     //
     // custom menu items
@@ -30,36 +44,44 @@
     menuService.addMenuItem('topbar', {
       title: 'Enterprise Graph',
       state: 'enterprises.graph',
-      // type: 'dropdown',
-      roles: ['enterprise']
+      //type: 'dropdown',
+      roles: ['enterprise'],
+      userRoles: ['*']
     });
 
     menuService.addMenu('enterprise', {
-      roles: ['*']
+      title: 'Enterprise',
+      state: 'enterprises',
+      roles: ['enterprise'],
+      userRoles: ['*']
     });
 
     menuService.addMenuItem('enterprise', {
       title: 'Company Profile',
       state: 'enterprises.profile',
-      roles: ['enterprise']
+      roles: ['enterprise'],
+      userRoles: ['*']
     });
 
     menuService.addMenuItem('enterprise', {
       title: 'View Suppliers',
       state: 'enterprises.supplier',
-      roles: ['enterprise']
+      roles: ['enterprise'],
+      userRoles: ['*']
     });
 
     menuService.addMenuItem('enterprise', {
       title: 'View Customers',
       state: 'enterprises.customer',
-      roles: ['enterprise']
+      roles: ['enterprise'],
+      userRoles: ['*']
     });
 
     menuService.addMenuItem('enterprise', {
       title: 'View Competitors',
       state: 'enterprises.competitor',
-      roles: ['enterprise']
+      roles: ['enterprise'],
+      userRoles: ['*']
     });
   }
 }());

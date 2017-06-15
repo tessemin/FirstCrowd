@@ -30,51 +30,6 @@
           pageTitle: 'Settings'
         }
       })
-      .state('settings.bio', {
-        url: '/bio',
-        templateUrl: '/modules/users/client/views/settings/individual/edit-bio.client.view.html',
-        controller: 'BioController',
-        controllerAs: 'vm',
-        data: {
-          pageTitle: 'Edit Bio'
-        }
-      })
-      .state('settings.certification', {
-        url: '/certification',
-        templateUrl: '/modules/users/client/views/settings/individual/edit-certification.client.view.html',
-        controller: 'CertController',
-        controllerAs: 'vm',
-        data: {
-          pageTitle: 'Edit Certification'
-        }
-      })
-      .state('settings.education', {
-        url: '/education',
-        templateUrl: '/modules/users/client/views/settings/individual/edit-education.client.view.html',
-        controller: 'EducationController',
-        controllerAs: 'vm',
-        data: {
-          pageTitle: 'Edit Education'
-        }
-      })
-      .state('settings.skill', {
-        url: '/skill',
-        templateUrl: '/modules/users/client/views/settings/individual/edit-skill.client.view.html',
-        controller: 'SkillController',
-        controllerAs: 'vm',
-        data: {
-          pageTitle: 'Edit Skill'
-        }
-      })
-      .state('settings.experience', {
-        url: '/experience',
-        templateUrl: '/modules/users/client/views/settings/individual/edit-work-experience.client.view.html',
-        controller: 'ExperienceController',
-        controllerAs: 'vm',
-        data: {
-          pageTitle: 'Edit Work Experience'
-        }
-      })
       .state('settings.password', {
         url: '/password',
         templateUrl: '/modules/users/client/views/settings/change-password.client.view.html',

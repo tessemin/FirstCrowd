@@ -9,27 +9,23 @@
 
   function menuConfig(menuService) {
     menuService.addMenuItem('topbar', {
-      title: 'List Task',
+      title: 'Requester',
+      state: 'home',
+      userRole: ['requester'],
+      roles: ['*']
+    });
+    menuService.addMenuItem('topbar', {
+      title: 'Worker',
       state: 'home',
       // type: 'dropdown',
+      userRole: ['worker'],
       roles: ['*']
     });
     menuService.addMenuItem('topbar', {
-      title: 'Do Task',
+      title: 'Resource Owner',
       state: 'home',
       // type: 'dropdown',
-      roles: ['*']
-    });
-    menuService.addMenuItem('topbar', {
-      title: 'Labor Market',
-      state: 'authentication.signup',
-      // type: 'dropdown',
-      roles: ['*']
-    });
-    menuService.addMenuItem('topbar', {
-      title: 'Resource Market',
-      state: 'authentication.signin',
-      // type: 'dropdown',
+      userRole: ['resourceOwner'],
       roles: ['*']
     });
     // // Add the dropdown list item

@@ -84,23 +84,11 @@ var UserSchema = new Schema({
     validate: [validateUserTypeIsRequired, 'Please provide one user type']
   },
   userRole: {
-    type: {
-      worker: {
-        type: Boolean
-      },
-      requester: {
-        type: Boolean
-      },
-      resourceOwner: {
-        type: Boolean
-      }
-    },
-    default: {
-      worker: false,
-      requester: false,
-      resourceOwner: false
-    },
-    validate: [validateUserRoleIsRequired, 'Please provide one user role']
+    type: [{
+      type: String,
+      enum: ['worker', 'requester', 'resourceOwner']
+    }],
+    required: 'Please provide at least one role'
   },
   firstName: {
     type: String,
