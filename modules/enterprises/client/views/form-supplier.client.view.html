@@ -3,7 +3,7 @@
     <form name="vm.supplierForm" class="form-horizontal" ng-submit="vm.saveSupplier(vm.supplierForm.$valid)" novalidate>
       <fieldset>
         <div class="form-group" show-errors>
-          <h3>{{vm.selectedId ? 'Edit Customer ' + vm.company:'New Customer'}}</h3>
+          <h3>{{vm.selectedId ? 'Edit Supplier ' + vm.company:'New Supplier'}}</h3>
           <label for="companyName">Company Name</label>
           <input type="text" id="companyName" name="companyName" class="form-control" ng-model="vm.selectedCompany" placeholder="Company Name" required autofocus>
           <div ng-messages="vm.supplierForm.companyName.$error" role="alert">
