@@ -20,6 +20,7 @@ exports.renderIndex = function (req, res) {
       profileImageURL: req.user.profileImageURL,
       email: validator.escape(req.user.email),
       phone: req.user.phone,
+      contactPreference: req.user.contactPreference,
       lastName: validator.escape(req.user.lastName),
       middleName: validator.escape(req.user.middleName),
       firstName: validator.escape(req.user.firstName),
