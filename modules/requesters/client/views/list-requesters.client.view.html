@@ -1,0 +1,22 @@
+<section>
+  <div class="page-header">
+    <h1>Requesters</h1>
+  </div>
+  <div class="list-group">
+    <a ng-repeat="requester in vm.requesters"
+       ui-sref="requesters.view({ requesterId: requester._id })"
+       class="list-group-item">
+      <small class="list-group-item-text">
+        Posted on
+        <span ng-bind="requester.created | date:'mediumDate'"></span>
+        by
+        <span ng-if="requester.user" ng-bind="requester.user.displayName"></span>
+        <span ng-if="!requester.user">Deleted User</span>
+      </small>
+      <h4 class="list-group-item-heading" ng-bind="requester.name"></h4>
+    </a>
+  </div>
+  <div class="alert alert-warning text-center" ng-if="vm.requesters.$resolved && !vm.requesters.length">
+    No Requesters yet, why don't you <a ui-sref="requesters.create">create one</a>?
+  </div>
+</section>
