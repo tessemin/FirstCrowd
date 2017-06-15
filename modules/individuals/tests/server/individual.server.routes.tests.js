@@ -73,7 +73,7 @@ describe('Individual CRUD tests:', function () {
         }
       },
       schools: [{
-        schoolName: 'Southeaster Illinois College',
+        schoolName: 'Southeastern Illinois College',
         startDate: '03/10/2014',
         endDate: '03/10/2016',
         degrees: [{
@@ -89,7 +89,7 @@ describe('Individual CRUD tests:', function () {
           schoolZipCode: '62946'
         }
       }, {
-        schoolName: 'Sother Illinois University',
+        schoolName: 'Southern Illinois University',
         startDate: '08/10/2014',
         degrees: [{
           name: 'Computer Science',
@@ -209,7 +209,7 @@ describe('Individual CRUD tests:', function () {
       });
   });
   
-  it('should be able to save an individual\'s Certifications', function (done) {
+  it('should be able to update an individual\'s Certifications', function (done) {
     // Login before saving certifications
     agent.post('/api/auth/signin')
       .send(credentials)
@@ -231,7 +231,42 @@ describe('Individual CRUD tests:', function () {
       });
   });
   
-  it('should be able to save an individual\'s Education', function (done) {
+  it('should be able to create a new Certification', function (done) {
+    // Login before saving certifications
+    agent.post('/api/auth/signin')
+      .send(credentials)
+      .expect(200)
+      .end(function (signinErr, signinRes) {
+        // Handle signin error
+        if (signinErr) {
+          console.log(signinErr);
+        } else {
+          var testCertification = {
+            certificationName: 'Planet Hacker Commendation of Merit',
+            institution: 'White Hat Data Mining Co-op',
+            dateIssued: '09/27/2057',
+            dateExpired: '',
+            description: 'For demonstrated excellence in hacking planets'
+          };
+          
+          individual.certification.push(testCertification);
+          
+          agent.post('/individuals/api/individuals/certifications/')
+            .send(individual.certification)
+            .end(function (individualEducationErr, individualEducationRes) {
+              var responseCertification = individualEducationRes.body.certification.slice(-1)[0];
+              (responseCertification.certificationName).should.eql(testCertification.certificationName);
+              (responseCertification.institution).should.eql(testCertification.institution);
+              (responseCertification.description).should.eql(testCertification.description);
+              Date(responseCertification.dateIssued).should.eql(Date(testCertification.dateIssued));
+              Date(responseCertification.dateExpired).should.eql(Date(testCertification.dateExpired));
+              done(individualEducationErr);
+            });
+        }
+      });
+  });
+  
+  it('should be able to update an individual\'s Education', function (done) {
     agent.post('/api/auth/signin')
       .send(credentials)
       .expect(200)
@@ -252,7 +287,54 @@ describe('Individual CRUD tests:', function () {
       });
   });
   
-  it('should be able to save an individuals Skills', function (done) {
+  it('should be able to add a new school to education', function (done) {
+    agent.post('/api/auth/signin')
+      .send(credentials)
+      .expect(200)
+      .end(function (signinErr, signinRes) {
+        // Handle signin error
+        if (signinErr) {
+          console.log(signinErr);
+        } else {
+          var testSchool = {
+            schoolName: 'SpaceMaster AstroAcademy',
+            startDate: '03/10/2059',
+            endDate: '03/10/2061',
+            degrees: [{
+              name: 'Astronavigation',
+              degreeLevel: 'Associates',
+              concentration: ['Merchant Astro', 'Light Freighter']
+            }],
+            address: {
+              schoolCountry: 'Am',
+              schoolStreetAddress: '2039 Space Ramp Road',
+              schoolCity: 'Ladderville',
+              schoolState: 'Illinois',
+              schoolZipCode: 62946
+            }
+          };
+          individual.schools.push(testSchool);
+          
+          agent.post('/individuals/api/individuals/education/')
+            .send(individual.schools)
+            .end(function (individualEducationErr, individualEducationRes) {
+              var resSchool = individualEducationRes.body.schools.slice(-1)[0];
+              (resSchool.schoolName).should.eql(testSchool.schoolName);
+              for (var deg = 0; deg < resSchool.degrees.length; ++deg) {
+                (resSchool.degrees[deg].name).should.eql(testSchool.degrees[deg].name);
+                (resSchool.degrees[deg].degreeLevel).should.eql(testSchool.degrees[deg].degreeLevel);
+                (resSchool.degrees[deg].concentration).should.eql(testSchool.degrees[deg].concentration);
+              }
+              (resSchool.address).should.eql(testSchool.address);
+              Date(resSchool.startDate).should.eql(Date(testSchool.startDate));
+              Date(resSchool.endDate).should.eql(Date(testSchool.endDate));
+              done(individualEducationErr);
+            });
+        }
+      });
+  });
+  
+  it('should be able to update an individual\'s Skills', function (done) {
     agent.post('/api/auth/signin')
       .send(credentials)
       .expect(200)
@@ -279,7 +361,36 @@ describe('Individual CRUD tests:', function () {
       });
   });
   
-  it('should be able to save an individuals Experiences', function (done) {
+  it.skip('should be able to create a new skill', function (done) {
+    agent.post('/api/auth/signin')
+      .send(credentials)
+      .expect(200)
+      .end(function (signinErr, signinRes) {
+        // Handle signin error
+        if (signinErr) {
+          console.log(signinErr);
+        } else {
+            var testSkill = {
+            skill: 'Space piloting',
+            firstUsed: '03/1/2059',
+            locationLearned: 'Earth, Mars'
+          };
+          
+          individual.skills.push(testSkill);
+      
+          agent.post('/individuals/api/individuals/skills/')
+            .send(individual.skills)
+            .expect(200)
+            .end(function (individualSkillsErr, individualSkillsRes) {
+              (individualSkillsRes.body.skills[0].locationLearned[0]).should.eql('Earth');
+              (individualSkillsRes.body.skills[0].locationLearned[1]).should.eql('Mars');
+              done(individualSkillsErr);
+            });
+        }
+      });
+  });
+  
+  it('should be able to update an individual\'s Experiences', function (done) {
     // Login before saving certifications
     agent.post('/api/auth/signin')
       .send(credentials)
@@ -308,7 +419,47 @@ describe('Individual CRUD tests:', function () {
       });
   });
   
-  it('should be able to save an individuals Bio', function (done) {
+  // Talk to Adam about making the backend less inflexible
+  it.skip('should be able to create a new Experience', function (done) {
+    // Login before saving certifications
+    agent.post('/api/auth/signin')
+      .send(credentials)
+      .expect(200)
+      .end(function (signinErr, signinRes) {
+        // Handle signin error
+        if (signinErr) {
+          console.log(signinErr);
+        } else {
+          var testExperience = [{
+            employer: 'Centauri Institute of Ethical Xenobiology',
+            jobTitle: 'Pilot',
+            description: 'Fly spaceships',
+            skills: 'Piloting, Conversation',
+            startDate: '02/29/2059'
+          }];
+          
+          individual.jobExperience[0].skills = individual.jobExperience[0].skills.join(', ');
+          testExperience.push(individual.jobExperience[0]);
+          
+          console.log(testExperience);
+          
+          agent.post('/individuals/api/individuals/experiences/')
+            .send(testExperience)
+            .expect(200)
+            .end(function (individualExperiencesErr, individualExperiencesRes) {
+              var responseExperience = individualExperienceRes.body.jobExperience.slice(-1)[0];
+              (responseExperience.employer).should.eql(testExperience.employer);
+              (responseExperience.jobTitle).should.eql(testExperience.jobTitle);
+              (responseExperience.description).should.eql(testExperience.description);
+              (responseExperience.skills.join(', ')).should.eql(testExperience.skills);
+              Date(responseExperience.startDate).should.eql(Date(testExperience.startDate));
+              done(individualExperiencesErr);
+            });
+        }
+      });
+  });
+  
+  it('should be able to update an individual\'s Bio', function (done) {
     agent.post('/api/auth/signin')
       .send(credentials)
       .expect(200)
