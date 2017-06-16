@@ -381,6 +381,7 @@ exports.getEnterprise = function(req, res) {
     var safeEnterpriseObject = null;
     if (enterprise) {
       safeEnterpriseObject = {
+        _id: enterprise._id,
         profile: {
           companyName: enterprise.profile.companyName,
           URL: enterprise.profile.URL,
