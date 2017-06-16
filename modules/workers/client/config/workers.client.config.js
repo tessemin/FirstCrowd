@@ -13,6 +13,7 @@
       title: 'Workers',
       state: 'workers',
       type: 'dropdown',
+      userRole: ['worker'],
       roles: ['*']
     });
 
@@ -26,6 +27,7 @@
     menuService.addSubMenuItem('topbar', 'workers', {
       title: 'Create Worker',
       state: 'workers.create',
+      userRole: ['worker'],
       roles: ['user']
     });
   }

@@ -8,26 +8,20 @@
   menuConfig.$inject = ['menuService'];
 
   function menuConfig(menuService) {
-    menuService.addMenuItem('topbar', {
+/*     menuService.addMenuItem('topbar', {
       title: 'Requester',
       state: 'home',
       userRole: ['requester'],
       roles: ['*']
     });
-    menuService.addMenuItem('topbar', {
-      title: 'Worker',
-      state: 'home',
-      // type: 'dropdown',
-      userRole: ['worker'],
-      roles: ['*']
-    });
+    
     menuService.addMenuItem('topbar', {
       title: 'Resource Owner',
       state: 'home',
       // type: 'dropdown',
       userRole: ['resourceOwner'],
       roles: ['*']
-    });
+    }); */
     // // Add the dropdown list item
     // menuService.addSubMenuItem('topbar', 'articles', {
     //   title: 'List Articles',

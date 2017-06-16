@@ -39,6 +39,10 @@
       signin: {
         method: 'POST',
         url: '/api/auth/signin'
+      },
+      updateRoles: {
+        method: 'POST',
+        url: '/api/users/updateRoles'
       }
     });
 

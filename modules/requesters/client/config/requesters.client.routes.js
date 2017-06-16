@@ -16,7 +16,7 @@
       })
       .state('requesters.list', {
         url: '',
-        templateUrl: 'modules/requesters/client/views/list-requesters.client.view.html',
+        templateUrl: '/modules/requesters/client/views/list-requesters.client.view.html',
         controller: 'RequestersListController',
         controllerAs: 'vm',
         data: {
@@ -25,7 +25,7 @@
       })
       .state('requesters.create', {
         url: '/create',
-        templateUrl: 'modules/requesters/client/views/form-requester.client.view.html',
+        templateUrl: '/modules/requesters/client/views/form-requester.client.view.html',
         controller: 'RequestersController',
         controllerAs: 'vm',
         resolve: {
@@ -38,7 +38,7 @@
       })
       .state('requesters.edit', {
         url: '/:requesterId/edit',
-        templateUrl: 'modules/requesters/client/views/form-requester.client.view.html',
+        templateUrl: '/modules/requesters/client/views/form-requester.client.view.html',
         controller: 'RequestersController',
         controllerAs: 'vm',
         resolve: {
@@ -51,7 +51,7 @@
       })
       .state('requesters.view', {
         url: '/:requesterId',
-        templateUrl: 'modules/requesters/client/views/view-requester.client.view.html',
+        templateUrl: '/modules/requesters/client/views/view-requester.client.view.html',
         controller: 'RequestersController',
         controllerAs: 'vm',
         resolve: {

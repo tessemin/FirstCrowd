@@ -9,6 +9,11 @@
   routeConfig.$inject = ['$stateProvider'];
 
   function routeConfig($stateProvider) {
+        
+    function changeRole(UsersService, role) {
+      return UsersService.updateRoles({role: role});
+    }
+
     // Users state routing
     $stateProvider
       .state('settings', {
@@ -19,6 +24,36 @@
         controllerAs: 'vm',
         data: {
           roles: ['user', 'admin']
+        }
+      })
+      .state('settings.requester', {
+        url: '/transferRequester',
+        templateUrl: '/modules/core/client/views/home.client.view.html',
+        controllerAs: 'vm',
+        resolve: {
+          user: function (UsersService) {
+            changeRole(UsersService, 'requester');
+          }
+        }
+      })
+      .state('settings.worker', {
+        url: '/transferRequester',
+        templateUrl: '/modules/core/client/views/home.client.view.html',
+        controllerAs: 'vm',
+        resolve: {
+          user: function (UsersService) {
+            changeRole(UsersService, 'worker');
+          }
+        }
+      })
+      .state('settings.resourceOwner', {
+        url: '/transferRequester',
+        templateUrl: '/modules/core/client/views/home.client.view.html',
+        controllerAs: 'vm',
+        resolve: {
+          user: function (UsersService) {
+            changeRole(UsersService, 'resourceOwner');
+          }
         }
       })
       .state('settings.profile', {

@@ -13,8 +13,7 @@
       title: 'Individuals',
       state: 'individuals',
       type: 'dropdown',
-      roles: ['individual'],
-      userRoles: ['*']
+      roles: ['individual']
     });
     
     // Add the dropdown list item
@@ -60,43 +59,37 @@
       title: 'Individuals',
       state: 'individuals',
       type: 'dropdown',
-      roles: ['*'],
-      userRoles: ['*']
+      roles: ['*']
     });
     
     menuService.addMenuItem('individual', {
       title: 'Edit Bio',
       state: 'settings.bio',
-      roles: ['individual'],
-      userRoles: ['*']
+      roles: ['individual']
     });
     
     menuService.addMenuItem('individual', {
       title: 'Edit Education',
       state: 'settings.education',
-      roles: ['individual'],
-      userRoles: ['*']
+      roles: ['individual']
     });
 
     menuService.addMenuItem('individual', {
       title: 'Edit Certificatons',
       state: 'settings.certification',
-      roles: ['individual'],
-      userRoles: ['*']
+      roles: ['individual']
     })
 
     menuService.addMenuItem('individual', {
       title: 'Edit Skills',
       state: 'settings.skill',
-      roles: ['individual'],
-      userRoles: ['*']
+      roles: ['individual']
     });
 
     menuService.addMenuItem('individual', {
       title: 'Edit Work Experience',
       state: 'settings.experience',
-      roles: ['individual'],
-      userRoles: ['*']
+      roles: ['individual']
     });
   }
 }());

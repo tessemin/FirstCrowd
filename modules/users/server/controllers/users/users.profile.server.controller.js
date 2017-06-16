@@ -14,6 +14,7 @@ var _ = require('lodash'),
   validator = require('validator');
 
 var whitelistedFields = ['contactPreference', 'email', 'phone', 'username', 'middleName', 'displayName', 'firstName', 'lastName'];
+var rollWhitelistedData = ['requester', 'resourceOwner', 'worker'];
 
 /**
  * Update user details
@@ -47,6 +48,63 @@ exports.update = function (req, res) {
   } else {
     res.status(401).send({
       message: 'User is not signed in'
+    });
+  }
+};
+
+/**
+ * Update white listed roles
+ */
+exports.updateRoles = function (req, res) {
+  var user = req.user;
+  if (req.body) {
+    if (user.roles.indexOf('worker') > -1) {
+      user.roles.splice(user.roles.indexOf('worker'), 1);
+    }
+    if (user.roles.indexOf('requester') > -1) {
+      user.roles.splice(user.roles.indexOf('worker'), 1);
+    }
+    if (user.roles.indexOf('resourceOwner') > -1) {
+      user.roles.splice(user.roles.indexOf('worker'), 1);
+    }
+    if (user) {
+      var found = false;
+      for (var i = 0; i < rollWhitelistedData.length; i++) {
+        if (rollWhitelistedData[i] === req.body.role) {
+          user.roles.push(req.body.role);
+          user.save(function (err) {
+            if (err) {
+              console.log(err)
+              return res.status(422).send({
+                message: errorHandler.getErrorMessage(err)
+              });
+            } else {
+              req.login(user, function (err) {
+                if (err) {
+                  res.status(400).send(err);
+                } else {
+                  res.json(user);
+                }
+              });
+            }
+          });
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        return res.status(422).send({
+          message: 'Cannot update that to that View'
+        });
+      }
+    } else {
+      res.status(401).send({
+        message: 'User is not signed in'
+      });
+    }
+  } else {
+    return res.status(422).send({
+      message: 'No new role specified'
     });
   }
 };

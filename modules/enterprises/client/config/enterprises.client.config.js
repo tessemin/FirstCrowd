@@ -13,8 +13,7 @@
       title: 'Enterprises',
       state: 'enterprises',
       type: 'dropdown',
-      roles: ['enterprise'],
-      userRoles: ['*']
+      roles: ['enterprise']
     });
 
     // Add the dropdown create item
@@ -45,43 +44,37 @@
       title: 'Enterprise Graph',
       state: 'enterprises.graph',
       //type: 'dropdown',
-      roles: ['enterprise'],
-      userRoles: ['*']
+      roles: ['enterprise']
     });
 
     menuService.addMenu('enterprise', {
       title: 'Enterprise',
       state: 'enterprises',
-      roles: ['enterprise'],
-      userRoles: ['*']
+      roles: ['enterprise']
     });
 
     menuService.addMenuItem('enterprise', {
       title: 'Company Profile',
       state: 'enterprises.profile',
-      roles: ['enterprise'],
-      userRoles: ['*']
+      roles: ['enterprise']
     });
 
     menuService.addMenuItem('enterprise', {
       title: 'View Suppliers',
       state: 'enterprises.supplier',
-      roles: ['enterprise'],
-      userRoles: ['*']
+      roles: ['enterprise']
     });
 
     menuService.addMenuItem('enterprise', {
       title: 'View Customers',
       state: 'enterprises.customer',
-      roles: ['enterprise'],
-      userRoles: ['*']
+      roles: ['enterprise']
     });
 
     menuService.addMenuItem('enterprise', {
       title: 'View Competitors',
       state: 'enterprises.competitor',
-      roles: ['enterprise'],
-      userRoles: ['*']
+      roles: ['enterprise']
     });
   }
 }());

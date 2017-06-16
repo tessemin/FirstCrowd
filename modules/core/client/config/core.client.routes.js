@@ -6,7 +6,7 @@
     .config(routeConfig);
 
   routeConfig.$inject = ['$stateProvider', '$urlRouterProvider'];
-
+  
   function routeConfig($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.rule(function ($injector, $location) {
       var path = $location.path();
