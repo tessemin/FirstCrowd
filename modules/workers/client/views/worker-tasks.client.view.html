@@ -1,0 +1,17 @@
+<section class="row">
+  <div class="col-md-offset-1 col-md-1">
+    Task ID
+    <div ng-repeat="task in vm.tasks">
+      {{task._id}}
+    </div>
+  </div>
+  <div class="col-md-3">
+    Title
+  </div>
+    <div class="text-center form-group">
+      <div ng-if="vm.tasks.length === 0">
+        You have no active tasks.
+      </div>
+    </div>
+  </div>
+</section>

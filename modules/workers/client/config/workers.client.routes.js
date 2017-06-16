@@ -12,11 +12,17 @@
       .state('workers', {
         abstract: true,
         url: '/workers',
-        template: '<ui-view/>'
+        templateUrl: '/modules/workers/client/views/worker-tasks-filterbar.client.view.html'
+      })
+      .state('workers.tasks', {
+        url: '/tasks',
+        templateUrl: '/modules/workers/client/views/worker-tasks.client.view.html',
+        controller: 'WorkerTasksController',
+        controllerAs: 'vm'
       })
       .state('workers.list', {
         url: '',
-        templateUrl: 'modules/workers/client/views/list-workers.client.view.html',
+        templateUrl: '/modules/workers/client/views/list-workers.client.view.html',
         controller: 'WorkersListController',
         controllerAs: 'vm',
         data: {
@@ -25,7 +31,7 @@
       })
       .state('workers.create', {
         url: '/create',
-        templateUrl: 'modules/workers/client/views/form-worker.client.view.html',
+        templateUrl: '/modules/workers/client/views/form-worker.client.view.html',
         controller: 'WorkersController',
         controllerAs: 'vm',
         resolve: {
@@ -38,7 +44,7 @@
       })
       .state('workers.edit', {
         url: '/:workerId/edit',
-        templateUrl: 'modules/workers/client/views/form-worker.client.view.html',
+        templateUrl: '/modules/workers/client/views/form-worker.client.view.html',
         controller: 'WorkersController',
         controllerAs: 'vm',
         resolve: {
@@ -51,7 +57,7 @@
       })
       .state('workers.view', {
         url: '/:workerId',
-        templateUrl: 'modules/workers/client/views/view-worker.client.view.html',
+        templateUrl: '/modules/workers/client/views/view-worker.client.view.html',
         controller: 'WorkersController',
         controllerAs: 'vm',
         resolve: {
