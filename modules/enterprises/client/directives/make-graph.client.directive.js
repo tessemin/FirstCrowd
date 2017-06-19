@@ -34,8 +34,8 @@ var simulation = d3.forceSimulation()
 
               var link_force = d3.forceLink(links_data)
                       .id(function(d) { return d._id; })
-                      .distance(5)
-                      .strength(0);
+                      .distance(200)
+                      .strength(1);
 
 var charge_force = d3.forceManyBody()
     .strength(-30);
@@ -123,15 +123,14 @@ function drag_start(d) {
 }
 
               function ticked() {
+                  node
+                      .attr("cx", function(d) { return d.x; })
+                      .attr("cy", function(d) { return d.y; });
                   link
                       .attr("x1", function(d) { return d.source.x; })
                       .attr("y1", function(d) { return d.source.y; })
                       .attr("x2", function(d) { return d.target.x; })
                       .attr("y2", function(d) { return d.target.y; });
-
-                  node
-                      .attr("cx", function(d) { return d.x; })
-                      .attr("cy", function(d) { return d.y; });
               }
 
 
