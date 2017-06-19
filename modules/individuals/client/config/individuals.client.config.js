@@ -10,7 +10,7 @@
   function menuConfig(menuService) {
     // Set top bar menu items
     menuService.addMenuItem('topbar', {
-      title: 'Individuals',
+      title: 'Profile',
       state: 'individuals',
       type: 'dropdown',
       roles: ['individual']

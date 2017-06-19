@@ -148,6 +148,60 @@ var EnterpriseUserSchema = new Schema({
         validate: [validateURL, 'Website must be in form: \'site.domain\'']
       }
     }]
+  },
+  requester: {
+    activeTasks: [{
+      type: Schema.Types.ObjectId
+    }],
+    suspendedTasks: [{
+      type: Schema.Types.ObjectId
+    }],
+    acceptedTasks: [{
+      type: Schema.Types.ObjectId
+    }],
+    failedTasks: [{
+      type: Schema.Types.ObjectId
+    }],
+    acceptanceRate: {
+      type: Number,
+      default: 0.0
+    },
+    interestedCategories: [{
+      type: Schema.Types.Mixed
+    }],
+    workerRatings: [{
+      workerID: Schema.Types.ObjectId,
+      overAllRating: {
+        type: Number,
+        default: 0.0
+      },
+      clearness: {
+        type: Number,
+        default: 0.0
+      },
+      resonableness: {
+        type: Number,
+        default: 0.0
+      },
+      responseTime: {
+        type: Number,
+        default: 0.0
+      }
+    }],
+    workersPerCategory: {
+      type: Schema.Types.Mixed
+    },
+    totalPayments: {
+      type: Number,
+      default: 0.0
+    },
+    numberOfHiredWorkers: {
+      type: Number,
+      default: 0
+    }
+  },
+  worker: {
+    
   }
 });
 
