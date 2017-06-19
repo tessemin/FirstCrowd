@@ -79,7 +79,6 @@ exports.updateRoles = function (req, res) {
                 message: errorHandler.getErrorMessage(err)
               });
             } else {
-              //coreController.renderIndex({user: user}, res);
               res.json(user);
             }
           });

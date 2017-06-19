@@ -17,7 +17,7 @@
     });
 
     // Add the dropdown list item
-    menuService.addSubMenuItem('topbar', 'requesters', {
+/*     menuService.addSubMenuItem('topbar', 'requesters', {
       title: 'List Requesters',
       state: 'requesters.list',
       roles: ['requester']
@@ -27,6 +27,13 @@
     menuService.addSubMenuItem('topbar', 'requesters', {
       title: 'Create Requester',
       state: 'requesters.create',
+      roles: ['requester']
+    }); */
+    
+    menuService.addMenuItem('topbar', {
+      title: 'Requesters',
+      state: 'requesters',
+      type: 'dropdown',
       roles: ['requester']
     });
   }

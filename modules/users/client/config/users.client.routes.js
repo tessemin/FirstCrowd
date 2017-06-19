@@ -10,11 +10,26 @@
 
   function routeConfig($stateProvider) {
         
-    function changeRole(UsersService, role, menuService, Authentication) {
+    function changeRole(UsersService, role, menuService, Authentication, $rootScope, $state) {
       return UsersService.updateRoles({role: role}).$promise
         .then(function(user) {
-          Authentication.user = user;
-          menuService.init();
+          if (user) {
+            Authentication.user = user;
+            menuService.init();
+            $rootScope.$broadcast('onMenuRoleChange', {
+              role: role
+            });
+
+            if (role === 'requester') 
+              $state.go('requesters.list');
+            else if (role === 'worker') 
+              $state.go('workers.list');
+            else if (role === 'resourceOwner') 
+              $state.go('resourceOwners.list');
+            else
+              $state.go('home');
+            
+          }
         });
     }
 
@@ -30,33 +45,27 @@
           roles: ['user', 'admin']
         }
       })
-      .state('settings.requester', {
+      .state('requester', {
         url: '/transferRequester',
-        templateUrl: '/modules/core/client/views/home.client.view.html',
-        controllerAs: 'vm',
         resolve: {
-          user: function (UsersService, menuService, Authentication) {
-            changeRole(UsersService, 'requester', menuService, Authentication);
+          user: function (UsersService, menuService, Authentication, $rootScope, $state) {
+            changeRole(UsersService, 'requester', menuService, Authentication, $rootScope, $state);
           }
         }
       })
-      .state('settings.worker', {
+      .state('worker', {
         url: '/transferWorker',
-        templateUrl: '/modules/core/client/views/home.client.view.html',
-        controllerAs: 'vm',
         resolve: {
-          user: function (UsersService, menuService, Authentication) {
-            changeRole(UsersService, 'worker', menuService, Authentication);
+          user: function (UsersService, menuService, Authentication, $rootScope, $state) {
+            changeRole(UsersService, 'worker', menuService, Authentication, $rootScope, $state);
           }
         }
       })
-      .state('settings.resourceOwner', {
+      .state('resourceOwner', {
         url: '/transferResourceOwner',
-        templateUrl: '/modules/core/client/views/home.client.view.html',
-        controllerAs: 'vm',
         resolve: {
-          user: function (UsersService, menuService, Authentication) {
-            changeRole(UsersService, 'resourceOwner', menuService, Authentication);
+          user: function (UsersService, menuService, Authentication, $rootScope, $state) {
+            changeRole(UsersService, 'resourceOwner', menuService, Authentication, $rootScope, $state);
           }
         }
       })
