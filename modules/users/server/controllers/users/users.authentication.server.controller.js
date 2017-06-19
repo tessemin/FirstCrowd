@@ -13,7 +13,7 @@ var path = require('path'),
 
 // URLs for which user can't be redirected on signin
 var noReturnUrls = [
-  '/authentication/signin',
+  // '/authentication/signin'
   '/authentication/signup'
 ];
 
@@ -90,13 +90,8 @@ exports.signup = function (req, res) {
       user.password = undefined;
       user.salt = undefined;
 
-      req.login(user, function (err) {
-        if (err) {
-          res.status(400).send(err);
-        } else {
-          res.json(user);
-        }
-      });
+      // redirect to signin page
+      res.json({ redirect: '/authentication/signin' });
     }
   });
 };
