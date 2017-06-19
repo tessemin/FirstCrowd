@@ -41,3 +41,12 @@ a:hover .header-profile-image {
 .has-error .help-inline.error-text {
   display: inline;
 }
+
+.header.container {
+  width: 98% !important;
+}
+
+.standardSizeHeaderItem {
+  display: inline-block;
+  min-width: 115px;
+}
