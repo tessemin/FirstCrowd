@@ -1,13 +1,85 @@
 <section class="row">
-  <div class="col-md-offset-1 col-md-1">
-    Task ID
-    <div ng-repeat="task in vm.tasks">
-      {{task._id}}
+  <nav class="col-md-3">
+    <h3>Refine by:</h3>
+    <ul class="list-group">
+      <li class="list-group-item">
+        <label class="filter-label">
+          Title contains:
+          <input class="task-filter" ng-model="vm.filters.name">
+        </label>
+      </li>
+      <li class="list-group-item">
+        <label class="filter-label">
+          Posting date:
+          <input class="task-filter" ng-model="vm.filters.postingDate">
+        </label>
+      </li>
+      <li class="list-group-item">
+        <label class="filter-label" >
+          Deadline:
+          <input class="task-filter" ng-model="vm.filters.deadline">
+        </label>
+      </li>
+      <li class="list-group-item">
+        <label class="filter-label">
+          Status:
+            <input class="task-filter" ng-model="vm.filters.status">
+        </label>
+      </li>
+    </ul>
+  </nav>
+  <div class="col-md-9 tasks-table">
+    <div class="tasks-caption">
+      My Active Tasks
     </div>
-  </div>
-  <div class="col-md-3">
-    Title
-  </div>
+    <div class="tasks-header">
+      <div class="tasks-cell">
+        Task ID
+      </div>
+      <div class="tasks-cell">
+        Title
+      </div>
+      <div class="tasks-cell">
+        Posting Date
+      </div>
+      <div class="tasks-cell">
+        Deadline
+      </div>
+      <div class="tasks-cell">
+        Status
+      </div>
+      <div class="tasks-cell">
+        Progress
+      </div>
+      <div class="tasks-cell">
+        Actions
+      </div>
+    </div>
+    <div class="tasks-row" ng-repeat="task in vm.tasks | filter : vm.filters : false as results track by $index">
+      <div class="tasks-cell">
+        {{task._id}}
+      </div>
+      <div class="tasks-cell">
+        {{task.name}}
+      </div>
+      <div class="tasks-cell">
+        {{task.postingDate}}
+      </div>
+      <div class="tasks-cell">
+        {{task.deadline}}
+      </div>
+      <div class="tasks-cell">
+        {{task.status}}
+      </div>
+      <div class="tasks-cell progress">
+        <div class="progress-bar" role="progressbar" ng-style="task.style">
+          {{task.style.width}}
+        </div>
+      </div>
+      <div class="tasks-cell">
+        &lt;Actions Dropdown&gt;
+      </div>
+    </div> <!-- end ng-repeat -->
     <div class="text-center form-group">
       <div ng-if="vm.tasks.length === 0">
         You have no active tasks.

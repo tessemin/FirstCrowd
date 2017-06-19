@@ -1,0 +1,29 @@
+.tasks-caption {
+  display: table-caption;
+}
+
+.tasks-table {
+  display: table;
+}
+
+.tasks-header {
+  display: table-header-group;
+}
+
+.tasks-row {
+  display: table-row;
+}
+
+.tasks-cell {
+  display: table-cell;
+  text-align: center;
+}
+
+.filter-label {
+  width: 100%;
+}
+
+.task-filter {
+  width: 50%;
+  float: right;
+}

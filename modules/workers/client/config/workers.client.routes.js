@@ -12,7 +12,7 @@
       .state('workers', {
         abstract: true,
         url: '/workers',
-        templateUrl: '/modules/workers/client/views/worker-tasks-filterbar.client.view.html'
+        template: '<ui-view/>'
       })
       .state('workers.tasks', {
         url: '/tasks',
