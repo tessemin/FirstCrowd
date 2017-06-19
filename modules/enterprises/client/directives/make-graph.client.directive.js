@@ -25,7 +25,6 @@
           var rootNodeId = obj.rootNode._id;
           wrapCoordinates(nodes);
 
-
           // set up the simulation and add forces
           var simulation = d3.forceSimulation()
             .nodes(nodes_data)
@@ -37,18 +36,41 @@
             .strength(1);
 
           var charge_force = d3.forceManyBody()
-            .strength(-30);
+            .strength(3);
 
           var center_force = d3.forceCenter(width / 2, height / 2);
 
           simulation
             .force('charge_force', charge_force)
             .force('center_force', center_force)
-            .force('links', link_force);
+            .force('links', link_force)
+                .force('x', d3.forceX().x(function(d) {
+                    return d.x;
+                }))
+                .force('collision', d3.forceCollide().radius(function() {
+                    return radius + 1;
+                }));
 
           // add encompassing group for the zoom
           var g = svg.append('g')
             .attr('class', 'everything');
+
+            var avatar_size = 50;
+            var defs = svg.append('svg:defs');
+
+            nodes_data.forEach(function(d, i) {
+                defs.append("svg:pattern")
+                    .attr("id", "grump_avatar" + i)
+                    .attr("width", avatar_size) 
+                    .attr("height", avatar_size)
+                    .attr("patternUnits", "userSpaceOnUse")
+                    .append("svg:image")
+                    .attr("xlink:href", d.img)
+                    .attr("width", avatar_size)
+                    .attr("height", avatar_size)
+                    .attr("x", 0)
+                    .attr("y", 0);
+            });
 
           // build the arrow.
           svg.append('svg:defs').selectAll('marker')
@@ -85,10 +107,13 @@
             .data(nodes_data)
             .enter()
             .append('circle')
-            .attr('r', radius)
-            .attr('cx', function(d) { return d.x; })
-            .attr('cy', function(d) { return d.y; })
-            .attr('fill', 'lightsteelblue');
+                  .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+                  .attr("cx", avatar_size / 2)
+                  .attr("cy", avatar_size / 2)
+                  .attr("r", avatar_size / 2)
+                  .style("fill", "#fff")
+                  .style("fill", function(d, i) { return "url(#grump_avatar" + i + ")"; })
+            .on('mouseover', mouseover);
 
           // add drag capabilities
           var drag_handler = d3.drag()
@@ -96,7 +121,7 @@
             .on('drag', drag_drag)
             .on('end', drag_end);
 
-          drag_handler(node);
+          // drag_handler(node);
           drag_handler(link);
 
           // add zoom capabilities
@@ -131,6 +156,10 @@
           function drag_drag(d) {
             d.fx = d3.event.x;
             d.fy = d3.event.y;
+          }
+
+          function mouseover() {
+              d3.select(this).append();
           }
 
           function drag_end(d) {
@@ -175,6 +204,7 @@
                   nodes[item][index].x = CUS_X;
                   y = getY(nodes[item], item, y);
                   nodes[item][index].y = y;
+                  nodes[item][index].img = "https://cdn4.iconfinder.com/data/icons/seo-and-data/500/magnifier-data-128.png";
                   nodes_data.push(nodes[item][index]);
 
                   links_data[linkIndex] = {'source': null, 'target': null};
@@ -189,6 +219,7 @@
                   nodes[item][index].x = SUP_X;
                   y = getY(nodes[item], item, y);
                   nodes[item][index].y = y;
+                  nodes[item][index].img = "https://cdn4.iconfinder.com/data/icons/seo-and-data/500/gear-clock-128.png";
                   nodes_data.push(nodes[item][index]);
 
                   links_data[linkIndex] = {'source': null, 'target': null};
@@ -203,6 +234,7 @@
                   nodes[item][index].x = COM_X;
                   y = getY(nodes[item], item, y);
                   nodes[item][index].y = y;
+                  nodes[item][index].img = "https://cdn4.iconfinder.com/data/icons/seo-and-data/500/pencil-gear-128.png";
                   nodes_data.push(nodes[item][index]);
                 }
               }
