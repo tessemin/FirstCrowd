@@ -7,6 +7,7 @@ var _ = require('lodash'),
   fs = require('fs'),
   path = require('path'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
+  coreController = require(path.resolve('./modules/core/server/controllers/core.server.controller')),
   mongoose = require('mongoose'),
   multer = require('multer'),
   config = require(path.resolve('./config/config')),
@@ -73,19 +74,13 @@ exports.updateRoles = function (req, res) {
         if (rollWhitelistedData[i] === req.body.role) {
           user.roles.push(req.body.role);
           user.save(function (err) {
-            if (err) {
-              console.log(err)
+            if (err) {       
               return res.status(422).send({
                 message: errorHandler.getErrorMessage(err)
               });
             } else {
-              req.login(user, function (err) {
-                if (err) {
-                  res.status(400).send(err);
-                } else {
-                  res.json(user);
-                }
-              });
+              //coreController.renderIndex({user: user}, res);
+              res.json(user);
             }
           });
           found = true;

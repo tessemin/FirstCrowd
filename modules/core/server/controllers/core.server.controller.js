@@ -27,7 +27,6 @@ exports.renderIndex = function (req, res) {
       additionalProvidersData: req.user.additionalProvidersData
     };
   }
-
   res.render('modules/core/server/views/index', {
     user: JSON.stringify(safeUserObject),
     sharedConfig: JSON.stringify(config.shared)

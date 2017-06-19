@@ -4,7 +4,7 @@
   angular
     .module('core')
     .factory('menuService', menuService);
-
+  
   function menuService() {
     var shouldRender;
     var service = {
@@ -17,11 +17,13 @@
       removeMenu: removeMenu,
       removeMenuItem: removeMenuItem,
       removeSubMenuItem: removeSubMenuItem,
-      validateMenuExistence: validateMenuExistence
+      validateMenuExistence: validateMenuExistence,
+      menuService: menuService,
+      init: init
     };
-
+ 
     init();
-
+    
     return service;
 
     // Add new menu object by menu id
@@ -107,6 +109,7 @@
     }
 
     function init() {
+      
       // A private function for rendering decision
       shouldRender = function (user) {
         if (this.roles.indexOf('*') !== -1) {
@@ -136,7 +139,6 @@
       // Adding the topbar menu
       addMenu('topbar', {
         roles: ['*'],
-        userRoles: ['*']
       });
     }
 

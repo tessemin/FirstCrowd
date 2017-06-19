@@ -13,22 +13,21 @@
       title: 'Workers',
       state: 'workers',
       type: 'dropdown',
-      userRole: ['worker'],
-      roles: ['*']
+      roles: ['worker']
     });
 
     // Add the dropdown list item
     menuService.addSubMenuItem('topbar', 'workers', {
       title: 'List Workers',
-      state: 'workers.list'
+      state: 'workers.list',
+      roles: ['worker']
     });
 
     // Add the dropdown create item
     menuService.addSubMenuItem('topbar', 'workers', {
       title: 'Create Worker',
       state: 'workers.create',
-      userRole: ['worker'],
-      roles: ['user']
+      roles: ['worker']
     });
   }
 }());

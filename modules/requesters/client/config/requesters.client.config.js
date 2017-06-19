@@ -13,20 +13,21 @@
       title: 'Requesters',
       state: 'requesters',
       type: 'dropdown',
-      roles: ['*']
+      roles: ['requester']
     });
 
     // Add the dropdown list item
     menuService.addSubMenuItem('topbar', 'requesters', {
       title: 'List Requesters',
-      state: 'requesters.list'
+      state: 'requesters.list',
+      roles: ['requester']
     });
 
     // Add the dropdown create item
     menuService.addSubMenuItem('topbar', 'requesters', {
       title: 'Create Requester',
       state: 'requesters.create',
-      roles: ['user']
+      roles: ['requester']
     });
   }
 }());

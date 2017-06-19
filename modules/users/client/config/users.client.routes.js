@@ -10,8 +10,12 @@
 
   function routeConfig($stateProvider) {
         
-    function changeRole(UsersService, role) {
-      return UsersService.updateRoles({role: role});
+    function changeRole(UsersService, role, menuService, Authentication) {
+      return UsersService.updateRoles({role: role}).$promise
+        .then(function(user) {
+          Authentication.user = user;
+          menuService.init();
+        });
     }
 
     // Users state routing
@@ -31,28 +35,28 @@
         templateUrl: '/modules/core/client/views/home.client.view.html',
         controllerAs: 'vm',
         resolve: {
-          user: function (UsersService) {
-            changeRole(UsersService, 'requester');
+          user: function (UsersService, menuService, Authentication) {
+            changeRole(UsersService, 'requester', menuService, Authentication);
           }
         }
       })
       .state('settings.worker', {
-        url: '/transferRequester',
+        url: '/transferWorker',
         templateUrl: '/modules/core/client/views/home.client.view.html',
         controllerAs: 'vm',
         resolve: {
-          user: function (UsersService) {
-            changeRole(UsersService, 'worker');
+          user: function (UsersService, menuService, Authentication) {
+            changeRole(UsersService, 'worker', menuService, Authentication);
           }
         }
       })
       .state('settings.resourceOwner', {
-        url: '/transferRequester',
+        url: '/transferResourceOwner',
         templateUrl: '/modules/core/client/views/home.client.view.html',
         controllerAs: 'vm',
         resolve: {
-          user: function (UsersService) {
-            changeRole(UsersService, 'resourceOwner');
+          user: function (UsersService, menuService, Authentication) {
+            changeRole(UsersService, 'resourceOwner', menuService, Authentication);
           }
         }
       })
