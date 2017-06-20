@@ -16,7 +16,7 @@
           width = +svg.attr('width'),
           height = +svg.attr('height');
 
-        var radius = 10;
+        var radius = 20;
         var nodes_data = [],
           links_data = [];
 
@@ -36,7 +36,7 @@
             .strength(1);
 
           var charge_force = d3.forceManyBody()
-            .strength(3);
+            .strength(30);
 
           var center_force = d3.forceCenter(width / 2, height / 2);
 
@@ -44,33 +44,33 @@
             .force('charge_force', charge_force)
             .force('center_force', center_force)
             .force('links', link_force)
-                .force('x', d3.forceX().x(function(d) {
-                    return d.x;
-                }))
-                .force('collision', d3.forceCollide().radius(function() {
-                    return radius + 1;
-                }));
+            .force('x', d3.forceX().x(function(d) {
+              return d.x;
+            }))
+            .force('collision', d3.forceCollide().radius(function() {
+              return radius + 1;
+            }));
 
           // add encompassing group for the zoom
           var g = svg.append('g')
             .attr('class', 'everything');
 
-            var avatar_size = 50;
-            var defs = svg.append('svg:defs');
+          var avatar_size = 50;
+          var defs = svg.append('svg:defs');
 
-            nodes_data.forEach(function(d, i) {
-                defs.append("svg:pattern")
-                    .attr("id", "grump_avatar" + i)
-                    .attr("width", avatar_size) 
-                    .attr("height", avatar_size)
-                    .attr("patternUnits", "userSpaceOnUse")
-                    .append("svg:image")
-                    .attr("xlink:href", d.img)
-                    .attr("width", avatar_size)
-                    .attr("height", avatar_size)
-                    .attr("x", 0)
-                    .attr("y", 0);
-            });
+            // nodes_data.forEach(function(d, i) {
+            //     defs.append('svg:pattern')
+            //         .attr('id', 'grump_avatar' + i)
+            //         .attr('width', avatar_size)
+            //         .attr('height', avatar_size)
+            //         .attr('patternUnits', 'userSpaceOnUse')
+            //         .append('svg:image')
+            //         .attr('xlink:href', d.img)
+            //         .attr('width', avatar_size)
+            //         .attr('height', avatar_size)
+            //         .attr('x', 0)
+            //         .attr('y', 0);
+            // });
 
           // build the arrow.
           svg.append('svg:defs').selectAll('marker')
@@ -78,7 +78,7 @@
             .enter().append('svg:marker')    // This section adds in the arrows
             .attr('id', String)
             .attr('viewBox', '0 -5 10 10')
-            .attr('refX', 45)
+            .attr('refX', 80)
             .attr('refY', 0)
             .attr('markerWidth', 6)
             .attr('markerHeight', 6)
@@ -102,18 +102,57 @@
 
           // draw circles for the nodes
           var node = g.append('g')
-            .attr('class', 'nodes')
+                .attr('class', 'logo')
             .selectAll('circle')
             .data(nodes_data)
             .enter()
             .append('circle')
-                  .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
-                  .attr("cx", avatar_size / 2)
-                  .attr("cy", avatar_size / 2)
-                  .attr("r", avatar_size / 2)
-                  .style("fill", "#fff")
-                  .style("fill", function(d, i) { return "url(#grump_avatar" + i + ")"; })
-            .on('mouseover', mouseover);
+                  // .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
+                .attr('cx', function(d) { return d.x; })
+                .attr('cy', function(d) { return d.y; })
+                .attr('r', radius)
+          //         // .style('fill', '#fff')
+                // .attr('cx', 225)
+                // .attr('cy', 225)
+                // .attr('r', 20)
+                .style('fill', '#fff')
+                .style('stroke', 'black')
+                .style('stroke-width', 1)
+                .on('mouseover', function(d) {
+                  // if(d.y % 2 === 0) {
+                  d3.select(this)
+                    .style('fill', 'url(#beer)');
+                  // } else {
+                    // d3.select(this)
+                    //   .style('fill', 'url(#search)');
+                  // }
+                })
+                .on('mouseout', function(d) {
+                  d3.select(this)
+                    .style('fill', '#fff');
+                });
+
+          //       g.append('g')
+          //   .attr('class', 'nodes')
+          //   .selectAll('circle')
+          //   .data(nodes_data)
+          //   .enter()
+          //   .append('circle')
+          //         // .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
+          //       .attr('cx', function(d) { return d.x; })
+          //       .attr('cy', function(d) { return d.y; })
+          //       .attr('r', radius)
+          //         // .style('fill', '#fff')
+          //         // .style('fill', function(d, i) { return 'url(#grump_avatar' + i + ')'; })
+          //       .on('mouseover', mouseover)
+          // // add image
+          // .append('image')
+          //       .attr('xlink:href',  function(d) { return d.img; })
+          //       .attr('x', function(d) { return -25;})
+          //       .attr('y', function(d) { return -25;})
+          //       .attr('height', 50)
+          //       .attr('width', 50);
+
 
           // add drag capabilities
           var drag_handler = d3.drag()
@@ -159,7 +198,7 @@
           }
 
           function mouseover() {
-              d3.select(this).append();
+            d3.select(this).append();
           }
 
           function drag_end(d) {
@@ -179,7 +218,7 @@
             //   addedLen += 1;
             // }
             var len = arr.length + addedLen,
-            pixels = height / len;
+              pixels = height / len;
 
             prevY = prevY + pixels;
 
@@ -192,10 +231,12 @@
           }
 
           function wrapCoordinates(nodes) {
-            var SUP_X = width/4;
-            var COM_X = width/4 + width/4;
-            var CUS_X = width/4 + width/4 + width/4;
-            var index, y, linkIndex = 0;
+            var SUP_X = width / 4;
+            var COM_X = width / 4 + width / 4;
+            var CUS_X = width / 4 + width / 4 + width / 4;
+            var index,
+              y,
+              linkIndex = 0;
 
             for (var item in nodes) {
               if (item === 'customer') {
@@ -204,43 +245,40 @@
                   nodes[item][index].x = CUS_X;
                   y = getY(nodes[item], item, y);
                   nodes[item][index].y = y;
-                  nodes[item][index].img = "https://cdn4.iconfinder.com/data/icons/seo-and-data/500/magnifier-data-128.png";
+                  nodes[item][index].img = 'https://cdn4.iconfinder.com/data/icons/seo-and-data/500/magnifier-data-128.png';
                   nodes_data.push(nodes[item][index]);
 
-                  links_data[linkIndex] = {'source': null, 'target': null};
+                  links_data[linkIndex] = { 'source': null, 'target': null };
                   links_data[linkIndex].source = rootNodeId;
                   links_data[linkIndex].target = nodes[item][index]._id;
                   linkIndex++;
                 }
-              }
-              else if (item === 'supplier') {
+              } else if (item === 'supplier') {
                 y = 0;
                 for (index = 0; index < nodes[item].length; index++) {
                   nodes[item][index].x = SUP_X;
                   y = getY(nodes[item], item, y);
                   nodes[item][index].y = y;
-                  nodes[item][index].img = "https://cdn4.iconfinder.com/data/icons/seo-and-data/500/gear-clock-128.png";
+                  nodes[item][index].img = 'https://cdn4.iconfinder.com/data/icons/seo-and-data/500/gear-clock-128.png';
                   nodes_data.push(nodes[item][index]);
 
-                  links_data[linkIndex] = {'source': null, 'target': null};
+                  links_data[linkIndex] = { 'source': null, 'target': null };
                   links_data[linkIndex].source = nodes[item][index]._id;
                   links_data[linkIndex].target = rootNodeId;
                   linkIndex++;
                 }
-              }
-              else if (item === 'competitor') {
+              } else if (item === 'competitor') {
                 y = 0;
                 for (index = 0; index < nodes[item].length; index++) {
                   nodes[item][index].x = COM_X;
                   y = getY(nodes[item], item, y);
                   nodes[item][index].y = y;
-                  nodes[item][index].img = "https://cdn4.iconfinder.com/data/icons/seo-and-data/500/pencil-gear-128.png";
+                  nodes[item][index].img = 'https://cdn4.iconfinder.com/data/icons/seo-and-data/500/pencil-gear-128.png';
                   nodes_data.push(nodes[item][index]);
                 }
-              }
-              else if (item === 'rootNode') {
-                nodes[item].x = width/2;
-                nodes[item].y = height/2;
+              } else if (item === 'rootNode') {
+                nodes[item].x = width / 2;
+                nodes[item].y = height / 2;
                 nodes_data.push(nodes[item]);
               }
             }
@@ -258,18 +296,6 @@
               return response.partners;
             });
         }
-
-//         // var newsvg = d3.select('#graph').append('svg')
-//         //       .attr('width', 800)
-//         //       .attr('height', 600);
-
-//         // var svg = d3.select('svg'),
-//         //     width = +svg.attr('width'),
-//         //     height = +svg.attr('height'),
-//         //     transform = d3.zoomIdentity,
-//         //     globalY = 0,
-//         //     radius = 10;
-
 //         // var g1, g2, g3, c1, c2, c3, t1, t2, t3;
 //         // var rootNode = {}, flag = false;
 //         // getObject().then(function (obj) {
@@ -374,26 +400,6 @@
 //         //   tooltip.html(d.companyName + ': ' + d.URL )
 //         //     .style('left',(d3.event.pageX - 35) + 'px')
 //         //     .style('top', (d3.event.pageY - 30) + 'px');
-//         // }
-
-//         // function handleClick() {
-
-//         // }
-
-//         // svg.call(d3.zoom()
-//         //          .scaleExtent([1 / 2, 8])
-//         //          .on('zoom', zoomed));
-
-//         // function zoomed() {
-//         //   c1.attr('transform', d3.event.transform);
-//         //   c2.attr('transform', d3.event.transform);
-//         //   c3.attr('transform', d3.event.transform);
-//         //   t1.attr('transform', d3.event.transform);
-//         //   t2.attr('transform', d3.event.transform);
-//         //   t3.attr('transform', d3.event.transform);
-//         //   g1.attr('transform', d3.event.transform);
-//         //   g2.attr('transform', d3.event.transform);
-//         //   g3.attr('transform', d3.event.transform);
 //         // }
 
 //         // function wrap(text, width) {
