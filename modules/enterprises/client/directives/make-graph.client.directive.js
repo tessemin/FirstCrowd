@@ -111,6 +111,19 @@
           //       .style('display', 'none')
           //       .attr('class', 'context-menu');
 
+          var menu = g.append('g')
+                .attr('class', 'node-menu')
+                .selectAll('rect')
+                .data(nodes_data)
+                .enter()
+                .append('rect')
+                .style('fill', 'none')
+                .style('stroke', 'transparent')
+                .attr('width', 50)
+                .attr('height', 100)
+                .attr('x', function(d) { return d.x; })
+                .attr('y', function(d) { return d.y; });
+
           // draw circles for the nodes
           var node = g.append('g')
             .attr('class', 'logo')
@@ -123,12 +136,16 @@
             .attr('r', radius)
             .style('fill', function(d, i) { return 'url(#image' + i + ')'; })
             .style('stroke', 'black')
-                .style('stroke-width', 1);
-            //     .exit()
-            //     .append('rect')
-            //     .attr('cx', 40)
-            // .attr('cy', 40);
+            .style('stroke-width', 1)
+            .on('mouseover', function(d, i) {
+              // console.log(d3.select(menu)['_groups'][0][0]['_groups'][0][i]);
+              // d3.select(menu)['_groups'][0][0]['_groups'][0][i].style('fill', '#fff');
+              d3.select(menu)[i].style('fill', '#fff');
 
+            })
+            .on('mouseout', function(d, i) {
+              // d3.select(menu)['_groups'][0][0]['_groups'][0][i].style('fill', 'none');
+            });
 
             // .on('click', function(d, i) {
             //   var x = d3.select(this)['_groups'][0][0].cx.baseVal.valueAsString;
@@ -180,13 +197,6 @@
 
           /** Functions **/
 
-          // Drag functions
-          // function drag_start(d) {
-          //   if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-          //   d.fx = d.x;
-          //   d.fy = d.y;
-          // }
-
           function ticked() {
             node
               .attr('cx', function(d) { return d.x; })
@@ -196,23 +206,10 @@
               .attr('y1', function(d) { return d.source.y; })
               .attr('x2', function(d) { return d.target.x; })
               .attr('y2', function(d) { return d.target.y; });
+            menu
+              .attr('x', function(d) { return d.x - 25; })
+              .attr('y', function(d) { return d.y + 25; });
           }
-
-          // make sure you can't drag the circle outside the box
-          // function drag_drag(d) {
-          //   d.fx = d3.event.x;
-          //   d.fy = d3.event.y;
-          // }
-
-          // function mouseover() {
-          //   d3.select(this).append();
-          // }
-
-          // function drag_end(d) {
-          //   if (!d3.event.active) simulation.alphaTarget(0);
-          //   d.fx = null;
-          //   d.fy = null;
-          // }
 
           // Zoom functions
           function zoom_actions() {
