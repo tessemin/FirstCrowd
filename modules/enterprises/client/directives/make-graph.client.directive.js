@@ -12,11 +12,15 @@
       restrict: 'EA',
       scope: { data: '=' },
       link: function(scope, element, attrs) {
+        var newsvg = d3.select("#graph").append("svg")
+              .attr("width", 1000)
+              .attr("height", 760);
+
         var svg = d3.select('svg'),
           width = +svg.attr('width'),
           height = +svg.attr('height');
 
-        var radius = 20;
+        var radius = 40;
         var nodes_data = [],
           links_data = [];
 
@@ -32,7 +36,7 @@
 
           var link_force = d3.forceLink(links_data)
             .id(function(d) { return d._id; })
-            .distance(200)
+            .distance(220)
             .strength(1);
 
           var charge_force = d3.forceManyBody()
@@ -46,7 +50,7 @@
             .force('links', link_force)
             .force('x', d3.forceX().x(function(d) {
               return d.x;
-            }))
+            }).strength(.5))
             .force('collision', d3.forceCollide().radius(function() {
               return radius + 1;
             }));
@@ -55,22 +59,22 @@
           var g = svg.append('g')
             .attr('class', 'everything');
 
-          var avatar_size = 50;
-          var defs = svg.append('svg:defs');
-
-            // nodes_data.forEach(function(d, i) {
-            //     defs.append('svg:pattern')
-            //         .attr('id', 'grump_avatar' + i)
-            //         .attr('width', avatar_size)
-            //         .attr('height', avatar_size)
-            //         .attr('patternUnits', 'userSpaceOnUse')
-            //         .append('svg:image')
-            //         .attr('xlink:href', d.img)
-            //         .attr('width', avatar_size)
-            //         .attr('height', avatar_size)
-            //         .attr('x', 0)
-            //         .attr('y', 0);
-            // });
+          var defs = svg.append('defs')
+                .selectAll('pattern')
+                .data(nodes_data)
+                .enter()
+                .append('pattern')
+                .attr('id', function (d, i) { return 'image' + i; })
+                .attr('x', 0)
+                .attr('y', 0)
+                .attr('height', 80)
+                .attr('width', 80)
+                .append('image')
+                .attr('x', 0)
+                .attr('y', 0)
+                .attr('height', 80)
+                .attr('width', 80)
+                .attr('xlink:href', function (d) { return d.img; });
 
           // build the arrow.
           svg.append('svg:defs').selectAll('marker')
@@ -100,72 +104,76 @@
             .attr('x2', function(d) { return d.target.x; })
             .attr('y2', function(d) { return d.target.y; });
 
+
+          // var fruits = ["Apple", "Orange", "Banana", "Grape"];
+          // var ctxMenu = d3.select("body")
+          //       .append('div')
+          //       .style('display', 'none')
+          //       .attr('class', 'context-menu');
+
           // draw circles for the nodes
           var node = g.append('g')
-                .attr('class', 'logo')
+            .attr('class', 'logo')
             .selectAll('circle')
             .data(nodes_data)
             .enter()
             .append('circle')
-                  // .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
-                .attr('cx', function(d) { return d.x; })
-                .attr('cy', function(d) { return d.y; })
-                .attr('r', radius)
-          //         // .style('fill', '#fff')
-                // .attr('cx', 225)
-                // .attr('cy', 225)
-                // .attr('r', 20)
-                .style('fill', '#fff')
-                .style('stroke', 'black')
-                .style('stroke-width', 1)
-                .on('mouseover', function(d) {
-                  // if(d.y % 2 === 0) {
-                  d3.select(this)
-                    .style('fill', 'url(#beer)');
-                  // } else {
-                    // d3.select(this)
-                    //   .style('fill', 'url(#search)');
-                  // }
-                })
-                .on('mouseout', function(d) {
-                  d3.select(this)
-                    .style('fill', '#fff');
-                });
+            .attr('cx', function(d) { return d.x; })
+            .attr('cy', function(d) { return d.y; })
+            .attr('r', radius)
+            .style('fill', function(d, i) { return 'url(#image' + i + ')'; })
+            .style('stroke', 'black')
+                .style('stroke-width', 1);
+            //     .exit()
+            //     .append('rect')
+            //     .attr('cx', 40)
+            // .attr('cy', 40);
 
-          //       g.append('g')
-          //   .attr('class', 'nodes')
-          //   .selectAll('circle')
-          //   .data(nodes_data)
-          //   .enter()
-          //   .append('circle')
-          //         // .attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
-          //       .attr('cx', function(d) { return d.x; })
-          //       .attr('cy', function(d) { return d.y; })
-          //       .attr('r', radius)
-          //         // .style('fill', '#fff')
-          //         // .style('fill', function(d, i) { return 'url(#grump_avatar' + i + ')'; })
-          //       .on('mouseover', mouseover)
-          // // add image
-          // .append('image')
-          //       .attr('xlink:href',  function(d) { return d.img; })
-          //       .attr('x', function(d) { return -25;})
-          //       .attr('y', function(d) { return -25;})
-          //       .attr('height', 50)
-          //       .attr('width', 50);
 
+            // .on('click', function(d, i) {
+            //   var x = d3.select(this)['_groups'][0][0].cx.baseVal.valueAsString;
+            //   var y = d3.select(this)['_groups'][0][0].cy.baseVal.valueAsString;
+            //       ctxMenu.selectAll("ul").remove();
+
+            //       // create the div element that will hold the context menu
+            //       // this gets executed when a contextmenu event occurs
+            //       ctxMenu
+  					//         .append('ul')
+            //         .selectAll('li')
+            //         .data(fruits).enter()
+            //         .append('li')
+            //         .style('list-style-image', function(d, i) {
+            //           return 'url("http://loremflickr.com/48/48?i=' + i + '")';
+            //         })
+            //         .on('click' , function(d) { console.log(d); return d; })
+            //         .text(function(d) { return d; });
+
+            //       // show the context menu
+            //       ctxMenu
+            //         .style('left', (x - 2) + 'px')
+            //         .style('top', (y - 2) + 'px')
+            //         .style('display', 'block');
+            //       d3.event.preventDefault();
+            //   console.log(ctxMenu);
+            // })
+            // .on('mouseout', function() {
+
+            //   // ctxMenu.selectAll("ul").remove();
+            //   // d3.select(this).style('fill', '#fff');
+            // });
 
           // add drag capabilities
-          var drag_handler = d3.drag()
-            .on('start', drag_start)
-            .on('drag', drag_drag)
-            .on('end', drag_end);
+          // var drag_handler = d3.drag()
+          //   .on('start', drag_start)
+          //   .on('drag', drag_drag)
+          //   .on('end', drag_end);
 
           // drag_handler(node);
-          drag_handler(link);
+          // drag_handler(link);
 
           // add zoom capabilities
           var zoom_handler = d3.zoom()
-            .scaleExtent([1 / 2, 8])
+            .scaleExtent([1 / 1.5, 2])
             .on('zoom', zoom_actions);
 
           zoom_handler(svg);
@@ -173,12 +181,11 @@
           /** Functions **/
 
           // Drag functions
-          // d is the node
-          function drag_start(d) {
-            if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-            d.fx = d.x;
-            d.fy = d.y;
-          }
+          // function drag_start(d) {
+          //   if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+          //   d.fx = d.x;
+          //   d.fy = d.y;
+          // }
 
           function ticked() {
             node
@@ -192,20 +199,20 @@
           }
 
           // make sure you can't drag the circle outside the box
-          function drag_drag(d) {
-            d.fx = d3.event.x;
-            d.fy = d3.event.y;
-          }
+          // function drag_drag(d) {
+          //   d.fx = d3.event.x;
+          //   d.fy = d3.event.y;
+          // }
 
-          function mouseover() {
-            d3.select(this).append();
-          }
+          // function mouseover() {
+          //   d3.select(this).append();
+          // }
 
-          function drag_end(d) {
-            if (!d3.event.active) simulation.alphaTarget(0);
-            d.fx = null;
-            d.fy = null;
-          }
+          // function drag_end(d) {
+          //   if (!d3.event.active) simulation.alphaTarget(0);
+          //   d.fx = null;
+          //   d.fy = null;
+          // }
 
           // Zoom functions
           function zoom_actions() {
@@ -213,11 +220,7 @@
           }
 
           function getY(arr, item, prevY) {
-            var addedLen = 1;
-            // if(item === 'competitor' && arr.length % 2 === 0) {
-            //   addedLen += 1;
-            // }
-            var len = arr.length + addedLen,
+            var len = arr.length + 1,
               pixels = height / len;
 
             prevY = prevY + pixels;
@@ -279,6 +282,7 @@
               } else if (item === 'rootNode') {
                 nodes[item].x = width / 2;
                 nodes[item].y = height / 2;
+                nodes[item].img = 'http://www.e-pint.com/epint.jpg';
                 nodes_data.push(nodes[item]);
               }
             }
