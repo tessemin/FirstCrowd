@@ -16,7 +16,7 @@
         controller: 'SideMenuController',
         controllerAs: 'vm'
       })
-      .state('enterprises.graph', {
+      .state('graph', {
         url: '/graph',
         templateUrl: '/modules/enterprises/client/views/graph.client.view.html',
         controller: 'EnterpriseGraphController',
