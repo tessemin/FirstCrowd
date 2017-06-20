@@ -27,3 +27,12 @@
   float: right;
   width: 50%;
 }
+
+.worker-nav > li {
+  float:none;
+  display:inline-block;
+}
+
+.worker-nav {
+  text-align:center;
+}
