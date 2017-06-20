@@ -8,33 +8,19 @@
   menuConfig.$inject = ['menuService'];
 
   function menuConfig(menuService) {
-    // Set top bar menu items
+    // Add my messages Tab
     menuService.addMenuItem('topbar', {
-      title: 'Requesters',
-      state: 'requesters',
-      type: 'dropdown',
-      roles: ['requester']
+      title: 'My Messages',
+      state: 'requesters.messages',
+      roles: ['requester'],
+      userRole: ['requester']
     });
-
-    // Add the dropdown list item
-/*     menuService.addSubMenuItem('topbar', 'requesters', {
-      title: 'List Requesters',
-      state: 'requesters.list',
-      roles: ['requester']
-    });
-
-    // Add the dropdown create item
-    menuService.addSubMenuItem('topbar', 'requesters', {
-      title: 'Create Requester',
-      state: 'requesters.create',
-      roles: ['requester']
-    }); */
     
     menuService.addMenuItem('topbar', {
-      title: 'Requesters',
-      state: 'requesters',
-      type: 'dropdown',
-      roles: ['requester']
+      title: 'My Tasks',
+      state: 'requesters.tasks',
+      roles: ['requester'],
+      userRole: ['requester']
     });
   }
 }());

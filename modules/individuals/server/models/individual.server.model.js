@@ -406,11 +406,7 @@ var IndividualUserSchema = new Schema({
   }
 });
 
-//console.log((new Worker()));
-//IndividualUserSchema.requester = new Requester();
-
 IndividualUserSchema.pre('save', function (next) {
-
   next();
 });
 

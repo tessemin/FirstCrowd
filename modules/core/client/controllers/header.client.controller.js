@@ -11,7 +11,7 @@
     
     
     vm.pageType = false;
-    if(Authentication.user)
+    if (Authentication.user)
       if (Authentication.user.roles.indexOf('worker') > -1) {
         vm.pageType = 'Worker';
       } else if (Authentication.user.roles.indexOf('requester') > -1) {
