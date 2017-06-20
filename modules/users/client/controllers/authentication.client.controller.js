@@ -75,8 +75,8 @@
       // And redirect to the previous or home page
       // $state.go($state.previous.state.name || 'home', $state.previous.params);
       
-      // redirects to either individual or enterprise page
-      redirectOnSign(vm.authentication.user, $state);
+      // redirects to sign in
+      $window.location = response.redirect;
     }
 
     function onUserSignupError(response) {
@@ -109,9 +109,9 @@
       }
       if (!(enterprise && individual))
         if (enterprise)
-          window.location = '/enterprises';
+          $window.location = '/enterprises';
         else if (individual)
-          window.location = '/individuals';
+          $window.location = '/individuals';
         else // error
           $state.go($state.previous.state.name || 'home', $state.previous.params);
       else // error

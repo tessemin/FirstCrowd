@@ -20,21 +20,21 @@
         if (user.userRole.indexOf('worker') > -1)
           menuService.addSubMenuItem('topbar', 'views', {
             title: 'Worker View',
-            state: 'settings.worker',
+            state: 'worker',
             roles: ['*']
           });
           
         if (user.userRole.indexOf('requester') > -1)
           menuService.addSubMenuItem('topbar', 'views', {
             title: 'Requester View',
-            state: 'settings.requester',
+            state: 'requester',
             roles: ['*']
           });
           
         if (user.userRole.indexOf('resourceOwner') > -1)
           menuService.addSubMenuItem('topbar', 'views', {
             title: 'Resource Owner View',
-            state: 'settings.resourceOwner',
+            state: 'resourceOwner',
             roles: ['*']
           });
         
