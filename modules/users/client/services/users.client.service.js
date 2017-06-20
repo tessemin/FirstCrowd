@@ -68,6 +68,25 @@
       },
       userSignin: function (credentials) {
         return this.signin(credentials).$promise;
+      },
+      changeUserRoleView: function(user, Authentication, menuService, $rootScope, $state, role){
+        if (user) {
+          Authentication.user = user;
+          menuService.init();
+          $rootScope.$broadcast('onMenuRoleChange', {
+            role: role
+          });
+
+          if (role === 'requester') 
+            $state.go('requesters.list');
+          else if (role === 'worker') 
+            $state.go('workers.list');
+          else if (role === 'resourceOwner') 
+            $state.go('resourceOwners.list');
+          else
+            $state.go('home');
+          
+        }
       }
     });
 

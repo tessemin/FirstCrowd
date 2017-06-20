@@ -188,12 +188,18 @@ var EnterpriseUserSchema = new Schema({
         default: 0.0
       }
     }],
-    workersPerCategory: {
-      type: Schema.Types.Mixed
-    },
+    workersPerCategory: [{
+      category: {
+        type: Schema.Types.Mixed
+      },
+      number: {
+        type: Number,
+        default: 0
+      }
+    }],
     totalPayments: {
       type: Number,
-      default: 0.0
+      default: 0.00
     },
     numberOfHiredWorkers: {
       type: Number,
@@ -201,7 +207,88 @@ var EnterpriseUserSchema = new Schema({
     }
   },
   worker: {
-    
+    activeTasks: [{
+      type: Schema.Types.ObjectId
+    }],
+    completedTasks: [{
+      type: Schema.Types.ObjectId
+    }],
+    inactiveTasks: [{
+      type: Schema.Types.ObjectId
+    }],
+    totalEarnings: {
+      type: Number,
+      default: 0.0
+    },
+    requesterRatingsPerCategory: {
+      requester: Schema.Types.ObjectId,
+      category: {
+        type: Schema.Types.Mixed
+      },
+      rate: {
+        type: Number,
+        default: 0.0
+      }
+    },
+    acceptanceRatesPerCategory: {
+      category: {
+        type: Schema.Types.Mixed
+      },
+      number: {
+        type: Number,
+        default: 0
+      }
+    },
+    numberTasksCompleted: {
+      type: Number,
+      default: 0
+    },
+    numberTaksUncompleted: {
+      type: Number,
+      default: 0
+    },
+    numberAcceptedTasks: {
+      type: Number,
+      default: 0
+    },
+    acceptanceRate: {
+      type: Number,
+      default: 0.0
+    },
+    preferedCategories: [{
+      category: Schema.Types.Mixed,
+      numberCompleted: {
+        type: Number,
+        default: 0
+      }
+    }],
+    averageCompletionTime: {
+      type: Number,
+      default: 0
+    },
+    averageEarnedPerTask: {
+      type: Number,
+      default: 0.00
+    }
+  },
+  owner: {
+    resources: [{
+      type: Schema.Types.Mixed
+    }],
+    workerRating: [{
+      worker: Schema.Types.ObjectId,
+      rating: {
+        type: Number,
+        default: 0.0
+      }
+    }],
+    requesterRating: [{
+      requester: Schema.Types.ObjectId,
+      rating: {
+        type: Number,
+        default: 0.0
+      }
+    }]
   }
 });
 

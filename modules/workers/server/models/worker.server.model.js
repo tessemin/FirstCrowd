@@ -11,19 +11,10 @@ var mongoose = require('mongoose'),
  */
 var WorkerSchema = new Schema({
   name: {
-    type: String,
-    default: '',
-    required: 'Please fill Worker name',
-    trim: true
-  },
-  created: {
-    type: Date,
-    default: Date.now
-  },
-  user: {
-    type: Schema.ObjectId,
-    ref: 'User'
+    type: String
   }
 });
+
+module.exports = WorkerSchema;
 
 mongoose.model('Worker', WorkerSchema);

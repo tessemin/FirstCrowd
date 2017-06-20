@@ -12,6 +12,7 @@
       addMenuItem: addMenuItem,
       addSubMenuItem: addSubMenuItem,
       defaultRoles: ['user', 'admin'],
+      defaultUserRole: ['*'],
       getMenu: getMenu,
       menus: {},
       removeMenu: removeMenu,
@@ -33,6 +34,7 @@
       // Create the new menu
       service.menus[menuId] = {
         roles: options.roles || service.defaultRoles,
+        userRole: options.userRole || service.defaultUserRole,
         items: options.items || [],
         shouldRender: shouldRender
       };
@@ -55,6 +57,7 @@
         type: options.type || 'item',
         class: options.class,
         roles: ((options.roles === null || typeof options.roles === 'undefined') ? service.defaultRoles : options.roles),
+        userRole: ((options.userRole === null || typeof options.userRole === 'undefined') ? service.defaultUserRole : options.userRole),
         position: options.position || 0,
         items: [],
         shouldRender: shouldRender
@@ -89,6 +92,7 @@
             state: options.state || '',
             params: options.params || {},
             roles: ((options.roles === null || typeof options.roles === 'undefined') ? service.menus[menuId].items[itemIndex].roles : options.roles),
+            userRole: ((options.userRole === null || typeof options.userRole === 'undefined') ? service.menus[menuId].items[itemIndex].userRole : options.userRole),
             position: options.position || 0,
             shouldRender: shouldRender
           });
@@ -112,20 +116,39 @@
       
       // A private function for rendering decision
       shouldRender = function (user) {
-        if (this.roles.indexOf('*') !== -1) {
+        console.log('Roles: ' + this.roles)
+        console.log('User Role: ' + this.userRole)
+        if (this.roles.indexOf('*') !== -1 && this.userRole.indexOf('*') !== -1) {
           return true;
         } else {
           if (!user) {
             return false;
           }
+          var hasRole = false;
           if (this.roles.indexOf('*') !== -1) {
-            return true;
+            hasRole = true;
           } else {
             for (var userIndex in user.roles) {
               if (user.roles.hasOwnProperty(userIndex)) {
                 for (var role in this.roles) {
                   if (this.roles.hasOwnProperty(role) && this.roles[role] === user.roles[userIndex]) {
-                    return true;
+                    hasRole = true;
+                    break;
+                  }
+                }
+              }
+            }
+          }
+          if (hasRole) {
+            if (this.userRole.indexOf('*') !== -1) {
+              return true;
+            } else {
+              for (var userRoleIndex in user.userRole) {
+                if (user.userRole.hasOwnProperty(userRoleIndex)) {
+                  for (var userRole in this.userRole) {
+                    if (this.userRole.hasOwnProperty(userRole) && this.userRole[userRole] === user.userRole[userRoleIndex]) {
+                      return true;
+                    }
                   }
                 }
               }
