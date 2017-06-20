@@ -9,7 +9,7 @@
   EnterprisesService.$inject = ['$resource'];
 
   function EnterprisesService($resource) {
-    var Enterprises = $resource('api/enterprises/:enterpriseId', {
+    var Enterprises = $resource('/enterprises/api/enterprises/:enterpriseId', {
       enterpriseId: '@_id'
     }, {
       update: {
@@ -17,23 +17,23 @@
       },
       updateProfile: {
         method: 'POST',
-        url: 'api/enterprises/profile/'
+        url: '/enterprises/api/enterprises/profile/'
       },
       updateSuppliers: {
         method: 'POST',
-        url: 'api/enterprises/suppliers/'
+        url: '/enterprises/api/enterprises/suppliers/'
       },
       updateCompetitors: {
         method: 'POST',
-        url: 'api/enterprises/competitors/'
+        url: '/enterprises/api/enterprises/competitors/'
       },
       updateCustomers: {
         method: 'POST',
-        url: 'api/enterprises/customers/'
+        url: '/enterprises/api/enterprises/customers/'
       },
       getEnterpriseItems: {
         method: 'GET',
-        url: 'api/enterprises/getEnterprise'
+        url: '/enterprises/api/enterprises/getEnterprise'
       }
     });
 
