@@ -5,11 +5,14 @@
  */
 var path = require('path'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
+  userProfileController = require(path.resolve('./modules/users/server/controllers/users/users.profile.server.controller.js')),
   mongoose = require('mongoose'),
   passport = require('passport'),
   User = mongoose.model('User'),
   Individual = mongoose.model('Individual'),
   Enterprise = mongoose.model('Enterprise');
+  
+var rollWhitelistedData = userProfileController.whitelistedData.rollWhitelistedData;
 
 // URLs for which user can't be redirected on signin
 var noReturnUrls = [
@@ -38,6 +41,8 @@ exports.signup = function (req, res) {
     hasUserRole = false;
   user.provider = 'local';
   user.displayName = user.firstName + ' ' + user.lastName;
+  // set this equal to undeifed for sparce indexing to work
+  user.phone = undefined;
 
   // checks if enterprise or individual user
   // For security measurement we remove any admin privalges
@@ -59,7 +64,6 @@ exports.signup = function (req, res) {
     } else if (user.roles[i] === 'individual') {
       // adds and saves individual object and binds to user
       var individualObj = new Individual();
-      console.log();
       individualObj.user = user.id;
       user.individual = individualObj;
       individualObj.save(function(err) {
@@ -80,18 +84,14 @@ exports.signup = function (req, res) {
     user.roles.push('user');
   }
   // Then save the user
+  console.log(user)
   user.save(function (err) {
     if (err) {
       return res.status(422).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      // Remove sensitive data before login
-      user.password = undefined;
-      user.salt = undefined;
-
-      // redirect to signin page
-      res.json({ redirect: '/authentication/signin' });
+      res.json(user);
     }
   });
 };
@@ -100,18 +100,62 @@ exports.signup = function (req, res) {
  * Signin after passport authentication
  */
 exports.signin = function (req, res, next) {
+  // must have just password and username/email for passport to work
+  if (!req.body.userRole) {
+    return res.status(422).send({
+      message: 'Must specify a role'
+    });
+  }
+  var userRole = req.body.userRole;
+  delete req.body.userRole;
   passport.authenticate('local', function (err, user, info) {
     if (err || !user) {
       res.status(422).send(info);
     } else {
-      // Remove sensitive data before login
-      user.password = undefined;
-      user.salt = undefined;
-      req.login(user, function (err) {
+      if (user.userRole.indexOf(userRole) <= -1)
+        return res.status(422).send({
+          message: 'Must select one of your roles'
+        });
+      // specify the user role
+      if (req.body) {
+        if (user.roles.indexOf('worker') > -1) {
+          user.roles.splice(user.roles.indexOf('worker'), 1);
+        }
+        if (user.roles.indexOf('requester') > -1) {
+          user.roles.splice(user.roles.indexOf('worker'), 1);
+        }
+        if (user.roles.indexOf('resourceOwner') > -1) {
+          user.roles.splice(user.roles.indexOf('worker'), 1);
+        }
+        var found = false;
+        for (var i = 0; i < rollWhitelistedData.length; i++) {
+          if (rollWhitelistedData[i] === userRole) {
+            user.roles.push(userRole);
+            found = true;
+          }
+        }
+        if (!found)
+          return res.status(422).send({
+            message: 'Can\'t update to that View'
+          });
+      }
+      
+      user.save(function (err) {
         if (err) {
-          res.status(400).send(err);
+          return res.status(422).send({
+            message: errorHandler.getErrorMessage(err)
+          });
         } else {
-          res.json(user);
+          // Remove sensitive data before login
+          user.password = undefined;
+          user.salt = undefined;
+          req.login(user, function (err) {
+            if (err) {
+              res.status(400).send(err);
+            } else {
+              res.json({ user: user, newRole: userRole });
+            }
+          }); 
         }
       });
     }

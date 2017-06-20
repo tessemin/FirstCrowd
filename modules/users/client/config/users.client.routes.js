@@ -11,25 +11,9 @@
   function routeConfig($stateProvider) {
         
     function changeRole(UsersService, role, menuService, Authentication, $rootScope, $state) {
-      return UsersService.updateRoles({role: role}).$promise
+      return UsersService.updateRoles({ role: role }).$promise
         .then(function(user) {
-          if (user) {
-            Authentication.user = user;
-            menuService.init();
-            $rootScope.$broadcast('onMenuRoleChange', {
-              role: role
-            });
-
-            if (role === 'requester') 
-              $state.go('requesters.list');
-            else if (role === 'worker') 
-              $state.go('workers.list');
-            else if (role === 'resourceOwner') 
-              $state.go('resourceOwners.list');
-            else
-              $state.go('home');
-            
-          }
+          UsersService.changeUserRoleView(user, Authentication, menuService, $rootScope, $state, role);
         });
     }
 
@@ -173,4 +157,5 @@
         }
       });
   }
+  
 }());

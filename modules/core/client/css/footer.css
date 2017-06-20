@@ -27,3 +27,18 @@
   background: #55ACEE;
   color: white;
 }
+
+/* Footer at bottom of window or of content, whichever comes last */
+html {
+  height: 100%;
+}
+
+body {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;
+}

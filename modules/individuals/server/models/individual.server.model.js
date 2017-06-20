@@ -262,11 +262,155 @@ var IndividualUserSchema = new Schema({
       speciality: Schema.Types.Mixed,
       default: {}
     }]
-  }]
+  }],
+  requester: {
+    activeTasks: [{
+      type: Schema.Types.ObjectId
+    }],
+    suspendedTasks: [{
+      type: Schema.Types.ObjectId
+    }],
+    acceptedTasks: [{
+      type: Schema.Types.ObjectId
+    }],
+    failedTasks: [{
+      type: Schema.Types.ObjectId
+    }],
+    acceptanceRate: {
+      type: Number,
+      default: 0.0
+    },
+    interestedCategories: [{
+      type: Schema.Types.Mixed
+    }],
+    workerRatings: [{
+      workerID: Schema.Types.ObjectId,
+      overAllRating: {
+        type: Number,
+        default: 0.0
+      },
+      clearness: {
+        type: Number,
+        default: 0.0
+      },
+      resonableness: {
+        type: Number,
+        default: 0.0
+      },
+      responseTime: {
+        type: Number,
+        default: 0.0
+      }
+    }],
+    workersPerCategory: [{
+      category: {
+        type: Schema.Types.Mixed
+      },
+      number: {
+        type: Number,
+        default: 0
+      }
+    }],
+    totalPayments: {
+      type: Number,
+      default: 0.00
+    },
+    numberOfHiredWorkers: {
+      type: Number,
+      default: 0
+    }
+  },
+  worker: {
+    activeTasks: [{
+      type: Schema.Types.ObjectId
+    }],
+    completedTasks: [{
+      type: Schema.Types.ObjectId
+    }],
+    inactiveTasks: [{
+      type: Schema.Types.ObjectId
+    }],
+    totalEarnings: {
+      type: Number,
+      default: 0.0
+    },
+    requesterRatingsPerCategory: {
+      requester: Schema.Types.ObjectId,
+      category: {
+        type: Schema.Types.Mixed
+      },
+      rate: {
+        type: Number,
+        default: 0.0
+      }
+    },
+    acceptanceRatesPerCategory: {
+      category: {
+        type: Schema.Types.Mixed
+      },
+      number: {
+        type: Number,
+        default: 0
+      }
+    },
+    numberTasksCompleted: {
+      type: Number,
+      default: 0
+    },
+    numberTaksUncompleted: {
+      type: Number,
+      default: 0
+    },
+    numberAcceptedTasks: {
+      type: Number,
+      default: 0
+    },
+    acceptanceRate: {
+      type: Number,
+      default: 0.0
+    },
+    preferedCategories: [{
+      category: Schema.Types.Mixed,
+      numberCompleted: {
+        type: Number,
+        default: 0
+      }
+    }],
+    averageCompletionTime: {
+      type: Number,
+      default: 0
+    },
+    averageEarnedPerTask: {
+      type: Number,
+      default: 0.00
+    }
+  },
+  owner: {
+    resources: [{
+      type: Schema.Types.Mixed
+    }],
+    workerRating: [{
+      worker: Schema.Types.ObjectId,
+      rating: {
+        type: Number,
+        default: 0.0
+      }
+    }],
+    requesterRating: [{
+      requester: Schema.Types.ObjectId,
+      rating: {
+        type: Number,
+        default: 0.0
+      }
+    }]
+  }
 });
 
+//console.log((new Worker()));
+//IndividualUserSchema.requester = new Requester();
 
 IndividualUserSchema.pre('save', function (next) {
+
   next();
 });
 

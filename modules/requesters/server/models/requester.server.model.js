@@ -11,18 +11,7 @@ var mongoose = require('mongoose'),
  */
 var RequesterSchema = new Schema({
   name: {
-    type: String,
-    default: '',
-    required: 'Please fill Requester name',
-    trim: true
-  },
-  created: {
-    type: Date,
-    default: Date.now
-  },
-  user: {
-    type: Schema.ObjectId,
-    ref: 'User'
+    type: String
   }
 });
 
