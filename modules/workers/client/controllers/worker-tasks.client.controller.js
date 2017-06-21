@@ -80,11 +80,11 @@
       },
       getPointerColor: function(value) {
         if (value <= 50) { // 0 - 50 red - yellow
-          return 'rgb(255, ' + (value * 4.42) + ', 0)';
+          return 'rgb(255, ' + Math.floor(value * 4.42) + ', 30)';
         } else if (value < 100) { // 50 - 99 yellow - lightgreen
-          return 'rgb(' + (255 - ((value - 50) * 2.55)) + ', 221, 0)';
+          return 'rgb(' + Math.floor(255 - ((value - 50) * 2.55)) + ', 221, 30)';
         } else { // 100% = distinct shade of green
-          return 'rgb(0, 255, 0)';
+          return 'rgb(0, 255, 30)';
         }
       },
       getSelectionBarColor: function(value) {
