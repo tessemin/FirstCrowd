@@ -23,7 +23,7 @@
       'Submit Results'
     ];
 
-    WorkersService.getActiveTasks().$promise
+    WorkersService._getActiveTasks().$promise
       .then(function(data) {
         console.log(data);
       });

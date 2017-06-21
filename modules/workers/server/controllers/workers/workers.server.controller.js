@@ -96,7 +96,7 @@ exports.list = function(req, res) {
  * Worker middleware
  */
 exports.workerByID = function(req, res, next, id) {
-
+/* 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).send({
       message: 'Worker is invalid'
@@ -113,5 +113,6 @@ exports.workerByID = function(req, res, next, id) {
     }
     req.worker = worker;
     next();
-  });
+  }); */
+  next();
 };

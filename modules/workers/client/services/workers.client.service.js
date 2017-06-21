@@ -17,7 +17,7 @@
       },
       _getActiveTasks: {
         method: 'GET',
-        url: 'api/workers/activeTasks/'
+        url: '/api/workers/activeTasks/'
       },
       _createActiveTask: {
         method: 'POST',
@@ -37,14 +37,14 @@
       }
     });
 
-    angular.extend(Workers, {
+/*     angular.extend(Workers, {
       getActiveTasks: function () {
         return this._getActiveTasks().$promise;
       },
       getActiveTask: function () {
         return this._getActiveTask().$promise;
       }
-    });
+    }); */
 
     return Workers;
   }
