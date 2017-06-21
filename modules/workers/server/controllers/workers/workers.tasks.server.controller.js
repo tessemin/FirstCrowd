@@ -20,7 +20,7 @@ var path = require('path'),
 // get all active tasks or create a new task
 exports.activeTasks = {
   read: function(req, res) {
-
+    res.json({ name: 'Mark' })
   },
   create: function(req, res) {
     
@@ -29,7 +29,7 @@ exports.activeTasks = {
 // opperations on task ID
 exports.activeTask = {
   read: function(req, res) {
-    res.jsonp({});
+    res.json({ name: 'Mark' })
   },
   update: function(req, res) {
   
