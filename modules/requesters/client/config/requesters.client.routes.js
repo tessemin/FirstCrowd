@@ -14,6 +14,12 @@
         url: '/requesters',
         template: '<ui-view/>'
       })
+      .state('requesters.tasks', {
+        url: '/tasks',
+        templateUrl: '/modules/requesters/client/views/requesters-tasks.client.view.html',
+        controller: 'RequesterTasksController',
+        controllerAs: 'vm'
+      })
       .state('requesters.list', {
         url: '',
         templateUrl: '/modules/requesters/client/views/list-requesters.client.view.html',
