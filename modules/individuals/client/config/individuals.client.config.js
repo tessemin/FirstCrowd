@@ -19,37 +19,37 @@
     // Add the dropdown list item
     menuService.addSubMenuItem('topbar', 'individuals', {
       title: 'View Your Resume',
-      state: 'individuals.resume',
+      state: 'individuals.resume'
     });
     
     menuService.addSubMenuItem('topbar', 'individuals', {
       title: 'Edit Account Details',
-      state: 'individuals.profile',
+      state: 'individuals.profile'
     });
     
     menuService.addSubMenuItem('topbar', 'individuals', {
       title: 'Edit Bio',
-      state: 'individuals.bio',
+      state: 'individuals.bio'
     });
     
     menuService.addSubMenuItem('topbar', 'individuals', {
       title: 'Edit Education',
-      state: 'individuals.education',
+      state: 'individuals.education'
     });
     
     menuService.addSubMenuItem('topbar', 'individuals', {
       title: 'Edit Certifications',
-      state: 'individuals.certifications',
+      state: 'individuals.certifications'
     });
     
     menuService.addSubMenuItem('topbar', 'individuals', {
       title: 'Edit Work Experience',
-      state: 'individuals.experience',
+      state: 'individuals.experience'
     });
     
     menuService.addSubMenuItem('topbar', 'individuals', {
       title: 'Edit Skills',
-      state: 'individuals.skills',
+      state: 'individuals.skills'
     });
     
     //
@@ -78,7 +78,7 @@
       title: 'Edit Certificatons',
       state: 'settings.certification',
       roles: ['individual']
-    })
+    });
 
     menuService.addMenuItem('individual', {
       title: 'Edit Skills',

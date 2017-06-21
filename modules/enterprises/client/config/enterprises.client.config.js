@@ -42,8 +42,7 @@
     //
     menuService.addMenuItem('topbar', {
       title: 'Enterprise Graph',
-      state: 'enterprises.graph',
-      //type: 'dropdown',
+      state: 'graph',
       roles: ['enterprise']
     });
 

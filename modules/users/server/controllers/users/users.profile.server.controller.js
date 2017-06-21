@@ -79,7 +79,7 @@ exports.updateRoles = function (req, res) {
                 message: errorHandler.getErrorMessage(err)
               });
             } else {
-              res.json(user);
+              return res.json(user);
             }
           });
           found = true;
@@ -88,7 +88,7 @@ exports.updateRoles = function (req, res) {
       }
       if (!found) {
         return res.status(422).send({
-          message: 'Cannot update that to that View'
+          message: 'Can\'t update to that View'
         });
       }
     } else {
@@ -222,4 +222,9 @@ exports.me = function (req, res) {
     }
   }
   res.json(safeUserObject || null);
+};
+
+exports.whitelistedData = {
+  rollWhitelistedData: rollWhitelistedData,
+  whitelistedFields: whitelistedFields
 };
