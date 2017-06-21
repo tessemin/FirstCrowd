@@ -29,9 +29,9 @@ exports.signup = function (req, res) {
   
   // puts userRole into a storeable format
   var userRole = [];
-  for (var i in req.body.userRole) {
-    if(req.body.userRole[i]) {
-      userRole.push(i);
+  for (var r in req.body.userRole) {
+    if (req.body.userRole[r]) {
+      userRole.push(r);
     }
   }
 
@@ -84,7 +84,6 @@ exports.signup = function (req, res) {
     user.roles.push('user');
   }
   // Then save the user
-  console.log(user)
   user.save(function (err) {
     if (err) {
       return res.status(422).send({

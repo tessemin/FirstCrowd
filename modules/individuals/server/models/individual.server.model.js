@@ -265,16 +265,40 @@ var IndividualUserSchema = new Schema({
   }],
   requester: {
     activeTasks: [{
-      type: Schema.Types.ObjectId
+      task: {
+        type: Schema.Types.ObjectId
+      },
+      hidden: {
+        type: Boolean,
+        default: false
+      }
     }],
     suspendedTasks: [{
-      type: Schema.Types.ObjectId
+      task: {
+        type: Schema.Types.ObjectId
+      },
+      hidden: {
+        type: Boolean,
+        default: false
+      }
     }],
     acceptedTasks: [{
-      type: Schema.Types.ObjectId
+      task: {
+        type: Schema.Types.ObjectId
+      },
+      hidden: {
+        type: Boolean,
+        default: false
+      }
     }],
     failedTasks: [{
-      type: Schema.Types.ObjectId
+      task: {
+        type: Schema.Types.ObjectId
+      },
+      hidden: {
+        type: Boolean,
+        default: false
+      }
     }],
     acceptanceRate: {
       type: Number,
@@ -322,19 +346,55 @@ var IndividualUserSchema = new Schema({
   },
   worker: {
     activeTasks: [{
-      type: Schema.Types.ObjectId
+      task: {
+        type: Schema.Types.ObjectId
+      },
+      hidden: {
+        type: Boolean,
+        default: false
+      }
+    }],
+    rejectedTasks: [{
+      task: {
+        type: Schema.Types.ObjectId
+      },
+      hidden: {
+        type: Boolean,
+        default: false
+      }
     }],
     completedTasks: [{
-      type: Schema.Types.ObjectId
+      task: {
+        type: Schema.Types.ObjectId
+      },
+      hidden: {
+        type: Boolean,
+        default: false
+      }
     }],
     inactiveTasks: [{
-      type: Schema.Types.ObjectId
+      task: {
+        type: Schema.Types.ObjectId
+      },
+      hidden: {
+        type: Boolean,
+        default: false
+      }
+    }],
+    recomendedTasks: [{
+      task: {
+        type: Schema.Types.ObjectId
+      },
+      hidden: {
+        type: Boolean,
+        default: false
+      }
     }],
     totalEarnings: {
       type: Number,
       default: 0.0
     },
-    requesterRatingsPerCategory: {
+    requesterRatingsPerCategory: [{
       requester: Schema.Types.ObjectId,
       category: {
         type: Schema.Types.Mixed
@@ -343,7 +403,7 @@ var IndividualUserSchema = new Schema({
         type: Number,
         default: 0.0
       }
-    },
+    }],
     acceptanceRatesPerCategory: {
       category: {
         type: Schema.Types.Mixed
@@ -352,18 +412,6 @@ var IndividualUserSchema = new Schema({
         type: Number,
         default: 0
       }
-    },
-    numberTasksCompleted: {
-      type: Number,
-      default: 0
-    },
-    numberTaksUncompleted: {
-      type: Number,
-      default: 0
-    },
-    numberAcceptedTasks: {
-      type: Number,
-      default: 0
     },
     acceptanceRate: {
       type: Number,
@@ -406,11 +454,7 @@ var IndividualUserSchema = new Schema({
   }
 });
 
-//console.log((new Worker()));
-//IndividualUserSchema.requester = new Requester();
-
 IndividualUserSchema.pre('save', function (next) {
-
   next();
 });
 

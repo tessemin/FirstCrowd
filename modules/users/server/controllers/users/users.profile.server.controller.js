@@ -79,7 +79,6 @@ exports.updateRoles = function (req, res) {
                 message: errorHandler.getErrorMessage(err)
               });
             } else {
-              console.log('this user' + user)
               return res.json(user);
             }
           });
@@ -228,4 +227,4 @@ exports.me = function (req, res) {
 exports.whitelistedData = {
   rollWhitelistedData: rollWhitelistedData,
   whitelistedFields: whitelistedFields
-}
+};

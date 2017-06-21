@@ -92,7 +92,7 @@
       // $state.go($state.previous.state.name || 'home', $state.previous.params);
       
       // redirects to role main page
-      redirectOnSign(response.user, response.newRole)
+      redirectOnSign(response.user, response.newRole);
     }
     function onUserSigninError(response) {
       Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Signin Error!', delay: 6000 });

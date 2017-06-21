@@ -5,7 +5,7 @@
         <div ng-repeat="school in vm.schools as schoolCount track by $index">
           <fieldset>
           <div class="individual-bio-element">
-            
+
             <div class="form-group" show-errors>
               <label for="schoolName{{$index}}">School Name</label>
               <input type="text" id="schoolName{{$index}}" name="schoolName{{$index}}" class="form-control" ng-model="vm.schools[$index].schoolName" placeholder="School Name" required>
@@ -13,7 +13,7 @@
                 <p class="help-block error-text" ng-message="required">School Name is required.</p>
               </div>
             </div>
-            
+
             <div class="form-group" show-errors>
               <label for="startDate{{$index}}">First Date Attended</label>
               <input type="date" id="startDate{{$index}}" name="startDate{{$index}}" class="form-control" ng-model="vm.schools[$index].startDate" placeholder="yyyy-mm-dd" required>
@@ -22,7 +22,7 @@
                 <p class="help-block error-text" ng-message="date">First Date Attended is invalid.</p>
               </div>
             </div>
-            
+
             <div class="form-group" show-errors>
               <label for="endDate{{$index}}">Last Date Attended</label>
               <input type="date" id="endDate{{$index}}" name="endDate{{$index}}" class="form-control" ng-model="vm.schools[$index].endDate" placeholder="yyyy-mm-dd" required>
@@ -31,7 +31,7 @@
                 <p class="help-block error-text" ng-message="date">Last Date Attended is invalid.</p>
               </div>
             </div>
-            
+
             <div class="form-group" show-errors>
               <label for="schoolStreetAddress{{$index}}">School Street Address</label>
               <input type="text" id="schoolStreetAddress{{$index}}" name="schoolStreetAddress{{$index}}" class="form-control" ng-model="vm.schools[$index].address.schoolStreetAddress" placeholder="School Street Address">
@@ -39,7 +39,7 @@
                 <p class="help-block error-text" ng-message="required">School Street Address is required.</p>
               </div>
             </div>
-            
+
             <div class="form-group" show-errors>
               <label for="schoolCity{{$index}}">School City</label>
               <input type="text" id="schoolCity{{$index}}" name="schoolCity{{$index}}" class="form-control" ng-model="vm.schools[$index].address.schoolCity" placeholder="School City">
@@ -47,7 +47,7 @@
                 <p class="help-block error-text" ng-message="required">School City is required.</p>
               </div>
             </div>
-            
+
             <div class="form-group" show-errors>
               <label for="schoolState{{$index}}">School State/Province</label>
               <input type="text" id="schoolState{{$index}}" name="schoolState{{$index}}" class="form-control" ng-model="vm.schools[$index].address.schoolState" placeholder="School State / Province">
@@ -55,7 +55,7 @@
                 <p class="help-block error-text" ng-message="required">School State is required.</p>
               </div>
             </div>
-            
+
             <div class="form-group" show-errors>
               <label for="schoolZipCode{{$index}}">School Zip Code/Mail Code</label>
               <input type="text" id="schoolZipCode{{$index}}" name="schoolZipCode{{$index}}" class="form-control" ng-model="vm.schools[$index].address.schoolZipCode" placeholder="School Zip Code / Mail Code">
@@ -63,7 +63,7 @@
                 <p class="help-block error-text" ng-message="required">School Zip Code / Mail Code is required.</p>
               </div>
             </div>
-            
+
             <div class="form-group" show-errors>
               <label for="schoolCountry{{$index}}">School Country</label>
               <select id="schoolCountry{{$index}}" name="schoolCountry{{$index}}" class="form-control" ng-model="vm.schools[$index].address.schoolCountry" ng-options="x.code as x.name for x in vm.countries">
@@ -72,7 +72,7 @@
                 <p class="help-block error-text" ng-message="required">School Country is required.</p>
               </div>
             </div>
-            
+
             <div ng-repeat="degree in vm.schools[$index].degrees as degreeCount track by $index">
               <fieldset class ="individual-education-degree">
                 <div class="form-group" show-errors>
@@ -82,19 +82,19 @@
                     <p class="help-block error-text" ng-message="required">Subject is required.</p>
                   </div>
                 </div>
-                
-                
+
+
                 <div class="form-group" show-errors>
                   <label for="school{{$parent.$index}}.degreeLevel{{$index}}">Degree Level</label>
                   <select id="school{{$parent.$index}}.degreeLevel{{$index}}" name="school{{$parent.$index}}.degreeLevel{{$index}}" class="form-control" ng-model="vm.schools[$parent.$index].degrees[$index].degreeLevel" ng-options="x for x in vm.degreeLevels" required>
                   </select>
                 </div>
-                
+
                 <div class="form-group" show-errors>
                   <label for="school{{$parent.$index}}.concentration{{$index}}">Concentration</label>
                   <input type="text" id="school{{$parent.$index}}.concentration{{$index}}" name="school{{$parent.$index}}.concentration{{$index}}" class="form-control" ng-model="vm.schools[$parent.$index].degrees[$index].concentration" placeholder="Optional">
                 </div>
-                
+
                 <button type="button" class="btn" ng-click="vm.removeDegree($parent.$index, $index)">Remove this Degree</button>
               </fieldset>
             </div> <!-- end ng-repeat -->

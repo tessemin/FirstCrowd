@@ -28,10 +28,12 @@
       </li>
     </ul>
   </nav>
+  <div class="tasks-caption">
+    <h4 class="tasks-">My Active Tasks</h4>
+    <select ng-model="vm.taskCategory" ng-options="x for x in vm.taskCategories">
+    </select>
+  </div>
   <div class="col-md-9 tasks-table">
-    <div class="tasks-caption">
-      My Active Tasks
-    </div>
     <div class="tasks-header">
       <div class="tasks-cell">
         Task ID
@@ -71,13 +73,12 @@
       <div class="tasks-cell">
         {{task.status}}
       </div>
-      <div class="tasks-cell progress">
-        <div class="progress-bar" role="progressbar" ng-style="task.style">
-          {{task.style.width}}
-        </div>
+      <div class="tasks-cell">
+        <rzslider class="progress-slider" rz-slider-model="task.progress" rz-slider-options="vm.sliderOptions"></rzslider>
       </div>
       <div class="tasks-cell">
-        &lt;Actions Dropdown&gt;
+        <select ng-model="vm.task[$index].taskAction" ng-options="x for x in vm.taskActions">
+        </select>
       </div>
     </div> <!-- end ng-repeat -->
     <div class="text-center form-group">

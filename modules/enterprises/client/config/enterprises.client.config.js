@@ -21,17 +21,17 @@
       title: 'Edit Company Profile',
       state: 'enterprises.profile'
     });
-
+    
     menuService.addSubMenuItem('topbar', 'enterprises', {
       title: 'Edit Suppliers',
       state: 'enterprises.supplier'
     });
-
+    
     menuService.addSubMenuItem('topbar', 'enterprises', {
       title: 'Edit Customers',
       state: 'enterprises.customer'
     });
-
+    
     menuService.addSubMenuItem('topbar', 'enterprises', {
       title: 'Edit Competitors',
       state: 'enterprises.competitor'

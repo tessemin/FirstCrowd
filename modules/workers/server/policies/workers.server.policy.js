@@ -15,11 +15,35 @@ exports.invokeRolesPolicies = function () {
   acl.allow([{
     roles: ['admin'],
     allows: [{
-      resources: '/api/workers',
-      permissions: '*'
+      resources: '/api/workers/activeTasks/',
+      permissions: ['get', 'post']
     }, {
-      resources: '/api/workers/:workerId',
-      permissions: '*'
+      resources: 'api/workers/activeTask/:taskId',
+      permissions: ['get', 'put', 'delete']
+    }, {
+      resources: '/api/workers/rejectedTasks/',
+      permissions: ['get', 'post']
+    }, {
+      resources: 'api/workers/rejectedTask/:taskId',
+      permissions: ['get', 'put', 'delete']
+    }, {
+      resources: '/api/workers/completedTasks/',
+      permissions: ['get', 'post']
+    }, {
+      resources: 'api/workers/completedTask/:taskId',
+      permissions: ['get', 'put', 'delete']
+    }, {
+      resources: '/api/workers/inactiveTasks/',
+      permissions: ['get', 'post']
+    }, {
+      resources: 'api/workers/inactiveTask/:taskId',
+      permissions: ['get', 'put', 'delete']
+    }, {
+      resources: '/api/workers/recomendedTasks/',
+      permissions: ['get']
+    }, {
+      resources: 'api/workers/recomendedTask/:taskId',
+      permissions: ['get', 'put', 'delete']
     }]
   }, {
     roles: ['user'],
@@ -31,12 +55,36 @@ exports.invokeRolesPolicies = function () {
       permissions: ['get']
     }]
   }, {
-    roles: ['guest'],
+    roles: ['worker'],
     allows: [{
-      resources: '/api/workers',
+      resources: '/api/workers/activeTasks/',
+      permissions: ['get', 'post']
+    }, {
+      resources: 'api/workers/activeTask/:taskId',
+      permissions: ['get', 'put', 'delete']
+    }, {
+      resources: '/api/workers/rejectedTasks/',
+      permissions: ['get', 'post']
+    }, {
+      resources: 'api/workers/rejectedTask/:taskId',
+      permissions: ['get', 'put', 'delete']
+    }, {
+      resources: '/api/workers/completedTasks/',
+      permissions: ['get', 'post']
+    }, {
+      resources: 'api/workers/completedTask/:taskId',
+      permissions: ['get', 'put', 'delete']
+    }, {
+      resources: '/api/workers/inactiveTasks/',
+      permissions: ['get', 'post']
+    }, {
+      resources: 'api/workers/inactiveTask/:taskId',
+      permissions: ['get', 'put', 'delete']
+    }, {
+      resources: '/api/workers/recomendedTasks/',
       permissions: ['get']
     }, {
-      resources: '/api/workers/:workerId',
+      resources: 'api/workers/recomendedTask/:taskId',
       permissions: ['get']
     }]
   }]);

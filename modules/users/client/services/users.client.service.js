@@ -69,7 +69,7 @@
       userSignin: function (credentials) {
         return this.signin(credentials).$promise;
       },
-      changeUserRoleView: function(user, Authentication, menuService, $rootScope, $state, role){
+      changeUserRoleView: function(user, Authentication, menuService, $rootScope, $state, role) {
         if (user) {
           Authentication.user = user;
           menuService.init();

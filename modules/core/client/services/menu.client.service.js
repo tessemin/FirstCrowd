@@ -116,8 +116,6 @@
       
       // A private function for rendering decision
       shouldRender = function (user) {
-        console.log('Roles: ' + this.roles)
-        console.log('User Role: ' + this.userRole)
         if (this.roles.indexOf('*') !== -1 && this.userRole.indexOf('*') !== -1) {
           return true;
         } else {
@@ -162,6 +160,7 @@
       // Adding the topbar menu
       addMenu('topbar', {
         roles: ['*'],
+        userRole: ['*']
       });
     }
 

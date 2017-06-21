@@ -8,26 +8,20 @@
   menuConfig.$inject = ['menuService'];
 
   function menuConfig(menuService) {
-    // Set top bar menu items
+    // Add my messages Tab
     menuService.addMenuItem('topbar', {
-      title: 'Workers',
-      state: 'workers',
-      type: 'dropdown',
-      roles: ['worker']
+      title: 'My Messages',
+      state: 'workers.messages',
+      roles: ['worker'],
+      userRole: ['worker']
+    });
+    
+    menuService.addMenuItem('topbar', {
+      title: 'My Tasks',
+      state: 'workers.tasks',
+      roles: ['worker'],
+      userRole: ['worker']
     });
 
-    // Add the dropdown list item
-    menuService.addSubMenuItem('topbar', 'workers', {
-      title: 'List Workers',
-      state: 'workers.list',
-      roles: ['worker']
-    });
-
-    // Add the dropdown create item
-    menuService.addSubMenuItem('topbar', 'workers', {
-      title: 'Create Worker',
-      state: 'workers.create',
-      roles: ['worker']
-    });
   }
 }());
