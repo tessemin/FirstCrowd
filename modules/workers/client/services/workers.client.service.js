@@ -9,35 +9,43 @@
   WorkersService.$inject = ['$resource'];
 
   function WorkersService($resource) {
-    return $resource('api/workers/:workerId', {
+    var Workers = $resource('api/workers/:workerId', {
       workerId: '@_id'
-    },
-    'api/workers/:taskId', {
-      taskId: '@_id'
     }, {
-      update: {
+      _update: {
         method: 'PUT'
       },
-      getActiveTasks: {
+      _getActiveTasks: {
         method: 'GET',
-        url: '/api/workers/activeTasks/'
+        url: 'api/workers/activeTasks/'
       },
-      createActiveTask: {
+      _createActiveTask: {
         method: 'POST',
         url: '/api/workers/activeTasks/'
       },
-      getActiveTask: {
+      _getActiveTask: {
         method: 'GET',
         url: '/api/workers/activeTask/:taskId'
       },
-      updateActiveTask: {
+      _updateActiveTask: {
         method: 'PUT',
         url: '/api/workers/activeTask/:taskId'
       },
-      deleteActiveTask: {
+      _deleteActiveTask: {
         method: 'DELETE',
         url: '/api/workers/activeTask/:taskId'
       }
     });
+
+    angular.extend(Workers, {
+      getActiveTasks: function () {
+        return this._getActiveTasks().$promise;
+      },
+      getActiveTask: function () {
+        return this._getActiveTask().$promise;
+      }
+    });
+
+    return Workers;
   }
 }());

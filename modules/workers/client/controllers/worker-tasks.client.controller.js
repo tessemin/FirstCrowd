@@ -6,9 +6,9 @@
     .module('workers')
     .controller('WorkerTasksController', WorkerTasksController);
 
-  WorkerTasksController.$inject = ['$scope', '$state', '$timeout'];
+  WorkerTasksController.$inject = ['$scope', '$state', '$timeout', 'WorkersService'];
 
-  function WorkerTasksController ($scope, $state, $timeout) {
+  function WorkerTasksController ($scope, $state, $timeout, WorkersService) {
     var vm = this;
     // Filters
     vm.filters = {};
@@ -23,7 +23,7 @@
       'Submit Results'
     ];
 
-    WorkerService.getActiveTasks().$promise
+    WorkersService.getActiveTasks().$promise
       .then(function(data) {
         console.log(data);
       });
