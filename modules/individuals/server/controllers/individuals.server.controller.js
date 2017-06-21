@@ -335,3 +335,5 @@ exports.getIndividual = function(req, res) {
 exports.create = function(req, res) {
   
 };
+
+exports.getIndividualByUser = getIndividual;

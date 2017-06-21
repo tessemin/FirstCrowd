@@ -11,9 +11,32 @@
   function WorkersService($resource) {
     return $resource('api/workers/:workerId', {
       workerId: '@_id'
+    }
+    return $resource('api/workers/:taskId', {
+      taskId: '@_id'
     }, {
       update: {
         method: 'PUT'
+      },
+      getActiveTasks: {
+        method: 'GET',
+        url: '/api/workers/activeTasks/'
+      },
+      createActiveTask: {
+        method: 'POST',
+        url: '/api/workers/activeTasks/'
+      },
+      getActiveTask: {
+        method: 'GET',
+        url: '/api/workers/activeTask/:taskId'
+      },
+      updateActiveTask: {
+        method: 'PUT',
+        url: '/api/workers/activeTask/:taskId'
+      },
+      deleteActiveTask: {
+        method: 'DELETE',
+        url: '/api/workers/activeTask/:taskId'
       }
     });
   }
