@@ -11,8 +11,8 @@
   function WorkersService($resource) {
     return $resource('api/workers/:workerId', {
       workerId: '@_id'
-    }
-    return $resource('api/workers/:taskId', {
+    },
+    'api/workers/:taskId', {
       taskId: '@_id'
     }, {
       update: {
@@ -37,15 +37,6 @@
       deleteActiveTask: {
         method: 'DELETE',
         url: '/api/workers/activeTask/:taskId'
-      }
-    )}});
-
-    angular.extend(Workers, {
-      _getActiveTasks: function () {
-        return this.getActiveTasks().$promise;
-      },
-      _getActiveTask: function () {
-        return this.getActiveTask().$promise;
       }
     });
   }
