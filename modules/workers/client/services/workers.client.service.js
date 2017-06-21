@@ -38,6 +38,15 @@
         method: 'DELETE',
         url: '/api/workers/activeTask/:taskId'
       }
+    )}});
+
+    angular.extend(Workers, {
+      _getActiveTasks: function () {
+        return this.getActiveTasks().$promise;
+      },
+      _getActiveTask: function () {
+        return this.getActiveTask().$promise;
+      }
     });
   }
 }());

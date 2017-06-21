@@ -1,5 +1,11 @@
 .tasks-caption {
-  display: table-caption;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+}
+
+.tasks-caption > * {
+  margin-right: 10px;
 }
 
 .tasks-table {
@@ -17,6 +23,7 @@
 .tasks-cell {
   display: table-cell;
   text-align: center;
+  background: inherit;
 }
 
 .filter-label {
@@ -28,11 +35,23 @@
   width: 50%;
 }
 
-.worker-nav > li {
-  float:none;
-  display:inline-block;
+.progress-slider {
 }
 
-.worker-nav {
-  text-align:center;
+.progress-slider.rzslider .rz-pointer {
+  width: 8px;
+  height: 16px;
+  top: auto; /* to remove the default positioning */
+  bottom: 0;
+  background-color: #333;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+
+.progress-slider.rzslider .rz-bubble {
+  bottom: 14px;
+}
+
+.progress-slider.rzslider .rz-pointer:after {
+  display: none;
 }
