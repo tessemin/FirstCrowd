@@ -63,13 +63,6 @@
     ];
     vm.taskCategory = vm.taskCategories[0];
 
-    // This function is necessary to initially render the progress sliders
-    (function refreshProgressSliders() {
-      $scope.$broadcast('rzSliderForceRender');
-      for(var i = 0; i < vm.tasks.length; ++i) {
-      }
-    })();
-
     vm.sliderOptions = {
       floor: 0,
       ceil: 100,
@@ -80,20 +73,34 @@
       },
       getPointerColor: function(value) {
         if (value <= 50) { // 0 - 50 red - yellow
-          return 'rgb(255, ' + Math.floor(value * 4.42) + ', 30)';
+          return 'rgb(255, ' + Math.floor(value * 5.1) + ', 60)';
         } else if (value < 100) { // 50 - 99 yellow - lightgreen
-          return 'rgb(' + Math.floor(255 - ((value - 50) * 2.55)) + ', 221, 30)';
+          return 'rgb(' + Math.floor(255 - ((value - 50) * 5.1)) + ', 255, 60)';
         } else { // 100% = distinct shade of green
           return 'rgb(0, 255, 30)';
         }
       },
-      getSelectionBarColor: function(value) {
-          if (value === 100) {
+      onChange: function(sliderId, modelValue, highValue, pointerType) {
+        console.log(modelValue);
+        if (modelValue === 100) {
+          this.selectionBarGradient = null;
+          this.getSelectionBarColor = function() {
             return 'rgb(0, 221, 0)';
-          } else {
-            return 'rgb(128, 128, 128)';
-          }
+          };
+          $scope.$broadcast('rzSliderForceRender');
+        } else {
+          this.selectionBarGradient = {
+            from: 'rgb(255,255,255)',
+            to: 'rgb(0,0,255)'
+          };
+          this.getSelectionBarColor = null;
+        }
       }
     };
+
+    // This function is necessary to initially render the progress sliders
+    (function refreshProgressSliders() {
+      $scope.$broadcast('rzSliderForceRender');
+    })();
   }
 }());
