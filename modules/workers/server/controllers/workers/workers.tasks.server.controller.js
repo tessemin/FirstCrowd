@@ -246,6 +246,12 @@ exports.taskByID = function(req, res, next, id) {
   });
 };
 
+exports.getAllTasks = function (req, res) {
+  Task.find({}, function (err, tasks) {
+    res.json({ tasks: tasks })
+  });
+}
+
 function getUserTypeObject(req, res, callBack) {
   if (req.user.individual) {
     individualControler.findIndividual(req, res, callBack);

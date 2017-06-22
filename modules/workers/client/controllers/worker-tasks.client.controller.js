@@ -23,7 +23,12 @@
       'Submit Results'
     ];
 
-    WorkersService.getActiveTasks()
+/*     WorkersService.getActiveTasks()
+      .then(function(data) {
+        console.log(data);
+      }); */
+      
+    WorkersService.getAllTasks()
       .then(function(data) {
         console.log(data);
       });

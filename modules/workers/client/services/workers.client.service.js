@@ -111,6 +111,11 @@
         method: 'DELETE',
         url: '/api/workers/RecomendedTask/'
       },
+      // Gets all tasks
+      _getAllTasks: {
+        method: 'POST',
+        url: '/api/getAllTasks'
+      }
     });
 
     angular.extend(Workers, {
@@ -191,6 +196,9 @@
       deleteRecomendedTask: function () {
         return this._deleteRecomendedTask().$promise;
       },
+      getAllTasks: function () {
+        return this._getAllTasks().$promise;
+      }
     });
 
     return Workers;
