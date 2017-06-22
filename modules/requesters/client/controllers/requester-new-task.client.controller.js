@@ -10,5 +10,9 @@
 
   function RequesterNewTaskController ($scope, $http, $state, IndividualsService, Authentication, Notification) {
     var vm = this;
+
+    vm.newTask = {
+      name: ''
+    };
   }
 }());
