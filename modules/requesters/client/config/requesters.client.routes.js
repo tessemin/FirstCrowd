@@ -20,6 +20,12 @@
         controller: 'RequesterTasksController',
         controllerAs: 'vm'
       })
+      .state('requesters.new-task', {
+        url: '/tasks/new',
+        templateUrl: 'modules/requesters/client/views/requester-new-task.client.view.html',
+        controller: 'RequesterNewTaskController',
+        controllerAs: 'vm'
+      })
       .state('requesters.list', {
         url: '',
         templateUrl: '/modules/requesters/client/views/list-requesters.client.view.html',
