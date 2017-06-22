@@ -19,9 +19,9 @@
         method: 'POST',
         url: '/api/workers/activeTask/all'
       },
-      _createActiveTask: {
+      _addActiveTask: {
         method: 'POST',
-        url: '/api/workers/activeTask/create'
+        url: '/api/workers/activeTask/add'
       },
       _getActiveTask: {
         method: 'POST',
@@ -39,9 +39,9 @@
         method: 'POST',
         url: '/api/workers/RejectedTask/all'
       },
-      _createRejectedTask: {
+      _addRejectedTask: {
         method: 'POST',
-        url: '/api/workers/RejectedTask/create'
+        url: '/api/workers/RejectedTask/add'
       },
       _getRejectedTask: {
         method: 'POST',
@@ -59,9 +59,9 @@
         method: 'POST',
         url: '/api/workers/CompletedTask/all'
       },
-      _createCompletedTask: {
+      _addCompletedTask: {
         method: 'POST',
-        url: '/api/workers/CompletedTask/create'
+        url: '/api/workers/CompletedTask/add'
       },
       _getCompletedTask: {
         method: 'POST',
@@ -79,9 +79,9 @@
         method: 'POST',
         url: '/api/workers/InactiveTask/all'
       },
-      _createInactiveTask: {
+      _addInactiveTask: {
         method: 'POST',
-        url: '/api/workers/InactiveTask/create'
+        url: '/api/workers/InactiveTask/add'
       },
       _getInactiveTask: {
         method: 'POST',
@@ -121,8 +121,8 @@
       getActiveTask: function () {
         return this._getActiveTask().$promise;
       },
-      createActiveTask: function () {
-        return this._createActiveTask().$promise;
+      addActiveTask: function () {
+        return this._addActiveTask().$promise;
       },
       updateActiveTask: function () {
         return this._updateActiveTask().$promise;
@@ -137,8 +137,8 @@
       getRejectedTask: function () {
         return this._getRejectedTask().$promise;
       },
-      createRejectedTask: function () {
-        return this._createRejectedTask().$promise;
+      addRejectedTask: function () {
+        return this._addRejectedTask().$promise;
       },
       updateRejectedTask: function () {
         return this._updateRejectedTask().$promise;
@@ -153,8 +153,8 @@
       getCompletedTask: function () {
         return this._getCompletedTask().$promise;
       },
-      createCompletedTask: function () {
-        return this._createCompletedTask().$promise;
+      addCompletedTask: function () {
+        return this._addCompletedTask().$promise;
       },
       updateCompletedTask: function () {
         return this._updateCompletedTask().$promise;
@@ -169,8 +169,8 @@
       getInactiveTask: function () {
         return this._getInactiveTask().$promise;
       },
-      createInactiveTask: function () {
-        return this._createInactiveTask().$promise;
+      addInactiveTask: function () {
+        return this._addInactiveTask().$promise;
       },
       updateInactiveTask: function () {
         return this._updateInactiveTask().$promise;

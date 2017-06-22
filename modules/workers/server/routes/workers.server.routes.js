@@ -12,12 +12,12 @@ module.exports = function(app) {
   // Workers Routes
 /*   app.route('/api/workers').all(workersPolicy.isAllowed)
     .get(workers.list)
-    .post(workers.create); */
+    .post(workers.add); */
 
-  app.route('/api/workers/:workerId')
+/*   app.route('/api/workers/:workerId')
     .get(workers.read)
     .put(workers.update)
-    .delete(workers.delete);
+    .delete(workers.delete); */
   
   // ACTIVE TASKS
     
@@ -28,7 +28,7 @@ module.exports = function(app) {
     
   app.route('/api/workers/activeTask/all').post(workers.activeTask.all);
   
-  app.route('/api/workers/activeTask/create').post(workers.activeTask.create);
+  app.route('/api/workers/activeTask/add').post(workers.activeTask.add);
   
   // REJECTED TASKS
     
@@ -39,7 +39,7 @@ module.exports = function(app) {
     
   app.route('/api/workers/rejectedTask/all').post(workers.rejectedTask.all);
   
-  app.route('/api/workers/rejectedTask/create').post(workers.rejectedTask.create);//.all(workersPolicy.isAllowed)
+  app.route('/api/workers/rejectedTask/add').post(workers.rejectedTask.add);//.all(workersPolicy.isAllowed)
   
   // COMPLETED TASKS
   
@@ -50,7 +50,7 @@ module.exports = function(app) {
     
   app.route('/api/workers/completedTask/all').post(workers.completedTask.all);
   
-  app.route('/api/workers/completedTask/create').post(workers.completedTask.create);
+  app.route('/api/workers/completedTask/add').post(workers.completedTask.add);
   
   // INACTIVE TASKS
   
@@ -61,7 +61,7 @@ module.exports = function(app) {
     
   app.route('/api/workers/inactiveTask/all').post(workers.inactiveTask.all);
   
-  app.route('/api/workers/inactiveTask/create').post(workers.inactiveTask.create);
+  app.route('/api/workers/inactiveTask/add').post(workers.inactiveTask.add);
     
   // RECOMENDED TASKS  
     

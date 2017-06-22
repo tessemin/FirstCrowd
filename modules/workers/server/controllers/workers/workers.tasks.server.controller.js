@@ -7,7 +7,6 @@ var path = require('path'),
   mongoose = require('mongoose'),
   Enterprise = mongoose.model('Enterprise'),
   Individual = mongoose.model('Individual'),
-  User = mongoose.model('User'),
   Task = mongoose.model('Task'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   individualControler = require(path.resolve('./modules/individuals/server/controllers/individuals.server.controller')),
@@ -35,15 +34,22 @@ exports.activeTask = {
   delete: function(req, res) {
   
   },
-  // create a new active task
-  create: function (req, res) {
+  // add a new active task
+  add: function (req, res) {
     
   },
   // get all active tasks
   all: function (req, res) {
     getUserTypeObject(req, res, function(typeObj) {
       if (typeObj.worker) {
-        res.json({ activeTasks: typeObj.worker.activeTasks });
+        taskFindMany(typeObj.worker.activeTasks, function(err, tasks) {
+          if (err) {
+            return res.status(404).send({
+              message: 'No active tasks were found'
+            });
+          }
+          res.json({ activeTasks: tasks });
+        })
       } else {
         return res.status(400).send({
           message: 'User does not have a valid worker'
@@ -70,8 +76,8 @@ exports.rejectedTask = {
   delete: function(req, res) {
   
   },
-  // create a new rejected task
-  create: function (req, res) {
+  // add a new rejected task
+  add: function (req, res) {
     
   },
   // get all rejected tasks
@@ -105,8 +111,8 @@ exports.completedTask = {
   delete: function(req, res) {
   
   },
-  // create a new completed task
-  create: function (req, res) {
+  // add a new completed task
+  add: function (req, res) {
     
   },
   // get all completed tasks
@@ -140,8 +146,8 @@ exports.inactiveTask = {
   delete: function(req, res) {
   
   },
-  // create a new inactive task
-  create: function (req, res) {
+  // add a new inactive task
+  add: function (req, res) {
     
   },
   // get all inactive tasks
@@ -169,7 +175,38 @@ exports.recomendedTask = {
   },
   // update a single recomended task
   update: function(req, res) {
-  
+    getUserTypeObject(req, res, function (typeObj) {
+      for (var index = 1; index < 21; index++) {
+        var task = new Task();
+        task.title = 'task: ' + index;
+        task.description = 'What a Task ' + index + '!';
+        task.skillsNeeded = ['skill1', 'skill2', 'skill3'];
+        task.deadline = '09/25/2017';
+        task.payment = {
+          bidding: {
+            bidable: false
+          },
+          staticPrice: 100
+        };
+        task.status = 'open';
+        task.multiplicity = 10;
+        task.preapproval = true;
+        task.requester = typeObj._id;
+        typeObj.worker.activeTasks.push(task._id);
+        console.log(task._id)
+        task.save(function(err) {
+          if (err) {
+            console.log(err);
+          }
+        });
+      }
+      typeObj.save(function(err) {
+        if (err) {
+          console.log(err);
+        }
+      });
+      res.json({})
+    });
   },
   // delete a single recomended task
   delete: function(req, res) {
@@ -219,4 +256,8 @@ function getUserTypeObject(req, res, callBack) {
       message: 'User has no valid Type'
     });
   }
+}
+
+function taskFindMany(taskArray, callBack) {
+  Task.find({ '_id': { $in: taskArray }}, callBack);
 }

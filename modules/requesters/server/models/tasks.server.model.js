@@ -119,7 +119,8 @@ var TaskSchema = new Schema({
   publicNotes: [{
     note: {
       type: String,
-      required: 'Please fill out the note'
+      required: 'Please fill out the note',
+      deafult: null
     },
     date: {
       type: Date,
@@ -130,7 +131,8 @@ var TaskSchema = new Schema({
   privateNotes: [{
     note: {
       type: String,
-      required: 'Please fill out the note'
+      required: 'Please fill out the note',
+      deafult: null
     },
     date: {
       type: Date,
