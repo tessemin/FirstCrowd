@@ -72,7 +72,8 @@ module.exports = function(app) {
     
   app.route('/api/workers/recomendedTask/all').post(workers.recomendedTask.all);
 
-
+  app.route('/api/getAllTasks').post(workers.getAllTasks);
+  
   // Finish by binding the Worker middleware
   app.param('workerId', workers.workerByID);
   

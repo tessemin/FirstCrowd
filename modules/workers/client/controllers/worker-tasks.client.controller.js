@@ -22,13 +22,13 @@
       'Quit Task',
       'Submit Results'
     ];
-
-    WorkersService.updateRecomendedTask()
+    
+/*     WorkersService.getActiveTasks()
       .then(function(data) {
-        console.log('update response: ' + data);
-      });
-
-    WorkersService.getActiveTasks()
+        console.log(data);
+      }); */
+      
+    WorkersService.getAllTasks()
       .then(function(data) {
         console.log('get active response: ' + data);
       });
