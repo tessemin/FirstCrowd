@@ -336,4 +336,4 @@ exports.create = function(req, res) {
   
 };
 
-exports.getIndividualByUser = getIndividual;
+exports.findIndividual = findIndividual;

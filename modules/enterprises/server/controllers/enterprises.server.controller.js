@@ -408,3 +408,5 @@ exports.getEnterprise = function(req, res) {
     res.json(safeEnterpriseObject || null);
   });
 };
+
+exports.findEnterprise = findEnterprise;
