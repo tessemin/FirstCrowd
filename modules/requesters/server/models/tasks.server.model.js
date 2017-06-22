@@ -35,6 +35,10 @@ var TaskSchema = new Schema({
     default: null,
     trim: true
   },
+  progress: {
+    type: Number,
+    default: 0
+  },
   payment: {
     bidding: {
       bidable: {
