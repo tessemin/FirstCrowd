@@ -42,8 +42,14 @@ exports.activeTask = {
   // get all active tasks
   all: function (req, res) {
     getUserTypeObject(req, res, function(typeObj) {
-      console.log(typeObj)
-    })
+      if (typeObj.worker) {
+        res.json({ activeTasks: typeObj.worker.activeTasks });
+      } else {
+        return res.status(400).send({
+          message: 'User does not have a valid worker'
+        });
+      }
+    });
   }
 };
 
@@ -70,7 +76,15 @@ exports.rejectedTask = {
   },
   // get all rejected tasks
   all: function (req, res) {
-    
+    getUserTypeObject(req, res, function(typeObj) {
+      if (typeObj.worker) {
+        res.json({ rejectedTasks: typeObj.worker.rejectedTasks });
+      } else {
+        return res.status(400).send({
+          message: 'User does not have a valid worker'
+        });
+      }
+    });
   }
 };
 
@@ -97,7 +111,15 @@ exports.completedTask = {
   },
   // get all completed tasks
   all: function (req, res) {
-    
+    getUserTypeObject(req, res, function(typeObj) {
+      if (typeObj.worker) {
+        res.json({ completedTasks: typeObj.worker.completedTasks });
+      } else {
+        return res.status(400).send({
+          message: 'User does not have a valid worker'
+        });
+      }
+    });
   }
 };
 
@@ -124,7 +146,15 @@ exports.inactiveTask = {
   },
   // get all inactive tasks
   all: function (req, res) {
-    return res.json({ name: 'Mark' });
+    getUserTypeObject(req, res, function(typeObj) {
+      if (typeObj.worker) {
+        res.json({ inactiveTasks: typeObj.worker.inactiveTasks });
+      } else {
+        return res.status(400).send({
+          message: 'User does not have a valid worker'
+        });
+      }
+    });
   }
 };
 
@@ -147,7 +177,15 @@ exports.recomendedTask = {
   },
   // get all recomended tasks
   all: function (req, res) {
-    
+    getUserTypeObject(req, res, function(typeObj) {
+      if (typeObj.worker) {
+        res.json({ recomendedTasks: typeObj.worker.recomendedTasks });
+      } else {
+        return res.status(400).send({
+          message: 'User does not have a valid worker'
+        });
+      }
+    });
   }
 };
 
