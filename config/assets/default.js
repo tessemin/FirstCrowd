@@ -28,9 +28,6 @@ module.exports = {
         'public/lib/owasp-password-strength-test/owasp-password-strength-test.js',
         // added packages
         'public/lib/angular-bootstrap-multiselect/dist/angular-bootstrap-multiselect.js',
-        'public/lib/d3/d3.js',
-        'public/lib/angular-multi-select-tree/dist/angular-multi-select-tree-0.1.0.js',
-        'public/lib/angular-multi-select-tree/dist/angular-multi-select-tree-0.1.0.tpl.js',
         'public/lib/angularjs-slider/dist/rzslider.min.js'
         // endbower
       ],

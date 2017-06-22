@@ -5,330 +5,333 @@
     .module('enterprises')
     .directive('makeGraph', makeGraph);
 
-  makeGraph.$inject = ['$window', 'EnterprisesService'];
+  makeGraph.$inject = ['$window', 'EnterprisesService', '$document', '$q', '$rootScope'];
 
-  function makeGraph($window, EnterprisesService) {
+  function makeGraph($window, EnterprisesService, $document, $q, $rootScope) {
     return {
       restrict: 'EA',
       scope: { data: '=' },
       link: function(scope, element, attrs) {
-        console.log($window);
-        var newsvg = d3.select('#graph').append('svg')
-              .attr('width', $window.innerWidth)
-              .attr('height', $window.innerHeight);
 
-        var svg = d3.select('svg'),
-            width = +svg.attr('width'),
-            height = +svg.attr('height');
+        d3().then(function(d3) {
+          var width = $window.innerWidth;
+          var height = $window.innerHeight;
 
-        var radius = 40;
-        var nodes_data = [],
-            links_data = [];
+          var newsvg = d3.select('#graph').append('svg')
+                .attr('width', width)
+                .attr('height', height);
 
-        getGraph().then(function(obj) {
-          var nodes = obj;
-          var rootNodeId = obj.rootNode._id;
-          wrapCoordinates(nodes);
+          var svg = d3.select('svg');
 
-          // set up the simulation and add forces
-          var simulation = d3.forceSimulation()
-                .nodes(nodes_data)
-                .on('tick', ticked);
+          var radius = 40;
+          var nodes_data = [];
+          var links_data = [];
 
-          var link_force = d3.forceLink(links_data)
-                .id(function(d) { return d._id; })
-                .distance(220)
-                .strength(0);
+          getGraph().then(function(obj) {
+            var nodes = obj;
+            var rootNodeId = obj.rootNode._id;
+            wrapCoordinates(nodes);
 
-          var charge_force = d3.forceManyBody()
-                .strength(50);
+            // set up the simulation and add forces
+            var simulation = d3.forceSimulation()
+                  .nodes(nodes_data)
+                  .on('tick', ticked);
 
-          var center_force = d3.forceCenter(width / 2, height / 2);
+            var link_force = d3.forceLink(links_data)
+                  .id(function(d) { return d._id; })
+                  .distance(220)
+                  .strength(0);
 
-          simulation
-            .force('charge_force', charge_force)
-            .force('center_force', center_force)
-            .force('links', link_force)
-            .force('x', d3.forceX().x(function(d) {
-              return d.x;
-            }).strength(.5))
-            .force('collision', d3.forceCollide().radius(function() {
-              return radius + 10;
-            }));
+            var charge_force = d3.forceManyBody()
+                  .strength(50);
 
-          // add encompassing group for the zoom
-          var g = svg.append('g')
-                .attr('class', 'everything');
+            var center_force = d3.forceCenter(width / 2, height / 2);
 
-          var defs = svg.append('defs')
-                .selectAll('pattern')
-                .data(nodes_data)
-                .enter()
-                .append('pattern')
-                .attr('id', function (d, i) { return 'image' + i; })
-                .attr('x', 0)
-                .attr('y', 0)
-                .attr('height', radius * 2)
-                .attr('width', radius * 2)
-                .append('image')
-                .attr('x', 0)
-                .attr('y', 0)
-                .attr('height', radius * 2)
-                .attr('width', radius * 2)
-                .attr('xlink:href', function (d) { return d.img; });
+            simulation
+              .force('charge_force', charge_force)
+              .force('center_force', center_force)
+              .force('links', link_force)
+              .force('x', d3.forceX().x(function(d) {
+                return d.x;
+              }).strength(0.5))
+              .force('collision', d3.forceCollide().radius(function() {
+                return radius + 10;
+              }));
 
-          // build the arrow.
-          svg.append('svg:defs').selectAll('marker')
-            .data(['end'])      // Different link/path types can be defined here
-            .enter().append('svg:marker')    // This section adds in the arrows
-            .attr('id', String)
-            .attr('viewBox', '0 -5 10 10')
-            .attr('refX', 80)
-            .attr('refY', 0)
-            .attr('markerWidth', 6)
-            .attr('markerHeight', 6)
-            .attr('orient', 'auto')
-            .append('svg:path')
-            .attr('d', 'M0,-5L10,0L0,5');
+            // add encompassing group for the zoom
+            var g = svg.append('g')
+                  .attr('class', 'everything');
 
-          // draw lines for the links
-          var link = g.append('g')
-                .attr('class', 'links')
-                .selectAll('line')
-                .data(links_data)
-                .enter().append('line')
-                .attr('stroke-width', 2)
-                .style('stroke', 'black')
-                .attr('marker-end', 'url(#end)')
+            var defs = svg.append('defs')
+                  .selectAll('pattern')
+                  .data(nodes_data)
+                  .enter()
+                  .append('pattern')
+                  .attr('id', function (d, i) { return 'image' + i; })
+                  .attr('x', 0)
+                  .attr('y', 0)
+                  .attr('height', radius * 2)
+                  .attr('width', radius * 2)
+                  .append('image')
+                  .attr('x', 0)
+                  .attr('y', 0)
+                  .attr('height', radius * 2)
+                  .attr('width', radius * 2)
+                  .attr('xlink:href', function (d) { return d.img; });
+
+            // build the arrow.
+            svg.append('svg:defs').selectAll('marker')
+              .data(['end'])      // Different link/path types can be defined here
+              .enter().append('svg:marker')    // This section adds in the arrows
+              .attr('id', String)
+              .attr('viewBox', '0 -5 10 10')
+              .attr('refX', 80)
+              .attr('refY', 0)
+              .attr('markerWidth', 6)
+              .attr('markerHeight', 6)
+              .attr('orient', 'auto')
+              .append('svg:path')
+              .attr('d', 'M0,-5L10,0L0,5');
+
+            // draw lines for the links
+            var link = g.append('g')
+                  .attr('class', 'links')
+                  .selectAll('line')
+                  .data(links_data)
+                  .enter().append('line')
+                  .attr('stroke-width', 2)
+                  .style('stroke', 'black')
+                  .attr('marker-end', 'url(#end)')
+                  .attr('x1', function(d) { return d.source.x; })
+                  .attr('y1', function(d) { return d.source.y; })
+                  .attr('x2', function(d) { return d.target.x; })
+                  .attr('y2', function(d) { return d.target.y; });
+
+
+            // var menu = g.append('g')
+            //       .attr('class', 'node-menu')
+            //       .selectAll('rect')
+            //       .data(nodes_data)
+            //       .enter()
+            //       .append('rect')
+            //       .style('fill', '#fff')
+            //       .style('stroke', 'black')
+            //       .html('hi whats going on right now man this is a really long string')
+            //       .attr('width', 50)
+            //       .attr('height', 100)
+            //       .attr('x', function(d) { return d.x; })
+            //       .attr('y', function(d) { return d.y; });
+
+            // var menu_items = menu.append('g')
+            //       .attr('class', 'node-menu-list')
+            //       .selectAll('text')
+            //       .data(nodes_data)
+            //       .attr('x', function(d) { return 3; })
+            //       .attr('y', 20)
+            //       .attr('dy', '.35em')
+            //       .text(function(d) { return 'Hello!'; });
+
+
+            var tooltip;
+
+
+            // draw circles for the nodes
+            var node = g.append('g')
+                  .attr('class', 'logo')
+                  .selectAll('circle')
+                  .data(nodes_data)
+                  .enter()
+                  .append('circle')
+                  .attr('cx', function(d) { return d.x; })
+                  .attr('cy', function(d) { return d.y; })
+                  .attr('r', radius)
+                  .style('fill', function(d, i) { return 'url(#image' + i + ')'; })
+                  .style('stroke', 'black')
+                  .style('stroke-width', 1)
+                  .on('mouseover', function(d, i) {
+
+                    var menu_data = ['Message Company', 'View this Company\'s profile', 'Rebase Graph with this Company as the Center', 'Compare your company with this company'];
+
+                    console.log(d3.select(this)._groups[0][0].cy.baseVal.value);
+                    // d3.select(this).transition().attr('r', function(e, j) {
+                    // return 100;
+                    // return d3.select(this)['_groups'][0][0].cx.baseVal.value + 100;
+                    // });
+
+                    // node.transition()
+                    //   .attr('cx', function(e, j) {
+                    //     if (i === j) {
+                    //       return d3.select(node)['_groups'][0][0]['_groups'][0][i].cy.baseVal.value + 100;
+                    //     }
+                    //   });
+
+
+                    tooltip = d3.select('body').append('div')
+                      .style('position', 'absolute')
+                      .style('padding', '0 10px')
+                      .style('opacity', 0)
+                      .attr('id', 'tooltip');
+
+                    tooltip.transition()
+                      .style('opacity', 0.9)
+                      .style('background', 'lightsteelblue');
+                    tooltip.html('<ul><li>' + menu_data[0] + '</li><li>' + menu_data[1] + '</li><li>' + menu_data[2] + '</li><li>' + menu_data[3] + '</li></ul>')
+                      .style('left', (d3.select(this)._groups[0][0].cx.baseVal.value) - 30 + 'px')
+                      .style('top', (d3.select(this)._groups[0][0].cy.baseVal.value) + 10 + 'px');
+
+                  })
+            // .on('mouseover', function(d, i) {
+            //   tooltip.transition().duration(0);
+            // })
+
+                  .on('mouseout', function(d, i) {
+                    tooltip.style('display', 'none');
+
+                    // node.transition()
+                    //   .attr('transform', function(e, j) {
+                    //     if (i === j) {
+                    //       return 'translate(0,0)';
+                    //     }
+                    //   })
+
+                    // d3.select(menu)['_groups'][0][0]['_groups'][0][i].style('fill', 'none');
+                  });
+
+            // .on('click', function(d, i) {
+            //   var x = d3.select(this)['_groups'][0][0].cx.baseVal.valueAsString;
+            //   var y = d3.select(this)['_groups'][0][0].cy.baseVal.valueAsString;
+            //       ctxMenu.selectAll('ul').remove();
+
+            //       // create the div element that will hold the context menu
+            //       // this gets executed when a contextmenu event occurs
+            //       ctxMenu
+            //         .append('ul')
+            //         .selectAll('li')
+            //         .data(fruits).enter()
+            //         .append('li')
+            //         .style('list-style-image', function(d, i) {
+            //           return 'url('http://loremflickr.com/48/48?i=' + i + '')';
+            //         })
+            //         .on('click' , function(d) { console.log(d); return d; })
+            //         .text(function(d) { return d; });
+
+            //       // show the context menu
+            //       ctxMenu
+            //         .style('left', (x - 2) + 'px')
+            //         .style('top', (y - 2) + 'px')
+            //         .style('display', 'block');
+            //       d3.event.preventDefault();
+            //   console.log(ctxMenu);
+            // })
+            // .on('mouseout', function() {
+
+            //   // ctxMenu.selectAll('ul').remove();
+            //   // d3.select(this).style('fill', '#fff');
+            // });
+
+            // add drag capabilities
+            // var drag_handler = d3.drag()
+            //   .on('start', drag_start)
+            //   .on('drag', drag_drag)
+            //   .on('end', drag_end);
+
+            // drag_handler(node);
+            // drag_handler(link);
+
+            // add zoom capabilities
+            var zoom_handler = d3.zoom()
+                  .scaleExtent([1 / 1.5, 2])
+                  .on('zoom', zoom_actions);
+
+            zoom_handler(svg);
+
+            /** Functions **/
+
+            function ticked() {
+              node
+                .attr('cx', function(d) { return d.x; })
+                .attr('cy', function(d) { return d.y; });
+              link
                 .attr('x1', function(d) { return d.source.x; })
                 .attr('y1', function(d) { return d.source.y; })
                 .attr('x2', function(d) { return d.target.x; })
                 .attr('y2', function(d) { return d.target.y; });
-
-
-          // var menu = g.append('g')
-          //       .attr('class', 'node-menu')
-          //       .selectAll('rect')
-          //       .data(nodes_data)
-          //       .enter()
-          //       .append('rect')
-          //       .style('fill', '#fff')
-          //       .style('stroke', 'black')
-          //       .html('hi whats going on right now man this is a really long string')
-          //       .attr('width', 50)
-          //       .attr('height', 100)
-          //       .attr('x', function(d) { return d.x; })
-          //       .attr('y', function(d) { return d.y; });
-
-          // var menu_items = menu.append('g')
-          //       .attr('class', 'node-menu-list')
-          //       .selectAll('text')
-          //       .data(nodes_data)
-          //       .attr('x', function(d) { return 3; })
-          //       .attr('y', 20)
-          //       .attr('dy', '.35em')
-          //       .text(function(d) { return 'Hello!'; });
-
-
-          var tooltip;
-
-
-          // draw circles for the nodes
-          var node = g.append('g')
-                .attr('class', 'logo')
-                .selectAll('circle')
-                .data(nodes_data)
-                .enter()
-                .append('circle')
-                .attr('cx', function(d) { return d.x; })
-                .attr('cy', function(d) { return d.y; })
-                .attr('r', radius)
-                .style('fill', function(d, i) { return 'url(#image' + i + ')'; })
-                .style('stroke', 'black')
-                .style('stroke-width', 1)
-                .on('mouseover', function(d, i) {
-
-                  var menu_data = ['Message Company', 'View this Company\'s profile', 'Rebase Graph with this Company as the Center', 'Compare your company with this company'];
-
-                  console.log(d3.select(this)['_groups'][0][0].cy.baseVal.value);
-                  // d3.select(this).transition().attr('r', function(e, j) {
-                    // return 100;
-                    // return d3.select(this)['_groups'][0][0].cx.baseVal.value + 100;
-                  // });
-
-                  // node.transition()
-                  //   .attr('cx', function(e, j) {
-                  //     if (i === j) {
-                  //       return d3.select(node)['_groups'][0][0]['_groups'][0][i].cy.baseVal.value + 100;
-                  //     }
-                  //   });
-
-
-                  tooltip = d3.select('body').append('div')
-                    .style('position','absolute')
-                    .style('padding','0 10px')
-                    .style('opacity',0)
-                    .attr('id','tooltip');
-
-                  tooltip.transition()
-                    .style('opacity', .9)
-                    .style('background', 'lightsteelblue');
-                  tooltip.html('<ul><li>' + menu_data[0] + '</li><li>' + menu_data[1] + '</li><li>' + menu_data[2] + '</li><li>' + menu_data[3] + '</li></ul>')
-                    .style('left',(d3.select(this)['_groups'][0][0].cx.baseVal.value) - 30 + 'px')
-                    .style('top',(d3.select(this)['_groups'][0][0].cy.baseVal.value) + 10 + 'px');
-
-                })
-                // .on('mouseover', function(d, i) {
-                //   tooltip.transition().duration(0);
-                // })
-
-                .on('mouseout', function(d, i) {
-                  tooltip.style('display', 'none');
-
-                  // node.transition()
-                  //   .attr('transform', function(e, j) {
-                  //     if (i === j) {
-                  //       return 'translate(0,0)';
-                  //     }
-                  //   })
-
-                  // d3.select(menu)['_groups'][0][0]['_groups'][0][i].style('fill', 'none');
-                });
-
-          // .on('click', function(d, i) {
-          //   var x = d3.select(this)['_groups'][0][0].cx.baseVal.valueAsString;
-          //   var y = d3.select(this)['_groups'][0][0].cy.baseVal.valueAsString;
-          //       ctxMenu.selectAll('ul').remove();
-
-          //       // create the div element that will hold the context menu
-          //       // this gets executed when a contextmenu event occurs
-          //       ctxMenu
-          //         .append('ul')
-          //         .selectAll('li')
-          //         .data(fruits).enter()
-          //         .append('li')
-          //         .style('list-style-image', function(d, i) {
-          //           return 'url('http://loremflickr.com/48/48?i=' + i + '')';
-          //         })
-          //         .on('click' , function(d) { console.log(d); return d; })
-          //         .text(function(d) { return d; });
-
-          //       // show the context menu
-          //       ctxMenu
-          //         .style('left', (x - 2) + 'px')
-          //         .style('top', (y - 2) + 'px')
-          //         .style('display', 'block');
-          //       d3.event.preventDefault();
-          //   console.log(ctxMenu);
-          // })
-          // .on('mouseout', function() {
-
-          //   // ctxMenu.selectAll('ul').remove();
-          //   // d3.select(this).style('fill', '#fff');
-          // });
-
-          // add drag capabilities
-          // var drag_handler = d3.drag()
-          //   .on('start', drag_start)
-          //   .on('drag', drag_drag)
-          //   .on('end', drag_end);
-
-          // drag_handler(node);
-          // drag_handler(link);
-
-          // add zoom capabilities
-          var zoom_handler = d3.zoom()
-                .scaleExtent([1 / 1.5, 2])
-                .on('zoom', zoom_actions);
-
-          zoom_handler(svg);
-
-          /** Functions **/
-
-          function ticked() {
-            node
-              .attr('cx', function(d) { return d.x; })
-              .attr('cy', function(d) { return d.y; });
-            link
-              .attr('x1', function(d) { return d.source.x; })
-              .attr('y1', function(d) { return d.source.y; })
-              .attr('x2', function(d) { return d.target.x; })
-              .attr('y2', function(d) { return d.target.y; });
-          }
-
-          // Zoom functions
-          function zoom_actions() {
-            g.attr('transform', d3.event.transform);
-          }
-
-          function getY(arr, item, prevY) {
-            var len = arr.length + 1,
-                pixels = height / len;
-
-            prevY = prevY + pixels;
-
-            if (prevY + pixels >= height) {
-              var y = prevY;
-              prevY = 0;
-              return y;
             }
-            return prevY;
-          }
 
-          function wrapCoordinates(nodes) {
-            var SUP_X = width / 4;
-            var COM_X = width / 4 + width / 4;
-            var CUS_X = width / 4 + width / 4 + width / 4;
-            var index,
-                y,
-                linkIndex = 0;
+            // Zoom functions
+            function zoom_actions() {
+              g.attr('transform', d3.event.transform);
+            }
 
-            for (var item in nodes) {
-              if (item === 'customer') {
-                y = 0;
-                for (index = 0; index < nodes[item].length; index++) {
-                  nodes[item][index].x = CUS_X;
-                  y = getY(nodes[item], item, y);
-                  nodes[item][index].y = y;
-                  nodes[item][index].img = 'https://cdn4.iconfinder.com/data/icons/seo-and-data/500/magnifier-data-128.png';
-                  nodes_data.push(nodes[item][index]);
+            function getY(arr, item, prevY) {
+              var len = arr.length + 1;
+              var pixels = height / len;
 
-                  links_data[linkIndex] = { 'source': null, 'target': null };
-                  links_data[linkIndex].source = rootNodeId;
-                  links_data[linkIndex].target = nodes[item][index]._id;
-                  linkIndex++;
+              prevY = prevY + pixels;
+
+              if (prevY + pixels >= height) {
+                var y = prevY;
+                prevY = 0;
+                return y;
+              }
+              return prevY;
+            }
+
+            function wrapCoordinates(nodes) {
+              var SUP_X = width / 4;
+              var COM_X = width / 4 + width / 4;
+              var CUS_X = width / 4 + width / 4 + width / 4;
+              var index;
+              var y;
+              var linkIndex = 0;
+
+              for (var item in nodes) {
+                if (item === 'customer') {
+                  y = 0;
+                  for (index = 0; index < nodes[item].length; index++) {
+                    nodes[item][index].x = CUS_X;
+                    y = getY(nodes[item], item, y);
+                    nodes[item][index].y = y;
+                    nodes[item][index].img = 'https://cdn4.iconfinder.com/data/icons/seo-and-data/500/magnifier-data-128.png';
+                    nodes_data.push(nodes[item][index]);
+
+                    links_data[linkIndex] = { 'source': null, 'target': null };
+                    links_data[linkIndex].source = rootNodeId;
+                    links_data[linkIndex].target = nodes[item][index]._id;
+                    linkIndex++;
+                  }
+                } else if (item === 'supplier') {
+                  y = 0;
+                  for (index = 0; index < nodes[item].length; index++) {
+                    nodes[item][index].x = SUP_X;
+                    y = getY(nodes[item], item, y);
+                    nodes[item][index].y = y;
+                    nodes[item][index].img = 'https://cdn4.iconfinder.com/data/icons/seo-and-data/500/gear-clock-128.png';
+                    nodes_data.push(nodes[item][index]);
+
+                    links_data[linkIndex] = { 'source': null, 'target': null };
+                    links_data[linkIndex].source = nodes[item][index]._id;
+                    links_data[linkIndex].target = rootNodeId;
+                    linkIndex++;
+                  }
+                } else if (item === 'competitor') {
+                  y = 0;
+                  for (index = 0; index < nodes[item].length; index++) {
+                    nodes[item][index].x = COM_X;
+                    y = getY(nodes[item], item, y);
+                    nodes[item][index].y = y;
+                    nodes[item][index].img = 'https://cdn4.iconfinder.com/data/icons/seo-and-data/500/pencil-gear-128.png';
+                    nodes_data.push(nodes[item][index]);
+                  }
+                } else if (item === 'rootNode') {
+                  nodes[item].x = width / 2;
+                  nodes[item].y = height / 2;
+                  nodes[item].img = 'http://www.e-pint.com/epint.jpg';
+                  nodes_data.push(nodes[item]);
                 }
-              } else if (item === 'supplier') {
-                y = 0;
-                for (index = 0; index < nodes[item].length; index++) {
-                  nodes[item][index].x = SUP_X;
-                  y = getY(nodes[item], item, y);
-                  nodes[item][index].y = y;
-                  nodes[item][index].img = 'https://cdn4.iconfinder.com/data/icons/seo-and-data/500/gear-clock-128.png';
-                  nodes_data.push(nodes[item][index]);
-
-                  links_data[linkIndex] = { 'source': null, 'target': null };
-                  links_data[linkIndex].source = nodes[item][index]._id;
-                  links_data[linkIndex].target = rootNodeId;
-                  linkIndex++;
-                }
-              } else if (item === 'competitor') {
-                y = 0;
-                for (index = 0; index < nodes[item].length; index++) {
-                  nodes[item][index].x = COM_X;
-                  y = getY(nodes[item], item, y);
-                  nodes[item][index].y = y;
-                  nodes[item][index].img = 'https://cdn4.iconfinder.com/data/icons/seo-and-data/500/pencil-gear-128.png';
-                  nodes_data.push(nodes[item][index]);
-                }
-              } else if (item === 'rootNode') {
-                nodes[item].x = width / 2;
-                nodes[item].y = height / 2;
-                nodes[item].img = 'http://www.e-pint.com/epint.jpg';
-                nodes_data.push(nodes[item]);
               }
             }
-          }
+          });
         });
 
         function getGraph() {
@@ -342,6 +345,32 @@
               return response.partners;
             });
         }
+
+        function d3() {
+          var d = $q.defer();
+          function onScriptLoad() {
+            // Load client in the browser
+            $rootScope.$apply(function() { d.resolve(window.d3); });
+          }
+          // Create a script tag with d3 as the source
+          // and call our onScriptLoad callback when it
+          // has been loaded
+          var scriptTag = $document[0].createElement('script');
+          scriptTag.type = 'text/javascript';
+          scriptTag.async = true;
+          // 'public/lib/d3/d3.js',
+          scriptTag.src = 'http://d3js.org/d3.v4.min.js';
+          scriptTag.onreadystatechange = function () {
+            if (this.readyState === 'complete') onScriptLoad();
+          };
+          scriptTag.onload = onScriptLoad;
+
+          var s = $document[0].getElementsByTagName('body')[0];
+          s.appendChild(scriptTag);
+
+          return d.promise;
+        }
+
         //         // var g1, g2, g3, c1, c2, c3, t1, t2, t3;
         //         // var rootNode = {}, flag = false;
         //         // getObject().then(function (obj) {
