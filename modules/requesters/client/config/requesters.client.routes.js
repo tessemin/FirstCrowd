@@ -20,9 +20,9 @@
         controller: 'RequesterTasksController',
         controllerAs: 'vm'
       })
-      .state('requesters.new-task', {
+      .state('requesters.newtask', {
         url: '/tasks/new',
-        templateUrl: 'modules/requesters/client/views/requester-new-task.client.view.html',
+        templateUrl: '/modules/requesters/client/views/requester-new-task.client.view.html',
         controller: 'RequesterNewTaskController',
         controllerAs: 'vm'
       })

@@ -22,7 +22,7 @@
       'Quit Task',
       'Submit Results'
     ];
-
+    
 /*     WorkersService.getActiveTasks()
       .then(function(data) {
         console.log(data);
@@ -30,7 +30,7 @@
       
     WorkersService.getAllTasks()
       .then(function(data) {
-        console.log(data);
+        console.log('get active response: ' + data);
       });
 
     // Dummy tasks while building system
@@ -86,7 +86,6 @@
         }
       },
       onChange: function(sliderId, modelValue, highValue, pointerType) {
-        console.log(modelValue);
         if (modelValue === 100) {
           this.selectionBarGradient = null;
           this.getSelectionBarColor = function() {
