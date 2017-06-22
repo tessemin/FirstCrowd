@@ -23,16 +23,8 @@
         method: 'POST',
         url: '/api/workers/activeTask/add'
       },
-      _getActiveTask: {
-        method: 'POST',
-        url: '/api/workers/activeTask/'
-      },
       _updateActiveTask: {
         method: 'PUT',
-        url: '/api/workers/activeTask/'
-      },
-      _deleteActiveTask: {
-        method: 'DELETE',
         url: '/api/workers/activeTask/'
       },
       _getRejectedTasks: {
@@ -43,16 +35,8 @@
         method: 'POST',
         url: '/api/workers/RejectedTask/add'
       },
-      _getRejectedTask: {
-        method: 'POST',
-        url: '/api/workers/RejectedTask/'
-      },
       _updateRejectedTask: {
         method: 'PUT',
-        url: '/api/workers/RejectedTask/'
-      },
-      _deleteRejectedTask: {
-        method: 'DELETE',
         url: '/api/workers/RejectedTask/'
       },
       _getCompletedTasks: {
@@ -63,16 +47,8 @@
         method: 'POST',
         url: '/api/workers/CompletedTask/add'
       },
-      _getCompletedTask: {
-        method: 'POST',
-        url: '/api/workers/CompletedTask/'
-      },
       _updateCompletedTask: {
         method: 'PUT',
-        url: '/api/workers/CompletedTask/'
-      },
-      _deleteCompletedTask: {
-        method: 'DELETE',
         url: '/api/workers/CompletedTask/'
       },
       _getInactiveTasks: {
@@ -83,38 +59,26 @@
         method: 'POST',
         url: '/api/workers/InactiveTask/add'
       },
-      _getInactiveTask: {
-        method: 'POST',
-        url: '/api/workers/InactiveTask/'
-      },
       _updateInactiveTask: {
         method: 'PUT',
-        url: '/api/workers/InactiveTask/'
-      },
-      _deleteInactiveTask: {
-        method: 'DELETE',
         url: '/api/workers/InactiveTask/'
       },
       _getRecomendedTasks: {
         method: 'POST',
         url: '/api/workers/RecomendedTask/all'
       },
-      _getRecomendedTask: {
-        method: 'POST',
-        url: '/api/workers/RecomendedTask/'
-      },
       _updateRecomendedTask: {
         method: 'PUT',
         url: '/api/workers/RecomendedTask/'
       },
-      _deleteRecomendedTask: {
-        method: 'DELETE',
-        url: '/api/workers/RecomendedTask/'
-      },
-      // Gets all tasks
+      // General Task Functions
       _getAllTasks: {
         method: 'POST',
         url: '/api/getAllTasks'
+      },
+      _getOneTask: {
+        method: 'POST',
+        url: '/api/getOneTask'
       }
     });
 
@@ -123,81 +87,55 @@
       getActiveTasks: function () {
         return this._getActiveTasks().$promise;
       },
-      getActiveTask: function () {
-        return this._getActiveTask().$promise;
+      addActiveTask: function (Id) {
+        return this._addActiveTask(Id).$promise;
       },
-      addActiveTask: function () {
-        return this._addActiveTask().$promise;
-      },
-      updateActiveTask: function () {
-        return this._updateActiveTask().$promise;
-      },
-      deleteActiveTask: function () {
-        return this._deleteActiveTask().$promise;
+      updateActiveTask: function (Id) {
+        return this._updateActiveTask(Id).$promise;
       },
       // rejected
       getRejectedTasks: function () {
         return this._getRejectedTasks().$promise;
       },
-      getRejectedTask: function () {
-        return this._getRejectedTask().$promise;
+      addRejectedTask: function (Id) {
+        return this._addRejectedTask(Id).$promise;
       },
-      addRejectedTask: function () {
-        return this._addRejectedTask().$promise;
-      },
-      updateRejectedTask: function () {
-        return this._updateRejectedTask().$promise;
-      },
-      deleteRejectedTask: function () {
-        return this._deleteRejectedTask().$promise;
+      updateRejectedTask: function (Id) {
+        return this._updateRejectedTask(Id).$promise;
       },
       // completed
       getCompletedTasks: function () {
         return this._getCompletedTasks().$promise;
       },
-      getCompletedTask: function () {
-        return this._getCompletedTask().$promise;
+      addCompletedTask: function (Id) {
+        return this._addCompletedTask(Id).$promise;
       },
-      addCompletedTask: function () {
-        return this._addCompletedTask().$promise;
-      },
-      updateCompletedTask: function () {
-        return this._updateCompletedTask().$promise;
-      },
-      deleteCompletedTask: function () {
-        return this._deleteCompletedTask().$promise;
+      updateCompletedTask: function (Id) {
+        return this._updateCompletedTask(Id).$promise;
       },
       // inactive
       getInactiveTasks: function () {
         return this._getInactiveTasks().$promise;
       },
-      getInactiveTask: function () {
-        return this._getInactiveTask().$promise;
+      addInactiveTask: function (Id) {
+        return this._addInactiveTask(Id).$promise;
       },
-      addInactiveTask: function () {
-        return this._addInactiveTask().$promise;
-      },
-      updateInactiveTask: function () {
-        return this._updateInactiveTask().$promise;
-      },
-      deleteInactiveTask: function () {
-        return this._deleteInactiveTask().$promise;
+      updateInactiveTask: function (Id) {
+        return this._updateInactiveTask(Id).$promise;
       },
       // recomended
       getRecomendedTasks: function () {
         return this._getRecomendedTasks().$promise;
       },
-      getRecomendedTask: function () {
-        return this._getRecomendedTask().$promise;
+      updateRecomendedTask: function (Id) {
+        return this._updateRecomendedTask(Id).$promise;
       },
-      updateRecomendedTask: function () {
-        return this._updateRecomendedTask().$promise;
-      },
-      deleteRecomendedTask: function () {
-        return this._deleteRecomendedTask().$promise;
-      },
+      // all tasks
       getAllTasks: function () {
         return this._getAllTasks().$promise;
+      },
+      getOneTasks: function (Id) {
+        return this._getOneTasks(Id).$promise;
       }
     });
 

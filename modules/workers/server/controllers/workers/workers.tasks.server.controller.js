@@ -13,7 +13,7 @@ var path = require('path'),
   enterpriseControler = require(path.resolve('./modules/enterprises/server/controllers/enterprises.server.controller')),
   _ = require('lodash');
   
-var superUser = null;
+var workerWhitelistedFields = [];
   
   
 /*
@@ -21,22 +21,65 @@ var superUser = null;
  */
 // opperations on task ID
 exports.activeTask = {
-  // read a single active task
-  read: function(req, res) {
-
-    return res.json({ name: 'Mark' });
-  },
   // update a single active task
   update: function(req, res) {
-  
-  },
-  // delete a single active task
-  delete: function(req, res) {
-  
+    getUserTypeObject(req, res, function(typeObj) {
+      if (typeObj.worker) {
+        taskId = req.body._id;
+        taskFindOne(taskId, function(err, task) {
+          if (err) {
+            return res.status(404).send({
+              message: errorHandler.getErrorMessage(err)
+            });
+          }
+          task = _.extend(task, _.pick(req.body, workerWhitelistedFields));
+          task.save(function(err) {
+            if (err) {
+              res.status(400).send(err);
+            } else {
+              res.json(user);
+            }
+          });
+        });
+      } else {
+        return res.status(400).send({
+          message: 'User does not have a valid worker'
+        });
+      }
+    });
   },
   // add a new active task
   add: function (req, res) {
-    
+    getUserTypeObject(req, res, function(typeObj) {
+      if (typeObj.worker) {
+        taskId = req.body._id;
+        taskFindOne(taskId, function(err, task) {
+          if (err) {
+            return res.status(404).send({
+              message: errorHandler.getErrorMessage(err)
+            });
+          }
+          if (task) {
+            typeObj.worker.activeTasks.push(task._id);
+            typeObj.save(function(err) {
+              if (err) {
+                res.status(400).send(err);
+              } else {
+                res.json(user);
+              }
+            });
+          } else {
+            return res.status(404).send({
+              message: 'Task ID is not valid'
+            });
+          }
+        });
+      } else {
+        return res.status(400).send({
+          message: 'User does not have a valid worker'
+        });
+      }
+    });
   },
   // get all active tasks
   all: function (req, res) {
@@ -60,31 +103,82 @@ exports.activeTask = {
 };
 
 /*
- * rejected Tasks
+ * Rejected Tasks
  */
 // opperations on task ID
 exports.rejectedTask = {
-  // read a single rejected task
-  read: function(req, res) {
-    return res.json({ name: 'Mark' });
-  },
   // update a single rejected task
   update: function(req, res) {
-  
-  },
-  // delete a single rejected task
-  delete: function(req, res) {
-  
+    getUserTypeObject(req, res, function(typeObj) {
+      if (typeObj.worker) {
+        taskId = req.body._id;
+        taskFindOne(taskId, function(err, task) {
+          if (err) {
+            return res.status(404).send({
+              message: errorHandler.getErrorMessage(err)
+            });
+          }
+          task = _.extend(task, _.pick(req.body, workerWhitelistedFields));
+          task.save(function(err) {
+            if (err) {
+              res.status(400).send(err);
+            } else {
+              res.json(user);
+            }
+          });
+        });
+      } else {
+        return res.status(400).send({
+          message: 'User does not have a valid worker'
+        });
+      }
+    });
   },
   // add a new rejected task
   add: function (req, res) {
-    
+    getUserTypeObject(req, res, function(typeObj) {
+      if (typeObj.worker) {
+        taskId = req.body._id;
+        taskFindOne(taskId, function(err, task) {
+          if (err) {
+            return res.status(404).send({
+              message: errorHandler.getErrorMessage(err)
+            });
+          }
+          if (task) {
+            typeObj.worker.rejectedTasks.push(task._id);
+            typeObj.save(function(err) {
+              if (err) {
+                res.status(400).send(err);
+              } else {
+                res.json(user);
+              }
+            });
+          } else {
+            return res.status(404).send({
+              message: 'Task ID is not valid'
+            });
+          }
+        });
+      } else {
+        return res.status(400).send({
+          message: 'User does not have a valid worker'
+        });
+      }
+    });
   },
   // get all rejected tasks
   all: function (req, res) {
     getUserTypeObject(req, res, function(typeObj) {
       if (typeObj.worker) {
-        res.json({ rejectedTasks: typeObj.worker.rejectedTasks });
+        taskFindMany(typeObj.worker.rejectedTasks, function(err, tasks) {
+          if (err) {
+            return res.status(404).send({
+              message: 'No rejected tasks were found'
+            });
+          }
+          res.json({ rejectedTasks: tasks });
+        })
       } else {
         return res.status(400).send({
           message: 'User does not have a valid worker'
@@ -95,31 +189,82 @@ exports.rejectedTask = {
 };
 
 /*
- * completed Tasks
+ * Completed Tasks
  */
 // opperations on task ID
 exports.completedTask = {
-  // read a single completed task
-  read: function(req, res) {
-    return res.json({ name: 'Mark' });
-  },
   // update a single completed task
   update: function(req, res) {
-  
-  },
-  // delete a single completed task
-  delete: function(req, res) {
-  
+    getUserTypeObject(req, res, function(typeObj) {
+      if (typeObj.worker) {
+        taskId = req.body._id;
+        taskFindOne(taskId, function(err, task) {
+          if (err) {
+            return res.status(404).send({
+              message: errorHandler.getErrorMessage(err)
+            });
+          }
+          task = _.extend(task, _.pick(req.body, workerWhitelistedFields));
+          task.save(function(err) {
+            if (err) {
+              res.status(400).send(err);
+            } else {
+              res.json(user);
+            }
+          });
+        });
+      } else {
+        return res.status(400).send({
+          message: 'User does not have a valid worker'
+        });
+      }
+    });
   },
   // add a new completed task
   add: function (req, res) {
-    
+    getUserTypeObject(req, res, function(typeObj) {
+      if (typeObj.worker) {
+        taskId = req.body._id;
+        taskFindOne(taskId, function(err, task) {
+          if (err) {
+            return res.status(404).send({
+              message: errorHandler.getErrorMessage(err)
+            });
+          }
+          if (task) {
+            typeObj.worker.completedTasks.push(task._id);
+            typeObj.save(function(err) {
+              if (err) {
+                res.status(400).send(err);
+              } else {
+                res.json(user);
+              }
+            });
+          } else {
+            return res.status(404).send({
+              message: 'Task ID is not valid'
+            });
+          }
+        });
+      } else {
+        return res.status(400).send({
+          message: 'User does not have a valid worker'
+        });
+      }
+    });
   },
   // get all completed tasks
   all: function (req, res) {
     getUserTypeObject(req, res, function(typeObj) {
       if (typeObj.worker) {
-        res.json({ completedTasks: typeObj.worker.completedTasks });
+        taskFindMany(typeObj.worker.completedTasks, function(err, tasks) {
+          if (err) {
+            return res.status(404).send({
+              message: 'No completed tasks were found'
+            });
+          }
+          res.json({ completedTasks: tasks });
+        })
       } else {
         return res.status(400).send({
           message: 'User does not have a valid worker'
@@ -130,31 +275,82 @@ exports.completedTask = {
 };
 
 /*
- * inactive Tasks
+ * Inactive Tasks
  */
 // opperations on task ID
 exports.inactiveTask = {
-  // read a single inactive task
-  read: function(req, res) {
-    return res.json({ name: 'Mark' });
-  },
   // update a single inactive task
   update: function(req, res) {
-  
-  },
-  // delete a single inactive task
-  delete: function(req, res) {
-  
+    getUserTypeObject(req, res, function(typeObj) {
+      if (typeObj.worker) {
+        taskId = req.body._id;
+        taskFindOne(taskId, function(err, task) {
+          if (err) {
+            return res.status(404).send({
+              message: errorHandler.getErrorMessage(err)
+            });
+          }
+          task = _.extend(task, _.pick(req.body, workerWhitelistedFields));
+          task.save(function(err) {
+            if (err) {
+              res.status(400).send(err);
+            } else {
+              res.json(user);
+            }
+          });
+        });
+      } else {
+        return res.status(400).send({
+          message: 'User does not have a valid worker'
+        });
+      }
+    });
   },
   // add a new inactive task
   add: function (req, res) {
-    
+    getUserTypeObject(req, res, function(typeObj) {
+      if (typeObj.worker) {
+        taskId = req.body._id;
+        taskFindOne(taskId, function(err, task) {
+          if (err) {
+            return res.status(404).send({
+              message: errorHandler.getErrorMessage(err)
+            });
+          }
+          if (task) {
+            typeObj.worker.inactiveTasks.push(task._id);
+            typeObj.save(function(err) {
+              if (err) {
+                res.status(400).send(err);
+              } else {
+                res.json(user);
+              }
+            });
+          } else {
+            return res.status(404).send({
+              message: 'Task ID is not valid'
+            });
+          }
+        });
+      } else {
+        return res.status(400).send({
+          message: 'User does not have a valid worker'
+        });
+      }
+    });
   },
   // get all inactive tasks
   all: function (req, res) {
     getUserTypeObject(req, res, function(typeObj) {
       if (typeObj.worker) {
-        res.json({ inactiveTasks: typeObj.worker.inactiveTasks });
+        taskFindMany(typeObj.worker.inactiveTasks, function(err, tasks) {
+          if (err) {
+            return res.status(404).send({
+              message: 'No inactive tasks were found'
+            });
+          }
+          res.json({ inactiveTasks: tasks });
+        })
       } else {
         return res.status(400).send({
           message: 'User does not have a valid worker'
@@ -169,10 +365,6 @@ exports.inactiveTask = {
  */
 // opperations on task ID
 exports.recomendedTask = {
-  // read a single recomended task
-  read: function(req, res) {
-    return res.json({ name: 'Mark' });
-  },
   // update a single recomended task
   update: function(req, res) {
     getUserTypeObject(req, res, function (typeObj) {
@@ -208,15 +400,18 @@ exports.recomendedTask = {
       res.json({})
     });
   },
-  // delete a single recomended task
-  delete: function(req, res) {
-  
-  },
   // get all recomended tasks
   all: function (req, res) {
     getUserTypeObject(req, res, function(typeObj) {
       if (typeObj.worker) {
-        res.json({ recomendedTasks: typeObj.worker.recomendedTasks });
+        taskFindMany(typeObj.worker.recomendedTasks, function(err, tasks) {
+          if (err) {
+            return res.status(404).send({
+              message: 'No recomended tasks were found'
+            });
+          }
+          res.json({ recomendedTasks: tasks });
+        })
       } else {
         return res.status(400).send({
           message: 'User does not have a valid worker'
@@ -247,10 +442,22 @@ exports.taskByID = function(req, res, next, id) {
 };
 
 exports.getAllTasks = function (req, res) {
-  Task.find({}, function (err, tasks) {
+  Task.find({ secret: false }, function (err, tasks) {
     res.json({ tasks: tasks })
   });
-}
+};
+
+exports.getOneTask = function(req, res) {
+  taskId = req.body._id;
+  taskFindOne(taskId, function(err, task) {
+    if (err) {
+      return res.status(404).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    }
+    res.json({ task: task });
+  });
+};
 
 function getUserTypeObject(req, res, callBack) {
   if (req.user.individual) {
@@ -266,4 +473,8 @@ function getUserTypeObject(req, res, callBack) {
 
 function taskFindMany(taskArray, callBack) {
   Task.find({ '_id': { $in: taskArray }}, callBack);
+}
+
+function taskFindOne(taskId, callBack) {
+  Task.find({ '_id': taskId, secret: false }, callBack);
 }

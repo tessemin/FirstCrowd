@@ -139,7 +139,11 @@ var TaskSchema = new Schema({
       default: null,
       trim: true
     }
-  }]
+  }],
+  permaHidden: {
+    type: Boolean,
+    default: false
+  }
 });
 
 mongoose.model('Task', TaskSchema);
