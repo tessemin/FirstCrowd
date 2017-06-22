@@ -10,58 +10,68 @@ var workersPolicy = require('../policies/workers.server.policy'),
 
 module.exports = function(app) {
   // Workers Routes
-  app.route('/api/workers').all(workersPolicy.isAllowed)
+/*   app.route('/api/workers').all(workersPolicy.isAllowed)
     .get(workers.list)
-    .post(workers.create);
+    .post(workers.create); */
 
-  app.route('/api/workers/:workerId').all(workersPolicy.isAllowed)
+  app.route('/api/workers/:workerId')
     .get(workers.read)
     .put(workers.update)
     .delete(workers.delete);
+  
+  // ACTIVE TASKS
     
-  app.route('/api/workers/activeTasks/').all(workersPolicy.isAllowed)
-    .get(workers.activeTasks.read)
-    .post(workers.activeTasks.create);
-    
-  app.route('/api/workers/activeTask/:taskId').all(workersPolicy.isAllowed)
-    .get(workers.activeTask.read)
+  app.route('/api/workers/activeTask/')
+    .post(workers.activeTask.read)
     .put(workers.activeTask.update)
     .delete(workers.activeTask.delete);
     
-  app.route('/api/workers/rejectedTasks/').all(workersPolicy.isAllowed)
-    .get(workers.rejectedTasks.read)
-    .post(workers.rejectedTasks.create);
+  app.route('/api/workers/activeTask/all').post(workers.activeTask.all);
+  
+  app.route('/api/workers/activeTask/create').post(workers.activeTask.create);
+  
+  // REJECTED TASKS
     
-  app.route('/api/workers/rejectedTask/:taskId').all(workersPolicy.isAllowed)
-    .get(workers.rejectedTask.read)
+  app.route('/api/workers/rejectedTask/')
+    .post(workers.rejectedTask.read)
     .put(workers.rejectedTask.update)
     .delete(workers.rejectedTask.delete);
-  
-  app.route('/api/workers/completedTasks/').all(workersPolicy.isAllowed)
-    .get(workers.completedTasks.read)
-    .post(workers.completedTasks.create);
     
-  app.route('/api/workers/completedTask/:taskId').all(workersPolicy.isAllowed)
-    .get(workers.completedTask.read)
+  app.route('/api/workers/rejectedTask/all').post(workers.rejectedTask.all);
+  
+  app.route('/api/workers/rejectedTask/create').post(workers.rejectedTask.create);//.all(workersPolicy.isAllowed)
+  
+  // COMPLETED TASKS
+  
+  app.route('/api/workers/completedTask/')
+    .post(workers.completedTask.read)
     .put(workers.completedTask.update)
     .delete(workers.completedTask.delete);
     
-  app.route('/api/workers/inactiveTasks/').all(workersPolicy.isAllowed)
-    .get(workers.inactiveTasks.read)
-    .post(workers.inactiveTasks.create);
-    
-  app.route('/api/workers/inactiveTask/:taskId').all(workersPolicy.isAllowed)
-    .get(workers.inactiveTask.read)
+  app.route('/api/workers/completedTask/all').post(workers.completedTask.all);
+  
+  app.route('/api/workers/completedTask/create').post(workers.completedTask.create);
+  
+  // INACTIVE TASKS
+  
+  app.route('/api/workers/inactiveTask/')
+    .post(workers.inactiveTask.read)
     .put(workers.inactiveTask.update)
     .delete(workers.inactiveTask.delete);
     
-  app.route('/api/workers/recomendedTasks/').all(workersPolicy.isAllowed)
-    .get(workers.recomendedTasks.read);
+  app.route('/api/workers/inactiveTask/all').post(workers.inactiveTask.all);
+  
+  app.route('/api/workers/inactiveTask/create').post(workers.inactiveTask.create);
     
-  app.route('/api/workers/recomendedTask/:taskId').all(workersPolicy.isAllowed)
-    .get(workers.recomendedTask.read)
+  // RECOMENDED TASKS  
+    
+  app.route('/api/workers/recomendedTask/')
+    .post(workers.recomendedTask.read)
     .put(workers.recomendedTask.update)
     .delete(workers.recomendedTask.delete);
+    
+  app.route('/api/workers/recomendedTask/all').post(workers.recomendedTask.all);
+
 
   // Finish by binding the Worker middleware
   app.param('workerId', workers.workerByID);
