@@ -1,0 +1,88 @@
+<section class="row">
+  <nav class="col-md-3">
+    <h3>Refine by:</h3>
+    <ul class="list-group">
+      <li class="list-group-item">
+        <label class="filter-label">
+          Title contains:
+          <input class="task-filter" ng-model="vm.filters.name">
+        </label>
+      </li>
+      <li class="list-group-item">
+        <label class="filter-label">
+          Posting date:
+          <input class="task-filter" ng-model="vm.filters.postingDate">
+        </label>
+      </li>
+      <li class="list-group-item">
+        <label class="filter-label" >
+          Deadline:
+          <input class="task-filter" ng-model="vm.filters.deadline">
+        </label>
+      </li>
+      <li class="list-group-item">
+        <label class="filter-label">
+          Status:
+            <input class="task-filter" ng-model="vm.filters.status">
+        </label>
+      </li>
+    </ul>
+  </nav>
+  <div class="tasks-caption">
+    <h4 class="tasks-">All My Tasks</h4>
+  </div>
+  <div class="col-md-9 tasks-table">
+    <div class="tasks-header">
+      <div class="tasks-cell">
+        Task ID
+      </div>
+      <div class="tasks-cell">
+        Title
+      </div>
+      <div class="tasks-cell">
+        Posting Date
+      </div>
+      <div class="tasks-cell">
+        Deadline
+      </div>
+      <div class="tasks-cell">
+        Status
+      </div>
+      <div class="tasks-cell">
+        Progress
+      </div>
+      <div class="tasks-cell">
+        Actions
+      </div>
+    </div>
+    <div class="tasks-row" ng-repeat="task in vm.tasks | filter : vm.filters : false as results track by $index">
+      <div class="tasks-cell">
+        {{task._id}}
+      </div>
+      <div class="tasks-cell">
+        {{task.name}}
+      </div>
+      <div class="tasks-cell">
+        {{task.postingDate}}
+      </div>
+      <div class="tasks-cell">
+        {{task.deadline}}
+      </div>
+      <div class="tasks-cell">
+        {{task.status}}
+      </div>
+      <div class="tasks-cell">
+        <rzslider class="progress-slider" rz-slider-model="task.progress" rz-slider-options="vm.sliderOptions"></rzslider>
+      </div>
+      <div class="tasks-cell">
+        <select ng-model="vm.task[$index].taskAction" ng-options="x for x in vm.taskActions">
+        </select>
+      </div>
+    </div> <!-- end ng-repeat -->
+    <div class="text-center form-group">
+      <div ng-if="vm.tasks.length === 0">
+        You have no tasks.
+      </div>
+    </div>
+  </div>
+</section>

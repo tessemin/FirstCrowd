@@ -3,12 +3,12 @@
 
   // Workers controller
   angular
-    .module('workers')
-    .controller('WorkerTasksController', WorkerTasksController);
+    .module('requesters')
+    .controller('RequesterTasksController', RequesterTasksController);
 
-  WorkerTasksController.$inject = ['$scope', '$state', 'WorkersService'];
+  RequesterTasksController.$inject = ['$scope', '$state', '$timeout', 'RequestersService'];
 
-  function WorkerTasksController ($scope, $state, WorkersService) {
+  function RequesterTasksController ($scope, $state, $timeout, RequestersService) {
     var vm = this;
     // Filters
     vm.filters = {};
@@ -18,15 +18,15 @@
     vm.filters.status = '';
 
     vm.taskActions = [
-      'Select Action',
-      'Quit Task',
-      'Submit Results'
+      'Fire Worker'
     ];
 
-    WorkersService.getActiveTasks()
+    /*
+    RequestersService._getActiveTasks().$promise
       .then(function(data) {
         console.log(data);
       });
+    */
 
     // Dummy tasks while building system
     vm.tasks = [{
@@ -55,14 +55,6 @@
       'taskAction': vm.taskActions[0]
     }];
 
-    vm.taskCategories = [
-      'Active Tasks',
-      'Completed Tasks',
-      'Uncompleted Tasks',
-      'Recommended Tasks'
-    ];
-    vm.taskCategory = vm.taskCategories[0];
-
     // This function is necessary to initially render the progress sliders
     (function refreshProgressSliders() {
       $scope.$broadcast('rzSliderForceRender');
@@ -75,6 +67,7 @@
       ceil: 100,
       hideLimitLabels: true,
       showSelectionBar: true,
+      readOnly: true,
       translate: function(value) {
         return value + '%';
       },
@@ -88,11 +81,11 @@
         }
       },
       getSelectionBarColor: function(value) {
-          if (value === 100) {
-            return 'rgb(0, 221, 0)';
-          } else {
-            return 'rgb(128, 128, 128)';
-          }
+        if (value === 100) {
+          return 'rgb(0, 221, 0)';
+        } else {
+          return 'rgb(128, 128, 160)';
+        }
       }
     };
   }

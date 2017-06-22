@@ -14,132 +14,182 @@ var path = require('path'),
   enterpriseControler = require(path.resolve('./modules/enterprises/server/controllers/enterprises.server.controller')),
   _ = require('lodash');
   
+var superUser = null;
+  
+  
 /*
  * Active Tasks
  */
-// get all active tasks or create a new task
-exports.activeTasks = {
-  read: function(req, res) {
-    console.log('\n\n\n\n\n\n\n\n\n\n\nhere')
-    return res.jsonp({ name: 'Mark' })
-  },
-  create: function(req, res) {
-    
-  }
-}
 // opperations on task ID
 exports.activeTask = {
+  // read a single active task
   read: function(req, res) {
-    console.log('\n\n\n\n\n\n\n\n\n\n\nhere')
-    return res.json({ name: 'Mark' })
+
+    return res.json({ name: 'Mark' });
   },
+  // update a single active task
   update: function(req, res) {
   
   },
+  // delete a single active task
   delete: function(req, res) {
   
+  },
+  // create a new active task
+  create: function (req, res) {
+    
+  },
+  // get all active tasks
+  all: function (req, res) {
+    getUserTypeObject(req, res, function(typeObj) {
+      if (typeObj.worker) {
+        res.json({ activeTasks: typeObj.worker.activeTasks });
+      } else {
+        return res.status(400).send({
+          message: 'User does not have a valid worker'
+        });
+      }
+    });
   }
-}
+};
 
 /*
  * rejected Tasks
  */
-// get all rejected tasks or create a new task
-exports.rejectedTasks = {
-  read: function(req, res) {
-
-  },
-  create: function(req, res) {
-    
-  }
-}
 // opperations on task ID
 exports.rejectedTask = {
+  // read a single rejected task
   read: function(req, res) {
-    res.jsonp({});
+    return res.json({ name: 'Mark' });
   },
+  // update a single rejected task
   update: function(req, res) {
   
   },
+  // delete a single rejected task
   delete: function(req, res) {
   
+  },
+  // create a new rejected task
+  create: function (req, res) {
+    
+  },
+  // get all rejected tasks
+  all: function (req, res) {
+    getUserTypeObject(req, res, function(typeObj) {
+      if (typeObj.worker) {
+        res.json({ rejectedTasks: typeObj.worker.rejectedTasks });
+      } else {
+        return res.status(400).send({
+          message: 'User does not have a valid worker'
+        });
+      }
+    });
   }
-}
+};
 
 /*
  * completed Tasks
  */
-// get all completed tasks or create a new task
-exports.completedTasks = {
-  read: function(req, res) {
-
-  },
-  create: function(req, res) {
-    
-  }
-}
 // opperations on task ID
 exports.completedTask = {
+  // read a single completed task
   read: function(req, res) {
-    res.jsonp({});
+    return res.json({ name: 'Mark' });
   },
+  // update a single completed task
   update: function(req, res) {
   
   },
+  // delete a single completed task
   delete: function(req, res) {
   
+  },
+  // create a new completed task
+  create: function (req, res) {
+    
+  },
+  // get all completed tasks
+  all: function (req, res) {
+    getUserTypeObject(req, res, function(typeObj) {
+      if (typeObj.worker) {
+        res.json({ completedTasks: typeObj.worker.completedTasks });
+      } else {
+        return res.status(400).send({
+          message: 'User does not have a valid worker'
+        });
+      }
+    });
   }
-}
+};
 
 /*
  * inactive Tasks
  */
-// get all inactive tasks or create a new task
-exports.inactiveTasks = {
-  read: function(req, res) {
-
-  },
-  create: function(req, res) {
-    
-  }
-}
 // opperations on task ID
 exports.inactiveTask = {
+  // read a single inactive task
   read: function(req, res) {
-    res.jsonp({});
+    return res.json({ name: 'Mark' });
   },
+  // update a single inactive task
   update: function(req, res) {
   
   },
+  // delete a single inactive task
   delete: function(req, res) {
   
+  },
+  // create a new inactive task
+  create: function (req, res) {
+    
+  },
+  // get all inactive tasks
+  all: function (req, res) {
+    getUserTypeObject(req, res, function(typeObj) {
+      if (typeObj.worker) {
+        res.json({ inactiveTasks: typeObj.worker.inactiveTasks });
+      } else {
+        return res.status(400).send({
+          message: 'User does not have a valid worker'
+        });
+      }
+    });
   }
-}
+};
 
 /*
  * recomended Tasks
  */
-// get all recomended tasks or create a new task
-exports.recomendedTasks = {
-  read: function(req, res) {
-
-  }
-}
 // opperations on task ID
 exports.recomendedTask = {
+  // read a single recomended task
   read: function(req, res) {
-    res.jsonp({});
+    return res.json({ name: 'Mark' });
   },
+  // update a single recomended task
   update: function(req, res) {
   
   },
+  // delete a single recomended task
   delete: function(req, res) {
   
+  },
+  // get all recomended tasks
+  all: function (req, res) {
+    getUserTypeObject(req, res, function(typeObj) {
+      if (typeObj.worker) {
+        res.json({ recomendedTasks: typeObj.worker.recomendedTasks });
+      } else {
+        return res.status(400).send({
+          message: 'User does not have a valid worker'
+        });
+      }
+    });
   }
-}
+};
 
 exports.taskByID = function(req, res, next, id) {
-
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).send({
       message: 'Task is invalid'
@@ -158,3 +208,15 @@ exports.taskByID = function(req, res, next, id) {
     next();
   });
 };
+
+function getUserTypeObject(req, res, callBack) {
+  if (req.user.individual) {
+    individualControler.findIndividual(req, res, callBack);
+  } else if (req.user.enterprise) {
+    enterpriseControler.findEnterprise(req, res, callBack);
+  } else {
+    return res.status(400).send({
+      message: 'User has no valid Type'
+    });
+  }
+}

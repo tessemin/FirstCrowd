@@ -1,7 +1,7 @@
 .tasks-caption {
   display: flex;
-  text-align: center;
   justify-content: center;
+  text-align: center;
 }
 
 .tasks-caption > * {
@@ -21,9 +21,9 @@
 }
 
 .tasks-cell {
+  background: inherit;
   display: table-cell;
   text-align: center;
-  background: inherit;
 }
 
 .filter-label {
@@ -35,17 +35,14 @@
   width: 50%;
 }
 
-.progress-slider {
-}
-
 .progress-slider.rzslider .rz-pointer {
-  width: 8px;
-  height: 16px;
-  top: auto; /* to remove the default positioning */
-  bottom: 0;
   background-color: #333;
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
+  bottom: 0;
+  height: 16px;
+  top: auto; /* to remove the default positioning */
+  width: 8px;
 }
 
 .progress-slider.rzslider .rz-bubble {
