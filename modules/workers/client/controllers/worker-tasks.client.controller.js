@@ -10,6 +10,7 @@
 
   function WorkerTasksController ($scope, $state, WorkersService) {
     var vm = this;
+    vm.loaded = false;
     // Filters
     vm.filters = {};
     vm.filters.name = '';
@@ -22,43 +23,12 @@
       'Quit Task',
       'Submit Results'
     ];
-    
-/*     WorkersService.getActiveTasks()
-      .then(function(data) {
-        console.log(data);
-      }); */
-      
-    WorkersService.getAllTasks()
-      .then(function(data) {
-        console.log('get active response: ' + data);
-      });
 
-    // Dummy tasks while building system
-    vm.tasks = [{
-      '_id': 12315327,
-      'name': 'dummy task',
-      'postingDate': '06/13/17',
-      'deadline': '06/30/17',
-      'status': 'taken',
-      'progress': 50,
-      'taskAction': vm.taskActions[0]
-    }, {
-      '_id': 12315328,
-      'name': 'fix thing',
-      'postingDate': '05/11/17',
-      'deadline': '07/31/17',
-      'status': 'taken',
-      'progress': 0,
-      'taskAction': vm.taskActions[0]
-    }, {
-      '_id': 12315329,
-      'name': 'install whatzit',
-      'postingDate': '06/16/17',
-      'deadline': '08/15/17',
-      'status': 'taken',
-      'progress': 20,
-      'taskAction': vm.taskActions[0]
-    }];
+    vm.tasks = [];
+
+    WorkersService.updateRecomendedTask({'_id': 'rocks'})
+      .then(function() {
+      });
 
     vm.taskCategories = [
       'Active Tasks',
@@ -85,22 +55,85 @@
           return 'rgb(0, 255, 30)';
         }
       },
-      onChange: function(sliderId, modelValue, highValue, pointerType) {
-        if (modelValue === 100) {
-          this.selectionBarGradient = null;
-          this.getSelectionBarColor = function() {
-            return 'rgb(0, 221, 0)';
-          };
-          $scope.$broadcast('rzSliderForceRender');
+      getSelectionBarColor: function(value) {
+        if (value === 100) {
+          return '#00cc00';
         } else {
-          this.selectionBarGradient = {
-            from: 'rgb(255,255,255)',
-            to: 'rgb(0,0,255)'
-          };
-          this.getSelectionBarColor = null;
+          return '#0db9f0';
+        }
+      }/*,
+      // Update progress on backend after changing progress slider of task
+      onEnd: function(sliderId, modelValue, highValue, pointerType) {
+        console.log('sliderId: ' + sliderId);
+        console.log('onEnd: ' + modelValue);
+        var update = {
+          _id: vm.tasks[sliderId]._id,
+          progress: vm.tasks[sliderId].progress
+        };
+        console.log('update: ' + JSON.stringify(update, null ,' '));
+
+        WorkersService.updateActiveTask(update)
+          .then(function(data) {
+          });
+      }
+      */
+    };
+
+    vm.loadData = function(data) {
+      console.log(data);
+      if(data) {
+        vm.loaded = true;
+        vm.tasks = [];
+        var task, postDate, dueDate;
+        for (var i = 0; i < data.tasks.length; ++i) {
+          task = data.tasks[i];
+          postDate = new Date(task.dateCreated);
+          postDate = postDate.toDateString();
+          dueDate = new Date(task.deadline);
+          dueDate = dueDate.toDateString();
+          vm.tasks.push({
+            '_id': task._id,
+            'name': task.title,
+            'postingDate': postDate,
+            'deadline': dueDate,
+            'status': task.status,
+            'progress': task.workers[0].progress,
+            'taskAction': 'Select Action'
+          });
         }
       }
     };
+
+    vm.changeTaskCategory = function() {
+      switch (vm.taskCategory) {
+        case 'Completed Tasks':
+          WorkersService.getCompletedTasks({'_id':'test'})
+            .then(function(data){
+              vm.loadData(data);
+            });
+          break;
+        case 'Uncompleted tasks':
+          WorkersService.getRejectedTasks({'_id':'test'})
+            .then(function(data){
+              vm.loadData(data);
+            });
+          break;
+        case 'Recommended Tasks':
+          WorkersService.getRecomendedTasks({'_id':'test'})
+            .then(function(data){
+              vm.loadData(data);
+            });
+          break;
+        case 'Active Tasks':
+        default:
+          WorkersService.getActiveTasks({'_id':'test'})
+            .then(function(data){
+              vm.loadData(data);
+            });
+      }
+    };
+
+    vm.changeTaskCategory();
 
     // This function is necessary to initially render the progress sliders
     (function refreshProgressSliders() {
