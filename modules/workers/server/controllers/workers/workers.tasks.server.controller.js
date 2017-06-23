@@ -33,28 +33,8 @@ exports.activeTask = {
               message: errorHandler.getErrorMessage(err)
             });
           }
-          if (task.workers) {
-            var found = false;
-            for (var i = 0; i < task.workers.length; i++) {
-              console.log(task.workers[i].worker + ' === ' + typeObj._id)
-              if (task.workers[i].worker === typeObj._id) {
-                task.workers[i] = _.extend(task, _.pick(req.body, workerWhitelistedFields));
-                found = true;
-                break;
-              }
-            }
-            if (!found) {
-              return res.status(400).send({
-                message: 'You are not a worker for this task'
-              });
-            }
-            
-          } else {
-            return res.status(400).send({
-              message: 'You are not a worker for this task'
-            });
-          }
-          task.save(function(err) {
+          var taskWorker = findTaskWorker(task, typeObj, res);
+          taskWorker.save(function(err) {
             if (err) {
               res.status(400).send(err);
             } else {
@@ -489,11 +469,21 @@ exports.getOneTask = function(req, res) {
   });
 };
 
+exports.getWorkerForTask = function(req, res) {
+  taskId = req.body._id;
+  getUserTypeObject(req, res, function(typeObj) {
+    taskFindOne(taskId, function(task) {
+      var worker = findTaskWorker(task, typeObj, res);
+      res.json({ taskWorker: worker })
+    });
+  });
+}
+
 function getUserTypeObject(req, res, callBack) {
   if (req.user.individual) {
-    individualControler.getIndividual(req, res, callBack);
+    individualControler.getThisIndividual(req, res, callBack);
   } else if (req.user.enterprise) {
-    enterpriseControler.getEnterprise(req, res, callBack);
+    enterpriseControler.getThisEnterprise(req, res, callBack);
   } else {
     return res.status(400).send({
       message: 'User has no valid Type'
@@ -507,4 +497,26 @@ function taskFindMany(taskArray, callBack) {
 
 function taskFindOne(taskId, callBack) {
   Task.find({ '_id': taskId, secret: false }, callBack);
+}
+
+function findTaskWorker(task, typeObj, res) {
+  if (task.workers) {
+    var returnTask_Worker = null;
+    for (var i = 0; i < task.workers.length; i++) {
+      if (task.workers[i].worker === typeObj._id) {
+        returnTask_Worker = task.workers[i].worker;
+        break;
+      }
+    }
+    if (!returnTask_Worker) {
+      return res.status(400).send({
+        message: 'You are not a worker for this task'
+      });
+    }
+  } else {
+    return res.status(400).send({
+      message: 'You are not a worker for this task'
+    });
+  }
+  return returnTask_Worker;
 }

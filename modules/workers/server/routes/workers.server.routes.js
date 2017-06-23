@@ -42,6 +42,8 @@ module.exports = function(app) {
   app.route('/api/getAllTasks').post(workers.getAllTasks);
   app.route('/api/getOneTask').post(workers.getOneTask);
   
+  app.route('/api/task/getYourWorker').post(workers.getWorkerForTask);
+  
   // Finish by binding the Worker middleware
   app.param('taskId', workers.taskByID)
 };
