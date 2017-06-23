@@ -70,11 +70,9 @@ var TaskSchema = new Schema({
     }
   },
   status: {
-    type: [{
-      type: String,
-      enum: ['open', 'inactive', 'taken', 'suspended', 'sclosed', 'fclosed']
-    }],
-    required: 'Please provide at least one status'
+    type: String,
+    enum: ['open', 'inactive', 'taken', 'suspended', 'sclosed', 'fclosed'],
+    required: 'Please provide a status'
   },
   multiplicity: {
     type: Number,
