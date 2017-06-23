@@ -13,7 +13,8 @@ var path = require('path'),
   enterpriseControler = require(path.resolve('./modules/enterprises/server/controllers/enterprises.server.controller')),
   _ = require('lodash');
   
-var workerWhitelistedFields = ['progress'];
+var workerWhitelistedFields = ['progress'],
+  taskId = null;
   
   
 /*
