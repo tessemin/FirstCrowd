@@ -481,9 +481,9 @@ exports.getWorkerForTask = function(req, res) {
 
 function getUserTypeObject(req, res, callBack) {
   if (req.user.individual) {
-    individualControler.getIndividual(req, res, callBack);
+    individualControler.getThisIndividual(req, res, callBack);
   } else if (req.user.enterprise) {
-    enterpriseControler.getEnterprise(req, res, callBack);
+    enterpriseControler.getThisEnterprise(req, res, callBack);
   } else {
     return res.status(400).send({
       message: 'User has no valid Type'
