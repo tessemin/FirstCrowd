@@ -147,7 +147,20 @@ var TaskSchema = new Schema({
   permaHidden: {
     type: Boolean,
     default: false
+  },
+  dateCreated: {
+    type: Date,
+    required: 'Please add a date created'
+  },
+  lastModified: {
+    type: Date,
+    default: null
   }
+});
+
+TaskSchema.pre('save', function (next) {
+  this.lastModified = Date.now()
+  next();
 });
 
 mongoose.model('Task', TaskSchema);

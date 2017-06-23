@@ -42,7 +42,7 @@ module.exports = function(app) {
   
   app.route('/api/workers/inactiveTask/add').post(workers.inactiveTask.add);
     
-  // RECOMENDED TASKS  
+  // RECOMENDED TASKS
     
   app.route('/api/workers/recomendedTask/').put(workers.recomendedTask.update)
     

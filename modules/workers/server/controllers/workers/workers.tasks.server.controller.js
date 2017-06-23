@@ -385,8 +385,8 @@ exports.recomendedTask = {
         task.multiplicity = 10;
         task.preapproval = true;
         task.requester = typeObj._id;
+        task.dateCreated = Date.now();
         typeObj.worker.activeTasks.push(task._id);
-        console.log(task._id)
         task.save(function(err) {
           if (err) {
             console.log(err);
