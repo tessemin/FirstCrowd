@@ -84,15 +84,17 @@ var TaskSchema = new Schema({
   },
   requester: {
     type: Schema.Types.ObjectId,
+    ref: 'Requester',
     required: 'Please provide a requester'
   },
   workers: {
     type: [{
       status: {
         type: String,
-        enum: ['active', 'accepted', 'rejected']
+        enum: ['active', 'accepted', 'rejected'],
+        required: 'Please provide a status'
       },
-      ratingOnWorker: {
+      ratingForWorker: {
         overAllRating: {
           type: Number,
           default: 0.0
@@ -110,7 +112,7 @@ var TaskSchema = new Schema({
           default: 0.0
         }
       },
-      ratingOnRequester: {
+      ratingForRequester: {
         overAllRating: {
           type: Number,
           default: 0.0
@@ -130,17 +132,28 @@ var TaskSchema = new Schema({
       },
       worker: {
         type: Schema.Types.ObjectId,
+        ref: 'Worker',
         required: 'Must include a worker'
       },
       progress: {
+        type: Number,
+        default: 0
+      },
+      timeSpent: { // in seconds
+        type: Number,
+        default: 0
+      },
+      awardAmount: {
         type: Number,
         default: 0
       }
     }]
   },
   bids: [{
-    worker: {
-      type: Schema.Types.ObjectId
+    worker:{
+      type: Schema.Types.ObjectId,
+      ref: 'Worker',
+      required: 'Must include a worker'
     },
     bid: {
       type: Number,
@@ -149,7 +162,7 @@ var TaskSchema = new Schema({
     status: {
       type: String,
       enum: ['accepted', 'rejected', 'undecided'],
-      default: ['undecided']
+      default: 'undecided'
     }
   }],
   publicNotes: [{
@@ -176,10 +189,6 @@ var TaskSchema = new Schema({
       trim: true
     }
   }],
-  permaHidden: {
-    type: Boolean,
-    default: false
-  },
   dateCreated: {
     type: Date,
     required: 'Please add a date created'
