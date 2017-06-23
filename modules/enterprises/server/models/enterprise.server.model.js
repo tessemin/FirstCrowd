@@ -168,7 +168,7 @@ var EnterpriseUserSchema = new Schema({
         default: false
       }
     }],
-    acceptedTasks: [{
+    completedTasks: [{
       task: {
         type: Schema.Types.ObjectId
       },
@@ -177,7 +177,7 @@ var EnterpriseUserSchema = new Schema({
         default: false
       }
     }],
-    failedTasks: [{
+    rejectedTasks: [{
       task: {
         type: Schema.Types.ObjectId
       },
@@ -192,25 +192,6 @@ var EnterpriseUserSchema = new Schema({
     },
     interestedCategories: [{
       type: Schema.Types.Mixed
-    }],
-    workerRatings: [{
-      workerID: Schema.Types.ObjectId,
-      overAllRating: {
-        type: Number,
-        default: 0.0
-      },
-      clearness: {
-        type: Number,
-        default: 0.0
-      },
-      resonableness: {
-        type: Number,
-        default: 0.0
-      },
-      responseTime: {
-        type: Number,
-        default: 0.0
-      }
     }],
     workersPerCategory: [{
       category: {
@@ -236,6 +217,10 @@ var EnterpriseUserSchema = new Schema({
         type: Schema.Types.ObjectId
       },
       hidden: {
+        type: Boolean,
+        default: false
+      },
+      markCompleted: {
         type: Boolean,
         default: false
       }
@@ -310,7 +295,7 @@ var EnterpriseUserSchema = new Schema({
         default: 0
       }
     }],
-    averageCompletionTime: {
+    averageCompletionTime: { // in seconds
       type: Number,
       default: 0
     },

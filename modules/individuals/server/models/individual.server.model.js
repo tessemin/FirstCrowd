@@ -282,7 +282,7 @@ var IndividualUserSchema = new Schema({
         default: false
       }
     }],
-    acceptedTasks: [{
+    completedTasks: [{
       task: {
         type: Schema.Types.ObjectId
       },
@@ -291,7 +291,7 @@ var IndividualUserSchema = new Schema({
         default: false
       }
     }],
-    failedTasks: [{
+    rejectedTasks: [{
       task: {
         type: Schema.Types.ObjectId
       },
@@ -306,25 +306,6 @@ var IndividualUserSchema = new Schema({
     },
     interestedCategories: [{
       type: Schema.Types.Mixed
-    }],
-    workerRatings: [{
-      workerID: Schema.Types.ObjectId,
-      overAllRating: {
-        type: Number,
-        default: 0.0
-      },
-      clearness: {
-        type: Number,
-        default: 0.0
-      },
-      resonableness: {
-        type: Number,
-        default: 0.0
-      },
-      responseTime: {
-        type: Number,
-        default: 0.0
-      }
     }],
     workersPerCategory: [{
       category: {
