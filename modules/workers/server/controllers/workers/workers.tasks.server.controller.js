@@ -371,7 +371,7 @@ exports.recomendedTask = {
     Task.find({ secret: false }, function (err, tasks) {
       if (!tasks)
         getUserTypeObject(req, res, function (typeObj) {
-          for (var index = 1; index < 21; index++) {
+          for (var index = 1; index < 6; index++) {
             var task = new Task();
             task.title = 'task: ' + index;
             task.description = 'What a Task ' + index + '!';
