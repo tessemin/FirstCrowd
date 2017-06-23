@@ -12,11 +12,11 @@ var path = require('path'),
   individualControler = require(path.resolve('./modules/individuals/server/controllers/individuals.server.controller')),
   enterpriseControler = require(path.resolve('./modules/enterprises/server/controllers/enterprises.server.controller')),
   _ = require('lodash');
-  
+
 var workerWhitelistedFields = ['progress'],
   taskId = null;
-  
-  
+
+
 /*
  * Active Tasks
  */
@@ -92,7 +92,7 @@ exports.activeTask = {
               message: 'No active tasks were found'
             });
           }
-          res.json({ activeTasks: tasks });
+          res.json({ tasks: tasks });
         })
       } else {
         return res.status(400).send({
@@ -178,7 +178,7 @@ exports.rejectedTask = {
               message: 'No rejected tasks were found'
             });
           }
-          res.json({ rejectedTasks: tasks });
+          res.json({ tasks: tasks });
         })
       } else {
         return res.status(400).send({
@@ -264,7 +264,7 @@ exports.completedTask = {
               message: 'No completed tasks were found'
             });
           }
-          res.json({ completedTasks: tasks });
+          res.json({ tasks: tasks });
         })
       } else {
         return res.status(400).send({
@@ -350,7 +350,7 @@ exports.inactiveTask = {
               message: 'No inactive tasks were found'
             });
           }
-          res.json({ inactiveTasks: tasks });
+          res.json({ tasks: tasks });
         })
       } else {
         return res.status(400).send({
@@ -422,7 +422,7 @@ exports.recomendedTask = {
               message: 'No recomended tasks were found'
             });
           }
-          res.json({ recomendedTasks: tasks });
+          res.json({ tasks: tasks });
         })
       } else {
         return res.status(400).send({
