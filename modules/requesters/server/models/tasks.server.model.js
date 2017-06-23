@@ -84,7 +84,6 @@ var TaskSchema = new Schema({
   },
   requester: {
     type: Schema.Types.ObjectId,
-    ref: 'Requester',
     required: 'Please provide a requester'
   },
   workers: {
@@ -132,7 +131,6 @@ var TaskSchema = new Schema({
       },
       worker: {
         type: Schema.Types.ObjectId,
-        ref: 'Worker',
         required: 'Must include a worker'
       },
       progress: {
@@ -152,7 +150,6 @@ var TaskSchema = new Schema({
   bids: [{
     worker:{
       type: Schema.Types.ObjectId,
-      ref: 'Worker',
       required: 'Must include a worker'
     },
     bid: {
