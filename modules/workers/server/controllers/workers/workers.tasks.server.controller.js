@@ -13,7 +13,8 @@ var path = require('path'),
   enterpriseControler = require(path.resolve('./modules/enterprises/server/controllers/enterprises.server.controller')),
   _ = require('lodash');
   
-var workerWhitelistedFields = ['progress'];
+var workerWhitelistedFields = ['progress'],
+  taskId = null;
   
   
 /*
@@ -384,8 +385,8 @@ exports.recomendedTask = {
         task.multiplicity = 10;
         task.preapproval = true;
         task.requester = typeObj._id;
+        task.dateCreated = Date.now();
         typeObj.worker.activeTasks.push(task._id);
-        console.log(task._id)
         task.save(function(err) {
           if (err) {
             console.log(err);

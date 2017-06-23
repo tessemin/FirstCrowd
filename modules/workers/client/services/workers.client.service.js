@@ -9,12 +9,9 @@
   WorkersService.$inject = ['$resource'];
 
   function WorkersService($resource) {
-    var Workers = $resource('api/workers/:workerId', {
-      workerId: '@_id'
+    var Workers = $resource('api/workers/:taskId', {
+      taskId: '@_id'
     }, {
-      _update: {
-        method: 'PUT'
-      },
       _getActiveTasks: {
         method: 'POST',
         url: '/api/workers/activeTask/all'

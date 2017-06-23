@@ -9,15 +9,6 @@ var workersPolicy = require('../policies/workers.server.policy'),
   
 
 module.exports = function(app) {
-  // Workers Routes
-/*   app.route('/api/workers').all(workersPolicy.isAllowed)
-    .get(workers.list)
-    .post(workers.add); */
-
-/*   app.route('/api/workers/:workerId')
-    .get(workers.read)
-    .put(workers.update)
-    .delete(workers.delete); */
   
   // ACTIVE TASKS
     
@@ -51,18 +42,18 @@ module.exports = function(app) {
   
   app.route('/api/workers/inactiveTask/add').post(workers.inactiveTask.add);
     
-  // RECOMENDED TASKS  
+  // RECOMENDED TASKS
     
   app.route('/api/workers/recomendedTask/').put(workers.recomendedTask.update)
     
   app.route('/api/workers/recomendedTask/all').post(workers.recomendedTask.all);
+  
+  // TASKS NATIVE API
 
   app.route('/api/getAllTasks').post(workers.getAllTasks);
   
   app.route('/api/getOneTask').post(workers.getOneTask);
   
   // Finish by binding the Worker middleware
-  app.param('workerId', workers.workerByID);
-  
-  app.param('taskId', workers.taskByID);
+  app.param('taskId', workers.taskByID)
 };

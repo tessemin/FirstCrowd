@@ -352,6 +352,10 @@ var IndividualUserSchema = new Schema({
       hidden: {
         type: Boolean,
         default: false
+      },
+      markCompleted: {
+        type: Boolean,
+        default: false
       }
     }],
     rejectedTasks: [{
@@ -424,7 +428,7 @@ var IndividualUserSchema = new Schema({
         default: 0
       }
     }],
-    averageCompletionTime: {
+    averageCompletionTime: { // in seconds
       type: Number,
       default: 0
     },
