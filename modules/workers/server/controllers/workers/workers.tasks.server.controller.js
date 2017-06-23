@@ -13,7 +13,7 @@ var path = require('path'),
   enterpriseControler = require(path.resolve('./modules/enterprises/server/controllers/enterprises.server.controller')),
   _ = require('lodash');
   
-var workerWhitelistedFields = ['progress', 'status'],
+var workerWhitelistedFields = ['progress'],
   taskId = null;
   
   
@@ -130,7 +130,7 @@ exports.activeTask = {
 exports.rejectedTask = {
   // update a single rejected task
   update: function(req, res) {
-    getUserTypeObject(req, res, function(typeObj) {
+    /* getUserTypeObject(req, res, function(typeObj) {
       if (typeObj.worker) {
         taskId = req.body._id;
         taskFindOne(taskId, function(err, task) {
@@ -153,7 +153,7 @@ exports.rejectedTask = {
           message: 'User does not have a valid worker'
         });
       }
-    });
+    }); */
   },
   // add a new rejected task
   add: function (req, res) {
@@ -216,7 +216,7 @@ exports.rejectedTask = {
 exports.completedTask = {
   // update a single completed task
   update: function(req, res) {
-    getUserTypeObject(req, res, function(typeObj) {
+    /* getUserTypeObject(req, res, function(typeObj) {
       if (typeObj.worker) {
         taskId = req.body._id;
         taskFindOne(taskId, function(err, task) {
@@ -239,7 +239,7 @@ exports.completedTask = {
           message: 'User does not have a valid worker'
         });
       }
-    });
+    }); */
   },
   // add a new completed task
   add: function (req, res) {
@@ -302,7 +302,7 @@ exports.completedTask = {
 exports.inactiveTask = {
   // update a single inactive task
   update: function(req, res) {
-    getUserTypeObject(req, res, function(typeObj) {
+    /* getUserTypeObject(req, res, function(typeObj) {
       if (typeObj.worker) {
         taskId = req.body._id;
         taskFindOne(taskId, function(err, task) {
@@ -325,7 +325,7 @@ exports.inactiveTask = {
           message: 'User does not have a valid worker'
         });
       }
-    });
+    }); */
   },
   // add a new inactive task
   add: function (req, res) {
