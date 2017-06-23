@@ -13,7 +13,7 @@ var path = require('path'),
   enterpriseControler = require(path.resolve('./modules/enterprises/server/controllers/enterprises.server.controller')),
   _ = require('lodash');
   
-var workerWhitelistedFields = ['progress'],
+var workerWhitelistedFields = ['progress', 'status'],
   taskId = null;
   
   
@@ -33,7 +33,27 @@ exports.activeTask = {
               message: errorHandler.getErrorMessage(err)
             });
           }
-          task = _.extend(task, _.pick(req.body, workerWhitelistedFields));
+          if (task.workers) {
+            var found = false;
+            for (var i = 0; i < task.workers.length; i++) {
+              console.log(task.workers[i].worker + ' === ' + typeObj._id)
+              if (task.workers[i].worker === typeObj._id) {
+                task.workers[i] = _.extend(task, _.pick(req.body, workerWhitelistedFields));
+                found = true;
+                break;
+              }
+            }
+            if (!found) {
+              return res.status(400).send({
+                message: 'You are not a worker for this task'
+              });
+            }
+            
+          } else {
+            return res.status(400).send({
+              message: 'You are not a worker for this task'
+            });
+          }
           task.save(function(err) {
             if (err) {
               res.status(400).send(err);
@@ -385,6 +405,10 @@ exports.recomendedTask = {
         task.multiplicity = 10;
         task.preapproval = true;
         task.requester = typeObj._id;
+        task.workers[0]= {};
+        task.workers[0].status = 'active';
+        task.workers[0].worker = typeObj._id;
+        task.workers[0].progress = 0;
         task.dateCreated = Date.now();
         typeObj.worker.activeTasks.push(task._id);
         task.save(function(err) {

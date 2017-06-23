@@ -35,10 +35,6 @@ var TaskSchema = new Schema({
     default: null,
     trim: true
   },
-  progress: {
-    type: Number,
-    default: 0
-  },
   payment: {
     bidding: {
       bidable: {
@@ -91,18 +87,56 @@ var TaskSchema = new Schema({
     required: 'Please provide a requester'
   },
   workers: {
-    type: {
-      active: [{
-        type: Schema.Types.ObjectId
-      }],
-      accepted: [{
-        type: Schema.Types.ObjectId
-      }],
-      rejected: [{
-        type: Schema.Types.ObjectId
-      }]
-    },
-    default: {}
+    type: [{
+      status: {
+        type: String,
+        enum: ['active', 'accepted', 'rejected']
+      },
+      ratingOnWorker: {
+        overAllRating: {
+          type: Number,
+          default: 0.0
+        },
+        clearness: {
+          type: Number,
+          default: 0.0
+        },
+        resonableness: {
+          type: Number,
+          default: 0.0
+        },
+        responseTime: {
+          type: Number,
+          default: 0.0
+        }
+      },
+      ratingOnRequester: {
+        overAllRating: {
+          type: Number,
+          default: 0.0
+        },
+        clearness: {
+          type: Number,
+          default: 0.0
+        },
+        resonableness: {
+          type: Number,
+          default: 0.0
+        },
+        responseTime: {
+          type: Number,
+          default: 0.0
+        }
+      },
+      worker: {
+        type: Schema.Types.ObjectId,
+        required: 'Must include a worker'
+      },
+      progress: {
+        type: Number,
+        default: 0
+      }
+    }]
   },
   bids: [{
     worker: {
