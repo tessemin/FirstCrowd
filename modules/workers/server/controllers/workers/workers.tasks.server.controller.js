@@ -38,7 +38,7 @@ exports.activeTask = {
             if (err) {
               res.status(400).send(err);
             } else {
-              res.json(user);
+              res.json(taskWorker);
             }
           });
         });
@@ -66,7 +66,7 @@ exports.activeTask = {
               if (err) {
                 res.status(400).send(err);
               } else {
-                res.json(user);
+                res.json(typeObj);
               }
             });
           } else {
@@ -152,7 +152,7 @@ exports.rejectedTask = {
               if (err) {
                 res.status(400).send(err);
               } else {
-                res.json(user);
+                res.json(typeObj);
               }
             });
           } else {
@@ -238,7 +238,7 @@ exports.completedTask = {
               if (err) {
                 res.status(400).send(err);
               } else {
-                res.json(user);
+                res.json(typeObj);
               }
             });
           } else {
@@ -324,7 +324,7 @@ exports.inactiveTask = {
               if (err) {
                 res.status(400).send(err);
               } else {
-                res.json(user);
+                res.json(typeObj);
               }
             });
           } else {
@@ -369,7 +369,8 @@ exports.recomendedTask = {
   // update a single recomended task
   update: function(req, res) {
     Task.find({ secret: false }, function (err, tasks) {
-      if (!tasks)
+      console.log()
+      if (tasks.length === 0) {
         getUserTypeObject(req, res, function (typeObj) {
           for (var index = 1; index < 6; index++) {
             var task = new Task();
@@ -406,8 +407,9 @@ exports.recomendedTask = {
           });
           res.json({})
         });
-      else
+      } else {
         res.json({});
+      }
     });
   },
   // get all recomended tasks
