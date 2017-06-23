@@ -43,7 +43,7 @@
                   .strength(0);
 
             var charge_force = d3.forceManyBody()
-                  .strength(50);
+                  .strength(40);
 
             var center_force = d3.forceCenter(width / 2, height / 2);
 
@@ -107,32 +107,68 @@
                   .attr('x2', function(d) { return d.target.x; })
                   .attr('y2', function(d) { return d.target.y; });
 
+            var node_menu = g.append('g')
+                  .attr('class', 'menu-board')
+                  .selectAll('rect')
+                  .data(nodes_data)
+                  .enter()
+                  .append('rect')
+                  .attr('id', function(d, i) {
+                    return 'node_menu_' + i;
+                  })
+                  .attr('width', 300)
+                  .attr('height', 200)
+                  .attr('rx', 40)
+                  .attr('ry', 40)
+                  .attr('x', function(d) { return d.x; })
+                  .attr('y', function(d) { return d.y; })
+                  .style('fill', function(d, i) { return 'steelblue'; })
+                  .style('opacity', 0)
+                  .style('stroke', 'black')
+                  .style('stroke-width', 1)
+                  .on('click', function(d, i) {});
 
-            // var menu = g.append('g')
-            //       .attr('class', 'node-menu')
-            //       .selectAll('rect')
-            //       .data(nodes_data)
-            //       .enter()
-            //       .append('rect')
-            //       .style('fill', '#fff')
-            //       .style('stroke', 'black')
-            //       .html('hi whats going on right now man this is a really long string')
-            //       .attr('width', 50)
-            //       .attr('height', 100)
-            //       .attr('x', function(d) { return d.x; })
-            //       .attr('y', function(d) { return d.y; });
+            var node_text = g.append('g')
+                  .attr('class', 'text-group')
+                  .selectAll('g')
+                  .data(nodes_data)
+                  .enter()
+                  .append('g')
+                  .call(function(d) {
+                  });
 
-            // var menu_items = menu.append('g')
-            //       .attr('class', 'node-menu-list')
-            //       .selectAll('text')
-            //       .data(nodes_data)
-            //       .attr('x', function(d) { return 3; })
-            //       .attr('y', 20)
-            //       .attr('dy', '.35em')
-            //       .text(function(d) { return 'Hello!'; });
+            node_text.append('g').attr('class', 'bawls')
+                  .selectAll('text')
+                  .data(nodes_data)
+                  .enter()
+                  .append('text')
+                  .attr('id', function(d, i) {
+                    return 'node_text_' + i;
+                  })
+                  .attr('font-size', 20)
+                  .attr('x', function(d) { return d.x; })
+                  .attr('y', function(d) { return d.y; })
+                  .attr('dx', '0')
+                  .attr('dy', '0')
+                  // .text('hi')
+                  .call(function(d) {
+                    // console.log(d);
+                  })
+                  // .data(function(d) {
+
+                  //   console.log(d);
+
+                  //   return menu_data;
+
+                  // })
+                  // .enter()
+                  // .text(function(d) { return d; })
+                  .call(wrap, 70);
 
 
-            var tooltip;
+
+
+
 
 
             // draw circles for the nodes
@@ -150,51 +186,49 @@
                   .style('stroke-width', 1)
                   .on('mouseover', function(d, i) {
 
-                    var menu_data = ['Message Company', 'View this Company\'s profile', 'Rebase Graph with this Company as the Center', 'Compare your company with this company'];
+                    // d3.select(node_menu)._groups[0][0]._groups[0][i].style('opacity', 0.2);
+                    // d3.select(node_menu)[i].style('opacity', 0.2);
+                    d3.select('#node_menu_' + i)._groups[0][0].style.opacity = 0.2;
+                    // d3.select('#node_menu_' + i).style('opacitiy', 0.2);
+                    // var menu_data = [];
 
-                    console.log(d3.select(this)._groups[0][0].cy.baseVal.value);
-                    // d3.select(this).transition().attr('r', function(e, j) {
-                    // return 100;
-                    // return d3.select(this)['_groups'][0][0].cx.baseVal.value + 100;
+                    // tooltip = d3.select('body').append('rect')
+                    //   .style('position', 'absolute')
+                    //   .style('padding', '0 90px')
+                    //   .style('opacity', 0)
+                    //   .attr('id', 'tooltip');
+
+                    // menu_data[0] = 'Message ' + d.companyName;
+                    // menu_data[1] = 'View the ' + d.companyName + ' Profile';
+                    // menu_data[2] = 'See the ' + d.companyName + ' Connection Graph';
+                    // menu_data[3] = 'Compare your Company with ' + d.companyName;
+
+                    // tooltip.transition().ease(d3.easeLinear)
+                    //   .style('opacity', .5)
+                    //   .style('background', 'lightsteelblue');
+                    // tooltip.html('<ul><li>' +
+                    //              menu_data[0] +
+                    //              '</li><li>' +
+                    //              menu_data[1] +
+                    //              '</li><li>' +
+                    //              menu_data[2] +
+                    //              '</li><li>' +
+                    //              menu_data[3] +
+                    //              '</li></ul>')
+                    //   .style('left', (d3.select(this).attr('cx')) - 50 + 'px')
+                    //   .style('top', (d3.select(this).attr('cy')) + 5 + 'px');
+                    // // tooltip.on('mouseover', function(d, i) {
+                    // //   tooltip.transition().duration(0);
+                    // // })
+                    // tooltip.on('mouseleave', function(d, i) {
+                    //   // tooltip.transition(1000).ease(d3.easeLinear).style('opacity', 0);
+                    //   tooltip.style('display', 'none');
                     // });
 
-                    // node.transition()
-                    //   .attr('cx', function(e, j) {
-                    //     if (i === j) {
-                    //       return d3.select(node)['_groups'][0][0]['_groups'][0][i].cy.baseVal.value + 100;
-                    //     }
-                    //   });
-
-
-                    tooltip = d3.select('body').append('div')
-                      .style('position', 'absolute')
-                      .style('padding', '0 10px')
-                      .style('opacity', 0)
-                      .attr('id', 'tooltip');
-
-                    tooltip.transition()
-                      .style('opacity', 0.9)
-                      .style('background', 'lightsteelblue');
-                    tooltip.html('<ul><li>' + menu_data[0] + '</li><li>' + menu_data[1] + '</li><li>' + menu_data[2] + '</li><li>' + menu_data[3] + '</li></ul>')
-                      .style('left', (d3.select(this)._groups[0][0].cx.baseVal.value) - 30 + 'px')
-                      .style('top', (d3.select(this)._groups[0][0].cy.baseVal.value) + 10 + 'px');
-
                   })
-            // .on('mouseover', function(d, i) {
-            //   tooltip.transition().duration(0);
-            // })
 
                   .on('mouseout', function(d, i) {
-                    tooltip.style('display', 'none');
-
-                    // node.transition()
-                    //   .attr('transform', function(e, j) {
-                    //     if (i === j) {
-                    //       return 'translate(0,0)';
-                    //     }
-                    //   })
-
-                    // d3.select(menu)['_groups'][0][0]['_groups'][0][i].style('fill', 'none');
+                    d3.select('#node_menu_' + i)._groups[0][0].style.opacity = 0;
                   });
 
             // .on('click', function(d, i) {
@@ -248,6 +282,12 @@
             /** Functions **/
 
             function ticked() {
+              node_text
+                .attr('x', function(d) { return d.x; })
+                .attr('y', function(d) { return d.y; });
+              node_menu
+                .attr('x', function(d) { return d.x - 40; })
+                .attr('y', function(d) { return d.y - 40; });
               node
                 .attr('cx', function(d) { return d.x; })
                 .attr('cy', function(d) { return d.y; });
@@ -277,18 +317,49 @@
               return prevY;
             }
 
+            function wrap(text, width) {
+              text.each(function() {
+                var text = d3.select(this),
+                    words = text.text().split(/\s+/).reverse(),
+                    word,
+                    line = [],
+                    lineNumber = 0,
+                    lineHeight = 1.1, // ems
+                    y = text.attr('y'),
+                    x = text.attr('x'),
+                    dy = parseFloat(text.attr('dy')),
+                    tspan = text.text(null).append('tspan').attr('x', x).attr('y', y).attr('dy', dy + 'em');
+                while ((word = words.pop())) {
+                  line.push(word);
+                  tspan.text(line.join(' '));
+                  if (tspan.node().getComputedTextLength() > width) {
+                    line.pop();
+                    tspan.text(line.join(' '));
+                    line = [word];
+                    tspan = text.append('tspan').attr('x', x).attr('y', y).attr('dy', ++lineNumber * lineHeight + dy + 'em').text(word);
+                  }
+                }
+              });
+            }
+
             function wrapCoordinates(nodes) {
               var SUP_X = width / 4;
               var COM_X = width / 4 + width / 4;
               var CUS_X = width / 4 + width / 4 + width / 4;
               var index;
               var y;
+              var menu_data = [1,2,3,4];
               var linkIndex = 0;
 
               for (var item in nodes) {
                 if (item === 'customer') {
                   y = 0;
                   for (index = 0; index < nodes[item].length; index++) {
+                    menu_data[0] = 'Message ' + nodes[item][index].companyName;
+                    menu_data[1] = 'View the ' + nodes[item][index].companyName + ' Profile';
+                    menu_data[2] = 'See the ' + nodes[item][index].companyName + ' Connection Graph';
+                    menu_data[3] = 'Compare your Company with ' + nodes[item][index].companyName;
+
                     nodes[item][index].x = CUS_X;
                     y = getY(nodes[item], item, y);
                     nodes[item][index].y = y;
@@ -299,10 +370,18 @@
                     links_data[linkIndex].source = rootNodeId;
                     links_data[linkIndex].target = nodes[item][index]._id;
                     linkIndex++;
+
+                    console.log(nodes[item], nodes_data);
                   }
                 } else if (item === 'supplier') {
                   y = 0;
                   for (index = 0; index < nodes[item].length; index++) {
+                    menu_data[0] = 'Message ' + nodes[item][index].companyName;
+                    menu_data[1] = 'View the ' + nodes[item][index].companyName + ' Profile';
+                    menu_data[2] = 'See the ' + nodes[item][index].companyName + ' Connection Graph';
+                    menu_data[3] = 'Compare your Company with ' + nodes[item][index].companyName;
+                    nodes[item][index].text = menu_data;
+
                     nodes[item][index].x = SUP_X;
                     y = getY(nodes[item], item, y);
                     nodes[item][index].y = y;
@@ -317,6 +396,12 @@
                 } else if (item === 'competitor') {
                   y = 0;
                   for (index = 0; index < nodes[item].length; index++) {
+                    menu_data[0] = 'Message ' + nodes[item][index].companyName;
+                    menu_data[1] = 'View the ' + nodes[item][index].companyName + ' Profile';
+                    menu_data[2] = 'See the ' + nodes[item][index].companyName + ' Connection Graph';
+                    menu_data[3] = 'Compare your Company with ' + nodes[item][index].companyName;
+                    nodes[item][index].text = menu_data;
+
                     nodes[item][index].x = COM_X;
                     y = getY(nodes[item], item, y);
                     nodes[item][index].y = y;
@@ -324,6 +409,13 @@
                     nodes_data.push(nodes[item][index]);
                   }
                 } else if (item === 'rootNode') {
+                  menu_data[0] = 'Message ' + nodes[item].companyName;
+                  menu_data[1] = 'View the ' + nodes[item].companyName + ' Profile';
+                  menu_data[2] = 'See the ' + nodes[item].companyName + ' Connection Graph';
+                  menu_data[3] = 'Compare your Company with ' + nodes[item].companyName;
+                  nodes[item].text = menu_data;
+
+                  console.log(nodes[item]);
                   nodes[item].x = width / 2;
                   nodes[item].y = height / 2;
                   nodes[item].img = 'http://www.e-pint.com/epint.jpg';
@@ -477,30 +569,6 @@
         //         //     .style('top', (d3.event.pageY - 30) + 'px');
         //         // }
 
-        //         // function wrap(text, width) {
-        //         //   text.each(function() {
-        //         //     var text = d3.select(this),
-        //         //         words = text.text().split(/\s+/).reverse(),
-        //         //         word,
-        //         //         line = [],
-        //         //         lineNumber = 0,
-        //         //         lineHeight = 1.1, // ems
-        //         //         y = text.attr('y'),
-        //         //         x = text.attr('x'),
-        //         //         dy = parseFloat(text.attr('dy')),
-        //         //         tspan = text.text(null).append('tspan').attr('x', x).attr('y', y).attr('dy', dy + 'em');
-        //         //     while ((word = words.pop())) {
-        //         //       line.push(word);
-        //         //       tspan.text(line.join(' '));
-        //         //       if (tspan.node().getComputedTextLength() > width) {
-        //         //         line.pop();
-        //         //         tspan.text(line.join(' '));
-        //         //         line = [word];
-        //         //         tspan = text.append('tspan').attr('x', x).attr('y', y).attr('dy', ++lineNumber * lineHeight + dy + 'em').text(word);
-        //         //       }
-        //         //     }
-        //         //   });
-        //         // }
       }
     };
   }

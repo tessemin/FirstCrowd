@@ -388,41 +388,46 @@ exports.inactiveTask = {
 exports.recomendedTask = {
   // update a single recomended task
   update: function(req, res) {
-    getUserTypeObject(req, res, function (typeObj) {
-      for (var index = 1; index < 21; index++) {
-        var task = new Task();
-        task.title = 'task: ' + index;
-        task.description = 'What a Task ' + index + '!';
-        task.skillsNeeded = ['skill1', 'skill2', 'skill3'];
-        task.deadline = '09/25/2017';
-        task.payment = {
-          bidding: {
-            bidable: false
-          },
-          staticPrice: 100
-        };
-        task.status = 'open';
-        task.multiplicity = 10;
-        task.preapproval = true;
-        task.requester = typeObj._id;
-        task.workers[0]= {};
-        task.workers[0].status = 'active';
-        task.workers[0].worker = typeObj._id;
-        task.workers[0].progress = 0;
-        task.dateCreated = Date.now();
-        typeObj.worker.activeTasks.push(task._id);
-        task.save(function(err) {
-          if (err) {
-            console.log(err);
+    Task.find({ secret: false }, function (err, tasks) {
+      if (!tasks)
+        getUserTypeObject(req, res, function (typeObj) {
+          for (var index = 1; index < 21; index++) {
+            var task = new Task();
+            task.title = 'task: ' + index;
+            task.description = 'What a Task ' + index + '!';
+            task.skillsNeeded = ['skill1', 'skill2', 'skill3'];
+            task.deadline = '09/25/2017';
+            task.payment = {
+              bidding: {
+                bidable: false
+              },
+              staticPrice: 100
+            };
+            task.status = 'open';
+            task.multiplicity = 10;
+            task.preapproval = true;
+            task.requester = typeObj._id;
+            task.workers[0]= {};
+            task.workers[0].status = 'active';
+            task.workers[0].worker = typeObj._id;
+            task.workers[0].progress = 0;
+            task.dateCreated = Date.now();
+            typeObj.worker.activeTasks.push(task._id);
+            task.save(function(err) {
+              if (err) {
+                console.log(err);
+              }
+            });
           }
+          typeObj.save(function(err) {
+            if (err) {
+              console.log(err);
+            }
+          });
+          res.json({})
         });
-      }
-      typeObj.save(function(err) {
-        if (err) {
-          console.log(err);
-        }
-      });
-      res.json({})
+      else
+        res.json({});
     });
   },
   // get all recomended tasks
@@ -486,9 +491,9 @@ exports.getOneTask = function(req, res) {
 
 function getUserTypeObject(req, res, callBack) {
   if (req.user.individual) {
-    individualControler.findIndividual(req, res, callBack);
+    individualControler.getIndividual(req, res, callBack);
   } else if (req.user.enterprise) {
-    enterpriseControler.findEnterprise(req, res, callBack);
+    enterpriseControler.getEnterprise(req, res, callBack);
   } else {
     return res.status(400).send({
       message: 'User has no valid Type'
@@ -497,7 +502,7 @@ function getUserTypeObject(req, res, callBack) {
 }
 
 function taskFindMany(taskArray, callBack) {
-  Task.find({ '_id': { $in: taskArray }}, callBack);
+  Task.find({ '_id': { $in: taskArray }, secret: false}, callBack);
 }
 
 function taskFindOne(taskId, callBack) {
