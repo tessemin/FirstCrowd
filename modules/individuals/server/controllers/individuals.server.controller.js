@@ -324,12 +324,6 @@ exports.getIndividual = function(req, res) {
         jobExperience: individual.jobExperience,
         skills: individual.skills
       };
-      for (var exp = 0; exp < individual.jobExperience.length; exp++) {
-        if (individual.jobExperience[exp]) {
-          safeIndividualObject.jobExperience[exp].skills = '';
-          safeIndividualObject.jobExperience[exp].skills = individual.jobExperience[exp].skills.join(', ');
-        }
-      }
     }
     res.json(safeIndividualObject || null);
   });
