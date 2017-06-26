@@ -30,14 +30,11 @@
   </nav>
   <div class="tasks-caption">
     <h4 class="tasks-">My Active Tasks</h4>
-    <select ng-model="vm.taskCategory" ng-options="x for x in vm.taskCategories">
+    <select ng-model="vm.taskCategory" ng-change="vm.changeTaskCategory()" ng-options="x for x in vm.taskCategories">
     </select>
   </div>
   <div class="col-md-9 tasks-table">
     <div class="tasks-header">
-      <div class="tasks-cell">
-        Task ID
-      </div>
       <div class="tasks-cell">
         Title
       </div>
@@ -59,9 +56,6 @@
     </div>
     <div class="tasks-row" ng-repeat="task in vm.tasks | filter : vm.filters : false as results track by $index">
       <div class="tasks-cell">
-        {{task._id}}
-      </div>
-      <div class="tasks-cell">
         {{task.name}}
       </div>
       <div class="tasks-cell">
@@ -77,12 +71,15 @@
         <rzslider class="progress-slider" rz-slider-model="task.progress" rz-slider-options="vm.sliderOptions"></rzslider>
       </div>
       <div class="tasks-cell">
-        <select ng-model="vm.task[$index].taskAction" ng-options="x for x in vm.taskActions">
+        <select ng-model="vm.tasks[$index].taskAction" ng-options="x for x in vm.taskActions">
         </select>
       </div>
     </div> <!-- end ng-repeat -->
-    <div class="text-center form-group">
-      <div ng-if="vm.tasks.length === 0">
+    <div class="text-center">
+      <div ng-if="vm.loaded === false">
+        Loading...
+      </div>
+      <div ng-if="vm.loaded === true && vm.tasks.length === 0">
         You have no active tasks.
       </div>
     </div>

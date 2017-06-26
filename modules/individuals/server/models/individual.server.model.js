@@ -307,15 +307,6 @@ var IndividualUserSchema = new Schema({
     interestedCategories: [{
       type: Schema.Types.Mixed
     }],
-    workersPerCategory: [{
-      category: {
-        type: Schema.Types.Mixed
-      },
-      number: {
-        type: Number,
-        default: 0
-      }
-    }],
     totalPayments: {
       type: Number,
       default: 0.00

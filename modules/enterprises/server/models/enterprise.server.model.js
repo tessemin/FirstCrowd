@@ -193,15 +193,6 @@ var EnterpriseUserSchema = new Schema({
     interestedCategories: [{
       type: Schema.Types.Mixed
     }],
-    workersPerCategory: [{
-      category: {
-        type: Schema.Types.Mixed
-      },
-      number: {
-        type: Number,
-        default: 0
-      }
-    }],
     totalPayments: {
       type: Number,
       default: 0.00
@@ -324,7 +315,6 @@ var EnterpriseUserSchema = new Schema({
     }]
   }
 });
-
 EnterpriseUserSchema.pre('save', function (next) {
   next();
 });

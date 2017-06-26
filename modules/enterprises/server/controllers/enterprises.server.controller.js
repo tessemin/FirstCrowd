@@ -409,4 +409,4 @@ exports.getEnterprise = function(req, res) {
   });
 };
 
-exports.findEnterprise = findEnterprise;
+exports.getThisEnterprise = getEnterprise;

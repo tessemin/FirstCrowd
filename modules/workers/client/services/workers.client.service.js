@@ -76,6 +76,10 @@
       _getOneTask: {
         method: 'POST',
         url: '/api/getOneTask'
+      },
+      _getWorkerForTask: {
+        method: 'POST',
+        url: '/api/task/getYourWorker'
       }
     });
 
@@ -133,6 +137,9 @@
       },
       getOneTasks: function (Id) {
         return this._getOneTasks(Id).$promise;
+      },
+      getWorkerForTask: function (Id) {
+        return this._getWorkerForTask(Id).$promise;
       }
     });
 
