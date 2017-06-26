@@ -35,6 +35,10 @@ var TaskSchema = new Schema({
     default: null,
     trim: true
   },
+  totalProgress: {
+    type: Number,
+    default: 0
+  },
   payment: {
     bidding: {
       bidable: {
@@ -83,8 +87,20 @@ var TaskSchema = new Schema({
     default: false
   },
   requester: {
-    type: Schema.Types.ObjectId,
-    required: 'Please provide a requester'
+    requesterType: {
+      enterprise: {
+        type: Boolean,
+        default: false
+      },
+      individual: {
+        type: Boolean,
+        default: false
+      }
+    },
+    id: {
+      type: Schema.Types.ObjectId,
+      required: 'Please provide a requester'
+    }
   },
   workers: {
     type: [{
@@ -93,45 +109,33 @@ var TaskSchema = new Schema({
         enum: ['active', 'accepted', 'rejected'],
         required: 'Please provide a status'
       },
-      ratingForWorker: {
+      workerRating: {
         overAllRating: {
-          type: Number,
-          default: 0.0
-        },
-        clearness: {
-          type: Number,
-          default: 0.0
-        },
-        resonableness: {
-          type: Number,
-          default: 0.0
-        },
-        responseTime: {
           type: Number,
           default: 0.0
         }
       },
-      ratingForRequester: {
+      requesterRating: {
         overAllRating: {
-          type: Number,
-          default: 0.0
-        },
-        clearness: {
-          type: Number,
-          default: 0.0
-        },
-        resonableness: {
-          type: Number,
-          default: 0.0
-        },
-        responseTime: {
           type: Number,
           default: 0.0
         }
       },
       worker: {
-        type: Schema.Types.ObjectId,
-        required: 'Must include a worker'
+        workerType: {
+          enterprise: {
+            type: Boolean,
+            default: false
+          },
+          individual: {
+            type: Boolean,
+            default: false
+          }
+        },
+        id: {
+          type: Schema.Types.ObjectId,
+          required: 'Please provide a worker'
+        }
       },
       progress: {
         type: Number,
@@ -149,8 +153,20 @@ var TaskSchema = new Schema({
   },
   bids: [{
     worker:{
-      type: Schema.Types.ObjectId,
-      required: 'Must include a worker'
+      workerType: {
+        enterprise: {
+          type: Boolean,
+          default: false
+        },
+        individual: {
+          type: Boolean,
+          default: false
+        }
+      },
+      id: {
+        type: Schema.Types.ObjectId,
+        required: 'Please provide a worker'
+      }
     },
     bid: {
       type: Number,

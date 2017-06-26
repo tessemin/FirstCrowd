@@ -128,16 +128,28 @@
                   .style('stroke-width', 1)
                   .on('click', function(d, i) {});
 
-            var node_text = g.append('g')
-                  .attr('class', 'text-group')
-                  .selectAll('g')
-                  .data(nodes_data)
-                  .enter()
-                  .append('g')
-                  .call(function(d) {
-                  });
 
-            node_text.append('g').attr('class', 'bawls')
+            var menu = [];
+            menu[0] = 'Message Company';
+            menu[1] = 'View their Profile';
+            menu[2] = 'See their Company Graph';
+            menu[3] = 'Compare this Company with your Company';
+
+              // var node_text = g.append('g')
+              //       .attr('class', 'text-group')
+              //       .selectAll('text')
+              //       .data(nodes_data)
+              //       .append('text')
+              //       .attr('font-size', 10)
+              //       .attr('x', function(d) { return d.x; })
+              //       .attr('y', function(d) { return d.y; })
+              //       .attr('dx', '0')
+              //       .attr('dy', '0')
+              //       .text(menu[0])
+              //       .call(wrap, 80);
+
+            var node_text0 = g.append('g')
+                  .attr('class', 'text-group')
                   .selectAll('text')
                   .data(nodes_data)
                   .enter()
@@ -145,30 +157,74 @@
                   .attr('id', function(d, i) {
                     return 'node_text_' + i;
                   })
-                  .attr('font-size', 20)
+                  .attr('font-size', 10)
                   .attr('x', function(d) { return d.x; })
                   .attr('y', function(d) { return d.y; })
-                  .attr('dx', '0')
-                  .attr('dy', '0')
-                  // .text('hi')
-                  .call(function(d) {
-                    // console.log(d);
+                  .attr('dx', 0)
+                  .attr('dy', 0)
+                  .text(function(d) {
+                    return menu[0];
                   })
-                  // .data(function(d) {
+                  .call(wrap, 150);
 
-                  //   console.log(d);
+            var node_text1 = g.append('g')
+                  .attr('class', 'text-group')
+                  .selectAll('text')
+                  .data(nodes_data)
+                  .enter()
+                  .append('text')
+                  .attr('id', function(d, i) {
+                    return 'node_text_' + i;
+                  })
+                  .attr('font-size', 10)
+                  .attr('x', function(d) { return d.x; })
+                  .attr('y', function(d) { return d.y + 20; })
+                  .attr('dx', 0)
+                  .attr('dy', 0)
+                  .text(function(d) {
+                    return menu[1];
+                  })
+                  .call(wrap, 150);
 
-                  //   return menu_data;
 
-                  // })
-                  // .enter()
-                  // .text(function(d) { return d; })
-                  .call(wrap, 70);
+            var node_text2 = g.append('g')
+                  .attr('class', 'text-group')
+                  .selectAll('text')
+                  .data(nodes_data)
+                  .enter()
+                  .append('text')
+                  .attr('id', function(d, i) {
+                    return 'node_text_' + i;
+                  })
+                  .attr('font-size', 10)
+                  .attr('x', function(d) { return d.x; })
+                  .attr('y', function(d) { return d.y + 40; })
+                  .attr('dx', 0)
+                  .attr('dy', 0)
+                  .text(function(d) {
+                    return menu[2];
+                  })
+                  .call(wrap, 150);
 
 
-
-
-
+            var node_text3 = g.append('g')
+                  .attr('class', 'text-group')
+                  .selectAll('text')
+                  .data(nodes_data)
+                  .enter()
+                  .append('text')
+                  .attr('id', function(d, i) {
+                    return 'node_text_' + i;
+                  })
+                  .attr('font-size', 10)
+                  .attr('x', function(d) { return d.x; })
+                  .attr('y', function(d) { return d.y + 60; })
+                  .attr('dx', 0)
+                  .attr('dy', 0)
+                  .text(function(d) {
+                    return menu[3];
+                  })
+                  .call(wrap, 150);
 
 
             // draw circles for the nodes
@@ -185,48 +241,8 @@
                   .style('stroke', 'black')
                   .style('stroke-width', 1)
                   .on('mouseover', function(d, i) {
-
-                    // d3.select(node_menu)._groups[0][0]._groups[0][i].style('opacity', 0.2);
-                    // d3.select(node_menu)[i].style('opacity', 0.2);
-                    d3.select('#node_menu_' + i)._groups[0][0].style.opacity = 0.2;
-                    // d3.select('#node_menu_' + i).style('opacitiy', 0.2);
-                    // var menu_data = [];
-
-                    // tooltip = d3.select('body').append('rect')
-                    //   .style('position', 'absolute')
-                    //   .style('padding', '0 90px')
-                    //   .style('opacity', 0)
-                    //   .attr('id', 'tooltip');
-
-                    // menu_data[0] = 'Message ' + d.companyName;
-                    // menu_data[1] = 'View the ' + d.companyName + ' Profile';
-                    // menu_data[2] = 'See the ' + d.companyName + ' Connection Graph';
-                    // menu_data[3] = 'Compare your Company with ' + d.companyName;
-
-                    // tooltip.transition().ease(d3.easeLinear)
-                    //   .style('opacity', .5)
-                    //   .style('background', 'lightsteelblue');
-                    // tooltip.html('<ul><li>' +
-                    //              menu_data[0] +
-                    //              '</li><li>' +
-                    //              menu_data[1] +
-                    //              '</li><li>' +
-                    //              menu_data[2] +
-                    //              '</li><li>' +
-                    //              menu_data[3] +
-                    //              '</li></ul>')
-                    //   .style('left', (d3.select(this).attr('cx')) - 50 + 'px')
-                    //   .style('top', (d3.select(this).attr('cy')) + 5 + 'px');
-                    // // tooltip.on('mouseover', function(d, i) {
-                    // //   tooltip.transition().duration(0);
-                    // // })
-                    // tooltip.on('mouseleave', function(d, i) {
-                    //   // tooltip.transition(1000).ease(d3.easeLinear).style('opacity', 0);
-                    //   tooltip.style('display', 'none');
-                    // });
-
-                  })
-
+                    d3.select('#node_menu_' + i)._groups[0][0].style.opacity = 0.5;
+                                      })
                   .on('mouseout', function(d, i) {
                     d3.select('#node_menu_' + i)._groups[0][0].style.opacity = 0;
                   });
@@ -263,15 +279,6 @@
             //   // d3.select(this).style('fill', '#fff');
             // });
 
-            // add drag capabilities
-            // var drag_handler = d3.drag()
-            //   .on('start', drag_start)
-            //   .on('drag', drag_drag)
-            //   .on('end', drag_end);
-
-            // drag_handler(node);
-            // drag_handler(link);
-
             // add zoom capabilities
             var zoom_handler = d3.zoom()
                   .scaleExtent([1 / 1.5, 2])
@@ -282,9 +289,10 @@
             /** Functions **/
 
             function ticked() {
-              node_text
-                .attr('x', function(d) { return d.x; })
-                .attr('y', function(d) { return d.y; });
+              node_text0
+                .attr("transform", function(d) {
+                  return "translate(" + (d.x - 600) + "," + 0 + ")";
+                });
               node_menu
                 .attr('x', function(d) { return d.x - 40; })
                 .attr('y', function(d) { return d.y - 40; });
@@ -348,7 +356,7 @@
               var CUS_X = width / 4 + width / 4 + width / 4;
               var index;
               var y;
-              var menu_data = [1,2,3,4];
+              var menu_data = [];
               var linkIndex = 0;
 
               for (var item in nodes) {
@@ -359,6 +367,7 @@
                     menu_data[1] = 'View the ' + nodes[item][index].companyName + ' Profile';
                     menu_data[2] = 'See the ' + nodes[item][index].companyName + ' Connection Graph';
                     menu_data[3] = 'Compare your Company with ' + nodes[item][index].companyName;
+                    nodes[item][index].text = menu_data;
 
                     nodes[item][index].x = CUS_X;
                     y = getY(nodes[item], item, y);
@@ -370,8 +379,6 @@
                     links_data[linkIndex].source = rootNodeId;
                     links_data[linkIndex].target = nodes[item][index]._id;
                     linkIndex++;
-
-                    console.log(nodes[item], nodes_data);
                   }
                 } else if (item === 'supplier') {
                   y = 0;
@@ -415,7 +422,6 @@
                   menu_data[3] = 'Compare your Company with ' + nodes[item].companyName;
                   nodes[item].text = menu_data;
 
-                  console.log(nodes[item]);
                   nodes[item].x = width / 2;
                   nodes[item].y = height / 2;
                   nodes[item].img = 'http://www.e-pint.com/epint.jpg';
