@@ -1,12 +1,15 @@
 <section class="row">
   <div class="col-md-offset-3 col-md-9">
     <h4>Submit a New Task</h4>
-    <form name="vm.newTask" ng-submit="vm.submitTask(vm.newTask.$valid)" novalidate autocomplete="off">
+    <form name="vm.newTaskForm" ng-submit="vm.submitTask(vm.newTaskForm.$valid)" novalidate autocomplete="off">
       <fieldset>
-        <label>
-          Task name:
-          <input name="name" ng-model="vm.newTask.name">
-        </label>
+        <div class="form-group" show-errors>
+          <label for="name">Task name:</label>
+          <input type="text" name="name" class="form-control" ng-model="vm.newTask.name" placeholder="Task Name" required autofocus>
+          <div ng-messages="vm.newTask.name.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Task name is required.</p>
+          </div>
+        </div>
       </fieldset>
     </form>
   </div>
