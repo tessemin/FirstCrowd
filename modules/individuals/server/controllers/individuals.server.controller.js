@@ -242,6 +242,7 @@ exports.updateExperience = function(req, res) {
   if (req.body) {
     getIndividual(req, res, function(individual) {
       for (var i in req.body) {
+        console.log(req.body[i].skills)
         if (req.body[i].skills) {
           req.body[i].skills = req.body[i].skills.split(',');
         }
@@ -322,8 +323,11 @@ exports.getIndividual = function(req, res) {
         schools: individual.schools,
         certification: individual.certification,
         jobExperience: individual.jobExperience,
-        skills: individual.skills
       };
+      if (individual.skills)
+        safeIndividualObject.skills = individual.skills.join(', ');
+      else 
+        safeIndividualObject.skills = '';
     }
     res.json(safeIndividualObject || null);
   });
