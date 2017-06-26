@@ -242,7 +242,6 @@ exports.updateExperience = function(req, res) {
   if (req.body) {
     getIndividual(req, res, function(individual) {
       for (var i in req.body) {
-        console.log(req.body[i].skills)
         if (req.body[i].skills) {
           req.body[i].skills = req.body[i].skills.split(',');
         }
@@ -323,11 +322,14 @@ exports.getIndividual = function(req, res) {
         schools: individual.schools,
         certification: individual.certification,
         jobExperience: individual.jobExperience,
+        skills: individual.skills
       };
-      if (individual.skills)
-        safeIndividualObject.skills = individual.skills.join(', ');
-      else 
-        safeIndividualObject.skills = '';
+      for (var exp = 0; exp < individual.jobExperience.length; exp++) {
+        if (individual.jobExperience[exp]) {
+          safeIndividualObject.jobExperience[exp].skills = '';
+          safeIndividualObject.jobExperience[exp].skills = individual.jobExperience[exp].skills.join(', ');
+        }
+      }
     }
     res.json(safeIndividualObject || null);
   });
