@@ -62,8 +62,14 @@ var EnterpriseUserSchema = new Schema({
       trim: true
     },
     classifications: [{ // an array
-      type: Schema.Types.Mixed,
-      default: {}
+      code: {
+        type: String,
+        default: ''
+      },
+      name: {
+        type: String,
+        default: ''
+      }
     }],
     yearEstablished: {
       type: Number,
@@ -105,6 +111,18 @@ var EnterpriseUserSchema = new Schema({
       }
     }
   },
+  specialities: [{
+    type: Schema.Types.Mixed,
+    default: null
+  }],
+  productsCatalog: [{
+    type: Schema.Types.Mixed,
+    default: null
+  }],
+  serviceCatalog: [{
+    type: Schema.Types.Mixed,
+    default: null
+  }],
   partners: {
     supplier: [{
       companyName: {

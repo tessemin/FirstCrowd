@@ -482,13 +482,19 @@ exports.getWorkerForTask = function(req, res) {
 }
 
 function getUserTypeObject(req, res, callBack) {
-  if (req.user.individual) {
-    individualControler.getThisIndividual(req, res, callBack);
-  } else if (req.user.enterprise) {
-    enterpriseControler.getThisEnterprise(req, res, callBack);
+  if (req.user) {
+    if (req.user.individual) {
+      individualControler.getThisIndividual(req, res, callBack);
+    } else if (req.user.enterprise) {
+      enterpriseControler.getThisEnterprise(req, res, callBack);
+    } else {
+      return res.status(400).send({
+        message: 'User has no valid Type'
+      });
+    }
   } else {
     return res.status(400).send({
-      message: 'User has no valid Type'
+      message: 'User is not signed in'
     });
   }
 }
