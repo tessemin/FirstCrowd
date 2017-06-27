@@ -36,13 +36,15 @@ module.exports = function(app) {
   app.route('/api/requesters/workerRating/add').post(requesters.workerRating.add);
   
   // MISC INFORMATION
-  app.route('/api/requesters/getRequesterData/').post(requesters.getRequesterData.all);
+  app.route('/api/requesters/getRequesterData').post(requesters.getRequesterData.all);
   
   /*
    * TASK TABLE
    */
-  
-  // CREATE A NEW TASK
+  // TASK ACTIONS
+  app.route('/api/requesters/createTask').post(requesters.taskActions.create);
+  app.route('/api/requesters/deleteTask').post(requesters.taskActions.delete);
+  app.route('/api/requesters/updateTask').put(requesters.taskActions.update);
 
   // Finish by binding the Requester middleware
   app.param('requesterId', requesters.requesterByID);
