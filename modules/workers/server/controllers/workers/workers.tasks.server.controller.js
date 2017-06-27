@@ -94,7 +94,7 @@ exports.activeTask = {
             });
           }
           res.json({ tasks: tasks });
-        })
+        });
       } else {
         return res.status(400).send({
           message: 'User does not have a valid worker'
@@ -180,7 +180,7 @@ exports.rejectedTask = {
             });
           }
           res.json({ tasks: tasks });
-        })
+        });
       } else {
         return res.status(400).send({
           message: 'User does not have a valid worker'
@@ -266,7 +266,7 @@ exports.completedTask = {
             });
           }
           res.json({ tasks: tasks });
-        })
+        });
       } else {
         return res.status(400).send({
           message: 'User does not have a valid worker'
@@ -352,7 +352,7 @@ exports.inactiveTask = {
             });
           }
           res.json({ tasks: tasks });
-        })
+        });
       } else {
         return res.status(400).send({
           message: 'User does not have a valid worker'
@@ -370,7 +370,7 @@ exports.recomendedTask = {
   // update a single recomended task
   update: function(req, res) {
     Task.find({ secret: false }, function (err, tasks) {
-      console.log()
+      console.log();
       if (tasks.length === 0) {
         getUserTypeObject(req, res, function (typeObj) {
           for (var index = 1; index < 6; index++) {
@@ -389,7 +389,7 @@ exports.recomendedTask = {
             task.multiplicity = 10;
             task.preapproval = true;
             task.requester = typeObj._id;
-            task.workers[0]= {};
+            task.workers[0] = {};
             task.workers[0].status = 'active';
             task.workers[0].worker = typeObj._id;
             task.workers[0].progress = 0;
@@ -406,7 +406,7 @@ exports.recomendedTask = {
               console.log(err);
             }
           });
-          res.json({})
+          res.json({});
         });
       } else {
         res.json({});
@@ -424,7 +424,7 @@ exports.recomendedTask = {
             });
           }
           res.json({ tasks: tasks });
-        })
+        });
       } else {
         return res.status(400).send({
           message: 'User does not have a valid worker'
@@ -456,7 +456,7 @@ exports.taskByID = function(req, res, next, id) {
 
 exports.getAllTasks = function (req, res) {
   Task.find({ secret: false }, function (err, tasks) {
-    res.json({ tasks: tasks })
+    res.json({ tasks: tasks });
   });
 };
 
@@ -477,11 +477,11 @@ exports.getWorkerForTask = function(req, res) {
   getUserTypeObject(req, res, function(typeObj) {
     taskFindOne(taskId, function(err, task) {
       var worker = findTaskWorker(task, typeObj, res);
-      res.json({ taskWorker: worker })
+      res.json({ taskWorker: worker });
     });
   });
+};
+
+function findTaskWorker(task, typeObj, res) {
+  // TODO
 }
-
-
-
-
