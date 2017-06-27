@@ -10,6 +10,8 @@ module.exports = function(app) {
   /*
    * REQUESTER TABLE
    */ 
+  // ALL REQUESTER TASKS
+  app.route('/api/requesters/tasks/all').post(requesters.tasks.all);
   // ACTIVE TASKS
   app.route('/api/requesters/activeTask/update').put(requesters.activeTask.update)
   app.route('/api/requesters/activeTask/all').post(requesters.activeTask.all);
@@ -33,18 +35,19 @@ module.exports = function(app) {
   // RATINGS
   app.route('/api/requesters/workerRating/update').put(requesters.workerRating.update);
   app.route('/api/requesters/workerRating/all').post(requesters.workerRating.all);
-  app.route('/api/requesters/workerRating/add').post(requesters.workerRating.add);
+  app.route('/api/requesters/workerRating/create').post(requesters.workerRating.create);
   
-  // MISC INFORMATION
+  // REQUESTER INFORMATION
   app.route('/api/requesters/getRequesterData').post(requesters.getRequesterData.all);
+  app.route('/api/requesters/getRequesterRatings').post(requesters.getRequesterData.ratings);
   
   /*
    * TASK TABLE
    */
   // TASK ACTIONS
-  app.route('/api/requesters/createTask').post(requesters.taskActions.create);
-  app.route('/api/requesters/deleteTask').post(requesters.taskActions.delete);
-  app.route('/api/requesters/updateTask').put(requesters.taskActions.update);
+  app.route('/api/tasks/createTask').post(requesters.taskActions.create);
+  app.route('/api/tasks/deleteTask').post(requesters.taskActions.delete);
+  app.route('/api/tasks/updateTask').put(requesters.taskActions.update);
 
   // Finish by binding the Requester middleware
   app.param('requesterId', requesters.requesterByID);

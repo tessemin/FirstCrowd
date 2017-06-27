@@ -18,5 +18,8 @@ var getUserTypeObject = taskTools.getUserTypeObject,
 exports.getRequesterData = {
   all: function(req, res) {
     
+  },
+  ratings: function(req, res) {
+    
   }
 }
