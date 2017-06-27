@@ -10,3 +10,15 @@
   border-style: dotted;
   margin-bottom: 1em;
 }
+
+.flex-linegroup {
+  display: flex;
+}
+
+.flex-lineitem {
+  flex: 1 1 0;
+}
+
+.form-body {
+  margin-bottom: 20px;
+}
