@@ -46,12 +46,10 @@ var TaskSchema = new Schema({
         default: false
       },
       startingPrice: {
-        type: Number,
-        default: 0.00
+        type: Number
       },
       minPrice: {
-        type: Number,
-        default: 0.00
+        type: Number
       },
       timeRange: {
         start: {
@@ -89,12 +87,10 @@ var TaskSchema = new Schema({
   requester: {
     requesterType: {
       enterprise: {
-        type: Boolean,
-        default: false
+        type: Boolean
       },
       individual: {
-        type: Boolean,
-        default: false
+        type: Boolean
       }
     },
     id: {
@@ -124,12 +120,10 @@ var TaskSchema = new Schema({
       worker: {
         workerType: {
           enterprise: {
-            type: Boolean,
-            default: false
+            type: Boolean
           },
           individual: {
-            type: Boolean,
-            default: false
+            type: Boolean
           }
         },
         id: {
@@ -155,12 +149,10 @@ var TaskSchema = new Schema({
     worker:{
       workerType: {
         enterprise: {
-          type: Boolean,
-          default: false
+          type: Boolean
         },
         individual: {
-          type: Boolean,
-          default: false
+          type: Boolean
         }
       },
       id: {

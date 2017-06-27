@@ -12,9 +12,16 @@
     return $resource('api/requesters/:requesterId', {
       requesterId: '@_id'
     }, {
-      update: {
-        method: 'PUT'
+      _createTask: {
+        method: 'POST',
+        url: '/api/requesters/createTask'
       }
+    });
+    
+    angular.extend(Requesters, {
+      createTask: function () {
+        return this._createTask().$promise;
+      },
     });
   }
 }());

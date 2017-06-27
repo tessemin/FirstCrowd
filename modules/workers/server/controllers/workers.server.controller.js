@@ -3,7 +3,8 @@
 /**
  * Module dependencies
  */
-var _ = require('lodash');
+var _ = require('lodash'),
+  path = require('path');
 
 /**
  * Extend workers's controller
