@@ -1,4 +1,4 @@
-// Enterprises service used to communicate Enterprises REST endpoints
+//  service used to communicate Enterprises REST endpoints
 (function () {
   'use strict';
 
