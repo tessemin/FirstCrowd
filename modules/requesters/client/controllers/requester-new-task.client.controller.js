@@ -6,9 +6,9 @@
     .module('individuals')
     .controller('RequesterNewTaskController', RequesterNewTaskController);
 
-  RequesterNewTaskController.$inject = ['$scope', '$http'];
+  RequesterNewTaskController.$inject = ['$scope', '$http', 'RequestersService', 'Notification'];
 
-  function RequesterNewTaskController ($scope, $http, $state, IndividualsService, Authentication, Notification) {
+  function RequesterNewTaskController ($scope, $http, RequestersService, Notification) {
     var vm = this;
 
     vm.newTask = {
@@ -19,7 +19,22 @@
       }
     };
 
+    function submitTask(isValid) {
+      if(!isValid) {
+        $scope.$broadcast('show-errors-check-validity', 'vm.newTaskForm');
+        Notification.error({ message: 'Check the form for errors!' });
+        return false;
+      }
+      
+      RequestersService.submitNewTask(vm.newTask)
+        .then(onSubmitNewTaskSuccess)
+        .catch(onSubmitNewTaskFailure);
+    };
 
-    console.log(vm.newTask.name);
+    function onSubmitNewTaskSuccess(response) {};
+
+    function onSubmitNewTaskFailure(response) {
+      Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Submission failed! Task not submitted!' });
+    };
   }
 }());

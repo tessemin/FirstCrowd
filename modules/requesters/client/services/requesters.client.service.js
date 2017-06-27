@@ -9,7 +9,7 @@
   RequestersService.$inject = ['$resource'];
 
   function RequestersService($resource) {
-    return $resource('api/requesters/:requesterId', {
+    var Requesters = $resource('api/requesters/:requesterId', {
       requesterId: '@_id'
     }, {
       _createTask: {
@@ -17,11 +17,13 @@
         url: '/api/requesters/createTask'
       }
     });
-    
+
     angular.extend(Requesters, {
       createTask: function () {
         return this._createTask().$promise;
       },
     });
+
+    return Requesters;
   }
 }());
