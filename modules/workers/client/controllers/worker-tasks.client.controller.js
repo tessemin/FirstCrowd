@@ -26,7 +26,7 @@
 
     vm.tasks = [];
 
-    WorkersService.updateRecomendedTask({'_id': 'rocks'})
+    WorkersService.updateRecomendedTask({ '_id': 'rocks' })
       .then(function() {
       });
 
@@ -61,7 +61,8 @@
         } else {
           return '#0db9f0';
         }
-      }/*,
+      }
+      /* ,
       // Update progress on backend after changing progress slider of task
       onEnd: function(sliderId, modelValue, highValue, pointerType) {
         console.log('sliderId: ' + sliderId);
@@ -81,10 +82,12 @@
 
     vm.loadData = function(data) {
       console.log(data);
-      if(data) {
+      if (data) {
         vm.loaded = true;
         vm.tasks = [];
-        var task, postDate, dueDate;
+        var task,
+          postDate,
+          dueDate;
         for (var i = 0; i < data.tasks.length; ++i) {
           task = data.tasks[i];
           postDate = new Date(task.dateCreated);
@@ -107,27 +110,27 @@
     vm.changeTaskCategory = function() {
       switch (vm.taskCategory) {
         case 'Completed Tasks':
-          WorkersService.getCompletedTasks({'_id':'test'})
-            .then(function(data){
+          WorkersService.getCompletedTasks({ '_id': 'test' })
+            .then(function(data) {
               vm.loadData(data);
             });
           break;
         case 'Uncompleted tasks':
-          WorkersService.getRejectedTasks({'_id':'test'})
-            .then(function(data){
+          WorkersService.getRejectedTasks({ '_id': 'test' })
+            .then(function(data) {
               vm.loadData(data);
             });
           break;
         case 'Recommended Tasks':
-          WorkersService.getRecomendedTasks({'_id':'test'})
-            .then(function(data){
+          WorkersService.getRecomendedTasks({ '_id': 'test' })
+            .then(function(data) {
               vm.loadData(data);
             });
           break;
         case 'Active Tasks':
         default:
-          WorkersService.getActiveTasks({'_id':'test'})
-            .then(function(data){
+          WorkersService.getActiveTasks({ '_id': 'test' })
+            .then(function(data) {
               vm.loadData(data);
             });
       }
@@ -136,8 +139,9 @@
     vm.changeTaskCategory();
 
     // This function is necessary to initially render the progress sliders
-    (function refreshProgressSliders() {
+    function refreshProgressSliders() {
       $scope.$broadcast('rzSliderForceRender');
-    })();
+    };
+    refreshProgressSliders();
   }
 }());

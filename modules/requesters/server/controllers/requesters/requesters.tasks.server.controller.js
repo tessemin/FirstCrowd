@@ -14,6 +14,12 @@ var path = require('path'),
 var getUserTypeObject = taskTools.getUserTypeObject,
   taskFindOne = taskTools.taskFindOne,
   taskFindMany = taskTools.taskFindMany;
+  
+exports.tasks = {
+  all: function (req, res) {
+    
+  }
+}
 
 exports.activeTask = {
   update: function (req, res) {
@@ -70,7 +76,7 @@ exports.workerRating = {
   all: function (req, res) {
     
   },
-  add: function (req, res) {
+  create: function (req, res) {
     
   }
 };
