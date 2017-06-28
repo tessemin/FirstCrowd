@@ -21,20 +21,31 @@
 
     function submitTask(isValid) {
       if(!isValid) {
+        console.log('not valid!');
         $scope.$broadcast('show-errors-check-validity', 'vm.newTaskForm');
         Notification.error({ message: 'Check the form for errors!' });
         return false;
       }
-      
-      RequestersService.submitNewTask(vm.newTask)
+      console.log(vm.newTask);
+
+      RequestersService.createTask(vm.newTask)
         .then(onSubmitNewTaskSuccess)
         .catch(onSubmitNewTaskFailure);
     };
 
-    function onSubmitNewTaskSuccess(response) {};
+    vm.submitTask = submitTask;
+
+    function onSubmitNewTaskSuccess(response) {
+      console.log(response);
+      if(typeof response != "undefined" && response.data && response.data.message) {
+        Notification.success({ message: response.data.message, title: 'Submission worked'});
+      }
+    };
 
     function onSubmitNewTaskFailure(response) {
-      Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Submission failed! Task not submitted!' });
+      if(typeof response != "undefined" && response.data) {
+        Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Submission failed! Task not submitted!' });
+      }
     };
   }
 }());
