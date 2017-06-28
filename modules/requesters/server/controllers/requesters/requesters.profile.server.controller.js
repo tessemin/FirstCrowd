@@ -22,4 +22,4 @@ exports.getRequesterData = {
   ratings: function(req, res) {
     
   }
-}
+};

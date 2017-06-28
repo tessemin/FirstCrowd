@@ -13,11 +13,11 @@
       requesterId: '@_id'
     }, {
       // ALL REQUESTER TASKS
-      _getAllTasks:{
+      _getAllTasks: {
         method: 'POST',
         url: '/api/requesters/tasks/all'
       },
-      _changeStatus:{
+      _changeStatus: {
         method: 'POST',
         url: '/api/requesters/tasks/changeStatus'
       },
@@ -29,11 +29,7 @@
       _getActiveTasks: {
         method: 'POST',
         url: '/api/requesters/activeTask/all'
-      },
-      _addActiveTask: {
-        method: 'POST',
-        url: '/api/requesters/activeTask/add'
-      },
+      }
       // SUSPENDED TASKS
       _updateSuspendedTask: {
         method: 'PUT',
@@ -42,11 +38,7 @@
       _getSuspendedTasks: {
         method: 'POST',
         url: '/api/requesters/suspendedTask/all'
-      },
-      _addSuspendedTask: {
-        method: 'POST',
-        url: '/api/requesters/suspendedTask/add'
-      },
+      }
       // COMPLETED TASKS
       _updateCompletedTask: {
         method: 'PUT',
@@ -55,11 +47,7 @@
       _getCompletedTasks: {
         method: 'POST',
         url: '/api/requesters/completedTask/all'
-      },
-      _addCompletedTask: {
-        method: 'POST',
-        url: '/api/requesters/completedTask/add'
-      },
+      }
       // REJECTED TASKS
       _updateRejectedTask: {
         method: 'PUT',
@@ -68,30 +56,26 @@
       _getRejectedTasks: {
         method: 'POST',
         url: '/api/requesters/rejectedTask/all'
-      },
-      _addRejectedTask: {
-        method: 'POST',
-        url: '/api/requesters/rejectedTask/add'
-      },
+      }
       // RATINGS
-      _updateWorkerRating: {
+      _makeRating: {
         method: 'PUT',
-        url: '/api/requesters/workerRating/update'
+        url: '/api/requesters/workerRating/makeRating'
       },
-      _getWorkerRatings: {
+      _getAllWorkerRatings: {
         method: 'POST',
         url: '/api/requesters/workerRating/all'
       },
-      _createWorkerRating: {
+      _deleteWorkerRating: {
         method: 'POST',
-        url: '/api/requesters/workerRating/create'
+        url: '/api/requesters/workerRating/delete'
       },
       // REQUESTER INFORMATION
       _getRequesterData: {
         method: 'POST',
         url: '/api/requesters/getRequesterData'
       },
-      _getRequesterRatings: {
+      _getAllRequesterRatings: {
         method: 'POST',
         url: '/api/requesters/getRequesterRatings'
       },
@@ -107,6 +91,14 @@
       _updateTask: {
         method: 'PUT',
         url: '/api/tasks/updateTask'
+      },
+      _getWorkerRatingsForTask: {
+        method: 'POST',
+        url: '/api/tasks/getWorkerRatingsForTask'
+      },
+      _getRequesterRatingsForTask: {
+        method: 'POST',
+        url: '/api/tasks/getRequesterRatingsForTask'
       }
     });
 
@@ -115,18 +107,15 @@
       getAllTasks: function() {
         return this._getAllTasks().$promise;
       },
-      changeStatus: function() {
-        return this._changeStatus().$promise;
+      changeStatus: function(status_task) {
+        return this._changeStatus(status_task).$promise;
       },
       // ACTIVE TASKS
-      updateActiveTasks: function() {
-        return this._updateActiveTasks().$promise;
+      updateActiveTasks: function(taskId) {
+        return this._updateActiveTasks(taskId).$promise;
       },
       getActiveTasks: function() {
         return this._getActiveTasks().$promise;
-      },
-      addActiveTask: function() {
-        return this._addActiveTask().$promise;
       },
       // SUSPENDED TASKS
       updateSuspendedTask: function() {
@@ -135,18 +124,12 @@
       getSuspendedTasks: function() {
         return this._getSuspendedTasks().$promise;
       },
-      addSuspendedTask: function() {
-        return this._addSuspendedTask().$promise;
-      },
       // COMPLETED TASKS
       updateCompletedTask: function() {
         return this._updateCompletedTask().$promise;
       },
       getCompletedTasks: function() {
         return this._getCompletedTasks().$promise;
-      },
-      addCompletedTask: function() {
-        return this._addCompletedTask().$promise;
       },
       // REJECTED TASKS
       updateRejectedTask: function() {
@@ -155,18 +138,15 @@
       getRejectedTasks: function() {
         return this._getRejectedTasks().$promise;
       },
-      addRejectedTask: function() {
-        return this._addRejectedTask().$promise;
-      },
       // RATINGS
-      updateWorkerRating: function () {
-        return this._updateWorkerRating().$promise;
+      makeRating: function (workerId_taskId) {
+        return this._makeRating(workerId).$promise;
       },
-      getWorkerRatings: function () {
-        return this._getWorkerRatings().$promise;
+      getAllWorkerRatings: function () {
+        return this._getAllWorkerRatings().$promise;
       },
-      createWorkerRating: function () {
-        return this._createWorkerRating().$promise;
+      deleteWorkerRating: function (workerId_taskId) {
+        return this._deleteWorkerRating(workerId).$promise;
       },
       // REQUESTER INFORMATION
       getRequesterData: function () {
@@ -176,14 +156,20 @@
         return this._getRequesterRatings().$promise;
       },
       // TASK ACTIONS
-      createTask: function (task) {
-        return this._createTask(task).$promise;
+      createTask: function (taskInfo) {
+        return this._createTask(taskInfo).$promise;
       },
-      deleteTask: function () {
+      deleteTask: function (taskId) {
         return this._deleteTask().$promise;
       },
-      updateTask: function () {
+      updateTask: function (taskId_updateInfo) {
         return this._updateTask().$promise;
+      },
+      getWorkerRatingsForTask: function (taskId) {
+        return this._getWorkerRatingsForTask().$promise;
+      },
+      getRequesterRatingsForTask: function (taskId) {
+        return this._getRequesterRatingsForTask().$promise;
       }
     });
 

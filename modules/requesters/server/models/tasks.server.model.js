@@ -97,7 +97,7 @@ var TaskSchema = new Schema({
       required: 'Please provide a requester'
     }
   },
-  workers: {
+  jobs: {
     type: [{
       status: {
         type: String,
@@ -106,14 +106,12 @@ var TaskSchema = new Schema({
       },
       workerRating: {
         overAllRating: {
-          type: Number,
-          default: 0.0
+          type: Number
         }
       },
       requesterRating: {
         overAllRating: {
-          type: Number,
-          default: 0.0
+          type: Number
         }
       },
       worker: {
@@ -141,6 +139,10 @@ var TaskSchema = new Schema({
       awardAmount: {
         type: Number,
         default: 0
+      },
+      paymentRecieved: {
+        type: Date,
+        default: null
       }
     }],
     default: []
