@@ -38,7 +38,7 @@
     function onSubmitNewTaskSuccess(response) {
       console.log(response);
       if(typeof response != "undefined" && response.data && response.data.message) {
-        Notification.success({ message: response.data.message, title: 'Submission worked'});
+        Notification.success({ message: response.data.message, title: '<i class="glyphicon glyphicon-suc"></i> Success:'});
       }
     };
 
