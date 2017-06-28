@@ -17,6 +17,10 @@
         method: 'POST',
         url: '/api/requesters/tasks/all'
       },
+      _changeStatus:{
+        method: 'POST',
+        url: '/api/requesters/tasks/changeStatus'
+      },
       // ACTIVE TASKS
       _updateActiveTasks: {
         method: 'PUT',
@@ -111,6 +115,9 @@
       getAllTasks: function() {
         return this._getAllTasks().$promise;
       },
+      changeStatus: function() {
+        return this._changeStatus().$promise;
+      },
       // ACTIVE TASKS
       updateActiveTasks: function() {
         return this._updateActiveTasks().$promise;
@@ -169,8 +176,8 @@
         return this._getRequesterRatings().$promise;
       },
       // TASK ACTIONS
-      createTask: function () {
-        return this._createTask().$promise;
+      createTask: function (task) {
+        return this._createTask(task).$promise;
       },
       deleteTask: function () {
         return this._deleteTask().$promise;

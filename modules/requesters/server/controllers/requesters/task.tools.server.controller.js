@@ -52,13 +52,15 @@ function getUserTypeObject(req, res, callBack) {
     }
   } else {
     return res.status(400).send({
-      message: 'User is not signed in'
+      message: 'User is not signed in, please sign in.',
+      link: '/',
+      linkMessage: 'Navigate Home'
     });
   }
 }
 
 function taskFindMany(taskArray, callBack) {
-  Task.find({ '_id': { $in: taskArray }, secret: false}, callBack);
+  Task.find({ '_id': { $in: taskArray }, secret: false }, callBack);
 }
 
 function taskFindOne(taskId, callBack) {
@@ -66,8 +68,8 @@ function taskFindOne(taskId, callBack) {
 }
 
 function findTaskWorker(task, typeObj, res) {
+  var returnTask_Worker = null;
   if (task.workers) {
-    var returnTask_Worker = null;
     for (var i = 0; i < task.workers.length; i++) {
       if (task.workers[i].worker === typeObj._id) {
         returnTask_Worker = task.workers[i].worker;
