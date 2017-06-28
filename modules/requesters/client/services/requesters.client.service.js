@@ -176,8 +176,8 @@
         return this._getRequesterRatings().$promise;
       },
       // TASK ACTIONS
-      createTask: function () {
-        return this._createTask().$promise;
+      createTask: function (task) {
+        return this._createTask(task).$promise;
       },
       deleteTask: function () {
         return this._deleteTask().$promise;

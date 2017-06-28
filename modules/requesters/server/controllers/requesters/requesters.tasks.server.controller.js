@@ -309,7 +309,10 @@ exports.taskActions = {
   create: function(req, res) {
     getUserTypeObject(req, res, function(typeObj) {
       // user is signed in a requester
-      if (req.user.userType.indexOf('requester') !== -1) {
+      if (req.user.userRole.indexOf('requester') !== -1) {
+        if (req.body.skillsNeeded) {
+          req.body.skillsNeeded = req.body.skillsNeeded.split(',')
+        }
         var newTask = new Task(req.body);
         if (req.user.enterprise) {
           newTask.requester.requesterType.enteprise = true;
@@ -339,7 +342,7 @@ exports.taskActions = {
   },
   delete: function(req, res) {
     getUserTypeObject(req, res, function(typeObj) {
-      if (req.user.userType.indexOf('requester') !== -1) {
+      if (req.user.userRole.indexOf('requester') !== -1) {
         taskId = req.body._id;
         if (taskId.toString() === typeObj._id.toString()) {
           Task.findByIdAndRemove(taskId, function (err, task) {
@@ -363,7 +366,7 @@ exports.taskActions = {
   },
   update: function(req, res) {
     getUserTypeObject(req, res, function(typeObj) {
-      if (req.user.userType.indexOf('requester') !== -1) {
+      if (req.user.userRole.indexOf('requester') !== -1) {
         taskId = req.body._id;
         taskFindOne(taskId, function(err, task) {
           if (err) {
