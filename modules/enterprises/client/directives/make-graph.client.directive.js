@@ -128,6 +128,7 @@
                   .style('stroke', 'black')
                   .style('stroke-width', 1)
                   .on('click', function(d, i) {
+                    centerNode(d3.select(this)._groups[0][0]);
                     var data = d3.select(this)._groups[0][0].__data__;
                     scope.$parent.vm.chooseCompany({ selected: data });
                   });
@@ -140,6 +141,16 @@
             zoom_handler(svg);
 
             /** Functions **/
+
+            function centerNode(node) {
+              // simulation.alpha(0);
+              console.log(node.cx.baseVal.value, width / 2);
+              console.log(node.cy.baseVal.value, height / 2);
+              // g.transition().attr('translate', width / 2, height / 2);
+              var x = (width / 2) - node.cx.baseVal.value;
+              var y = (height / 2) - node.cy.baseVal.value;
+              g.transition().attr('transform', 'translate(' + x + ',' + y +')');
+            }
 
             function ticked() {
               node

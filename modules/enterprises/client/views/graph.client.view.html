@@ -1,22 +1,25 @@
 <section id="graph">
-    <div ng-show="vm.sidebar" class="side-panel">
-<img ng-src="{{vm.selected.img}}" alt="Company Logo" class="side-logo header-profile-image" src="/modules/users/client/img/profile/default.png">
-
-      <h3 ng-bind="vm.selected.companyName"></h3>
-
-      <span>Company URL: <a href="http://{{vm.selected.URL}}">{{vm.selected.URL}}</a></span>
-
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <div ng-repeat="item in vm.selected.text">{{item}}</div>
-    </div>
-
-    <div ng-click="vm.toggleSidebar()" class="btn-default btn toggle-side" ng-class="{'side-active': vm.sidebar}">
-      <span class="glyphicon" ng-class="{'glyphicon-triangle-left': vm.sidebar, 'glyphicon-triangle-right': !vm.sidebar}"></span>
-    </div>
-
   <make-graph></make-graph>
+
+  <div ng-show="vm.sidebar" class="side-panel">
+    <img ng-src="{{vm.selected.img}}" alt="Company Logo" class="side-logo header-profile-image" src="/modules/users/client/img/profile/default.png">
+
+    <h3 ng-bind="vm.selected.companyName"></h3>
+
+    <span>Company URL: <a href="http://{{vm.selected.URL}}">{{vm.selected.URL}}</a></span>
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div ng-repeat="item in vm.selected.text">
+      <span class="glyphicon" ng-class="{'glyphicon-envelope': $index === 0, 'glyphicon-glass': $index === 1, 'glyphicon-home': $index === 2, 'glyphicon-signal': $index === 3 }"></span>
+      {{item}}
+    </div>
+  </div>
+
+  <div ng-click="vm.toggleSidebar()" class="btn-default btn toggle-side" ng-class="{'side-active': vm.sidebar}">
+    <span class="glyphicon" ng-class="{'glyphicon-triangle-left': vm.sidebar, 'glyphicon-triangle-right': !vm.sidebar}"></span>
+  </div>
 </section>
