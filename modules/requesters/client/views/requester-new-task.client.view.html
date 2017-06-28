@@ -61,30 +61,30 @@
         <h4>Payment</h4>
         <div class="form-group flex-linegroup" show-errors>
           <label class="flex-lineitem optional-label" for="bidding">Allow bidding on payment</label>
-          <input class="flex-lineitem" type="checkbox" name="bidding" class="form-control" ng-model="vm.newTask.payment.bidding">
+          <input class="flex-lineitem" type="checkbox" name="bidding" class="form-control" ng-model="vm.newTask.payment.bidding.bidable">
         </div>
 
         <div ng-if="vm.newTask.payment.bidding == true">
 
           <div class="form-group flex-linegroup" show-errors>
             <label class="flex-lineitem optional-label" for="startingPrice">Default bid:</label>
-            <input class="flex-lineitem" name="startingPrice" class="form-control" ng-model="vm.newTask.payment.startingPrice" placeholder="Default bid">
+            <input class="flex-lineitem" name="startingPrice" class="form-control" ng-model="vm.newTask.payment.bidding.startingPrice" placeholder="Default bid">
           </div>
 
           <div class="form-group flex-linegroup" show-errors>
             <label class="flex-lineitem optional-label" for="minPrice">Minimum bid:</label>
-            <input class="flex-lineitem" name="minPrice" class="form-control" ng-model="vm.newTask.payment.minPrice" placeholder="Minimum bid">
+            <input class="flex-lineitem" name="minPrice" class="form-control" ng-model="vm.newTask.payment.bidding.minPrice" placeholder="Minimum bid">
           </div>
 
           <h4>Bidding Period</h4>
           <div class="form-group flex-linegroup" show-errors>
             <label class="flex-lineitem optional-label" for="start">Start date:</label>
-            <input type="date" class="flex-lineitem" name="start" class="form-control" ng-model="vm.newTask.payment.timeRange.start" placeholder="Start date">
+            <input type="date" class="flex-lineitem" name="start" class="form-control" ng-model="vm.newTask.payment.bidding.timeRange.start" placeholder="Start date">
           </div>
 
           <div class="form-group flex-linegroup" show-errors>
             <label class="flex-lineitem optional-label" for="end">End date:</label>
-            <input type="date" class="flex-lineitem" name="end" class="form-control" ng-model="vm.newTask.payment.timeRange.end" placeholder="End date">
+            <input type="date" class="flex-lineitem" name="end" class="form-control" ng-model="vm.newTask.payment.bidding.timeRange.end" placeholder="End date">
           </div>
 
         </div>
