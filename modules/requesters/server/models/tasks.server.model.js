@@ -53,12 +53,10 @@ var TaskSchema = new Schema({
       },
       timeRange: {
         start: {
-          type: Date,
-          default: null
+          type: Date
         },
         end: {
-          type: Date,
-          default: null
+          type: Date
         }
       }
     },
