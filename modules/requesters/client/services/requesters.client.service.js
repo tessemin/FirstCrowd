@@ -17,6 +17,10 @@
         method: 'POST',
         url: '/api/requesters/tasks/all'
       },
+      _changeStatus:{
+        method: 'POST',
+        url: '/api/requesters/tasks/changeStatus'
+      },
       // ACTIVE TASKS
       _updateActiveTasks: {
         method: 'PUT',
@@ -110,6 +114,9 @@
       // ALL REQUESTER TASKS
       getAllTasks: function() {
         return this._getAllTasks().$promise;
+      },
+      changeStatus: function() {
+        return this._changeStatus().$promise;
       },
       // ACTIVE TASKS
       updateActiveTasks: function() {

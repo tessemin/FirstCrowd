@@ -93,7 +93,7 @@ var TaskSchema = new Schema({
         type: Boolean
       }
     },
-    id: {
+    _id: {
       type: Schema.Types.ObjectId,
       required: 'Please provide a requester'
     }
@@ -126,7 +126,7 @@ var TaskSchema = new Schema({
             type: Boolean
           }
         },
-        id: {
+        _id: {
           type: Schema.Types.ObjectId,
           required: 'Please provide a worker'
         }
@@ -155,7 +155,7 @@ var TaskSchema = new Schema({
           type: Boolean
         }
       },
-      id: {
+      _id: {
         type: Schema.Types.ObjectId,
         required: 'Please provide a worker'
       }

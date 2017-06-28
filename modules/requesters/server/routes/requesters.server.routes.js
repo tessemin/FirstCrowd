@@ -11,7 +11,8 @@ module.exports = function(app) {
    * REQUESTER TABLE
    */
   // ALL REQUESTER TASKS
-  app.route('/api/requesters/tasks/all').post(requesters.tasks.all);
+  app.route('/api/requesters/tasks/all').post(requesters.requesterTasks.all);
+  app.route('/api/requesters/tasks/changeStatus').post(requesters.requesterTasks.changeStatus);
   // ACTIVE TASKS
   app.route('/api/requesters/activeTask/update').put(requesters.activeTask.update);
   app.route('/api/requesters/activeTask/all').post(requesters.activeTask.all);
