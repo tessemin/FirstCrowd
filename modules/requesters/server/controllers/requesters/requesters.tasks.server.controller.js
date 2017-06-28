@@ -328,9 +328,13 @@ exports.taskActions = {
         newTask.dateCreated = Date.now();
         newTask.save(function(err) {
           if (err) {
-            res.status(400).send(err);
+            res.status(400).send({
+              message: errorHandler.getErrorMessage(err)
+            });
           } else {
-            res.json(newTask);
+            res.status(200).send({
+              message: 'Task ' + newTask.title +' created successfully!'
+            });
           }
         });
       } else {
@@ -347,7 +351,9 @@ exports.taskActions = {
         if (taskId.toString() === typeObj._id.toString()) {
           Task.findByIdAndRemove(taskId, function (err, task) {
             if (err) {
-              res.status(400).send(err);
+              res.status(400).send({
+                message: errorHandler.getErrorMessage(err)
+              });
             } else {
               res.status(200).send('Task ' + task.title + ' deleted successfully');
             }
@@ -378,7 +384,9 @@ exports.taskActions = {
             task = _.extend(task, _.pick(req.body, taskWhiteListedFields));
             task.save(function(err) {
               if (err) {
-                res.status(400).send(err);
+                res.status(400).send({
+                  message: errorHandler.getErrorMessage(err)
+                });
               } else {
                 res.json(task);
               }
