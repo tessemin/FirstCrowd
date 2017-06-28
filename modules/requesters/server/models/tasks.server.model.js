@@ -53,12 +53,10 @@ var TaskSchema = new Schema({
       },
       timeRange: {
         start: {
-          type: Date,
-          default: null
+          type: Date
         },
         end: {
-          type: Date,
-          default: null
+          type: Date
         }
       }
     },
@@ -70,6 +68,7 @@ var TaskSchema = new Schema({
   status: {
     type: String,
     enum: ['open', 'inactive', 'taken', 'suspended', 'sclosed', 'fclosed'],
+    default: 'suspended',
     required: 'Please provide a status'
   },
   multiplicity: {
@@ -93,7 +92,7 @@ var TaskSchema = new Schema({
         type: Boolean
       }
     },
-    id: {
+    _id: {
       type: Schema.Types.ObjectId,
       required: 'Please provide a requester'
     }
@@ -126,7 +125,7 @@ var TaskSchema = new Schema({
             type: Boolean
           }
         },
-        id: {
+        _id: {
           type: Schema.Types.ObjectId,
           required: 'Please provide a worker'
         }
@@ -143,57 +142,67 @@ var TaskSchema = new Schema({
         type: Number,
         default: 0
       }
-    }]
+    }],
+    default: []
   },
-  bids: [{
-    worker:{
-      workerType: {
-        enterprise: {
-          type: Boolean
+  bids: {
+    type: [{
+      worker:{
+        workerType: {
+          enterprise: {
+            type: Boolean
+          },
+          individual: {
+            type: Boolean
+          }
         },
-        individual: {
-          type: Boolean
+        _id: {
+          type: Schema.Types.ObjectId,
+          required: 'Please provide a worker'
         }
       },
-      id: {
-        type: Schema.Types.ObjectId,
-        required: 'Please provide a worker'
+      bid: {
+        type: Number,
+        required: 'Please provide a bid'
+      },
+      status: {
+        type: String,
+        enum: ['accepted', 'rejected', 'undecided'],
+        default: 'undecided'
       }
-    },
-    bid: {
-      type: Number,
-      required: 'Please provide a bid'
-    },
-    status: {
-      type: String,
-      enum: ['accepted', 'rejected', 'undecided'],
-      default: 'undecided'
-    }
-  }],
-  publicNotes: [{
-    note: {
-      type: String,
-      required: 'Please fill out the note',
-      deafult: null
-    },
-    date: {
-      type: Date,
-      default: null,
-      trim: true
-    }
-  }],
-  privateNotes: [{
-    note: {
-      type: String,
-      required: 'Please fill out the note',
-      deafult: null
-    },
-    date: {
-      type: Date,
-      default: null,
-      trim: true
-    }
-  }],
+    }],
+    default: []
+  },
+  publicNotes: {
+    type: [{
+      note: {
+        type: String,
+        required: 'Please fill out the note',
+        deafult: null
+      },
+      date: {
+        type: Date,
+        default: null,
+        trim: true
+      }
+    }],
+    default: []
+  },
+  privateNotes: {
+    type: [{
+      note: {
+        type: String,
+        required: 'Please fill out the note',
+        deafult: null
+      },
+      date: {
+        type: Date,
+        default: null,
+        trim: true
+      }
+    }],
+    default: []
+  },
   dateCreated: {
     type: Date,
     required: 'Please add a date created'
