@@ -9,7 +9,7 @@
   RequestersService.$inject = ['$resource'];
 
   function RequestersService($resource) {
-    return $resource('api/requesters/:requesterId', {
+    var Requesters = $resource('api/requesters/:requesterId', {
       requesterId: '@_id'
     }, {
       // ALL REQUESTER TASKS
@@ -186,5 +186,7 @@
         return this._updateTask().$promise;
       }
     });
+
+    return Requesters;
   }
 }());

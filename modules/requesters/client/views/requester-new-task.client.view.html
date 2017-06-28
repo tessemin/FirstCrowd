@@ -4,102 +4,103 @@
     <form name="vm.newTaskForm" ng-submit="vm.submitTask(vm.newTaskForm.$valid)" novalidate autocomplete="off">
       <fieldset>
 
-        <div class="form-group flex-linegroup" show-errors>
-          <label class="flex-lineitem" for="name">Task title:</label>
-          <input class="flex-lineitem" name="title" class="form-control" ng-model="vm.newTask.title" placeholder="Task Title" required autofocus>
-          <div ng-messages="vm.newTask.title.$error" role="alert">
+        <div class="form-group" show-errors>
+          <div class="flex-linegroup">
+            <label class="flex-lineitem required-label" for="name">Task title:</label>
+            <input class="flex-lineitem" name="title" class="form-control" ng-model="vm.newTask.title" placeholder="Task Title" required autofocus>
+          </div>
+          <div ng-messages="vm.newTaskForm['title'].$error" role="alert">
             <p class="help-block error-text" ng-message="required">Task title is required.</p>
           </div>
         </div>
 
         <div class="form-group flex-linegroup" show-errors>
-          <label class="flex-lineitem" for="description">Description:</label>
+          <label class="flex-lineitem required-label" for="description">Description:</label>
           <input class="flex-lineitem" name="description" class="form-control" ng-model="vm.newTask.description" placeholder="Description" required>
-          <div ng-messages="vm.newTask.description.$error" role="alert">
+          <div ng-messages="vm.newTaskForm['description'].$error" role="alert">
             <p class="help-block error-text" ng-message="required">Description is required.</p>
           </div>
         </div>
 
         <div class="form-group flex-linegroup" show-errors>
-          <label class="flex-lineitem" for="category">Task Category:</label>
+          <label class="flex-lineitem required-label" for="category">Task Category:</label>
           <input class="flex-lineitem" name="category" class="form-control" ng-model="vm.newTask.category" placeholder="Task Category" required>
-          <div ng-messages="vm.newTask.category.$error" role="alert">
+          <div ng-messages="vm.newTaskForm['category'].$error" role="alert">
             <p class="help-block error-text" ng-message="required">Task category is required.</p>
           </div>
         </div>
 
         <div class="form-group flex-linegroup" show-errors>
-          <label class="flex-lineitem" for="skillsNeeded">Skills Needed:</label>
+          <label class="flex-lineitem optional-label" for="skillsNeeded">Skills Needed:</label>
           <input class="flex-lineitem" name="skillsNeeded" class="form-control" ng-model="vm.newTask.skillsNeeded" placeholder="Skills Needed">
         </div>
 
         <div class="form-group flex-linegroup" show-errors>
-          <label class="flex-lineitem" for="deadline">Deadline</label>
+          <label class="flex-lineitem required-label" for="deadline">Deadline:</label>
           <input class="flex-lineitem" type="date" name="deadline" class="form-control" ng-model="vm.newTask.deadline" placeholder="Deadline" required>
-          <div ng-messages="vm.newTask.deadline.$error" role="alert">
+          <div ng-messages="vm.newTaskForm['deadline'].$error" role="alert">
             <p class="help-block error-text" ng-message="required">Deadline is required.</p>
           </div>
         </div>
 
         <div class="form-group flex-linegroup" show-errors>
-          <label class="flex-lineitem" for="suspended">Suspended</label>
+          <label class="flex-lineitem optional-label" for="suspended">Suspend task until you activate it</label>
           <input class="flex-lineitem" type="checkbox" name="suspended" class="form-control" ng-model="vm.newTask.suspended">
         </div>
 
         <div class="form-group flex-linegroup" show-errors>
-          <label class="flex-lineitem" for="preapproval">Manually choose workers for job</label>
+          <label class="flex-lineitem optional-label" for="preapproval">Manually choose workers for the task</label>
           <input class="flex-lineitem" type="checkbox" name="preapproval" class="form-control" ng-model="vm.newTask.preapproval">
         </div>
 
         <div class="form-group flex-linegroup" show-errors>
-          <label class="flex-lineitem" for="secret">Only show this task to recommended workers</label>
+          <label class="flex-lineitem optional-label" for="secret">Only offer this task to recommended workers</label>
           <input class="flex-lineitem" type="checkbox" name="secret" class="form-control" ng-model="vm.newTask.secret">
         </div>
 
         <h4>Payment</h4>
         <div class="form-group flex-linegroup" show-errors>
-          <label class="flex-lineitem" for="bidding">Allow bidding on payment</label>
+          <label class="flex-lineitem optional-label" for="bidding">Allow bidding on payment</label>
           <input class="flex-lineitem" type="checkbox" name="bidding" class="form-control" ng-model="vm.newTask.payment.bidding">
         </div>
 
-        <div ng-if="vm.newTask.payment.bidding == true" show-errors>
+        <div ng-if="vm.newTask.payment.bidding == true">
 
           <div class="form-group flex-linegroup" show-errors>
-            <label class="flex-lineitem" for="startingPrice">Default bid:</label>
+            <label class="flex-lineitem optional-label" for="startingPrice">Default bid:</label>
             <input class="flex-lineitem" name="startingPrice" class="form-control" ng-model="vm.newTask.payment.startingPrice" placeholder="Default bid">
           </div>
 
           <div class="form-group flex-linegroup" show-errors>
-            <label class="flex-lineitem" for="minPrice">Minimum bid:</label>
+            <label class="flex-lineitem optional-label" for="minPrice">Minimum bid:</label>
             <input class="flex-lineitem" name="minPrice" class="form-control" ng-model="vm.newTask.payment.minPrice" placeholder="Minimum bid">
           </div>
 
           <h4>Bidding Period</h4>
           <div class="form-group flex-linegroup" show-errors>
-            <label class="flex-lineitem" for="start">Start date:</label>
+            <label class="flex-lineitem optional-label" for="start">Start date:</label>
             <input type="date" class="flex-lineitem" name="start" class="form-control" ng-model="vm.newTask.payment.timeRange.start" placeholder="Start date">
           </div>
 
           <div class="form-group flex-linegroup" show-errors>
-            <label class="flex-lineitem" for="end">End date:</label>
+            <label class="flex-lineitem optional-label" for="end">End date:</label>
             <input type="date" class="flex-lineitem" name="end" class="form-control" ng-model="vm.newTask.payment.timeRange.end" placeholder="End date">
           </div>
 
         </div>
 
-        <div ng-if="vm.newTask.payment.bidding == false" show-errors>
+        <div ng-if="vm.newTask.payment.bidding == false">
           <div class="form-group flex-linegroup" show-errors>
-            <label class="flex-lineitem" for="staticPrice">Payment:</label>
+            <label class="flex-lineitem required-label" for="staticPrice">Payment:</label>
             <input class="flex-lineitem" name="staticPrice" class="form-control" ng-model="vm.newTask.payment.staticPrice" placeholder="Payment" required>
           </div>
-          <div ng-messages="vm.newTask.payment.staticPrice.$error" role="alert">
+          <div ng-messages="vm.newTaskForm['staticPrice'].$error" role="alert">
             <p class="help-block error-text" ng-message="required">Payment is required.</p>
           </div>
         </div>
 
-        <input class="btn btn-primary" type="submit" value="Submit">
-
       </fieldset>
+      <button type="submit" class="btn btn-primary">Submit</button>
     </form>
   </div>
 </section>
