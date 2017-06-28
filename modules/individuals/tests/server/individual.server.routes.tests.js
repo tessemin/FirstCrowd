@@ -57,7 +57,7 @@ describe('Individual CRUD tests:', function () {
       contactPreference: 'phone',
       provider: 'local'
     });
-    
+
     individual = new Individual({
       user: user,
       bio: {
@@ -152,7 +152,7 @@ describe('Individual CRUD tests:', function () {
         }
       }]
     });
-        
+
     user.individual = individual;
     individual.user = user.id;
 
@@ -169,10 +169,10 @@ describe('Individual CRUD tests:', function () {
       });
     });
   });
-  
+
   // Saving new individuals is part of the user unit tests;
   // it's done when creating a new user
-  
+
   it('should be able to get the users Individual if logged in', function (done) {
     agent.post('/api/auth/signin')
       .send(credentials)
@@ -182,7 +182,7 @@ describe('Individual CRUD tests:', function () {
         if (signinErr) {
           return done(signinErr);
         }
-        
+
         agent.get('/individuals/api/individuals/getIndividual/')
           .end(function (individualGetErr, individualGetRes) {
             if (individualGetErr) {
@@ -193,13 +193,13 @@ describe('Individual CRUD tests:', function () {
 
             // Check individual's accuracy
             (individual.bio.profession).should.match('sharpening sticks');
-            
+
             // Call the assertion callback
             done();
           });
       });
   });
-  
+
   it('should not be able to get the users Individual if not logged in', function (done) {
     agent.get('/individuals/api/individuals/getIndividual/')
       .expect(400)
@@ -208,7 +208,7 @@ describe('Individual CRUD tests:', function () {
         done(individualGetErr);
       });
   });
-  
+
   it('should be able to update an individual\'s Certifications', function (done) {
     // Login before saving certifications
     agent.post('/api/auth/signin')
@@ -220,7 +220,7 @@ describe('Individual CRUD tests:', function () {
           console.log(signinErr);
         } else {
           individual.certification[0].certificationName = 'Planet Hacker Commendation of Merit';
-          
+
           agent.post('/individuals/api/individuals/certifications/')
             .send(individual.certification)
             .end(function (individualEducationErr, individualEducationRes) {
@@ -230,7 +230,7 @@ describe('Individual CRUD tests:', function () {
         }
       });
   });
-  
+
   it('should be able to create a new Certification', function (done) {
     // Login before saving certifications
     agent.post('/api/auth/signin')
@@ -248,9 +248,9 @@ describe('Individual CRUD tests:', function () {
             dateExpired: '',
             description: 'For demonstrated excellence in hacking planets'
           };
-          
+
           individual.certification.push(testCertification);
-          
+
           agent.post('/individuals/api/individuals/certifications/')
             .send(individual.certification)
             .end(function (individualEducationErr, individualEducationRes) {
@@ -265,7 +265,7 @@ describe('Individual CRUD tests:', function () {
         }
       });
   });
-  
+
   it('should be able to update an individual\'s Education', function (done) {
     agent.post('/api/auth/signin')
       .send(credentials)
@@ -276,7 +276,7 @@ describe('Individual CRUD tests:', function () {
           console.log(signinErr);
         } else {
           individual.schools[0].schoolName = 'SpaceMaster AstroAcademy';
-          
+
           agent.post('/individuals/api/individuals/education/')
             .send(individual.schools)
             .end(function (individualEducationErr, individualEducationRes) {
@@ -286,7 +286,7 @@ describe('Individual CRUD tests:', function () {
         }
       });
   });
-  
+
   it('should be able to add a new school to education', function (done) {
     agent.post('/api/auth/signin')
       .send(credentials)
@@ -314,7 +314,7 @@ describe('Individual CRUD tests:', function () {
             }
           };
           individual.schools.push(testSchool);
-          
+
           agent.post('/individuals/api/individuals/education/')
             .send(individual.schools)
             .end(function (individualEducationErr, individualEducationRes) {
@@ -333,7 +333,7 @@ describe('Individual CRUD tests:', function () {
         }
       });
   });
-  
+
   it('should be able to update an individual\'s Skills', function (done) {
     agent.post('/api/auth/signin')
       .send(credentials)
@@ -343,12 +343,12 @@ describe('Individual CRUD tests:', function () {
         if (signinErr) {
           console.log(signinErr);
         } else {
-            var testSkills = [{
+          var testSkills = [{
             skill: 'Space piloting',
             firstUsed: '03/1/2059',
             locationLearned: 'Earth, Mars'
           }];
-      
+
           agent.post('/individuals/api/individuals/skills/')
             .send(testSkills)
             .expect(200)
@@ -360,7 +360,7 @@ describe('Individual CRUD tests:', function () {
         }
       });
   });
-  
+
   it.skip('should be able to create a new skill', function (done) {
     agent.post('/api/auth/signin')
       .send(credentials)
@@ -370,14 +370,14 @@ describe('Individual CRUD tests:', function () {
         if (signinErr) {
           console.log(signinErr);
         } else {
-            var testSkill = {
+          var testSkill = {
             skill: 'Space piloting',
             firstUsed: '03/1/2059',
             locationLearned: 'Earth, Mars'
           };
-          
+
           individual.skills.push(testSkill);
-      
+
           agent.post('/individuals/api/individuals/skills/')
             .send(individual.skills)
             .expect(200)
@@ -389,7 +389,7 @@ describe('Individual CRUD tests:', function () {
         }
       });
   });
-  
+
   it('should be able to update an individual\'s Experiences', function (done) {
     // Login before saving certifications
     agent.post('/api/auth/signin')
@@ -407,7 +407,7 @@ describe('Individual CRUD tests:', function () {
             skills: 'Piloting, Conversation',
             startDate: '02/29/2059'
           }];
-          
+
           agent.post('/individuals/api/individuals/experiences/')
             .send(testExperience)
             .expect(200)
@@ -418,7 +418,7 @@ describe('Individual CRUD tests:', function () {
         }
       });
   });
-  
+
   // Talk to Adam about making the backend less inflexible
   it.skip('should be able to create a new Experience', function (done) {
     // Login before saving certifications
@@ -437,17 +437,17 @@ describe('Individual CRUD tests:', function () {
             skills: 'Piloting, Conversation',
             startDate: '02/29/2059'
           }];
-          
+
           individual.jobExperience[0].skills = individual.jobExperience[0].skills.join(', ');
           testExperience.push(individual.jobExperience[0]);
-          
+
           console.log(testExperience);
-          
+
           agent.post('/individuals/api/individuals/experiences/')
             .send(testExperience)
             .expect(200)
             .end(function (individualExperiencesErr, individualExperiencesRes) {
-              var responseExperience = individualExperienceRes.body.jobExperience.slice(-1)[0];
+              var responseExperience = individualExperiencesRes.body.jobExperience.slice(-1)[0];
               (responseExperience.employer).should.eql(testExperience.employer);
               (responseExperience.jobTitle).should.eql(testExperience.jobTitle);
               (responseExperience.description).should.eql(testExperience.description);
@@ -458,7 +458,7 @@ describe('Individual CRUD tests:', function () {
         }
       });
   });
-  
+
   it('should be able to update an individual\'s Bio', function (done) {
     agent.post('/api/auth/signin')
       .send(credentials)
@@ -469,7 +469,7 @@ describe('Individual CRUD tests:', function () {
           console.log(signinErr);
         } else {
           individual.bio.profession = 'Pilot';
-          
+
           agent.post('/individuals/api/individuals/bio/')
             .send(individual.bio)
             .expect(200)
@@ -478,9 +478,9 @@ describe('Individual CRUD tests:', function () {
             });
         }
       });
-    
+
   });
-  
+
   afterEach(function (done) {
     User.remove().exec(function () {
       Individual.remove().exec(done);

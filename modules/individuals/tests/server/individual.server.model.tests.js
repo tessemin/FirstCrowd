@@ -24,7 +24,7 @@ describe('Individual Model Unit Tests:', function() {
       username: 'username',
       password: 'M3@n.jsI$Aw3$0m3'
     };
-    
+
     user = new User({
       firstName: 'Full',
       middleName: 'Mid',
@@ -44,7 +44,7 @@ describe('Individual Model Unit Tests:', function() {
       contactPreference: 'phone',
       provider: 'local'
     });
-    
+
     individual = new Individual({
       name: 'Individual Name',
       user: user,
@@ -67,7 +67,7 @@ describe('Individual Model Unit Tests:', function() {
         degrees: [{
           name: 'Computer Science',
           degreeLevel: 'Associates',
-          concentration: ['Algorithm Design','Data Structures']
+          concentration: ['Algorithm Design', 'Data Structures']
         }],
         address: {
           schoolCountry: 'Am',
@@ -82,7 +82,7 @@ describe('Individual Model Unit Tests:', function() {
         degrees: [{
           name: 'Computer Science',
           degreeLevel: 'Associates',
-          concentration: ['Algorithm Design','Data Structures']
+          concentration: ['Algorithm Design', 'Data Structures']
         }],
         address: {
           schoolCountry: 'Am',
@@ -117,14 +117,14 @@ describe('Individual Model Unit Tests:', function() {
           name: 'C++'
         },
         firstUsed: '03/1/2014',
-        locationLearned: ['SIC','SIU']
+        locationLearned: ['SIC', 'SIU']
       }, {
         skill: {
           name: 'Java'
         },
         firstUsed: '08/1/2016',
         locationLearned: ['SIU'],
-        tools:[{
+        tools: [{
           tool: {
             name: 'calculators'
           }
@@ -140,7 +140,7 @@ describe('Individual Model Unit Tests:', function() {
         }
       }]
     });
-    
+
     user.individual = individual.id;
 
     user.save(function(err) {
@@ -167,7 +167,7 @@ describe('Individual Model Unit Tests:', function() {
         done();
       });
     });
-    
+
     it('should be able to show an error when try to save with age greater than 130', function(done) {
       individual.bio.dateOfBirth = '01/01/1800';
 
@@ -176,7 +176,7 @@ describe('Individual Model Unit Tests:', function() {
         done();
       });
     });
-    
+
     it('should be able to show an error when try to save with date of birth in wrong form', function(done) {
       individual.bio.dateOfBirth = 'garbage';
 
@@ -185,7 +185,7 @@ describe('Individual Model Unit Tests:', function() {
         done();
       });
     });
-    
+
     /*
      * Degrees
      */
@@ -197,7 +197,7 @@ describe('Individual Model Unit Tests:', function() {
         done();
       });
     });
-    
+
     it('should be able to show an error when try to save with degree end date in wrong form', function(done) {
       individual.schools[0].endDate = 'garbage';
 
@@ -206,7 +206,7 @@ describe('Individual Model Unit Tests:', function() {
         done();
       });
     });
-    
+
     it('should be able to show an error when try to save with degree end date less than start date', function(done) {
       individual.schools[0].endDate = '01/01/1999';
       individual.schools[0].startDate = '01/01/2005';
@@ -216,7 +216,7 @@ describe('Individual Model Unit Tests:', function() {
         done();
       });
     });
-    
+
     /*
      * Job Experience
      */
@@ -228,7 +228,7 @@ describe('Individual Model Unit Tests:', function() {
         done();
       });
     });
-    
+
     it('should be able to show an error when try to save with job experience end date in wrong form', function(done) {
       individual.jobExperience[0].endDate = 'garbage';
 
@@ -237,7 +237,7 @@ describe('Individual Model Unit Tests:', function() {
         done();
       });
     });
-    
+
     it('should be able to show an error when try to save with job experience end date less than start date', function(done) {
       individual.jobExperience[0].endDate = '01/01/1999';
       individual.jobExperience[0].startDate = '01/01/2005';
@@ -245,10 +245,10 @@ describe('Individual Model Unit Tests:', function() {
       individual.save(function(err) {
         should.exist(err);
         done();
-        
+
       });
     });
-    
+
     /*
      * certification
      */
@@ -260,7 +260,7 @@ describe('Individual Model Unit Tests:', function() {
         done();
       });
     });
-    
+
     it('should be able to show an error when try to save with certification date expired in wrong form', function(done) {
       individual.certification[0].dateExpired = 'garbage';
 
@@ -269,7 +269,7 @@ describe('Individual Model Unit Tests:', function() {
         done();
       });
     });
-    
+
     it('should be able to show an error when try to save with certification date expired less than date issued', function(done) {
       individual.certification[0].dateExpired = '01/01/1999';
       individual.certification[0].dateIssued = '01/01/2005';
@@ -279,7 +279,7 @@ describe('Individual Model Unit Tests:', function() {
         done();
       });
     });
-    
+
     /*
      * skills
      */
@@ -291,7 +291,7 @@ describe('Individual Model Unit Tests:', function() {
         done();
       });
     });
-    
+
     it('should be able to show an error when try to save with skills last used in wrong form', function(done) {
       individual.skills[0].lastUsed = 'garbage';
 
@@ -300,7 +300,7 @@ describe('Individual Model Unit Tests:', function() {
         done();
       });
     });
-    
+
     it('should be able to show an error when try to save with skills last used less than first used', function(done) {
       individual.skills[0].lastUsed = '01/01/2006';
       individual.skills[0].firstUsed = '01/01/2005';

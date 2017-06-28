@@ -1,3 +1,11 @@
 <section id="graph">
+  <!-- <div class="row"> -->
+    <div ng-show="vm.sidebar" class="side-panel">
+      <h3 ng-bind="vm.selected.companyName"></h3>
+    </div>
+    <div ng-click="vm.toggleSidebar()" class="btn-default btn">
+      <span class="glyphicon" ng-class="{'glyphicon-triangle-right': !vm.sidebar, 'glyphicon-triangle-left': vm.sidebar}"></span>
+    </div>
+    <!-- </div> -->
   <make-graph></make-graph>
 </section>
