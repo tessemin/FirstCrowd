@@ -14,8 +14,10 @@
     vm.newTask = {
       preapproval: true,
       payment: {
-        // has to be defined as 'false' for an ng-if to work on page load
-        bidding: false
+        bidding: {
+          // has to be defined as 'false' for an ng-if to work on page load
+          bidable: false
+        }
       }
     };
 
@@ -37,8 +39,8 @@
 
     function onSubmitNewTaskSuccess(response) {
       console.log(response);
-      if(typeof response != "undefined" && response.data && response.data.message) {
-        Notification.success({ message: response.data.message, title: '<i class="glyphicon glyphicon-suc"></i> Success:'});
+      if(typeof response != "undefined" && response.message) {
+        Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-suc"></i> Success:'});
       }
     };
 

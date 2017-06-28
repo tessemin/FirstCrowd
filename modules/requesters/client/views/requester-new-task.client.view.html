@@ -7,7 +7,7 @@
         <div class="form-group" show-errors>
           <div class="flex-linegroup">
             <label class="flex-lineitem required-label" for="name">Task title:</label>
-            <input class="flex-lineitem" name="title" class="form-control" ng-model="vm.newTask.title" placeholder="Task Title" required autofocus>
+            <input class="flex-lineitem" name="title" class="form-control" ng-model="vm.newTask.title" placeholder="Task Title" autofocus>
           </div>
           <div ng-messages="vm.newTaskForm['title'].$error" role="alert">
             <p class="help-block error-text" ng-message="required">Task title is required.</p>
@@ -44,11 +44,6 @@
         </div>
 
         <div class="form-group flex-linegroup" show-errors>
-          <label class="flex-lineitem optional-label" for="suspended">Suspend task until you activate it</label>
-          <input class="flex-lineitem" type="checkbox" name="suspended" class="form-control" ng-model="vm.newTask.suspended">
-        </div>
-
-        <div class="form-group flex-linegroup" show-errors>
           <label class="flex-lineitem optional-label" for="preapproval">Manually choose workers for the task</label>
           <input class="flex-lineitem" type="checkbox" name="preapproval" class="form-control" ng-model="vm.newTask.preapproval">
         </div>
@@ -64,7 +59,7 @@
           <input class="flex-lineitem" type="checkbox" name="bidding" class="form-control" ng-model="vm.newTask.payment.bidding.bidable">
         </div>
 
-        <div ng-if="vm.newTask.payment.bidding == true">
+        <div ng-if="vm.newTask.payment.bidding.bidable == true">
 
           <div class="form-group flex-linegroup" show-errors>
             <label class="flex-lineitem optional-label" for="startingPrice">Default bid:</label>
@@ -89,7 +84,7 @@
 
         </div>
 
-        <div ng-if="vm.newTask.payment.bidding == false">
+        <div ng-if="vm.newTask.payment.bidding.bidable == false">
           <div class="form-group flex-linegroup" show-errors>
             <label class="flex-lineitem required-label" for="staticPrice">Payment:</label>
             <input class="flex-lineitem" name="staticPrice" class="form-control" ng-model="vm.newTask.payment.staticPrice" placeholder="Payment" required>
