@@ -14,8 +14,10 @@
     vm.newTask = {
       preapproval: true,
       payment: {
-        // has to be defined as 'false' for an ng-if to work on page load
-        bidding: false
+        bidding: {
+          // has to be defined as 'false' for an ng-if to work on page load
+          bidable: false
+        }
       }
     };
 

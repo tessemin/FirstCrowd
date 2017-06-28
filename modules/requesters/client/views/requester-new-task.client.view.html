@@ -59,7 +59,7 @@
           <input class="flex-lineitem" type="checkbox" name="bidding" class="form-control" ng-model="vm.newTask.payment.bidding.bidable">
         </div>
 
-        <div ng-if="vm.newTask.payment.bidding == true">
+        <div ng-if="vm.newTask.payment.bidding.bidable == true">
 
           <div class="form-group flex-linegroup" show-errors>
             <label class="flex-lineitem optional-label" for="startingPrice">Default bid:</label>
@@ -84,7 +84,7 @@
 
         </div>
 
-        <div ng-if="vm.newTask.payment.bidding == false">
+        <div ng-if="vm.newTask.payment.bidding.bidable == false">
           <div class="form-group flex-linegroup" show-errors>
             <label class="flex-lineitem required-label" for="staticPrice">Payment:</label>
             <input class="flex-lineitem" name="staticPrice" class="form-control" ng-model="vm.newTask.payment.staticPrice" placeholder="Payment" required>
