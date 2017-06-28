@@ -177,18 +177,17 @@
               var CUS_X = width / 4 + width / 4 + width / 4;
               var index;
               var y;
-              var menu_data = [];
               var linkIndex = 0;
 
               for (var item in nodes) {
                 if (item === 'customer') {
                   y = 0;
                   for (index = 0; index < nodes[item].length; index++) {
-                    menu_data[0] = 'Message ' + nodes[item][index].companyName;
-                    menu_data[1] = 'View the ' + nodes[item][index].companyName + ' Profile';
-                    menu_data[2] = 'See the ' + nodes[item][index].companyName + ' Connection Graph';
-                    menu_data[3] = 'Compare your Company with ' + nodes[item][index].companyName;
-                    nodes[item][index].text = menu_data;
+                    nodes[item][index].text = new Array(4);
+                    nodes[item][index].text[0] = 'Message ' + nodes[item][index].companyName;
+                    nodes[item][index].text[1] = 'View the ' + nodes[item][index].companyName + ' Profile';
+                    nodes[item][index].text[2] = 'See the ' + nodes[item][index].companyName + ' Connection Graph';
+                    nodes[item][index].text[3] = 'Compare your Company with ' + nodes[item][index].companyName;
 
                     nodes[item][index].x = CUS_X;
                     y = getY(nodes[item], item, y);
@@ -204,11 +203,11 @@
                 } else if (item === 'supplier') {
                   y = 0;
                   for (index = 0; index < nodes[item].length; index++) {
-                    menu_data[0] = 'Message ' + nodes[item][index].companyName;
-                    menu_data[1] = 'View the ' + nodes[item][index].companyName + ' Profile';
-                    menu_data[2] = 'See the ' + nodes[item][index].companyName + ' Connection Graph';
-                    menu_data[3] = 'Compare your Company with ' + nodes[item][index].companyName;
-                    nodes[item][index].text = menu_data;
+                    nodes[item][index].text = new Array(4);
+                    nodes[item][index].text[0] = 'Message ' + nodes[item][index].companyName;
+                    nodes[item][index].text[1] = 'View the ' + nodes[item][index].companyName + ' Profile';
+                    nodes[item][index].text[2] = 'See the ' + nodes[item][index].companyName + ' Connection Graph';
+                    nodes[item][index].text[3] = 'Compare your Company with ' + nodes[item][index].companyName;
 
                     nodes[item][index].x = SUP_X;
                     y = getY(nodes[item], item, y);
@@ -224,11 +223,11 @@
                 } else if (item === 'competitor') {
                   y = 0;
                   for (index = 0; index < nodes[item].length; index++) {
-                    menu_data[0] = 'Message ' + nodes[item][index].companyName;
-                    menu_data[1] = 'View the ' + nodes[item][index].companyName + ' Profile';
-                    menu_data[2] = 'See the ' + nodes[item][index].companyName + ' Connection Graph';
-                    menu_data[3] = 'Compare your Company with ' + nodes[item][index].companyName;
-                    nodes[item][index].text = menu_data;
+                    nodes[item][index].text = new Array(4);
+                    nodes[item][index].text[0] = 'Message ' + nodes[item][index].companyName;
+                    nodes[item][index].text[1] = 'View the ' + nodes[item][index].companyName + ' Profile';
+                    nodes[item][index].text[2] = 'See the ' + nodes[item][index].companyName + ' Connection Graph';
+                    nodes[item][index].text[3] = 'Compare your Company with ' + nodes[item][index].companyName;
 
                     nodes[item][index].x = COM_X;
                     y = getY(nodes[item], item, y);
@@ -237,11 +236,11 @@
                     nodes_data.push(nodes[item][index]);
                   }
                 } else if (item === 'rootNode') {
-                  menu_data[0] = 'Message ' + nodes[item].companyName;
-                  menu_data[1] = 'View the ' + nodes[item].companyName + ' Profile';
-                  menu_data[2] = 'See the ' + nodes[item].companyName + ' Connection Graph';
-                  menu_data[3] = 'Compare your Company with ' + nodes[item].companyName;
-                  nodes[item].text = menu_data;
+                  nodes[item].text = new Array(4);
+                  nodes[item].text[0] = 'Message ' + nodes[item].companyName;
+                  nodes[item].text[1] = 'View the ' + nodes[item].companyName + ' Profile';
+                  nodes[item].text[2] = 'See the ' + nodes[item].companyName + ' Connection Graph';
+                  nodes[item].text[3] = 'Compare your Company with ' + nodes[item].companyName;
 
                   nodes[item].x = width / 2;
                   nodes[item].y = height / 2;

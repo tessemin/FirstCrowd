@@ -21,7 +21,9 @@
     }
 
     function chooseCompany(obj) {
+      console.log(obj);
       $scope.$apply(
+        vm.sidebar = true,
         vm.selected = obj.selected
       );
     }
