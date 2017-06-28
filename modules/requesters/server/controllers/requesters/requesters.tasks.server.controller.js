@@ -328,7 +328,7 @@ exports.taskActions = {
         newTask.dateCreated = Date.now();
         newTask.save(function(err) {
           if (err) {
-            res.status(400).send({
+            res.status(404).send({
               message: errorHandler.getErrorMessage(err)
             });
           } else {
