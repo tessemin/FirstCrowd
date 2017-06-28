@@ -12,7 +12,12 @@
     vm.errorMessage = null;
 
     // Display custom message if it was set
+    console.log($stateParams)
     if ($stateParams.message) vm.errorMessage = $stateParams.message;
+    if ($stateParams.linkMessage && $stateParams.link) {
+      vm.linkMessage = $stateParams.linkMessage;
+      vm.link = $stateParams.link;
+    }
   }
 }());
 

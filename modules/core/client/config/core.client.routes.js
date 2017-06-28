@@ -56,6 +56,12 @@
         params: {
           message: function($stateParams) {
             return $stateParams.message;
+          },
+          link: function($stateParams) {
+            return $stateParams.link;
+          },
+          linkMessage: function($stateParams) {
+            return $stateParams.linkMessage;
           }
         },
         data: {
