@@ -29,7 +29,7 @@
       _getActiveTasks: {
         method: 'POST',
         url: '/api/requesters/activeTask/all'
-      }
+      },
       // SUSPENDED TASKS
       _updateSuspendedTask: {
         method: 'PUT',
@@ -38,7 +38,7 @@
       _getSuspendedTasks: {
         method: 'POST',
         url: '/api/requesters/suspendedTask/all'
-      }
+      },
       // COMPLETED TASKS
       _updateCompletedTask: {
         method: 'PUT',
@@ -47,7 +47,7 @@
       _getCompletedTasks: {
         method: 'POST',
         url: '/api/requesters/completedTask/all'
-      }
+      },
       // REJECTED TASKS
       _updateRejectedTask: {
         method: 'PUT',
@@ -56,7 +56,7 @@
       _getRejectedTasks: {
         method: 'POST',
         url: '/api/requesters/rejectedTask/all'
-      }
+      },
       // RATINGS
       _makeRating: {
         method: 'PUT',
