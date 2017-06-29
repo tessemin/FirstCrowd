@@ -43,14 +43,23 @@ exports.taskActions = {
           });
         }
         newTask.dateCreated = Date.now();
-        newTask.save(function(err) {
-          if (err) {
+        typeObj.requester.suspendedTasks = statusPushTo(newTask, typeObj.requester.suspendedTasks);
+        typeObj.save(function (typeErr, typeObj) {
+          if (typeErr) {
             return res.status(404).send({
-              message: errorHandler.getErrorMessage(err)
+              message: 'Error connecting your profile with task: ' + newTask.title
             });
           } else {
-            return res.status(200).send({
-              message: 'Task ' + newTask.title + ' created successfully!'
+            newTask.save(function (err, task) {
+              if (err) {
+                return res.status(404).send({
+                  message: 'Error creating task: ' + task.title
+                });
+              } else {
+                return res.status(200).send({
+                  message: 'New task: ' + task.title + ' created successfully'
+                });
+              }
             });
           }
         });
@@ -269,7 +278,7 @@ function taskFindMany(taskArray, callBack) {
 }
 
 function taskFindOne(taskId, callBack) {
-  Task.find({ '_id': taskId, secret: false }, callBack);
+  Task.find({ '_id': taskId, secret: false }, function(err, task) { callBack(err, task[0]); });
 }
 
 function findTaskWorker(task, typeObj, res) {
@@ -321,28 +330,29 @@ function updateStatus(status, taskId, typeObj, res, callBack) {
     if (task.requester._id.toString() === typeObj._id.toString()) {
       switch (status) {
         case 'open':
-          statusPushTo(task, status, typeObj.requester.activeTasks);
+          typeObj.requester.activeTasks = statusPushTo(task, typeObj.requester.activeTasks);
           break;
         case 'inactive':
-          statusPushTo(task, status, typeObj.requester.suspended);
+          typeObj.requester.suspendedTasks = statusPushTo(task, typeObj.requester.suspendedTasks);
           break;
         case 'taken':
-          statusPushTo(task, status, typeObj.requester.activeTasks);
+          typeObj.requester.activeTasks = statusPushTo(task, typeObj.requester.activeTasks);
           break;
         case 'suspended':
-          statusPushTo(task, status, typeObj.requester.suspended);
+           typeObj.requester.suspendedTasks = statusPushTo(task, typeObj.requester.suspendedTasks);
           break;
         case 'sclosed':
-          statusPushTo(task, status, typeObj.requester.completedTasks);
+          typeObj.requester.completedTasks = statusPushTo(task, typeObj.requester.completedTasks);
           break;
         case 'fclosed':
-          statusPushTo(task, status, typeObj.requester.rejectedTasks);
+          typeObj.requester.rejectedTasks = statusPushTo(task, typeObj.requester.rejectedTasks);
           break;
         default:
           return res.status(404).send({
             message: 'Status not supported.'
           });
       }
+      task.status = status;
       // save typeObj first to avoid orphaned tasks
       callBack(typeObj, task);
     } else {
@@ -368,16 +378,25 @@ function removeTaskFromRequesterArray(taskId, typeObj) {
 }
 
 // changes tasks current status and adds task to one of the requester arrays
-function statusPushTo(task, taskStatus, requesterArray) {
-  task.status = taskStatus;
-  if (requesterArray)
+function statusPushTo(task, requesterArray) {
+  if (typeof requesterArray != 'undefined' && requesterArray instanceof Array)
     if (requesterArray.length > 0) {
-      return (requesterArray.push(task._id));
-    } else {
-      requesterArray = [];
-      return (requesterArray.push(task._id));
+      if (task._id)
+        requesterArray.push({ taskId: task._id });
+      return requesterArray;
     }
+  requesterArray = [];
+  if (task._id)
+    requesterArray.push({ taskId: task._id });
   return requesterArray;
+}
+
+// finds the task in the array and if it matches the taskId, removes it
+function removeFromObjectTasksArray (taskId, array) {
+  for (var i = 0; i < array.length; i++)
+    if (array[i].task.toString() === taskId.toString())
+      array.splice(i, 1);
+  return array;
 }
 
 exports.getUserTypeObject = getUserTypeObject;

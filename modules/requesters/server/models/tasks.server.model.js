@@ -68,7 +68,7 @@ var TaskSchema = new Schema({
   status: {
     type: String,
     enum: ['open', 'inactive', 'taken', 'suspended', 'sclosed', 'fclosed'],
-    default: 'suspended',
+    default: 'inactive',
     required: 'Please provide a status'
   },
   multiplicity: {

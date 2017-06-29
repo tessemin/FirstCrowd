@@ -24,10 +24,10 @@ exports.requesterTasks = {
       if (isRequester(req.user)) {
         if (typeObj.requester) {
           var taskArray = [];
-          taskArray.concat(getAllActiveTaskIds(typeObj));
-          taskArray.concat(getAllRejectedTaskIds(typeObj));
-          taskArray.concat(getAllCompletedTaskIds(typeObj));
-          taskArray.concat(getAllSuspendedTaskIds(typeObj));
+          taskArray.push.apply(taskArray, getAllActiveTaskIds(typeObj));
+          taskArray.push.apply(taskArray, getAllRejectedTaskIds(typeObj));
+          taskArray.push.apply(taskArray, getAllCompletedTaskIds(typeObj));
+          taskArray.push.apply(taskArray, getAllSuspendedTaskIds(typeObj));
           taskFindMany(taskArray, function(err, tasks) {
             if (err) {
               return res.status(404).send({
@@ -134,15 +134,7 @@ function getAllTaskIds(array) {
   var taskIdArray = [];
   for (var task = 0; task < array.length; task++)
     if (array[task])
-      if (!array[task].hidden && array[task].task)
-        taskIdArray.push(array[task].task);
+      if (!array[task].hidden && array[task].taskId)
+        taskIdArray.push(array[task].taskId);
   return taskIdArray;
-}
-
-// finds the task in the array and if it matches the taskId, removes it
-function removeFromObjectTasksArray (taskId, array) {
-  for (var i = 0; i < array.length; i++)
-    if (array[i].task.toString() === taskId.toString())
-      array.splice(i, 1);
-  return array;
 }

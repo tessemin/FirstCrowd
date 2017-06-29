@@ -269,7 +269,7 @@ var IndividualUserSchema = new Schema({
   }],
   requester: {
     activeTasks: [{
-      task: {
+      taskId: {
         type: Schema.Types.ObjectId
       },
       hidden: {
@@ -278,7 +278,7 @@ var IndividualUserSchema = new Schema({
       }
     }],
     suspendedTasks: [{
-      task: {
+      taskId: {
         type: Schema.Types.ObjectId
       },
       hidden: {
@@ -287,7 +287,7 @@ var IndividualUserSchema = new Schema({
       }
     }],
     completedTasks: [{
-      task: {
+      taskId: {
         type: Schema.Types.ObjectId
       },
       hidden: {
@@ -296,7 +296,7 @@ var IndividualUserSchema = new Schema({
       }
     }],
     rejectedTasks: [{
-      task: {
+      taskId: {
         type: Schema.Types.ObjectId
       },
       hidden: {
@@ -322,7 +322,7 @@ var IndividualUserSchema = new Schema({
   },
   worker: {
     activeTasks: [{
-      task: {
+      taskId: {
         type: Schema.Types.ObjectId
       },
       hidden: {
@@ -335,7 +335,7 @@ var IndividualUserSchema = new Schema({
       }
     }],
     rejectedTasks: [{
-      task: {
+      taskId: {
         type: Schema.Types.ObjectId
       },
       hidden: {
@@ -344,7 +344,7 @@ var IndividualUserSchema = new Schema({
       }
     }],
     completedTasks: [{
-      task: {
+      taskId: {
         type: Schema.Types.ObjectId
       },
       hidden: {
@@ -353,7 +353,7 @@ var IndividualUserSchema = new Schema({
       }
     }],
     inactiveTasks: [{
-      task: {
+      taskId: {
         type: Schema.Types.ObjectId
       },
       hidden: {
@@ -362,7 +362,7 @@ var IndividualUserSchema = new Schema({
       }
     }],
     recomendedTasks: [{
-      task: {
+      taskId: {
         type: Schema.Types.ObjectId
       },
       hidden: {
