@@ -13,7 +13,7 @@ var path = require('path'),
   enterpriseControler = require(path.resolve('./modules/enterprises/server/controllers/enterprises.server.controller')),
   _ = require('lodash');
 
-var taskWhiteListedFields = [],
+var taskWhiteListedFields = ['status'],
   taskId = null;
 /**
  * Requester middleware
@@ -45,11 +45,11 @@ exports.taskActions = {
         newTask.dateCreated = Date.now();
         newTask.save(function(err) {
           if (err) {
-            res.status(404).send({
+            return res.status(404).send({
               message: errorHandler.getErrorMessage(err)
             });
           } else {
-            res.status(200).send({
+            return res.status(200).send({
               message: 'Task ' + newTask.title + ' created successfully!'
             });
           }
@@ -68,11 +68,13 @@ exports.taskActions = {
         if (taskId.toString() === typeObj._id.toString()) {
           Task.findByIdAndRemove(taskId, function (err, task) {
             if (err) {
-              res.status(400).send({
+              return res.status(400).send({
                 message: errorHandler.getErrorMessage(err)
               });
             } else {
-              res.status(200).send('Task ' + task.title + ' deleted successfully');
+              return res.status(200).send({
+                message: 'Task ' + task.title + ' deleted successfully'
+              });
             }
           });
         } else {
@@ -98,16 +100,44 @@ exports.taskActions = {
             });
           }
           if (task.requester._id.toString() === typeObj._id.toString()) {
-            task = _.extend(task, _.pick(req.body, taskWhiteListedFields));
-            task.save(function(err) {
-              if (err) {
-                res.status(404).send({
-                  message: errorHandler.getErrorMessage(err)
+            // if we are updating the status, make sure we keep the requester and task in same state
+            if (taskWhiteListedFields.indexOf('status') > -1 && req.body.status){
+              updateStatus(req.body.status, task._id, typeObj, res, function (typeObj, task) {
+                delete req.body.status;
+                task = _.extend(task, _.pick(req.body, taskWhiteListedFields));
+                typeObj.save(function (typeErr, typeObj) {
+                  if (typeErr) {
+                    return res.status(404).send({
+                      message: errorHandler.getErrorMessage(typeErr)
+                    });
+                  } else {
+                    task.save(function (err, typeObj) {
+                      if (err) {
+                        return res.status(404).send({
+                          message: errorHandler.getErrorMessage(err)
+                        });
+                      } else {
+                        return res.status(200).send({
+                          message: 'Status for task ' + task.title + ' updated successfully'
+                        });
+                      }
+                    });
+                  }
                 });
-              } else {
-                res.json(task);
-              }
-            });
+            } else {
+              task = _.extend(task, _.pick(req.body, taskWhiteListedFields));
+              task.save(function(err) {
+                if (err) {
+                  return res.status(404).send({
+                    message: errorHandler.getErrorMessage(err)
+                  });
+                } else {
+                  return res.status(200).send({
+                    message: 'Update successful'
+                  });
+                }
+              });
+            }
           } else {
             return res.status(404).send({
               message: 'You are not the owner of this task'
@@ -129,21 +159,22 @@ exports.taskActions = {
           message: errorHandler.getErrorMessage(err)
         });
       }
-      var workerRatings = [];
+      var workerRatings = {};
       if (task.jobs)
         for (var job = 0; job < task.jobs.length; job++) {
           if (task.jobs[job]) {
-            if (task.jobs[job].workerRating && task.jobs[job].progress && task.jobs[job].progress >= 100 ) {
-              workerRatings.push({
+            if (task.jobs[job].workerRating && task.jobs[job].progress && task.jobs[job].progress >= 100) {
+              workerRatings.requester = task.requester;
+              workerRatings.ratings = [];
+              workerRatings.ratings.push({
                 rating: task.jobs[job].workerRating,
                 status: task.jobs[job].status,
-                worker: task.jobs[job].worker,
-                requester: task.requester
+                worker: task.jobs[job].worker
               });
             }
           }
         }
-      res.json(workerRatings);
+      return res.json(workerRatings);
     });
   },
   getRequesterRatingsForTask: function (req, res) {
@@ -154,21 +185,59 @@ exports.taskActions = {
           message: errorHandler.getErrorMessage(err)
         });
       }
-      var requesterRatings = [];
+      var requesterRatings = {};
       if (task.jobs)
         for (var job = 0; job < task.jobs.length; job++) {
           if (task.jobs[job]) {
-            if (task.jobs[job].requesterRating && task.jobs[job].progress && task.jobs[job].progress >= 100 ) {
-              workerRatings.push({
+            if (task.jobs[job].requesterRating && task.jobs[job].progress && task.jobs[job].progress >= 100) {
+              requesterRatings.requester = task.requester;
+              requesterRatings.ratings = [];
+              requesterRatings.ratings.push({
                 rating: task.jobs[job].requesterRating,
                 status: task.jobs[job].status,
-                worker: task.jobs[job].worker,
-                requester: task.requester
+                worker: task.jobs[job].worker
               });
             }
           }
         }
       res.json(requesterRatings);
+    });
+  },
+  changeStatus: function (req, res) {
+    getUserTypeObject(req, res, function(typeObj) {
+      if (isRequester(req.user)) {
+        if (typeObj.requester) {
+          updateStatus(req.body.status, req.body._id, typeObj, res, function (typeObj, task) {
+            typeObj.save(function (typeErr, typeObj) {
+              if (typeErr) {
+                return res.status(404).send({
+                  message: errorHandler.getErrorMessage(typeErr)
+                });
+              } else {
+                task.save(function (err, typeObj) {
+                  if (err) {
+                    return res.status(404).send({
+                      message: errorHandler.getErrorMessage(err)
+                    });
+                  } else {
+                    return res.status(200).send({
+                      message: 'Status for task ' + task.title + ' updated successfully'
+                    });
+                  }
+                });
+              }
+            });
+          }); //end update status
+        } else {
+          return res.status(404).send({
+            message: 'No requester found.'
+          });
+        }
+      } else {
+        return res.status(404).send({
+          message: 'You are not signed in as a requester.'
+        });
+      }
     });
   }
 };
@@ -230,6 +299,84 @@ function isRequester(user) {
   } else {
     return false;
   }
+}
+
+function updateStatus(status, taskId, typeObj, res, callBack) {
+  taskFindOne(taskId, function (err, task) {
+    removeTaskFromRequesterArray(taskId, typeObj);
+    if (err) {
+      // saves the requester because that ID doesn't exist so removes it
+      typeObj.save(function (typeErr, typeObj) {
+        if (typeErr)
+          return res.status(404).send({
+            message: errorHandler.getErrorMessage(err) + ' And ' + errorHandler.getErrorMessage(typeErr)
+          });
+        else
+          return res.status(404).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+      });
+    }
+    if (task.requester._id.toString() === typeObj._id.toString()) {
+      switch (status) {
+        case 'open':
+          statusPushTo(task, status, typeObj.requester.activeTasks);
+          break;
+        case 'inactive':
+          statusPushTo(task, status, typeObj.requester.suspended);
+          break;
+        case 'taken':
+          statusPushTo(task, status, typeObj.requester.activeTasks);
+          break;
+        case 'suspended':
+          statusPushTo(task, status, typeObj.requester.suspended);
+          break;
+        case 'sclosed':
+          statusPushTo(task, status, typeObj.requester.completedTasks);
+          break;
+        case 'fclosed':
+          statusPushTo(task, status, typeObj.requester.rejectedTasks);
+          break;
+        default:
+          return res.status(404).send({
+            message: 'Status not supported.'
+          });
+      }
+      // save typeObj first to avoid orphaned tasks
+      callBack(typeObj, task);
+    } else {
+      return res.status(404).send({
+        message: 'You are not the owner of this task'
+      });
+    }
+  });
+}
+
+// removes that taskId from the requester arrays
+function removeTaskFromRequesterArray(taskId, typeObj) {
+  if (typeObj.requester) {
+    if (typeObj.requester.activeTasks)
+      typeObj.requester.activeTasks = removeFromObjectTasksArray(taskId, typeObj.requester.activeTasks);
+    if (typeObj.requester.suspendedTasks)
+      typeObj.requester.suspendedTasks = removeFromObjectTasksArray(taskId, typeObj.requester.suspendedTasks);
+    if (typeObj.requester.completedTasks)
+      typeObj.requester.completedTasks = removeFromObjectTasksArray(taskId, typeObj.requester.completedTasks);
+    if (typeObj.requester.rejectedTasks)
+      typeObj.requester.rejectedTasks = removeFromObjectTasksArray(taskId, typeObj.requester.rejectedTasks);
+  }
+}
+
+// changes tasks current status and adds task to one of the requester arrays
+function statusPushTo(task, taskStatus, requesterArray) {
+  task.status = taskStatus;
+  if (requesterArray)
+    if (requesterArray.length > 0) {
+      return (requesterArray.push(task._id));
+    } else {
+      requesterArray = [];
+      return (requesterArray.push(task._id));
+    }
+  return requesterArray;
 }
 
 exports.getUserTypeObject = getUserTypeObject;

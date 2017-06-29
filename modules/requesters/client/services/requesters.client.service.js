@@ -17,42 +17,22 @@
         method: 'POST',
         url: '/api/requesters/tasks/all'
       },
-      _changeStatus: {
-        method: 'POST',
-        url: '/api/requesters/tasks/changeStatus'
-      },
       // ACTIVE TASKS
-      _updateActiveTasks: {
-        method: 'PUT',
-        url: '/api/requesters/activeTask/update'
-      },
       _getActiveTasks: {
         method: 'POST',
         url: '/api/requesters/activeTask/all'
       },
       // SUSPENDED TASKS
-      _updateSuspendedTask: {
-        method: 'PUT',
-        url: '/api/requesters/suspendedTask/update'
-      },
       _getSuspendedTasks: {
         method: 'POST',
         url: '/api/requesters/suspendedTask/all'
       },
       // COMPLETED TASKS
-      _updateCompletedTask: {
-        method: 'PUT',
-        url: '/api/requesters/completedTask/update'
-      },
       _getCompletedTasks: {
         method: 'POST',
         url: '/api/requesters/completedTask/all'
       },
       // REJECTED TASKS
-      _updateRejectedTask: {
-        method: 'PUT',
-        url: '/api/requesters/rejectedTask/update'
-      },
       _getRejectedTasks: {
         method: 'POST',
         url: '/api/requesters/rejectedTask/all'
@@ -99,6 +79,10 @@
       _getRequesterRatingsForTask: {
         method: 'POST',
         url: '/api/tasks/getRequesterRatingsForTask'
+      },
+      _changeTaskStatus: {
+        method: 'POST',
+        url: '/api/tasks/changeTaskStatus'
       }
     });
 
@@ -107,34 +91,22 @@
       getAllTasks: function() {
         return this._getAllTasks().$promise;
       },
-      changeStatus: function(status_task) {
-        return this._changeStatus(status_task).$promise;
+      changeTaskStatus: function(status_task) {
+        return this._changeTaskStatus(status_task).$promise;
       },
       // ACTIVE TASKS
-      updateActiveTasks: function(taskId) {
-        return this._updateActiveTasks(taskId).$promise;
-      },
       getActiveTasks: function() {
         return this._getActiveTasks().$promise;
       },
       // SUSPENDED TASKS
-      updateSuspendedTask: function() {
-        return this._updateSuspendedTask().$promise;
-      },
       getSuspendedTasks: function() {
         return this._getSuspendedTasks().$promise;
       },
       // COMPLETED TASKS
-      updateCompletedTask: function() {
-        return this._updateCompletedTask().$promise;
-      },
       getCompletedTasks: function() {
         return this._getCompletedTasks().$promise;
       },
       // REJECTED TASKS
-      updateRejectedTask: function() {
-        return this._updateRejectedTask().$promise;
-      },
       getRejectedTasks: function() {
         return this._getRejectedTasks().$promise;
       },
