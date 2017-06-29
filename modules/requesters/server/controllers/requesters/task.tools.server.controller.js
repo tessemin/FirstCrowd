@@ -295,11 +295,11 @@ function findTaskWorker(task, typeObj, res) {
 }
 
 function isRequester(user) {
-  if (user.userType.indexOf('requester') !== -1) {
-    return true;
-  } else {
-    return false;
-  }
+  if (user.userRole)
+    if (user.userRole.indexOf('requester') !== -1) {
+      return true;
+    }
+  return false;
 }
 
 function updateStatus(status, taskId, typeObj, res, callBack) {

@@ -34,7 +34,7 @@ exports.requesterTasks = {
                 message: errorHandler.getErrorMessage(err)
               });
             } else {
-              res.json(tasks);
+              res.json({ tasks: tasks });
             }
           });
         } else {
