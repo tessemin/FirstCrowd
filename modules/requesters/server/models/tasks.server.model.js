@@ -149,7 +149,7 @@ var TaskSchema = new Schema({
   },
   bids: {
     type: [{
-      worker:{
+      worker: {
         workerType: {
           enterprise: {
             type: Boolean
@@ -216,7 +216,7 @@ var TaskSchema = new Schema({
 });
 
 TaskSchema.pre('save', function (next) {
-  this.lastModified = Date.now()
+  this.lastModified = Date.now();
   next();
 });
 
