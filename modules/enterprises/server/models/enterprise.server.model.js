@@ -171,37 +171,21 @@ var EnterpriseUserSchema = new Schema({
     activeTasks: [{
       taskId: {
         type: Schema.Types.ObjectId
-      },
-      hidden: {
-        type: Boolean,
-        default: false
       }
     }],
     suspendedTasks: [{
       taskId: {
         type: Schema.Types.ObjectId
-      },
-      hidden: {
-        type: Boolean,
-        default: false
       }
     }],
     completedTasks: [{
       taskId: {
         type: Schema.Types.ObjectId
-      },
-      hidden: {
-        type: Boolean,
-        default: false
       }
     }],
     rejectedTasks: [{
       taskId: {
         type: Schema.Types.ObjectId
-      },
-      hidden: {
-        type: Boolean,
-        default: false
       }
     }],
     acceptanceRate: {
@@ -224,50 +208,26 @@ var EnterpriseUserSchema = new Schema({
     activeTasks: [{
       taskId: {
         type: Schema.Types.ObjectId
-      },
-      hidden: {
-        type: Boolean,
-        default: false
-      },
-      markCompleted: {
-        type: Boolean,
-        default: false
       }
     }],
     rejectedTasks: [{
       taskId: {
         type: Schema.Types.ObjectId
-      },
-      hidden: {
-        type: Boolean,
-        default: false
-      }
-    }],
-    completedTasks: [{
-      taskId: {
-        type: Schema.Types.ObjectId
-      },
-      hidden: {
-        type: Boolean,
-        default: false
       }
     }],
     inactiveTasks: [{
       taskId: {
         type: Schema.Types.ObjectId
-      },
-      hidden: {
-        type: Boolean,
-        default: false
+      }
+    }],
+    completedTasks: [{
+      taskId: {
+        type: Schema.Types.ObjectId
       }
     }],
     recomendedTasks: [{
       taskId: {
         type: Schema.Types.ObjectId
-      },
-      hidden: {
-        type: Boolean,
-        default: false
       }
     }],
     totalEarnings: {
