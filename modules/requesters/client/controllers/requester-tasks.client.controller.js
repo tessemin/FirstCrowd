@@ -21,12 +21,12 @@
       'Fire Worker'
     ];
 
-    /*
-    RequestersService._getActiveTasks().$promise
+
+    RequestersService.getAllTasks()
       .then(function(data) {
         console.log(data);
       });
-    */
+
 
     // Dummy tasks while building system
     vm.tasks = [{
