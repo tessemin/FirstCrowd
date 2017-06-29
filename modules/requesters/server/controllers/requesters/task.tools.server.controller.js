@@ -124,6 +124,7 @@ exports.taskActions = {
                     });
                   }
                 });
+              });
             } else {
               task = _.extend(task, _.pick(req.body, taskWhiteListedFields));
               task.save(function(err) {
