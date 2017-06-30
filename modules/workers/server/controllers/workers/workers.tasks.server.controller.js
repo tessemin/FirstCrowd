@@ -8,14 +8,18 @@ var path = require('path'),
   Task = mongoose.model('Task'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   taskTools = require(path.resolve('modules/requesters/server/controllers/requesters/task.tools.server.controller')),
+  taskSearch = require(path.resolve('./modules/requesters/server/controllers/requesters/task.search.server.controller')),
   _ = require('lodash');
 
 var workerWhitelistedFields = ['progress'],
   taskId = null,
   // functions for task tools
   getUserTypeObject = taskTools.getUserTypeObject,
-  taskFindOne = taskTools.taskFindOne,
-  taskFindMany = taskTools.taskFindMany;
+  getIdsInArray = taskTools.getIdsInArray,
+  taskFindOne = taskSearch.taskFindOne,
+  taskFindMany = taskSearch.taskFindMany,
+  taskFindWithOption = taskSearch.taskFindWithOption,
+  findTaskWorker = taskSearch.findTaskWorker;
 
 
 /*
@@ -34,10 +38,17 @@ exports.activeTask = {
               message: errorHandler.getErrorMessage(err)
             });
           }
-          var taskWorker = findTaskWorker(task, typeObj, res);
+          var taskWorker = findTaskWorker(task, typeObj);
+          if (!taskWorker) {
+            return res.status(404).send({
+              message: 'You are not a worker for this task'
+            });
+          }
           taskWorker.save(function(err) {
             if (err) {
-              res.status(400).send(err);
+              return res.status(404).send({
+                message: errorHandler.getErrorMessage(err)
+              });
             } else {
               res.json(taskWorker);
             }
@@ -65,7 +76,9 @@ exports.activeTask = {
             typeObj.worker.activeTasks.push(task._id);
             typeObj.save(function(err) {
               if (err) {
-                res.status(400).send(err);
+                return res.status(404).send({
+                  message: errorHandler.getErrorMessage(err)
+                });
               } else {
                 res.json(typeObj);
               }
@@ -87,10 +100,10 @@ exports.activeTask = {
   all: function (req, res) {
     getUserTypeObject(req, res, function(typeObj) {
       if (typeObj.worker) {
-        taskFindMany(typeObj.worker.activeTasks, function(err, tasks) {
+        taskFindMany(typeObj.worker.activeTasks, false, function(err, tasks) {
           if (err) {
             return res.status(404).send({
-              message: 'No active tasks were found'
+              message: errorHandler.getErrorMessage(err)
             });
           }
           res.json({ tasks: tasks });
@@ -312,8 +325,7 @@ exports.inactiveTask = {
   add: function (req, res) {
     getUserTypeObject(req, res, function(typeObj) {
       if (typeObj.worker) {
-        taskId = req.body._id;
-        taskFindOne(taskId, function(err, task) {
+        taskFindOne(req.body.taskId, function(err, task) {
           if (err) {
             return res.status(404).send({
               message: errorHandler.getErrorMessage(err)
@@ -345,10 +357,10 @@ exports.inactiveTask = {
   all: function (req, res) {
     getUserTypeObject(req, res, function(typeObj) {
       if (typeObj.worker) {
-        taskFindMany(typeObj.worker.inactiveTasks, function(err, tasks) {
+        taskFindMany(typeObj.worker.inactiveTasks, false, function(err, tasks) {
           if (err) {
             return res.status(404).send({
-              message: 'No inactive tasks were found'
+              message: errorHandler.getErrorMessage(err)
             });
           }
           res.json({ tasks: tasks });
@@ -369,61 +381,19 @@ exports.inactiveTask = {
 exports.recomendedTask = {
   // update a single recomended task
   update: function(req, res) {
-    Task.find({ secret: false }, function (err, tasks) {
-      console.log();
-      if (tasks.length === 0) {
-        getUserTypeObject(req, res, function (typeObj) {
-          for (var index = 1; index < 6; index++) {
-            var task = new Task();
-            task.title = 'task: ' + index;
-            task.description = 'What a Task ' + index + '!';
-            task.skillsNeeded = ['skill1', 'skill2', 'skill3'];
-            task.deadline = '09/25/2017';
-            task.payment = {
-              bidding: {
-                bidable: false
-              },
-              staticPrice: 100
-            };
-            task.status = 'open';
-            task.multiplicity = 10;
-            task.preapproval = true;
-            task.requester = typeObj._id;
-            task.workers[0] = {};
-            task.workers[0].status = 'active';
-            task.workers[0].worker = typeObj._id;
-            task.workers[0].progress = 0;
-            task.dateCreated = Date.now();
-            typeObj.worker.activeTasks.push(task._id);
-            task.save(function(err) {
-              if (err) {
-                console.log(err);
-              }
-            });
-          }
-          typeObj.save(function(err) {
-            if (err) {
-              console.log(err);
-            }
-          });
-          res.json({});
-        });
-      } else {
-        res.json({});
-      }
-    });
+    
   },
   // get all recomended tasks
   all: function (req, res) {
     getUserTypeObject(req, res, function(typeObj) {
       if (typeObj.worker) {
-        taskFindMany(typeObj.worker.recomendedTasks, function(err, tasks) {
+        taskFindMany(getIdsInArray(typeObj.worker.recomendedTasks), true, function(err, tasks) {
           if (err) {
             return res.status(404).send({
-              message: 'No recomended tasks were found'
+              message: errorHandler.getErrorMessage(err)
             });
           }
-          res.json({ tasks: tasks });
+          return res.json({ tasks: tasks });
         });
       } else {
         return res.status(400).send({
@@ -455,33 +425,50 @@ exports.taskByID = function(req, res, next, id) {
 };
 
 exports.getAllTasks = function (req, res) {
-  Task.find({ secret: false }, function (err, tasks) {
-    res.json({ tasks: tasks });
+  taskFindWithOption({ secret: false }, function (err, tasks) {
+    if (err)
+      return res.status(404).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    return res.json({ tasks: tasks });
   });
 };
 
 exports.getOneTask = function(req, res) {
-  taskId = req.body._id;
+  taskId = req.body.taskId;
   taskFindOne(taskId, function(err, task) {
     if (err) {
       return res.status(404).send({
         message: errorHandler.getErrorMessage(err)
       });
     }
-    res.json({ task: task });
+    return res.json({ task: task });
   });
 };
 
 exports.getWorkerForTask = function(req, res) {
-  taskId = req.body._id;
+  taskId = req.body.taskId;
   getUserTypeObject(req, res, function(typeObj) {
     taskFindOne(taskId, function(err, task) {
-      var worker = findTaskWorker(task, typeObj, res);
-      res.json({ taskWorker: worker });
+      var isWorker = findTaskWorker(task, typeObj, res);
+      if (isWorker)
+        return res.json({ worker: isWorker });
+      else
+        return res.status(404).send({
+          message: 'You are not a worker for this task'
+        });
     });
   });
 };
 
-function findTaskWorker(task, typeObj, res) {
-  // TODO
+exports.getTasksWithOptions = function(req, res) {
+  var options = req.body.options;
+  options.secret = false;
+  taskFindWithOption(options, function(err, tasks) {
+    if (err)
+      return res.status(404).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    return res.json({ tasks: tasks });
+  });
 }

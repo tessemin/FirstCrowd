@@ -40,6 +40,7 @@ module.exports = function(app) {
   // TASKS NATIVE API
   app.route('/api/getAllTasks').post(workers.getAllTasks);
   app.route('/api/getOneTask').post(workers.getOneTask);
+  app.route('/api/tasks/getTasksWithOptions').post(workers.getTasksWithOptions);
 
   app.route('/api/task/getYourWorker').post(workers.getWorkerForTask);
 

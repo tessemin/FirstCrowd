@@ -13,9 +13,10 @@ var path = require('path'),
 
 // functions for task tools  
 var getUserTypeObject = taskTools.getUserTypeObject,
-  isRequester = taskTools.isRequester,
   taskId = null,
   taskWhiteListedFields = taskTools.taskWhiteListedFields,
+  ownsTask = taskTools.ownsTask,
+  getIdsInArray = taskTools.getIdsInArray,
   taskFindOne = taskSearch.taskFindOne,
   taskFindMany = taskSearch.taskFindMany;
   
@@ -65,7 +66,44 @@ exports.rejectedTask = {
 
 exports.workerRating = {
   makeRating: function (req, res) {
-    
+    getUserTypeObject(req, res, function(typeObj) {
+      if (isRequester(req.user)) {
+        taskFindOne(taskId, function(err, task) {
+          if (ownsTask(task, typeObj)) {
+            if (err) {
+              return res.status(404).send({
+                message: errorHandler.getErrorMessage(err)
+              });
+            }
+            for (var worker = 0; worker < task.jobs.length; worker++) {
+              if (task.jobs[worker].workerId.toString() === req.body.worker.workerId.toString()) {
+                task.jobs[worker].ratingOnWorker = req.body.rating;
+                break;
+              }
+            }
+            task.save(function(err, task) {
+              if(err) {
+                return res.status(404).send({
+                  message: errorHandler.getErrorMessage(err)
+                });
+              } else {
+                return res.status(200).send({
+                  message: 'Rating for worker succeeded'
+                });
+              }
+            });
+          } else {
+            return res.status(404).send({
+              message: 'You are not the owner of this task'
+            });
+          }
+        });
+      } else {
+        return res.status(404).send({
+          message: 'You are not a requester'
+        });
+      }
+    });
   },
   all: function (req, res) {
     
@@ -76,7 +114,7 @@ exports.workerRating = {
 };
 
 function getAllTasksForIds(req, res, taskIdGetFunction, callBack) {
-   getUserTypeObject(req, res, function(typeObj) {
+  getUserTypeObject(req, res, function(typeObj) {
     if (isRequester(req.user)) {
       if (typeObj.requester) {
         taskFindMany(taskIdGetFunction(typeObj), true, function(err, tasks) {
@@ -117,11 +155,10 @@ function getAllRejectedTaskIds(typeObj) {
   return getIdsInArray(typeObj.requester.rejectedTasks);
 }
 
-function getIdsInArray(array) {
-  var idArray = [];
-  for (var i = 0; i < array.length; i++)
-    if (array[i])
-      if (array[i].taskId)
-        idArray.push(array[i].taskId);
-  return idArray;
+function isRequester(user) {
+  if (user.userRole)
+    if (user.userRole.indexOf('requester') !== -1) {
+      return true;
+    }
+  return false;
 }
