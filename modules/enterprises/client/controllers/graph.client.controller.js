@@ -12,16 +12,21 @@
     var vm = this;
     vm.sidebar = false;
     vm.selected = {};
+    vm.search = 'morning';
 
     vm.chooseCompany = chooseCompany;
     vm.toggleSidebar = toggleSidebar;
+    vm.showSearch = showSearch;
+
+    function showSearch() {
+      console.log(vm.search);
+    }
 
     function toggleSidebar() {
       vm.sidebar = !vm.sidebar;
     }
 
     function chooseCompany(obj) {
-      console.log(obj);
       $scope.$apply(
         vm.sidebar = true,
         vm.selected = obj.selected
