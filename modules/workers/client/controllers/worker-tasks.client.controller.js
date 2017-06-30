@@ -34,6 +34,7 @@
       'Active Tasks',
       'Completed Tasks',
       'Uncompleted Tasks',
+      'Open Tasks',
       'Recommended Tasks'
     ];
     vm.taskCategory = vm.taskCategories[0];
@@ -61,8 +62,7 @@
         } else {
           return '#0db9f0';
         }
-      }
-      /* ,
+      },
       // Update progress on backend after changing progress slider of task
       onEnd: function(sliderId, modelValue, highValue, pointerType) {
         console.log('sliderId: ' + sliderId);
@@ -75,9 +75,9 @@
 
         WorkersService.updateActiveTask(update)
           .then(function(data) {
+            console.log(data);
           });
       }
-      */
     };
 
     vm.loadData = function(data) {
@@ -108,28 +108,35 @@
     };
 
     vm.changeTaskCategory = function() {
+      vm.loaded = false;
       switch (vm.taskCategory) {
         case 'Completed Tasks':
-          WorkersService.getCompletedTasks({ '_id': 'test' })
+          WorkersService.getCompletedTasks()
             .then(function(data) {
               vm.loadData(data);
             });
           break;
         case 'Uncompleted tasks':
-          WorkersService.getRejectedTasks({ '_id': 'test' })
+          WorkersService.getRejectedTasks()
             .then(function(data) {
               vm.loadData(data);
             });
           break;
         case 'Recommended Tasks':
-          WorkersService.getRecomendedTasks({ '_id': 'test' })
+          WorkersService.getRecomendedTasks()
+            .then(function(data) {
+              vm.loadData(data);
+            });
+          break;
+        case 'Open Tasks':
+          WorkersService.getTasksWithOptions({'status': 'open'})
             .then(function(data) {
               vm.loadData(data);
             });
           break;
         case 'Active Tasks':
         default:
-          WorkersService.getActiveTasks({ '_id': 'test' })
+          WorkersService.getActiveTasks()
             .then(function(data) {
               vm.loadData(data);
             });

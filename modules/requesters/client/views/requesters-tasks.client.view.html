@@ -35,9 +35,6 @@
   <div class="col-md-9 tasks-table">
     <div class="tasks-header">
       <div class="tasks-cell">
-        Task ID
-      </div>
-      <div class="tasks-cell">
         Title
       </div>
       <div class="tasks-cell">
@@ -57,9 +54,6 @@
       </div>
     </div>
     <div class="tasks-row" ng-repeat="task in vm.tasks | filter : vm.filters : false as results track by $index">
-      <div class="tasks-cell">
-        {{task._id}}
-      </div>
       <div class="tasks-cell">
         {{task.name}}
       </div>
@@ -81,8 +75,11 @@
       </div>
     </div> <!-- end ng-repeat -->
     <div class="text-center form-group">
-      <div ng-if="vm.tasks.length === 0">
-        You have no tasks.
+      <div ng-if="vm.loaded === false">
+        Loading...
+      </div>
+      <div ng-if="vm.loaded === true && vm.tasks.length === 0">
+        There are no tasks.
       </div>
     </div>
   </div>
