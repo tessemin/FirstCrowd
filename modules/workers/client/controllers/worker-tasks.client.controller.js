@@ -129,7 +129,7 @@
             });
           break;
         case 'Open Tasks':
-          WorkersService.getTasksWithOptions({'status': 'open'})
+          WorkersService.getTasksWithOptions({status: 'open'})
             .then(function(data) {
               vm.loadData(data);
             });
