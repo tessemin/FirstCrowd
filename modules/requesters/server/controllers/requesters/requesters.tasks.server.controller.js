@@ -162,3 +162,5 @@ function isRequester(user) {
     }
   return false;
 }
+
+exports.isRequester = isRequester;

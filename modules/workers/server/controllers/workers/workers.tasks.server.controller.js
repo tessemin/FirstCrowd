@@ -462,9 +462,8 @@ exports.getWorkerForTask = function(req, res) {
 };
 
 exports.getTasksWithOptions = function(req, res) {
-  var options = req.body.options;
-  options.secret = false;
-  taskFindWithOption(options, function(err, tasks) {
+  req.body.secret = false;
+  taskFindWithOption(req.body, function(err, tasks) {
     if (err)
       return res.status(404).send({
         message: errorHandler.getErrorMessage(err)
