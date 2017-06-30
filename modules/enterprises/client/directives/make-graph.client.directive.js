@@ -16,7 +16,7 @@
         selected: '=',
         select: '&'
       },
-      link: function(scope, element, attrs, ctrl) {
+      link: function(scope, element, attrs) {
 
         d3().then(function(d3) {
           var width = $window.innerWidth;
@@ -132,6 +132,18 @@
                     scope.$parent.vm.chooseCompany({ selected: data });
                   });
 
+
+            var home = d3.select('#graph')
+                  .append('span')
+                  .attr('class', 'glyphicon glyphicon-home home')
+                  .on('click', centerHome)
+                  .on('mousedown', function() {
+                    d3.select(this).style('color', 'gray');
+                  })
+                  .on('mouseup', function() {
+                    d3.select(this).style('color', 'lightgray');
+                  });
+
             // add zoom capabilities
             var zoom = d3.zoom()
                   .scaleExtent([1 / 2, 2])
@@ -145,12 +157,11 @@
             // svg.on("mousewheel.zoom", null);
             // svg.on("MozMousePixelScroll.zoom", null);
 
-            // zoom(svg);
             svg.call(zoom);
 
             /** Functions **/
             function centerHome() {
-              g.transition()
+              svg.transition()
                 .duration(500)
                 .call( zoom.transform, d3.zoomIdentity );
             }
@@ -159,7 +170,6 @@
             var centerY = height / 2;
 
             function centerNode(node) {
-
               var circle = node._groups[0][0];
               var x = centerX - circle.cx.baseVal.value;
               var y = centerY - circle.cy.baseVal.value;
