@@ -10,7 +10,6 @@
   function makeGraph($window, EnterprisesService, $document, $q, $rootScope) {
     return {
       restrict: 'EA',
-      // require: '^EnterpriseGraphController',
       replace: true,
       transclude: true,
       scope: {
@@ -128,28 +127,45 @@
                   .style('stroke', 'black')
                   .style('stroke-width', 1)
                   .on('click', function(d, i) {
-                    centerNode(d3.select(this)._groups[0][0]);
+                    centerNode(d3.select(this));
                     var data = d3.select(this)._groups[0][0].__data__;
                     scope.$parent.vm.chooseCompany({ selected: data });
                   });
 
             // add zoom capabilities
-            var zoom_handler = d3.zoom()
-                  .scaleExtent([1 / 1.5, 2])
+            var zoom = d3.zoom()
+                  .scaleExtent([1 / 2, 2])
                   .on('zoom', zoom_actions);
 
-            zoom_handler(svg);
+            // svg.on("mousedown.zoom", null);
+            // svg.on("mousemove.zoom", null);
+            // svg.on("dblclick.zoom", null);
+            // svg.on("touchstart.zoom", null);
+            // svg.on("wheel.zoom", null);
+            // svg.on("mousewheel.zoom", null);
+            // svg.on("MozMousePixelScroll.zoom", null);
+
+            // zoom(svg);
+            svg.call(zoom);
 
             /** Functions **/
+            function centerHome() {
+              g.transition()
+                .duration(500)
+                .call( zoom.transform, d3.zoomIdentity );
+            }
+
+            var centerX = width / 2;
+            var centerY = height / 2;
 
             function centerNode(node) {
-              // simulation.alpha(0);
-              console.log(node.cx.baseVal.value, width / 2);
-              console.log(node.cy.baseVal.value, height / 2);
-              // g.transition().attr('translate', width / 2, height / 2);
-              var x = (width / 2) - node.cx.baseVal.value;
-              var y = (height / 2) - node.cy.baseVal.value;
-              g.transition().attr('transform', 'translate(' + x + ',' + y +')');
+
+              var circle = node._groups[0][0];
+              var x = centerX - circle.cx.baseVal.value;
+              var y = centerY - circle.cy.baseVal.value;
+              svg.transition()
+                .duration(500)
+                .call( zoom.transform, d3.zoomIdentity.translate(x,y) );
             }
 
             function ticked() {
