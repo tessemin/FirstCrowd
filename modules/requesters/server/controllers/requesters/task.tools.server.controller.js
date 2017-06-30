@@ -11,8 +11,11 @@ var path = require('path'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   individualControler = require(path.resolve('./modules/individuals/server/controllers/individuals.server.controller')),
   enterpriseControler = require(path.resolve('./modules/enterprises/server/controllers/enterprises.server.controller')),
+  taskSearch = require(path.resolve('./modules/requesters/server/controllers/requesters/task.search.server.controller')),
   _ = require('lodash');
 
+var taskFindOne = taskSearch.taskFindOne,
+  taskFindMany = taskSearch.taskFindMany;
 var taskWhiteListedFields = ['status'],
   taskId = null;
 /**
@@ -170,12 +173,12 @@ exports.taskActions = {
         });
       }
       var workerRatings = {};
-      if (task.jobs)
+      if (task.jobs) {
+        workerRatings.requester = task.requester;
+        workerRatings.ratings = [];
         for (var job = 0; job < task.jobs.length; job++) {
           if (task.jobs[job]) {
-            if (task.jobs[job].workerRating && task.jobs[job].progress && task.jobs[job].progress >= 100) {
-              workerRatings.requester = task.requester;
-              workerRatings.ratings = [];
+            if (task.jobs[job].workerRating) {
               workerRatings.ratings.push({
                 rating: task.jobs[job].workerRating,
                 status: task.jobs[job].status,
@@ -184,6 +187,7 @@ exports.taskActions = {
             }
           }
         }
+      }
       return res.json(workerRatings);
     });
   },
@@ -196,12 +200,12 @@ exports.taskActions = {
         });
       }
       var requesterRatings = {};
-      if (task.jobs)
+      if (task.jobs) {
+        requesterRatings.requester = task.requester;
+        requesterRatings.ratings = [];
         for (var job = 0; job < task.jobs.length; job++) {
           if (task.jobs[job]) {
             if (task.jobs[job].requesterRating && task.jobs[job].progress && task.jobs[job].progress >= 100) {
-              requesterRatings.requester = task.requester;
-              requesterRatings.ratings = [];
               requesterRatings.ratings.push({
                 rating: task.jobs[job].requesterRating,
                 status: task.jobs[job].status,
@@ -210,6 +214,7 @@ exports.taskActions = {
             }
           }
         }
+      }
       res.json(requesterRatings);
     });
   },
@@ -271,14 +276,6 @@ function getUserTypeObject(req, res, callBack) {
       linkMessage: 'Navigate Home'
     });
   }
-}
-
-function taskFindMany(taskArray, callBack) {
-  Task.find({ '_id': { $in: taskArray }, secret: false }, callBack);
-}
-
-function taskFindOne(taskId, callBack) {
-  Task.find({ '_id': taskId, secret: false }, function(err, task) { callBack(err, task[0]); });
 }
 
 function findTaskWorker(task, typeObj, res) {
