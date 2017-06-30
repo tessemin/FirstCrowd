@@ -12,14 +12,15 @@
     var vm = this;
     vm.sidebar = false;
     vm.selected = {};
-    vm.search = 'morning';
+    vm.search = '';
 
     vm.chooseCompany = chooseCompany;
     vm.toggleSidebar = toggleSidebar;
-    vm.showSearch = showSearch;
+    vm.con = con;
 
-    function showSearch() {
-      console.log(vm.search);
+    function con() {
+      var x = 'click';
+      console.log(x);
     }
 
     function toggleSidebar() {

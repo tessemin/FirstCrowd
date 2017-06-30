@@ -1,9 +1,12 @@
 <section id="graph">
   <make-graph></make-graph>
 
-  <div ng-if="!vm.selected.companyName">
-    <input type="text" ng-model="vm.search">
-    <div>Searching for: {{vm.search}}</div>
+  <div class="toggle-side form-group col-xs-4"  ng-if="!vm.selected.companyName">
+    <div class="inner-addon right-addon">
+      <i class="glyphicon glyphicon-search" ng-click="vm.con()"></i>
+      <input class="form-control" type="text" ng-model="vm.search" placeholder="Search">
+      <div>Searching for: {{vm.search}}</div>
+    </div>
   </div>
 
   <div ng-if="vm.selected.companyName">
