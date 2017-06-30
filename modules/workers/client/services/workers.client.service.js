@@ -80,6 +80,10 @@
       _getWorkerForTask: {
         method: 'POST',
         url: '/api/task/getYourWorker'
+      },
+      _getTasksWithOptions: {
+        method: 'POST',
+        url: '/api/tasks/getTasksWithOptions'
       }
     });
 
@@ -140,6 +144,9 @@
       },
       getWorkerForTask: function (Id) {
         return this._getWorkerForTask(Id).$promise;
+      },
+      getTasksWithOptions: function (options) {
+        return this._getTasksWithOptions(options).$promise;
       }
     });
 

@@ -18,8 +18,27 @@
           // has to be defined as 'false' for an ng-if to work on page load
           bidable: false
         }
+      },
+      publicNotes: {
+        type: [
+
+        ]
       }
     };
+
+    function addNote() {
+      vm.newTask.publicNotes.type.push({
+        note: ''
+      });
+    }
+
+    function removeNote(noteIndex) {
+      if (noteIndex < vm.newTask.publicNotes.type.length) {
+        vm.newTask.publicNotes.type.splice(noteIndex, 1);
+      } else {
+        Notification.error({ message: 'Error removing note: note index does not exist!' });
+      }
+    }
 
     function submitTask(isValid) {
       if(!isValid) {
@@ -35,6 +54,8 @@
         .catch(onSubmitNewTaskFailure);
     };
 
+    vm.addNote = addNote;
+    vm.removeNote = removeNote;
     vm.submitTask = submitTask;
 
     function onSubmitNewTaskSuccess(response) {

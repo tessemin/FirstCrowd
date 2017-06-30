@@ -104,12 +104,12 @@ var TaskSchema = new Schema({
         enum: ['active', 'accepted', 'rejected'],
         required: 'Please provide a status'
       },
-      workerRating: {
+      ratingOnWorker: {
         overAllRating: {
           type: Number
         }
       },
-      requesterRating: {
+      ratingOnRequester: {
         overAllRating: {
           type: Number
         }
@@ -123,7 +123,7 @@ var TaskSchema = new Schema({
             type: Boolean
           }
         },
-        _id: {
+        workerId: {
           type: Schema.Types.ObjectId,
           required: 'Please provide a worker'
         }
@@ -182,7 +182,7 @@ var TaskSchema = new Schema({
         required: 'Please fill out the note',
         deafult: null
       },
-      date: {
+      created: {
         type: Date,
         default: null,
         trim: true
@@ -197,7 +197,7 @@ var TaskSchema = new Schema({
         required: 'Please fill out the note',
         deafult: null
       },
-      date: {
+      created: {
         type: Date,
         default: null,
         trim: true

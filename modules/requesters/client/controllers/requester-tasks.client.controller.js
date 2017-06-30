@@ -21,39 +21,38 @@
       'Fire Worker'
     ];
 
+    vm.tasks = [];
+    vm.loaded = false;
+    vm.loadData = function(data) {
+      console.log(data);
+      if (data) {
+        vm.loaded = true;
+        var task,
+          postDate,
+          dueDate;
+        for (var i = 0; i < data.tasks.length; ++i) {
+          task = data.tasks[i];
+          postDate = new Date(task.dateCreated);
+          postDate = postDate.toDateString();
+          dueDate = new Date(task.deadline);
+          dueDate = dueDate.toDateString();
+          vm.tasks.push({
+            '_id': task._id,
+            'name': task.title,
+            'postingDate': postDate,
+            'deadline': dueDate,
+            'status': task.status,
+            'progress': task.totalProgress,
+            'taskAction': 'Select Action'
+          });
+        }
+      }
+    };
 
     RequestersService.getAllTasks()
       .then(function(data) {
-        console.log(data);
+        vm.loadData(data);
       });
-
-
-    // Dummy tasks while building system
-    vm.tasks = [{
-      '_id': 12315327,
-      'name': 'dummy task',
-      'postingDate': '06/13/17',
-      'deadline': '06/30/17',
-      'status': 'taken',
-      'progress': 50,
-      'taskAction': vm.taskActions[0]
-    }, {
-      '_id': 12315328,
-      'name': 'fix thing',
-      'postingDate': '05/11/17',
-      'deadline': '07/31/17',
-      'status': 'taken',
-      'progress': 0,
-      'taskAction': vm.taskActions[0]
-    }, {
-      '_id': 12315329,
-      'name': 'install whatzit',
-      'postingDate': '06/16/17',
-      'deadline': '08/15/17',
-      'status': 'taken',
-      'progress': 20,
-      'taskAction': vm.taskActions[0]
-    }];
 
     // This function is necessary to initially render the progress sliders
     (function refreshProgressSliders() {

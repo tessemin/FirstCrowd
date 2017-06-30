@@ -94,7 +94,17 @@
           </div>
         </div>
 
+        <div ng-repeat="note in vm.newTask.publicNotes.type track by $index">
+          <div class="form-group flex-linegroup">
+            <label class="flex-lineitem" for="note{{$index}}">Note:</label>
+            <input type="textarea" class="flex-lineitem" id="note{{$index}}" ng-model="vm.newTask.publicNotes.type[$index].note"/>
+          </div>
+          <button type="button" class="btn" ng-click="vm.removeNote($index)">Remove note</button>
+        </div>
+
+
       </fieldset>
+      <button type="button" class="btn" ng-click="vm.addNote()">Add a note</button>
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
   </div>
