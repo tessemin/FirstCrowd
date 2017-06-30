@@ -10,6 +10,7 @@
 
   function WorkerTasksController ($scope, $state, WorkersService) {
     var vm = this;
+    vm.tasks = [];
     vm.loaded = false;
     // Filters
     vm.filters = {};
@@ -23,9 +24,6 @@
       'Quit Task',
       'Submit Results'
     ];
-
-    vm.tasks = [];
-
     WorkersService.updateRecomendedTask({ '_id': 'rocks' })
       .then(function() {
       });
@@ -84,7 +82,6 @@
       console.log(data);
       if (data) {
         vm.loaded = true;
-        vm.tasks = [];
         var task,
           postDate,
           dueDate;
@@ -94,20 +91,24 @@
           postDate = postDate.toDateString();
           dueDate = new Date(task.deadline);
           dueDate = dueDate.toDateString();
-          vm.tasks.push({
+          var clientTask = {
             '_id': task._id,
             'name': task.title,
             'postingDate': postDate,
             'deadline': dueDate,
             'status': task.status,
-            'progress': task.workers[0].progress,
             'taskAction': 'Select Action'
-          });
+          };
+          if(task.jobs.length > 0) {
+            clientTask.progress = task.jobs[0].progress;
+          }
+          vm.tasks.push(clientTask);
         }
       }
     };
 
     vm.changeTaskCategory = function() {
+      vm.tasks = [];
       vm.loaded = false;
       switch (vm.taskCategory) {
         case 'Completed Tasks':

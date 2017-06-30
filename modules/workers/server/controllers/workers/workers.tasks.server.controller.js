@@ -31,7 +31,7 @@ exports.activeTask = {
   update: function(req, res) {
     getUserTypeObject(req, res, function(typeObj) {
       if (typeObj.worker) {
-        taskId = req.body._id;
+        taskId = req.body.taskId;
         taskFindOne(taskId, function(err, task) {
           if (err) {
             return res.status(404).send({
@@ -50,7 +50,7 @@ exports.activeTask = {
                 message: errorHandler.getErrorMessage(err)
               });
             } else {
-              res.json(taskWorker);
+              return res.json(taskWorker);
             }
           });
         });
@@ -65,7 +65,7 @@ exports.activeTask = {
   add: function (req, res) {
     getUserTypeObject(req, res, function(typeObj) {
       if (typeObj.worker) {
-        taskId = req.body._id;
+        taskId = req.body.taskId;
         taskFindOne(taskId, function(err, task) {
           if (err) {
             return res.status(404).send({
@@ -80,7 +80,7 @@ exports.activeTask = {
                   message: errorHandler.getErrorMessage(err)
                 });
               } else {
-                res.json(typeObj);
+                return res.json(typeObj);
               }
             });
           } else {
@@ -100,13 +100,13 @@ exports.activeTask = {
   all: function (req, res) {
     getUserTypeObject(req, res, function(typeObj) {
       if (typeObj.worker) {
-        taskFindMany(typeObj.worker.activeTasks, false, function(err, tasks) {
+        taskFindMany(getIdsInArray(typeObj.worker.activeTasks), false, function(err, tasks) {
           if (err) {
             return res.status(404).send({
               message: errorHandler.getErrorMessage(err)
             });
           }
-          res.json({ tasks: tasks });
+          return res.json({ tasks: tasks });
         });
       } else {
         return res.status(400).send({
@@ -164,9 +164,11 @@ exports.rejectedTask = {
             typeObj.worker.rejectedTasks.push(task._id);
             typeObj.save(function(err) {
               if (err) {
-                res.status(400).send(err);
+                return res.status(404).send({
+                  message: errorHandler.getErrorMessage(err)
+                });
               } else {
-                res.json(typeObj);
+                return res.json(typeObj);
               }
             });
           } else {
@@ -186,13 +188,13 @@ exports.rejectedTask = {
   all: function (req, res) {
     getUserTypeObject(req, res, function(typeObj) {
       if (typeObj.worker) {
-        taskFindMany(typeObj.worker.rejectedTasks, function(err, tasks) {
+        taskFindMany(getIdsInArray(typeObj.worker.rejectedTasks), false, function(err, tasks) {
           if (err) {
             return res.status(404).send({
-              message: 'No rejected tasks were found'
+              message: errorHandler.getErrorMessage(err)
             });
           }
-          res.json({ tasks: tasks });
+          return res.json({ tasks: tasks });
         });
       } else {
         return res.status(400).send({
@@ -250,9 +252,9 @@ exports.completedTask = {
             typeObj.worker.completedTasks.push(task._id);
             typeObj.save(function(err) {
               if (err) {
-                res.status(400).send(err);
+                return res.status(400).send(err);
               } else {
-                res.json(typeObj);
+                return res.json(typeObj);
               }
             });
           } else {
@@ -272,13 +274,13 @@ exports.completedTask = {
   all: function (req, res) {
     getUserTypeObject(req, res, function(typeObj) {
       if (typeObj.worker) {
-        taskFindMany(typeObj.worker.completedTasks, function(err, tasks) {
+        taskFindMany(getIdsInArray(typeObj.worker.completedTasks), false, function(err, tasks) {
           if (err) {
             return res.status(404).send({
-              message: 'No completed tasks were found'
+              message: errorHandler.getErrorMessage(err)
             });
           }
-          res.json({ tasks: tasks });
+          return res.json({ tasks: tasks });
         });
       } else {
         return res.status(400).send({
@@ -335,9 +337,11 @@ exports.inactiveTask = {
             typeObj.worker.inactiveTasks.push(task._id);
             typeObj.save(function(err) {
               if (err) {
-                res.status(400).send(err);
+                return res.status(404).send({
+                  message: errorHandler.getErrorMessage(err)
+                });
               } else {
-                res.json(typeObj);
+                return res.json(typeObj);
               }
             });
           } else {
@@ -357,13 +361,13 @@ exports.inactiveTask = {
   all: function (req, res) {
     getUserTypeObject(req, res, function(typeObj) {
       if (typeObj.worker) {
-        taskFindMany(typeObj.worker.inactiveTasks, false, function(err, tasks) {
+        taskFindMany(getIdsInArray(typeObj.worker.inactiveTasks), false, function(err, tasks) {
           if (err) {
             return res.status(404).send({
               message: errorHandler.getErrorMessage(err)
             });
           }
-          res.json({ tasks: tasks });
+          return res.json({ tasks: tasks });
         });
       } else {
         return res.status(400).send({
@@ -425,7 +429,7 @@ exports.taskByID = function(req, res, next, id) {
 };
 
 exports.getAllTasks = function (req, res) {
-  taskFindWithOption({ secret: false }, function (err, tasks) {
+  taskFindWithOption({ secret: false, status: 'open' }, { 'jobs.worker.workerId': typeObj._id }, function (err, tasks) {
     if (err)
       return res.status(404).send({
         message: errorHandler.getErrorMessage(err)
@@ -462,12 +466,16 @@ exports.getWorkerForTask = function(req, res) {
 };
 
 exports.getTasksWithOptions = function(req, res) {
+  req.body.status = 'open';
   req.body.secret = false;
-  taskFindWithOption(req.body, function(err, tasks) {
-    if (err)
-      return res.status(404).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    return res.json({ tasks: tasks });
+  getUserTypeObject(req, res, function(typeObj) {
+    taskFindWithOption(req.body, { 'jobs.worker.workerId': typeObj._id }, function(err, tasks) {
+      if (err) {
+        return res.status(404).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      }
+      return res.json({ tasks: tasks });
+    });
   });
 }
