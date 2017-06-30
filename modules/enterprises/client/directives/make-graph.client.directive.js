@@ -127,7 +127,8 @@
                   .style('stroke', 'black')
                   .style('stroke-width', 1)
                   .on('click', function(d, i) {
-                    centerNode(d3.select(this));
+                    centerNode(d3.select(this)._groups[0][0]);
+
                     var data = d3.select(this)._groups[0][0].__data__;
                     scope.$parent.vm.chooseCompany({ selected: data });
                   });
@@ -161,21 +162,18 @@
 
             /** Functions **/
             function centerHome() {
-              svg.transition()
-                .duration(500)
-                .call( zoom.transform, d3.zoomIdentity );
+              centerNode(node._groups[0][nodes.rootNode.index]);
             }
 
             var centerX = width / 2;
             var centerY = height / 2;
 
             function centerNode(node) {
-              var circle = node._groups[0][0];
-              var x = centerX - circle.cx.baseVal.value;
-              var y = centerY - circle.cy.baseVal.value;
+              var x = centerX - node.cx.baseVal.value;
+              var y = centerY - node.cy.baseVal.value;
               svg.transition()
                 .duration(500)
-                .call( zoom.transform, d3.zoomIdentity.translate(x,y) );
+                .call(zoom.transform, d3.zoomIdentity.translate(x, y));
             }
 
             function ticked() {

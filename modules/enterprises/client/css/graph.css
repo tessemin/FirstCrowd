@@ -45,7 +45,8 @@
 }
 
 /* align glyph */
-.toggle-side .right-addon .glyphicon { right: 0px;}
+/* 0.1 px to shut up css linter errors */
+.toggle-side .right-addon .glyphicon { right: 0.1px;}
 .right-addon .glyphicon { right: 20px;}
 
 /* add padding  */
