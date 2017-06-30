@@ -498,22 +498,22 @@ function setStatusOfWorkers(workerIdArray, status, taskId, callBack, errorIds) {
 function addWorkerTaskWithStatus(status, taskId, typeObj) {
   switch (status) {
     case 'open':
-      typeObj.requester.activeTasks = statusPushTo(taskId, typeObj.requester.activeTasks);
+      typeObj.worker.activeTasks = statusPushTo(taskId, typeObj.worker.activeTasks);
       break;
     case 'inactive':
-      typeObj.requester.suspendedTasks = statusPushTo(taskId, typeObj.requester.suspendedTasks);
+      typeObj.worker.inactiveTasks = statusPushTo(taskId, typeObj.worker.inactiveTasks);
       break;
     case 'taken':
-      typeObj.requester.activeTasks = statusPushTo(taskId, typeObj.requester.activeTasks);
+      typeObj.worker.activeTasks = statusPushTo(taskId, typeObj.worker.activeTasks);
       break;
     case 'suspended':
-      typeObj.requester.suspendedTasks = statusPushTo(taskId, typeObj.requester.suspendedTasks);
+      typeObj.worker.inactiveTasks = statusPushTo(taskId, typeObj.worker.inactiveTasks);
       break;
     case 'sclosed':
-      typeObj.requester.completedTasks = statusPushTo(taskId, typeObj.requester.completedTasks);
+      typeObj.worker.completedTasks = statusPushTo(taskId, typeObj.worker.completedTasks);
       break;
     case 'fclosed':
-      typeObj.requester.rejectedTasks = statusPushTo(taskId, typeObj.requester.rejectedTasks);
+      typeObj.worker.rejectedTasks = statusPushTo(taskId, typeObj.worker.rejectedTasks);
       break;
   }
   return typeObj;
