@@ -20,8 +20,8 @@ function taskFindOne(taskId, callBack) {
   Task.find({ '_id': taskId, secret: false }, function(err, task) { if (task.length > 0) callBack(err, task[0]); else callBack(err, null); });
 }
 
-function taskFindWithOption(options, nonOptions, callBack) {
-  Task.find(options, nonOptions, callBack);
+function taskFindWithOption(options, callBack) {
+  Task.find(options, callBack);
 }
 
 function findTaskWorker(task, worker) {

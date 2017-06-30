@@ -398,7 +398,7 @@ function statusPushTo(taskId, array) {
 // finds the task in the array and if it matches the taskId, removes it
 function removeFromObjectTasksArray (taskId, array) {
   for (var i = 0; i < array.length; i++)
-    if (array[i].taskId.toString() === taskId.toString())
+    if (array[i].task.toString() === taskId.toString())
       array.splice(i, 1);
   return array;
 }
@@ -410,8 +410,9 @@ function ownsTask(task, typeObj) {
 function getIdsInArray(array) {
   var idArray = [];
   for (var i = 0; i < array.length; i++)
-    if (array[i] && array[i].taskId)
-      idArray.push(array[i].taskId);
+    if (array[i])
+      if (array[i].taskId)
+        idArray.push(array[i].taskId);
   return idArray;
 }
 
@@ -422,9 +423,9 @@ function getWorkersIds(jobs) {
     if (jobs[job].worker) {
       if (jobs[job].worker.workerId)
         if (jobs[job].worker.workerType) {
-          if (jobs[job].worker.workerType.enterprise && !jobs[job].worker.workerType.individual) {
+          if (jobs[job].worker.workerType.enterprise) {
             workersEnterprise.push(jobs[job].worker.workerId);
-          } else if (jobs[job].worker.workerType.individual && !jobs[job].worker.workerType.enterprise) {
+          } else if (jobs[job].worker.workerType.individual) {
             workersIndividual.push(jobs[job].worker.workerId);
           } else {
             workersEnterprise.push(jobs[job].worker.workerId);
@@ -493,6 +494,7 @@ function setStatusOfWorkers(workerIdArray, status, taskId, callBack, errorIds) {
   }
 }
 
+// MUST MODIFY
 function addWorkerTaskWithStatus(status, taskId, typeObj) {
   switch (status) {
     case 'open':
