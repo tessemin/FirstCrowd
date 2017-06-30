@@ -83,7 +83,7 @@
       },
       _getTasksWithOptions: {
         method: 'POST',
-        url: '/api/tasks/getTasksWithOptions'
+        url: '/api/getTasksWithOptions'
       }
     });
 

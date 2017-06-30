@@ -129,6 +129,7 @@
             });
           break;
         case 'Open Tasks':
+        console.log('here')
           WorkersService.getTasksWithOptions({status: 'open'})
             .then(function(data) {
               vm.loadData(data);
