@@ -47,7 +47,7 @@
       <div class="tasks-cell">
         Status
       </div>
-      <div class="tasks-cell">
+      <div class="tasks-cell" ng-if="vm.taskCategory=='Active Tasks'">
         Progress
       </div>
       <div class="tasks-cell">
@@ -67,7 +67,7 @@
       <div class="tasks-cell">
         {{task.status}}
       </div>
-      <div class="tasks-cell">
+      <div class="tasks-cell" ng-if="vm.taskCategory=='Active Tasks'">
         <rzslider class="progress-slider" rz-slider-model="task.progress" rz-slider-options="vm.sliderOptions"></rzslider>
       </div>
       <div class="tasks-cell">
