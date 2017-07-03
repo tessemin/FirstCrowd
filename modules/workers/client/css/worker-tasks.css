@@ -9,21 +9,22 @@
   margin-right: 10px;
 }
 
-.tasks-table {
-  display: table;
+.tasks-caption > select {
+  background: transparent;
+  border: none;
+  font-size: 1.25em;
 }
 
-.tasks-header {
-  display: table-header-group;
+.tasks-table {
 }
 
 .tasks-row {
-  display: table-row;
+  display: flex;
 }
 
 .tasks-cell {
   background: inherit;
-  display: table-cell;
+  flex: 1;
   text-align: center;
 }
 

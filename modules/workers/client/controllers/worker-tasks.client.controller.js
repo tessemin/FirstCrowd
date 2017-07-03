@@ -94,6 +94,7 @@
           var clientTask = {
             '_id': task._id,
             'name': task.title,
+            'description': task.description,
             'postingDate': postDate,
             'deadline': dueDate,
             'status': task.status,
@@ -110,6 +111,7 @@
     vm.changeTaskCategory = function() {
       vm.tasks = [];
       vm.loaded = false;
+      vm.selectedTask = -1;
       switch (vm.taskCategory) {
         case 'Completed Tasks':
           WorkersService.getCompletedTasks()
@@ -131,7 +133,7 @@
           break;
         case 'Open Tasks':
         console.log('here')
-          WorkersService.getTasksWithOptions({status: 'open'})
+          WorkersService.getAllOpenTasks()
             .then(function(data) {
               vm.loadData(data);
             });
@@ -146,6 +148,15 @@
     };
 
     vm.changeTaskCategory();
+
+    vm.selectedTask = -1;
+    vm.selectTask = function(index) {
+      if (index === vm.selectedTask) {
+        vm.selectedTask = -1;
+      } else if (index < vm.tasks.length) {
+        vm.selectedTask = index;
+      }
+    }
 
     // This function is necessary to initially render the progress sliders
     function refreshProgressSliders() {

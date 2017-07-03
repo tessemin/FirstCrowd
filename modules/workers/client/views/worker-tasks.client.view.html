@@ -29,12 +29,11 @@
     </ul>
   </nav>
   <div class="tasks-caption">
-    <h4 class="tasks-">My Active Tasks</h4>
     <select ng-model="vm.taskCategory" ng-change="vm.changeTaskCategory()" ng-options="x for x in vm.taskCategories">
     </select>
   </div>
   <div class="col-md-9 tasks-table">
-    <div class="tasks-header">
+    <div class="tasks-row">
       <div class="tasks-cell">
         Title
       </div>
@@ -54,25 +53,38 @@
         Actions
       </div>
     </div>
-    <div class="tasks-row" ng-repeat="task in vm.tasks | filter : vm.filters : false as results track by $index">
-      <div class="tasks-cell">
-        {{task.name}}
+    <div ng-repeat="task in vm.tasks | filter : vm.filters : false as results track by $index">
+      <div class="tasks-row" ng-click="vm.selectTask($index)">
+        <div class="tasks-cell">
+          {{task.name}}
+        </div>
+        <div class="tasks-cell">
+          {{task.postingDate}}
+        </div>
+        <div class="tasks-cell">
+          {{task.deadline}}
+        </div>
+        <div class="tasks-cell">
+          {{task.status}}
+        </div>
+        <div class="tasks-cell" ng-if="vm.taskCategory=='Active Tasks'">
+          <rzslider class="progress-slider" rz-slider-model="task.progress" rz-slider-options="vm.sliderOptions"></rzslider>
+        </div>
+        <div class="tasks-cell">
+          <select ng-model="vm.tasks[$index].taskAction" ng-options="x for x in vm.taskActions">
+          </select>
+        </div>
       </div>
-      <div class="tasks-cell">
-        {{task.postingDate}}
-      </div>
-      <div class="tasks-cell">
-        {{task.deadline}}
-      </div>
-      <div class="tasks-cell">
-        {{task.status}}
-      </div>
-      <div class="tasks-cell" ng-if="vm.taskCategory=='Active Tasks'">
-        <rzslider class="progress-slider" rz-slider-model="task.progress" rz-slider-options="vm.sliderOptions"></rzslider>
-      </div>
-      <div class="tasks-cell">
-        <select ng-model="vm.tasks[$index].taskAction" ng-options="x for x in vm.taskActions">
-        </select>
+      <div class="tasks-row" ng-if="vm.selectedTask == $index">
+        <div class="tasks-cell">
+          {{task.category}}
+        </div>
+        <div class="tasks-cell">
+          {{task.description}}
+        </div>
+        <div class="tasks-cell">
+          Requires: {{task.skillsNeeded}}
+        </div>
       </div>
     </div> <!-- end ng-repeat -->
     <div class="text-center">
