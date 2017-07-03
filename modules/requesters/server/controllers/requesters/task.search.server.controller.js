@@ -21,7 +21,18 @@ function taskFindOne(taskId, callBack) {
 }
 
 function taskFindWithOption(options, nonOptions, callBack) {
-  Task.find(options, nonOptions, callBack);
+  var requestOptions = [];
+  if (Array.isArray(options))
+    requestOptions = requestOptions.concat(options)
+  else
+    requestOptions.push(options)
+  if (Array.isArray(nonOptions))
+    requestOptions = requestOptions.concat(nonOptions)
+  else
+    requestOptions.push(nonOptions)
+  
+  console.log(JSON.stringify(requestOptions, null, 2))
+  Task.find({ $and: requestOptions }, callBack);
 }
 
 function findTaskWorker(task, worker) {

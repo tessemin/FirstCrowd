@@ -38,7 +38,7 @@ module.exports = function(app) {
   // TAKE A TASKS WITH PRE APPROVAL
 
   // TASKS NATIVE API
-  app.route('/api/getAllTasks').post(workers.getAllTasks);
+  app.route('/api/getAllTasks/open').post(workers.getAllOpenTasks);
   app.route('/api/getOneTask').post(workers.getOneTask);
   app.route('/api/getTasksWithOptions').post(workers.getTasksWithOptions);
 

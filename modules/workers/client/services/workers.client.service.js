@@ -69,9 +69,9 @@
         url: '/api/workers/RecomendedTask/'
       },
       // General Task Functions
-      _getAllTasks: {
+      _getAllOpenTasks: {
         method: 'POST',
-        url: '/api/getAllTasks'
+        url: '/api/getAllTasks/open'
       },
       _getOneTask: {
         method: 'POST',
@@ -136,8 +136,8 @@
         return this._updateRecomendedTask(Id).$promise;
       },
       // all tasks
-      getAllTasks: function () {
-        return this._getAllTasks().$promise;
+      getAllOpenTasks: function () {
+        return this._getAllOpenTasks().$promise;
       },
       getOneTasks: function (Id) {
         return this._getOneTasks(Id).$promise;

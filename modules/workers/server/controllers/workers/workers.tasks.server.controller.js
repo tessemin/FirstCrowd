@@ -34,19 +34,19 @@ exports.activeTask = {
         taskId = req.body.taskId;
         taskFindOne(taskId, function(err, task) {
           if (err) {
-            return res.status(404).send({
+            return res.status(422).send({
               message: errorHandler.getErrorMessage(err)
             });
           }
           var taskWorker = findTaskWorker(task, typeObj);
           if (!taskWorker) {
-            return res.status(404).send({
+            return res.status(422).send({
               message: 'You are not a worker for this task'
             });
           }
           taskWorker.save(function(err) {
             if (err) {
-              return res.status(404).send({
+              return res.status(422).send({
                 message: errorHandler.getErrorMessage(err)
               });
             } else {
@@ -68,7 +68,7 @@ exports.activeTask = {
         taskId = req.body.taskId;
         taskFindOne(taskId, function(err, task) {
           if (err) {
-            return res.status(404).send({
+            return res.status(422).send({
               message: errorHandler.getErrorMessage(err)
             });
           }
@@ -76,7 +76,7 @@ exports.activeTask = {
             typeObj.worker.activeTasks.push(task._id);
             typeObj.save(function(err) {
               if (err) {
-                return res.status(404).send({
+                return res.status(422).send({
                   message: errorHandler.getErrorMessage(err)
                 });
               } else {
@@ -84,7 +84,7 @@ exports.activeTask = {
               }
             });
           } else {
-            return res.status(404).send({
+            return res.status(422).send({
               message: 'Task ID is not valid'
             });
           }
@@ -102,7 +102,7 @@ exports.activeTask = {
       if (typeObj.worker) {
         taskFindMany(getIdsInArray(typeObj.worker.activeTasks), false, function(err, tasks) {
           if (err) {
-            return res.status(404).send({
+            return res.status(422).send({
               message: errorHandler.getErrorMessage(err)
             });
           }
@@ -129,7 +129,7 @@ exports.rejectedTask = {
         taskId = req.body._id;
         taskFindOne(taskId, function(err, task) {
           if (err) {
-            return res.status(404).send({
+            return res.status(422).send({
               message: errorHandler.getErrorMessage(err)
             });
           }
@@ -156,7 +156,7 @@ exports.rejectedTask = {
         taskId = req.body._id;
         taskFindOne(taskId, function(err, task) {
           if (err) {
-            return res.status(404).send({
+            return res.status(422).send({
               message: errorHandler.getErrorMessage(err)
             });
           }
@@ -164,7 +164,7 @@ exports.rejectedTask = {
             typeObj.worker.rejectedTasks.push(task._id);
             typeObj.save(function(err) {
               if (err) {
-                return res.status(404).send({
+                return res.status(422).send({
                   message: errorHandler.getErrorMessage(err)
                 });
               } else {
@@ -172,7 +172,7 @@ exports.rejectedTask = {
               }
             });
           } else {
-            return res.status(404).send({
+            return res.status(422).send({
               message: 'Task ID is not valid'
             });
           }
@@ -190,7 +190,7 @@ exports.rejectedTask = {
       if (typeObj.worker) {
         taskFindMany(getIdsInArray(typeObj.worker.rejectedTasks), false, function(err, tasks) {
           if (err) {
-            return res.status(404).send({
+            return res.status(422).send({
               message: errorHandler.getErrorMessage(err)
             });
           }
@@ -217,7 +217,7 @@ exports.completedTask = {
         taskId = req.body._id;
         taskFindOne(taskId, function(err, task) {
           if (err) {
-            return res.status(404).send({
+            return res.status(422).send({
               message: errorHandler.getErrorMessage(err)
             });
           }
@@ -244,7 +244,7 @@ exports.completedTask = {
         taskId = req.body._id;
         taskFindOne(taskId, function(err, task) {
           if (err) {
-            return res.status(404).send({
+            return res.status(422).send({
               message: errorHandler.getErrorMessage(err)
             });
           }
@@ -258,7 +258,7 @@ exports.completedTask = {
               }
             });
           } else {
-            return res.status(404).send({
+            return res.status(422).send({
               message: 'Task ID is not valid'
             });
           }
@@ -276,7 +276,7 @@ exports.completedTask = {
       if (typeObj.worker) {
         taskFindMany(getIdsInArray(typeObj.worker.completedTasks), false, function(err, tasks) {
           if (err) {
-            return res.status(404).send({
+            return res.status(422).send({
               message: errorHandler.getErrorMessage(err)
             });
           }
@@ -303,7 +303,7 @@ exports.inactiveTask = {
         taskId = req.body._id;
         taskFindOne(taskId, function(err, task) {
           if (err) {
-            return res.status(404).send({
+            return res.status(422).send({
               message: errorHandler.getErrorMessage(err)
             });
           }
@@ -329,7 +329,7 @@ exports.inactiveTask = {
       if (typeObj.worker) {
         taskFindOne(req.body.taskId, function(err, task) {
           if (err) {
-            return res.status(404).send({
+            return res.status(422).send({
               message: errorHandler.getErrorMessage(err)
             });
           }
@@ -337,7 +337,7 @@ exports.inactiveTask = {
             typeObj.worker.inactiveTasks.push(task._id);
             typeObj.save(function(err) {
               if (err) {
-                return res.status(404).send({
+                return res.status(422).send({
                   message: errorHandler.getErrorMessage(err)
                 });
               } else {
@@ -345,7 +345,7 @@ exports.inactiveTask = {
               }
             });
           } else {
-            return res.status(404).send({
+            return res.status(422).send({
               message: 'Task ID is not valid'
             });
           }
@@ -363,10 +363,11 @@ exports.inactiveTask = {
       if (typeObj.worker) {
         taskFindMany(getIdsInArray(typeObj.worker.inactiveTasks), false, function(err, tasks) {
           if (err) {
-            return res.status(404).send({
+            return res.status(422).send({
               message: errorHandler.getErrorMessage(err)
             });
           }
+          tasks = removeExtraWorkers(tasks, typeObj._id);
           return res.json({ tasks: tasks });
         });
       } else {
@@ -393,7 +394,7 @@ exports.recomendedTask = {
       if (typeObj.worker) {
         taskFindMany(getIdsInArray(typeObj.worker.recomendedTasks), true, function(err, tasks) {
           if (err) {
-            return res.status(404).send({
+            return res.status(422).send({
               message: errorHandler.getErrorMessage(err)
             });
           }
@@ -419,7 +420,7 @@ exports.taskByID = function(req, res, next, id) {
     if (err) {
       return next(err);
     } else if (!task) {
-      return res.status(404).send({
+      return res.status(422).send({
         message: 'No Task with that identifier has been found'
       });
     }
@@ -428,13 +429,15 @@ exports.taskByID = function(req, res, next, id) {
   });
 };
 
-exports.getAllTasks = function (req, res) {
-  taskFindWithOption({ secret: false, status: 'open' }, { 'jobs.worker.workerId': typeObj._id }, function (err, tasks) {
-    if (err)
-      return res.status(404).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    return res.json({ tasks: tasks });
+exports.getAllOpenTasks = function (req, res) {
+  getUserTypeObject(req, res, function(typeObj) {
+    taskFindWithOption({ secret: false, status: 'open' }, { 'jobs': { $not: { $elemMatch: { 'worker': { 'workerId': typeObj._id }}}}}, function (err, tasks) {
+      if (err)
+        return res.status(422).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      return res.json({ tasks: tasks });
+    });
   });
 };
 
@@ -442,7 +445,7 @@ exports.getOneTask = function(req, res) {
   taskId = req.body.taskId;
   taskFindOne(taskId, function(err, task) {
     if (err) {
-      return res.status(404).send({
+      return res.status(422).send({
         message: errorHandler.getErrorMessage(err)
       });
     }
@@ -458,7 +461,7 @@ exports.getWorkerForTask = function(req, res) {
       if (isWorker)
         return res.json({ worker: isWorker });
       else
-        return res.status(404).send({
+        return res.status(422).send({
           message: 'You are not a worker for this task'
         });
     });
@@ -468,14 +471,24 @@ exports.getWorkerForTask = function(req, res) {
 exports.getTasksWithOptions = function(req, res) {
   req.body.status = 'open';
   req.body.secret = false;
+  
   getUserTypeObject(req, res, function(typeObj) {
-    taskFindWithOption(req.body, { 'jobs.worker.workerId': typeObj._id }, function(err, tasks) {
+    taskFindWithOption(req.body , { 'jobs': { $not: { $elemMatch: { 'worker': { 'workerId': typeObj._id }}}}}, function(err, tasks) {
       if (err) {
-        return res.status(404).send({
+        return res.status(422).send({
           message: errorHandler.getErrorMessage(err)
         });
       }
       return res.json({ tasks: tasks });
     });
   });
+}
+
+function  removeExtraWorkers(tasks, workerId) {
+  for (var i = 0; i < tasks.jobs.length; i++) {
+    if (tasks.jobs[i],worker,workerId.toString() !== workerId.toString()) {
+      tasks.splice(i, 1);
+    }
+  }
+  return tasks;
 }
