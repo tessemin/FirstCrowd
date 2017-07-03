@@ -26,7 +26,7 @@
       },
       _getRejectedTasks: {
         method: 'POST',
-        url: '/api/workers/RejectedTask/all'
+        url: '/api/workers/rejectedTask/all'
       },
       _addRejectedTask: {
         method: 'POST',
@@ -38,35 +38,35 @@
       },
       _getCompletedTasks: {
         method: 'POST',
-        url: '/api/workers/CompletedTask/all'
+        url: '/api/workers/completedTask/all'
       },
       _addCompletedTask: {
         method: 'POST',
-        url: '/api/workers/CompletedTask/add'
+        url: '/api/workers/completedTask/add'
       },
       _updateCompletedTask: {
         method: 'PUT',
-        url: '/api/workers/CompletedTask/'
+        url: '/api/workers/completedTask/'
       },
       _getInactiveTasks: {
         method: 'POST',
-        url: '/api/workers/InactiveTask/all'
+        url: '/api/workers/inactiveTask/all'
       },
       _addInactiveTask: {
         method: 'POST',
-        url: '/api/workers/InactiveTask/add'
+        url: '/api/workers/inactiveTask/add'
       },
       _updateInactiveTask: {
         method: 'PUT',
-        url: '/api/workers/InactiveTask/'
+        url: '/api/workers/inactiveTask/'
       },
       _getRecomendedTasks: {
         method: 'POST',
-        url: '/api/workers/RecomendedTask/all'
+        url: '/api/workers/recomendedTask/all'
       },
       _updateRecomendedTask: {
         method: 'PUT',
-        url: '/api/workers/RecomendedTask/'
+        url: '/api/workers/recomendedTask/'
       },
       // General Task Functions
       _getAllOpenTasks: {

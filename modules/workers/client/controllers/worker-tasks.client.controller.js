@@ -94,7 +94,9 @@
           var clientTask = {
             '_id': task._id,
             'name': task.title,
+            'category': 'whoops! category doesn\'t exist!',
             'description': task.description,
+            'skillsNeeded': task.skillsNeeded.join(),
             'postingDate': postDate,
             'deadline': dueDate,
             'status': task.status,
