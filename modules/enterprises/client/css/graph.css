@@ -22,8 +22,8 @@
 }
 
 .side-active {
-  padding: 10px;
   margin-left: 22em;
+  padding: 10px;
 }
 
 .side-logo {
@@ -38,15 +38,30 @@
 
 /* style glyph */
 .inner-addon .glyphicon {
-  position: absolute;
+  color: gray;
   padding: 10px;
-  /* pointer-events: none; */
+  position: absolute;
+  z-index: 100;
 }
 
 /* align glyph */
-.left-addon .glyphicon  { left:  0px;}
-.right-addon .glyphicon { right: 0px;}
+/* 0.1 px to shut up css linter errors */
+.toggle-side .right-addon .glyphicon { right: 0.1px;}
+.right-addon .glyphicon { right: 20px;}
 
 /* add padding  */
 .left-addon input  { padding-left:  30px; }
-/* .right-addon input { padding-right: 30px; } */
+
+.home {
+  color: lightgray;
+  font-size: 30px;
+  position: absolute;
+  right: 10vh;
+  top: 13vh;
+}
+
+.exit {
+/* 0.1 px to shut up css linter errors */
+  right: 0.1px !important;
+  z-index: 0 !important;
+}
