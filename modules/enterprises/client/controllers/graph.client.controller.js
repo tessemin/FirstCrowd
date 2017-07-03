@@ -12,14 +12,22 @@
     var vm = this;
     vm.sidebar = false;
     vm.selected = {};
-    vm.search = '';
+    vm.searching = '';
 
     vm.chooseCompany = chooseCompany;
     vm.toggleSidebar = toggleSidebar;
-    vm.con = con;
+    vm.close = close;
+    vm.search = search;
 
-    function con() {
-      var x = 'click';
+    var x = '';
+    function close() {
+      vm.selected = {};
+      // x = 'close';
+      // console.log(x);
+    }
+
+    function search() {
+      x = 'search';
       console.log(x);
     }
 

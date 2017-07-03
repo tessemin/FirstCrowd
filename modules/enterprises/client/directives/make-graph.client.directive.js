@@ -16,7 +16,7 @@
         selected: '=',
         select: '&'
       },
-      link: function(scope, element, attrs, ctrl) {
+      link: function(scope, element, attrs) {
 
         d3().then(function(d3) {
           var width = $window.innerWidth;
@@ -127,9 +127,22 @@
                   .style('stroke', 'black')
                   .style('stroke-width', 1)
                   .on('click', function(d, i) {
-                    centerNode(d3.select(this));
+                    centerNode(d3.select(this)._groups[0][0]);
+
                     var data = d3.select(this)._groups[0][0].__data__;
                     scope.$parent.vm.chooseCompany({ selected: data });
+                  });
+
+
+            var home = d3.select('#graph')
+                  .append('span')
+                  .attr('class', 'glyphicon glyphicon-home home')
+                  .on('click', centerHome)
+                  .on('mousedown', function() {
+                    d3.select(this).style('color', 'gray');
+                  })
+                  .on('mouseup', function() {
+                    d3.select(this).style('color', 'lightgray');
                   });
 
             // add zoom capabilities
@@ -145,27 +158,22 @@
             // svg.on("mousewheel.zoom", null);
             // svg.on("MozMousePixelScroll.zoom", null);
 
-            // zoom(svg);
             svg.call(zoom);
 
             /** Functions **/
             function centerHome() {
-              g.transition()
-                .duration(500)
-                .call( zoom.transform, d3.zoomIdentity );
+              centerNode(node._groups[0][nodes.rootNode.index]);
             }
 
             var centerX = width / 2;
             var centerY = height / 2;
 
             function centerNode(node) {
-
-              var circle = node._groups[0][0];
-              var x = centerX - circle.cx.baseVal.value;
-              var y = centerY - circle.cy.baseVal.value;
+              var x = centerX - node.cx.baseVal.value;
+              var y = centerY - node.cy.baseVal.value;
               svg.transition()
                 .duration(500)
-                .call( zoom.transform, d3.zoomIdentity.translate(x,y) );
+                .call(zoom.transform, d3.zoomIdentity.translate(x, y));
             }
 
             function ticked() {

@@ -1,22 +1,29 @@
 <section id="graph">
   <make-graph></make-graph>
 
-  <div class="toggle-side form-group col-xs-4"  ng-if="!vm.selected.companyName">
+  <div class="toggle-side form-group col-xs-3"  ng-if="!vm.selected.companyName">
     <div class="inner-addon right-addon">
-      <i class="glyphicon glyphicon-search" ng-click="vm.con()"></i>
-      <input class="form-control" type="text" ng-model="vm.search" placeholder="Search">
-      <div>Searching for: {{vm.search}}</div>
+      <i class="glyphicon glyphicon-search" ng-click="vm.search()"></i>
+      <input class="form-control" type="text" ng-model="vm.searching" placeholder="Search">
+      <div>Searching for: {{vm.searching}}</div>
     </div>
   </div>
 
   <div ng-if="vm.selected.companyName">
     <div ng-show="vm.sidebar" class="side-panel">
+
+      <div class="form-group col-xs-12">
+        <div class="inner-addon right-addon">
+          <i class="glyphicon glyphicon-search" ng-click="vm.search()"></i>
+          <i class="exit glyphicon glyphicon-remove" ng-click="vm.close()"></i>
+          <input class="form-control" type="text" ng-model="vm.searching" placeholder="Search">
+          <div>Searching for: {{vm.searching}}</div>
+        </div>
+      </div>
+
       <img ng-src="{{vm.selected.img}}" alt="Company Logo" class="side-logo header-profile-image" src="/modules/users/client/img/profile/default.png">
-
       <h3 ng-bind="vm.selected.companyName"></h3>
-
       <span>Company URL: <a href="http://{{vm.selected.URL}}">{{vm.selected.URL}}</a></span>
-
       <br>
       <br>
       <br>
