@@ -16,10 +16,6 @@
         method: 'POST',
         url: '/api/workers/activeTask/all'
       },
-      _addActiveTask: {
-        method: 'POST',
-        url: '/api/workers/activeTask/add'
-      },
       _updateActiveTask: {
         method: 'PUT',
         url: '/api/workers/activeTask/'
@@ -27,10 +23,6 @@
       _getRejectedTasks: {
         method: 'POST',
         url: '/api/workers/rejectedTask/all'
-      },
-      _addRejectedTask: {
-        method: 'POST',
-        url: '/api/workers/RejectedTask/add'
       },
       _updateRejectedTask: {
         method: 'PUT',
@@ -40,10 +32,6 @@
         method: 'POST',
         url: '/api/workers/completedTask/all'
       },
-      _addCompletedTask: {
-        method: 'POST',
-        url: '/api/workers/completedTask/add'
-      },
       _updateCompletedTask: {
         method: 'PUT',
         url: '/api/workers/completedTask/'
@@ -51,10 +39,6 @@
       _getInactiveTasks: {
         method: 'POST',
         url: '/api/workers/inactiveTask/all'
-      },
-      _addInactiveTask: {
-        method: 'POST',
-        url: '/api/workers/inactiveTask/add'
       },
       _updateInactiveTask: {
         method: 'PUT',
@@ -92,18 +76,12 @@
       getActiveTasks: function () {
         return this._getActiveTasks().$promise;
       },
-      addActiveTask: function (Id) {
-        return this._addActiveTask(Id).$promise;
-      },
       updateActiveTask: function (Id) {
         return this._updateActiveTask(Id).$promise;
       },
       // rejected
       getRejectedTasks: function () {
         return this._getRejectedTasks().$promise;
-      },
-      addRejectedTask: function (Id) {
-        return this._addRejectedTask(Id).$promise;
       },
       updateRejectedTask: function (Id) {
         return this._updateRejectedTask(Id).$promise;
@@ -112,18 +90,12 @@
       getCompletedTasks: function () {
         return this._getCompletedTasks().$promise;
       },
-      addCompletedTask: function (Id) {
-        return this._addCompletedTask(Id).$promise;
-      },
       updateCompletedTask: function (Id) {
         return this._updateCompletedTask(Id).$promise;
       },
       // inactive
       getInactiveTasks: function () {
         return this._getInactiveTasks().$promise;
-      },
-      addInactiveTask: function (Id) {
-        return this._addInactiveTask(Id).$promise;
       },
       updateInactiveTask: function (Id) {
         return this._updateInactiveTask(Id).$promise;

@@ -36,10 +36,10 @@ exports.taskActions = {
         var newTask = new Task(req.body);
         if (req.user.enterprise) {
           newTask.requester.requesterType.enteprise = true;
-          newTask.requester._id = typeObj._id;
+          newTask.requester.requesterId = typeObj._id;
         } else if (req.user.individual) {
           newTask.requester.requesterType.individual = true;
-          newTask.requester._id = typeObj._id;
+          newTask.requester.requesterId = typeObj._id;
         } else {
           return res.status(400).send({
             message: 'You do not have that type access'
@@ -56,6 +56,7 @@ exports.taskActions = {
           } else {
             newTask.save(function (err, task) {
               if (err) {
+                console.log(err)
                 return res.status(422).send({
                   message: 'Error creating task: ' + newTask.title
                 });
@@ -77,7 +78,7 @@ exports.taskActions = {
   delete: function(req, res) {
     getUserTypeObject(req, res, function(typeObj) {
       if (isRequester(req.user)) {
-        taskId = req.body._id;
+        taskId = req.body.taskId;
         taskFindOne(taskId, function(err, task) {
           if (err) {
             return res.status(422).send({
@@ -88,7 +89,7 @@ exports.taskActions = {
             if (task.jobs.length > 0) {
               Task.findByIdAndRemove(taskId, function (err, task) {
                 if (err) {
-                  return res.status(400).send({
+                  return res.status(422).send({
                     message: errorHandler.getErrorMessage(err)
                   });
                 } else {
@@ -99,7 +100,7 @@ exports.taskActions = {
               });
             } else {
               return res.status(422).send({
-                message: 'Workers are working on that task'
+                message: 'Workers are working on that task\nPlease set status to suspended and resolve any conflicts'
               });
             }
           } else {
@@ -118,17 +119,17 @@ exports.taskActions = {
   update: function(req, res) {
     getUserTypeObject(req, res, function(typeObj) {
       if (isRequester(req.user)) {
-        taskId = req.body._id;
+        taskId = req.body.taskId;
         taskFindOne(taskId, function(err, task) {
           if (err) {
             return res.status(422).send({
               message: errorHandler.getErrorMessage(err)
             });
           }
-          if (task.requester._id.toString() === typeObj._id.toString()) {
+          if (task.requester.requesterId.toString() === typeObj._id.toString()) {
             // if we are updating the status, make sure we keep the requester and task in same state
             if (taskWhiteListedFields.indexOf('status') > -1 && req.body.status) {
-              updateStatusRequester(req.body.status, req.body.taskId, typeObj, res, function (typeObj, task) {
+              setStatusRequester(req.body.status, req.body.taskId, typeObj, res, function (typeObj, task) {
                 setStatusOfWorkers(getWorkersIds(task.jobs), req.body.status, req.body.taskId, function() {
                   typeObj.save(function (typeErr, typeObj) {
                     if (typeErr) {
@@ -180,7 +181,7 @@ exports.taskActions = {
     });
   },
   getWorkerRatingsForTask: function (req, res) {
-    taskId = req.body._id;
+    taskId = req.body.taskId;
     taskFindOne(taskId, function(err, task) {
       if (err) {
         return res.status(422).send({
@@ -188,7 +189,7 @@ exports.taskActions = {
         });
       }
       var workerRatings = {};
-      if (task.jobs) {
+      if (task.jobs && task.jobs.length > 0) {
         workerRatings.requester = task.requester;
         workerRatings.ratings = [];
         for (var job = 0; job < task.jobs.length; job++) {
@@ -207,7 +208,7 @@ exports.taskActions = {
     });
   },
   getRequesterRatingsForTask: function (req, res) {
-    taskId = req.body._id;
+    taskId = req.body.taskId;
     taskFindOne(taskId, function(err, task) {
       if (err) {
         return res.status(422).send({
@@ -215,7 +216,7 @@ exports.taskActions = {
         });
       }
       var requesterRatings = {};
-      if (task.jobs) {
+      if (task.jobs && task.jobs.length > 0) {
         requesterRatings.requester = task.requester;
         requesterRatings.ratings = [];
         for (var job = 0; job < task.jobs.length; job++) {
@@ -237,7 +238,7 @@ exports.taskActions = {
     getUserTypeObject(req, res, function(typeObj) {
       if (isRequester(req.user)) {
         if (typeObj.requester) {
-          updateStatusRequester(req.body.status, req.body.taskId, typeObj, res, function (typeObj, task) {
+          setStatusRequester(req.body.status, req.body.taskId, typeObj, res, function (typeObj, task) {
             setStatusOfWorkers(getWorkersIds(task.jobs), req.body.status, req.body.taskId, function() {
               typeObj.save(function (typeErr, typeObj) {
                 if (typeErr) {
@@ -296,7 +297,7 @@ function getUserTypeObject(req, res, callBack) {
   }
 }
 
-function updateStatusRequester(status, taskId, typeObj, res, callBack) {
+function setStatusRequester(status, taskId, typeObj, res, callBack) {
   taskFindOne(taskId, function (err, task) {
     typeObj = removeTaskFromRequesterArray(taskId, typeObj);
     if (err) {
@@ -304,7 +305,7 @@ function updateStatusRequester(status, taskId, typeObj, res, callBack) {
       typeObj.save(function (typeErr, typeObj) {
         if (typeErr)
           return res.status(422).send({
-            message: errorHandler.getErrorMessage(err) + ' And ' + errorHandler.getErrorMessage(typeErr)
+            message: errorHandler.getErrorMessage(err) + '\n\t--And--\n' + errorHandler.getErrorMessage(typeErr)
           });
         else
           return res.status(422).send({

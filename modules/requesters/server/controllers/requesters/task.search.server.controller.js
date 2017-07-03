@@ -17,7 +17,7 @@ function taskFindMany(taskArray, secretAllowed, callBack) {
 }
 
 function taskFindOne(taskId, callBack) {
-  Task.find({ '_id': taskId, secret: false }, function(err, task) { if (task.length > 0) callBack(err, task[0]); else callBack(err, null); });
+  Task.find({ '_id': taskId}, function(err, task) { if (task.length > 0) callBack(err, task[0]); else callBack(err, null); });
 }
 
 function taskFindWithOption(options, nonOptions, callBack) {
@@ -31,8 +31,7 @@ function taskFindWithOption(options, nonOptions, callBack) {
   else
     requestOptions.push(nonOptions)
 
-  console.log(JSON.stringify(requestOptions, null, 2))
-  Task.find({ $and: requestOptions }, callBack);
+  Task.find({ $and: requestOptions}, callBack);
 }
 
 function findTaskWorker(task, worker) {

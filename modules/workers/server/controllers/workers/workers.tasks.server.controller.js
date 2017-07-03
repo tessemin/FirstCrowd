@@ -61,41 +61,6 @@ exports.activeTask = {
       }
     });
   },
-  // add a new active task
-  add: function (req, res) {
-    getUserTypeObject(req, res, function(typeObj) {
-      if (typeObj.worker) {
-        taskId = req.body._id;
-        taskFindOne(taskId, function(err, task) {
-          if (err) {
-            return res.status(422).send({
-              message: errorHandler.getErrorMessage(err)
-            });
-          }
-          if (task) {
-            typeObj.worker.activeTasks.push(task._id);
-            typeObj.save(function(err) {
-              if (err) {
-                return res.status(422).send({
-                  message: errorHandler.getErrorMessage(err)
-                });
-              } else {
-                res.json(typeObj);
-              }
-            });
-          } else {
-            return res.status(422).send({
-              message: 'Task ID is not valid'
-            });
-          }
-        });
-      } else {
-        return res.status(400).send({
-          message: 'User does not have a valid worker'
-        });
-      }
-    });
-  },
   // get all active tasks
   all: function (req, res) {
     getUserTypeObject(req, res, function(typeObj) {
@@ -106,6 +71,8 @@ exports.activeTask = {
               message: errorHandler.getErrorMessage(err)
             });
           }
+          if (tasks)
+            tasks = removeExtraWorkers(tasks, typeObj._id);
           res.json({ tasks: tasks });
         });
       } else {
@@ -149,41 +116,6 @@ exports.rejectedTask = {
       }
     }); */
   },
-  // add a new rejected task
-  add: function (req, res) {
-    getUserTypeObject(req, res, function(typeObj) {
-      if (typeObj.worker) {
-        taskId = req.body._id;
-        taskFindOne(taskId, function(err, task) {
-          if (err) {
-            return res.status(422).send({
-              message: errorHandler.getErrorMessage(err)
-            });
-          }
-          if (task) {
-            typeObj.worker.rejectedTasks.push(task._id);
-            typeObj.save(function(err) {
-              if (err) {
-                return res.status(422).send({
-                  message: errorHandler.getErrorMessage(err)
-                });
-              } else {
-                res.json(typeObj);
-              }
-            });
-          } else {
-            return res.status(422).send({
-              message: 'Task ID is not valid'
-            });
-          }
-        });
-      } else {
-        return res.status(400).send({
-          message: 'User does not have a valid worker'
-        });
-      }
-    });
-  },
   // get all rejected tasks
   all: function (req, res) {
     getUserTypeObject(req, res, function(typeObj) {
@@ -194,6 +126,8 @@ exports.rejectedTask = {
               message: errorHandler.getErrorMessage(err)
             });
           }
+          if (tasks)
+            tasks = removeExtraWorkers(tasks, typeObj._id);
           res.json({ tasks: tasks });
         });
       } else {
@@ -237,49 +171,18 @@ exports.completedTask = {
       }
     }); */
   },
-  // add a new completed task
-  add: function (req, res) {
-    getUserTypeObject(req, res, function(typeObj) {
-      if (typeObj.worker) {
-        taskId = req.body._id;
-        taskFindOne(taskId, function(err, task) {
-          if (err) {
-            return res.status(422).send({
-              message: errorHandler.getErrorMessage(err)
-            });
-          }
-          if (task) {
-            typeObj.worker.completedTasks.push(task._id);
-            typeObj.save(function(err) {
-              if (err) {
-                res.status(400).send(err);
-              } else {
-                res.json(typeObj);
-              }
-            });
-          } else {
-            return res.status(422).send({
-              message: 'Task ID is not valid'
-            });
-          }
-        });
-      } else {
-        return res.status(400).send({
-          message: 'User does not have a valid worker'
-        });
-      }
-    });
-  },
   // get all completed tasks
   all: function (req, res) {
     getUserTypeObject(req, res, function(typeObj) {
       if (typeObj.worker) {
-        taskFindMany(typeObj.worker.completedTasks, function(err, tasks) {
+        taskFindMany(typeObj.worker.completedTasks, false, function(err, tasks) {
           if (err) {
             return res.status(422).send({
               message: errorHandler.getErrorMessage(err)
             });
           }
+          if (tasks)
+            tasks = removeExtraWorkers(tasks, typeObj._id);
           res.json({ tasks: tasks });
         });
       } else {
@@ -323,40 +226,6 @@ exports.inactiveTask = {
       }
     }); */
   },
-  // add a new inactive task
-  add: function (req, res) {
-    getUserTypeObject(req, res, function(typeObj) {
-      if (typeObj.worker) {
-        taskFindOne(req.body.taskId, function(err, task) {
-          if (err) {
-            return res.status(422).send({
-              message: errorHandler.getErrorMessage(err)
-            });
-          }
-          if (task) {
-            typeObj.worker.inactiveTasks.push(task._id);
-            typeObj.save(function(err) {
-              if (err) {
-                return res.status(422).send({
-                  message: errorHandler.getErrorMessage(err)
-                });
-              } else {
-                res.json(typeObj);
-              }
-            });
-          } else {
-            return res.status(422).send({
-              message: 'Task ID is not valid'
-            });
-          }
-        });
-      } else {
-        return res.status(400).send({
-          message: 'User does not have a valid worker'
-        });
-      }
-    });
-  },
   // get all inactive tasks
   all: function (req, res) {
     getUserTypeObject(req, res, function(typeObj) {
@@ -367,7 +236,8 @@ exports.inactiveTask = {
               message: errorHandler.getErrorMessage(err)
             });
           }
-          tasks = removeExtraWorkers(tasks, typeObj._id);
+          if (tasks)
+            tasks = removeExtraWorkers(tasks, typeObj._id);
           return res.json({ tasks: tasks });
         });
       } else {
@@ -398,6 +268,8 @@ exports.recomendedTask = {
               message: errorHandler.getErrorMessage(err)
             });
           }
+          if (tasks)
+            tasks = removeExtraWorkers(tasks, typeObj._id);
           return res.json({ tasks: tasks });
         });
       } else {
@@ -431,25 +303,35 @@ exports.taskByID = function(req, res, next, id) {
 
 exports.getAllOpenTasks = function (req, res) {
   getUserTypeObject(req, res, function(typeObj) {
-    taskFindWithOption({ secret: false, status: 'open' }, { 'jobs': { $not: { $elemMatch: { 'worker': { 'workerId': typeObj._id }}}}}, function (err, tasks) {
-      if (err)
+    taskFindWithOption({status: 'open', secret: false},
+    [{ 'jobs': { $not: { $elemMatch: { 'worker.workerId': typeObj._id }}}},
+    {'requester.requesterId': { $ne: typeObj._id }}],
+    function (err, tasks) {
+      if (err) {
         return res.status(422).send({
           message: errorHandler.getErrorMessage(err)
         });
+      }
+      if (tasks)
+        tasks = removeExtraWorkers(tasks, 'This is not an ID');
       return res.json({ tasks: tasks });
     });
   });
 };
 
 exports.getOneTask = function(req, res) {
-  taskId = req.body.taskId;
-  taskFindOne(taskId, function(err, task) {
-    if (err) {
-      return res.status(422).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    }
-    return res.json({ task: task });
+  getUserTypeObject(req, res, function(typeObj) {
+    taskId = req.body.taskId;
+    taskFindOne(taskId, function(err, task) {
+      if (err) {
+        return res.status(422).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      }
+      if (task)
+        task = removeExtraWorkers(task, typeObj._id);
+      return res.json({ task: task });
+    });
   });
 };
 
@@ -469,24 +351,37 @@ exports.getWorkerForTask = function(req, res) {
 };
 
 exports.getTasksWithOptions = function(req, res) {
-  req.body.secret = false;
   getUserTypeObject(req, res, function(typeObj) {
-    taskFindWithOption(req.body , { 'jobs': { $not: { $elemMatch: { 'worker': { 'workerId': typeObj._id }}}}}, function(err, tasks) {
-      if (err) {
-        return res.status(422).send({
-          message: errorHandler.getErrorMessage(err)
-        });
-      }
-      return res.json({ tasks: tasks });
-    });
+    req.body.secret = false;
+    taskFindWithOption(req.body,
+      [{ 'jobs': { $not: { $elemMatch: { 'worker.workerId': typeObj._id }}}},
+      { 'requester.requesterId': { $ne: typeObj._id }}],
+      function (err, tasks) {
+        if (err) {
+          return res.status(422).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        }
+        if (tasks)
+          tasks = removeExtraWorkers(tasks, typeObj._id);
+        return res.json({ tasks: tasks });
+      });
   });
 }
 
-function  removeExtraWorkers(tasks, workerId) {
-  for (var i = 0; i < tasks.jobs.length; i++) {
-    if (tasks.jobs[i],worker,workerId.toString() !== workerId.toString()) {
-      tasks.splice(i, 1);
+function removeExtraWorkers(tasks, workerId) {
+  if (tasks)
+    if (Array.isArray(tasks)) { // multiple tasks
+      for (var task = 0; task < tasks.length; task++)
+        if (tasks[task].jobs)
+          for (var job = 0; job < tasks[task].jobs.length; job++)
+            if (tasks[task].jobs[job].worker.workerId.toString() !== workerId.toString())
+              tasks.splice(i, 1);
+    } else { // single task
+      if (tasks.jobs)
+          for (var job = 0; job < tasks.jobs.length; job++)
+            if (tasks.jobs[job].worker.workerId.toString() !== workerId.toString())
+              tasks.splice(i, 1);
     }
-  }
   return tasks;
 }
