@@ -92,7 +92,7 @@ var TaskSchema = new Schema({
         type: Boolean
       }
     },
-    _id: {
+    requesterId: {
       type: Schema.Types.ObjectId,
       required: 'Please provide a requester'
     }
@@ -158,7 +158,7 @@ var TaskSchema = new Schema({
             type: Boolean
           }
         },
-        _id: {
+        workerId: {
           type: Schema.Types.ObjectId,
           required: 'Please provide a worker'
         }
@@ -182,7 +182,7 @@ var TaskSchema = new Schema({
         required: 'Please fill out the note',
         deafult: null
       },
-      created: {
+      dateCreated: {
         type: Date,
         default: null,
         trim: true
@@ -197,7 +197,7 @@ var TaskSchema = new Schema({
         required: 'Please fill out the note',
         deafult: null
       },
-      created: {
+      dateCreated: {
         type: Date,
         default: null,
         trim: true

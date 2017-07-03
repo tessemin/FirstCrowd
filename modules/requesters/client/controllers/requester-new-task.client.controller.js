@@ -19,11 +19,7 @@
           bidable: false
         }
       },
-      publicNotes: {
-        type: [
-
-        ]
-      }
+      publicNotes: []
     };
 
     function addNote() {
@@ -67,6 +63,7 @@
 
     function onSubmitNewTaskFailure(response) {
       if(typeof response != "undefined" && response.data) {
+        console.log(response)
         Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Submission failed! Task not submitted!' });
       }
     };

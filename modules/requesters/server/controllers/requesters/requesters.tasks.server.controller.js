@@ -17,6 +17,7 @@ var getUserTypeObject = taskTools.getUserTypeObject,
   taskWhiteListedFields = taskTools.taskWhiteListedFields,
   ownsTask = taskTools.ownsTask,
   getIdsInArray = taskTools.getIdsInArray,
+  isRequester = taskTools.isRequester,
   taskFindOne = taskSearch.taskFindOne,
   taskFindMany = taskSearch.taskFindMany;
   
@@ -71,7 +72,7 @@ exports.workerRating = {
         taskFindOne(taskId, function(err, task) {
           if (ownsTask(task, typeObj)) {
             if (err) {
-              return res.status(404).send({
+              return res.status(422).send({
                 message: errorHandler.getErrorMessage(err)
               });
             }
@@ -83,7 +84,7 @@ exports.workerRating = {
             }
             task.save(function(err, task) {
               if(err) {
-                return res.status(404).send({
+                return res.status(422).send({
                   message: errorHandler.getErrorMessage(err)
                 });
               } else {
@@ -93,13 +94,13 @@ exports.workerRating = {
               }
             });
           } else {
-            return res.status(404).send({
+            return res.status(422).send({
               message: 'You are not the owner of this task'
             });
           }
         });
       } else {
-        return res.status(404).send({
+        return res.status(422).send({
           message: 'You are not a requester'
         });
       }
@@ -119,7 +120,7 @@ function getAllTasksForIds(req, res, taskIdGetFunction, callBack) {
       if (typeObj.requester) {
         taskFindMany(taskIdGetFunction(typeObj), true, function(err, tasks) {
           if (err) {
-            return res.status(404).send({
+            return res.status(422).send({
               message: errorHandler.getErrorMessage(err)
             });
           } else {
@@ -127,12 +128,12 @@ function getAllTasksForIds(req, res, taskIdGetFunction, callBack) {
           }
         });
       } else {
-        return res.status(404).send({
+        return res.status(422).send({
           message: 'No requester found'
         });
       }
     } else {
-      return res.status(404).send({
+      return res.status(422).send({
         message: 'You are not a requester'
       });
     }
@@ -155,12 +156,3 @@ function getAllRejectedTaskIds(typeObj) {
   return getIdsInArray(typeObj.requester.rejectedTasks);
 }
 
-function isRequester(user) {
-  if (user.userRole)
-    if (user.userRole.indexOf('requester') !== -1) {
-      return true;
-    }
-  return false;
-}
-
-exports.isRequester = isRequester;

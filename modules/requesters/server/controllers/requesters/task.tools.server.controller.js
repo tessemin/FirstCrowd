@@ -12,12 +12,10 @@ var path = require('path'),
   individualControler = require(path.resolve('./modules/individuals/server/controllers/individuals.server.controller')),
   enterpriseControler = require(path.resolve('./modules/enterprises/server/controllers/enterprises.server.controller')),
   taskSearch = require(path.resolve('./modules/requesters/server/controllers/requesters/task.search.server.controller')),
-  requesterTaskController = require(path.resolve('./modules/requesters/server/controllers/requesters/requesters.tasks.server.controller')),
   _ = require('lodash');
 
 var taskFindOne = taskSearch.taskFindOne,
-  taskFindMany = taskSearch.taskFindMany,
-  isRequester = requesterTaskController.isRequester;
+  taskFindMany = taskSearch.taskFindMany;
 var taskWhiteListedFields = ['status'],
   taskId = null;
 /**
@@ -47,18 +45,19 @@ exports.taskActions = {
             message: 'You do not have that type access'
           });
         }
+        console.log(newTask)
         newTask.dateCreated = Date.now();
         typeObj.requester.suspendedTasks = statusPushTo(newTask, typeObj.requester.suspendedTasks);
         typeObj.save(function (typeErr, typeObj) {
           if (typeErr) {
-            return res.status(404).send({
+            return res.status(422).send({
               message: 'Error connecting your profile with task: ' + newTask.title
             });
           } else {
             newTask.save(function (err, task) {
               if (err) {
-                return res.status(404).send({
-                  message: 'Error creating task: ' + task.title
+                return res.status(422).send({
+                  message: 'Error creating task: ' + newTask.title
                 });
               } else {
                 return res.status(200).send({
@@ -69,7 +68,7 @@ exports.taskActions = {
           }
         });
       } else {
-        return res.status(404).send({
+        return res.status(422).send({
           message: 'You are not a requester'
         });
       }
@@ -81,7 +80,7 @@ exports.taskActions = {
         taskId = req.body._id;
         taskFindOne(taskId, function(err, task) {
           if (err) {
-            return res.status(404).send({
+            return res.status(422).send({
               message: errorHandler.getErrorMessage(err)
             });
           }
@@ -99,18 +98,18 @@ exports.taskActions = {
                 }
               });
             } else {
-              return res.status(404).send({
+              return res.status(422).send({
                 message: 'Workers are working on that task'
               });
             }
           } else {
-            return res.status(404).send({
+            return res.status(422).send({
               message: 'You are not the owner of this task'
             });
           }
         });
       } else {
-        return res.status(404).send({
+        return res.status(422).send({
           message: 'You are not a requester'
         });
       }
@@ -122,7 +121,7 @@ exports.taskActions = {
         taskId = req.body._id;
         taskFindOne(taskId, function(err, task) {
           if (err) {
-            return res.status(404).send({
+            return res.status(422).send({
               message: errorHandler.getErrorMessage(err)
             });
           }
@@ -133,13 +132,13 @@ exports.taskActions = {
                 setStatusOfWorkers(getWorkersIds(task.jobs), req.body.status, req.body.taskId, function() {
                   typeObj.save(function (typeErr, typeObj) {
                     if (typeErr) {
-                      return res.status(404).send({
+                      return res.status(422).send({
                         message: errorHandler.getErrorMessage(typeErr)
                       });
                     } else {
                       task.save(function (err, typeObj) {
                         if (err) {
-                          return res.status(404).send({
+                          return res.status(422).send({
                             message: errorHandler.getErrorMessage(err)
                           });
                         } else {
@@ -157,7 +156,7 @@ exports.taskActions = {
               task = _.extend(task, _.pick(req.body, taskWhiteListedFields));
               task.save(function(err) {
                 if (err) {
-                  return res.status(404).send({
+                  return res.status(422).send({
                     message: errorHandler.getErrorMessage(err)
                   });
                 } else {
@@ -168,13 +167,13 @@ exports.taskActions = {
               });
             }
           } else {
-            return res.status(404).send({
+            return res.status(422).send({
               message: 'You are not the owner of this task'
             });
           }
         });
       } else {
-        return res.status(404).send({
+        return res.status(422).send({
           message: 'You are not a requester'
         });
       }
@@ -184,7 +183,7 @@ exports.taskActions = {
     taskId = req.body._id;
     taskFindOne(taskId, function(err, task) {
       if (err) {
-        return res.status(404).send({
+        return res.status(422).send({
           message: errorHandler.getErrorMessage(err)
         });
       }
@@ -211,7 +210,7 @@ exports.taskActions = {
     taskId = req.body._id;
     taskFindOne(taskId, function(err, task) {
       if (err) {
-        return res.status(404).send({
+        return res.status(422).send({
           message: errorHandler.getErrorMessage(err)
         });
       }
@@ -242,13 +241,13 @@ exports.taskActions = {
             setStatusOfWorkers(getWorkersIds(task.jobs), req.body.status, req.body.taskId, function() {
               typeObj.save(function (typeErr, typeObj) {
                 if (typeErr) {
-                  return res.status(404).send({
+                  return res.status(422).send({
                     message: errorHandler.getErrorMessage(typeErr)
                   });
                 } else {
                   task.save(function (err, typeObj) {
                     if (err) {
-                      return res.status(404).send({
+                      return res.status(422).send({
                         message: errorHandler.getErrorMessage(err)
                       });
                     } else {
@@ -263,12 +262,12 @@ exports.taskActions = {
             });
           }); 
         } else {
-          return res.status(404).send({
+          return res.status(422).send({
             message: 'No requester found.'
           });
         }
       } else {
-        return res.status(404).send({
+        return res.status(422).send({
           message: 'You are not signed in as a requester.'
         });
       }
@@ -304,11 +303,11 @@ function updateStatusRequester(status, taskId, typeObj, res, callBack) {
       // saves the requester because that ID doesn't exist so removes it
       typeObj.save(function (typeErr, typeObj) {
         if (typeErr)
-          return res.status(404).send({
+          return res.status(422).send({
             message: errorHandler.getErrorMessage(err) + ' And ' + errorHandler.getErrorMessage(typeErr)
           });
         else
-          return res.status(404).send({
+          return res.status(422).send({
             message: errorHandler.getErrorMessage(err)
           });
       });
@@ -334,7 +333,7 @@ function updateStatusRequester(status, taskId, typeObj, res, callBack) {
           typeObj.requester.rejectedTasks = statusPushTo(task._id, typeObj.requester.rejectedTasks);
           break;
         default:
-          return res.status(404).send({
+          return res.status(422).send({
             message: 'Status not supported.'
           });
       }
@@ -342,7 +341,7 @@ function updateStatusRequester(status, taskId, typeObj, res, callBack) {
       // save typeObj first to avoid orphaned tasks
       callBack(typeObj, task);
     } else {
-      return res.status(404).send({
+      return res.status(422).send({
         message: 'You are not the owner of this task'
       });
     }
@@ -519,6 +518,14 @@ function addWorkerTaskWithStatus(status, taskId, typeObj) {
   return typeObj;
 }
 
+function isRequester(user) {
+  if (user.userRole)
+    if (user.userRole.indexOf('requester') !== -1) {
+      return true;
+    }
+  return false;
+}
+
 exports.getUserTypeObject = getUserTypeObject;
 
 exports.taskWhiteListedFields = taskWhiteListedFields;
@@ -526,3 +533,5 @@ exports.taskWhiteListedFields = taskWhiteListedFields;
 exports.ownsTask = ownsTask;
 
 exports.getIdsInArray = getIdsInArray;
+
+exports.isRequester = isRequester;
