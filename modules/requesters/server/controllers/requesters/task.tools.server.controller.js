@@ -45,7 +45,6 @@ exports.taskActions = {
             message: 'You do not have that type access'
           });
         }
-        console.log(newTask)
         newTask.dateCreated = Date.now();
         typeObj.requester.suspendedTasks = statusPushTo(newTask, typeObj.requester.suspendedTasks);
         typeObj.save(function (typeErr, typeObj) {
@@ -56,7 +55,6 @@ exports.taskActions = {
           } else {
             newTask.save(function (err, task) {
               if (err) {
-                console.log(err)
                 return res.status(422).send({
                   message: 'Error creating task: ' + newTask.title
                 });
@@ -117,7 +115,7 @@ exports.taskActions = {
     });
   },
   update: function(req, res) {
-    getUserTypeObject(req, res, function(typeObj) {
+    /* getUserTypeObject(req, res, function(typeObj) {
       if (isRequester(req.user)) {
         taskId = req.body.taskId;
         taskFindOne(taskId, function(err, task) {
@@ -128,37 +126,22 @@ exports.taskActions = {
           }
           if (task.requester.requesterId.toString() === typeObj._id.toString()) {
             // if we are updating the status, make sure we keep the requester and task in same state
-            if (taskWhiteListedFields.indexOf('status') > -1 && req.body.status) {
-              setStatusRequester(req.body.status, req.body.taskId, typeObj, res, function (typeObj, task) {
-                setStatusOfWorkers(getWorkersIds(task.jobs), req.body.status, req.body.taskId, function() {
-                  typeObj.save(function (typeErr, typeObj) {
-                    if (typeErr) {
-                      return res.status(422).send({
-                        message: errorHandler.getErrorMessage(typeErr)
-                      });
-                    } else {
-                      task.save(function (err, typeObj) {
-                        if (err) {
-                          return res.status(422).send({
-                            message: errorHandler.getErrorMessage(err)
-                          });
-                        } else {
-                          return res.status(200).send({
-                            message: 'Status for task ' + task.title + ' updated successfully'
-                          });
-                        }
-                      });
-                    }
-                  });
-                  // end update status
-                });
-              }); 
-            } else {
-              task = _.extend(task, _.pick(req.body, taskWhiteListedFields));
+            task = _.extend(task, _.pick(req.body, taskWhiteListedFields));
               task.save(function(err) {
                 if (err) {
                   return res.status(422).send({
                     message: errorHandler.getErrorMessage(err)
+                  });
+                } else if (taskWhiteListedFields.indexOf('status') > -1 && req.body.status) {
+                  setStatus(req.body.taskId, req.body.status, typeObj, function (message) {
+                    if (message.error) {
+                      res.status(422).send({
+                        message: message.error
+                      });
+                    }
+                    res.status(200).send({
+                      message: 'Update successful'
+                    });
                   });
                 } else {
                   return res.status(200).send({
@@ -166,7 +149,6 @@ exports.taskActions = {
                   });
                 }
               });
-            }
           } else {
             return res.status(422).send({
               message: 'You are not the owner of this task'
@@ -178,7 +160,7 @@ exports.taskActions = {
           message: 'You are not a requester'
         });
       }
-    });
+    }); */
   },
   getWorkerRatingsForTask: function (req, res) {
     taskId = req.body.taskId;
@@ -236,45 +218,52 @@ exports.taskActions = {
   },
   changeStatus: function (req, res) {
     getUserTypeObject(req, res, function(typeObj) {
-      if (isRequester(req.user)) {
-        if (typeObj.requester) {
-          setStatusRequester(req.body.status, req.body.taskId, typeObj, res, function (typeObj, task) {
-            setStatusOfWorkers(getWorkersIds(task.jobs), req.body.status, req.body.taskId, function() {
-              typeObj.save(function (typeErr, typeObj) {
-                if (typeErr) {
-                  return res.status(422).send({
-                    message: errorHandler.getErrorMessage(typeErr)
-                  });
-                } else {
-                  task.save(function (err, typeObj) {
-                    if (err) {
-                      return res.status(422).send({
-                        message: errorHandler.getErrorMessage(err)
-                      });
-                    } else {
-                      return res.status(200).send({
-                        message: 'Status for task ' + task.title + ' updated successfully'
-                      });
-                    }
-                  });
-                }
-              });
-              // end update status
+      if (isRequester(req.user) && typeObj.requester) {
+        setStatus(req.body.taskId, req.body.status, typeObj, function (message) {
+          if (message.error) {
+            res.status(422).send({
+              message: message.error
             });
-          }); 
-        } else {
-          return res.status(422).send({
-            message: 'No requester found.'
+          }
+          res.status(200).send({
+            message: message.correct
           });
-        }
+        });
       } else {
         return res.status(422).send({
-          message: 'You are not signed in as a requester.'
+          message: 'No requester found.'
         });
       }
     });
   }
 };
+
+function setStatus(taskId, status, typeObj, callBack) {
+  taskFindOne(taskId, function (err, task) {
+    if (err) {
+      // TODO: *** should remove from requester task list *** //
+      callBack({ error: errorHandler.getErrorMessage(err) });
+    }
+    setStatusRequester(status, task._id, typeObj, callBack, function (typeObj) {
+      setStatusOfWorkers(getWorkersIds(task.jobs), status, task._id, function() {
+        task.status = status;
+        typeObj.save(function (typeErr, typeObj) {
+          if (typeErr) {
+            callBack({ error: errorHandler.getErrorMessage(typeErr) });
+          } else {
+            task.save(function (err, task) {
+              if (err) {
+                callBack({ error: errorHandler.getErrorMessage(err) });
+              } else {
+                callBack({ correct: 'Status for task ' + task.title + ' updated successfully' });
+              }
+            });
+          }
+        });
+      });
+    }); 
+  });
+}
 
 
 function getUserTypeObject(req, res, callBack) {
@@ -284,7 +273,7 @@ function getUserTypeObject(req, res, callBack) {
     } else if (req.user.enterprise) {
       enterpriseControler.getThisEnterprise(req, res, callBack);
     } else {
-      return res.status(400).send({
+      return res.status(422).send({
         message: 'User has no valid Type'
       });
     }
@@ -298,55 +287,31 @@ function getUserTypeObject(req, res, callBack) {
 }
 
 function setStatusRequester(status, taskId, typeObj, res, callBack) {
-  taskFindOne(taskId, function (err, task) {
-    typeObj = removeTaskFromRequesterArray(taskId, typeObj);
-    if (err) {
-      // saves the requester because that ID doesn't exist so removes it
-      typeObj.save(function (typeErr, typeObj) {
-        if (typeErr)
-          return res.status(422).send({
-            message: errorHandler.getErrorMessage(err) + '\n\t--And--\n' + errorHandler.getErrorMessage(typeErr)
-          });
-        else
-          return res.status(422).send({
-            message: errorHandler.getErrorMessage(err)
-          });
-      });
-    }
-    if (ownsTask(task, typeObj)) {
-      switch (status) {
-        case 'open':
-          typeObj.requester.activeTasks = statusPushTo(task._id, typeObj.requester.activeTasks);
-          break;
-        case 'inactive':
-          typeObj.requester.suspendedTasks = statusPushTo(task._id, typeObj.requester.suspendedTasks);
-          break;
-        case 'taken':
-          typeObj.requester.activeTasks = statusPushTo(task._id, typeObj.requester.activeTasks);
-          break;
-        case 'suspended':
-          typeObj.requester.suspendedTasks = statusPushTo(task._id, typeObj.requester.suspendedTasks);
-          break;
-        case 'sclosed':
-          typeObj.requester.completedTasks = statusPushTo(task._id, typeObj.requester.completedTasks);
-          break;
-        case 'fclosed':
-          typeObj.requester.rejectedTasks = statusPushTo(task._id, typeObj.requester.rejectedTasks);
-          break;
-        default:
-          return res.status(422).send({
-            message: 'Status not supported.'
-          });
-      }
-      task.status = status;
-      // save typeObj first to avoid orphaned tasks
-      callBack(typeObj, task);
-    } else {
-      return res.status(422).send({
-        message: 'You are not the owner of this task'
-      });
-    }
-  });
+  typeObj = removeTaskFromRequesterArray(taskId, typeObj);
+  switch (status) {
+    case 'open':
+      typeObj.requester.activeTasks = statusPushTo(taskId, typeObj.requester.activeTasks);
+      break;
+    case 'inactive':
+      typeObj.requester.suspendedTasks = statusPushTo(taskId, typeObj.requester.suspendedTasks);
+      break;
+    case 'taken':
+      typeObj.requester.activeTasks = statusPushTo(taskId, typeObj.requester.activeTasks);
+      break;
+    case 'suspended':
+      typeObj.requester.suspendedTasks = statusPushTo(taskId, typeObj.requester.suspendedTasks);
+      break;
+    case 'sclosed':
+      typeObj.requester.completedTasks = statusPushTo(taskId, typeObj.requester.completedTasks);
+      break;
+    case 'fclosed':
+      typeObj.requester.rejectedTasks = statusPushTo(taskId, typeObj.requester.rejectedTasks);
+      break;
+    default:
+      return res({ error: 'Status not supported.' });
+  }
+  // save typeObj first to avoid orphaned tasks
+  callBack(typeObj);
 }
 
 // removes that taskId from the requester arrays
@@ -364,7 +329,7 @@ function removeTaskFromRequesterArray(taskId, typeObj) {
   return typeObj;
 }
 
-// removes that taskId from the requester arrays
+// removes that taskId from the worker arrays
 function removeTaskFromWorkerArray(taskId, typeObj) {
   if (typeObj.worker) {
     if (typeObj.requester.activeTasks)
@@ -384,7 +349,7 @@ function removeTaskFromWorkerArray(taskId, typeObj) {
 // changes tasks current status and adds task to one of the requester arrays
 function statusPushTo(taskId, array) {
   if (typeof array != 'undefined' && array instanceof Array)
-    if (array.length > 0) {
+    if (array.length > 0 && taskId) {
       if (taskId)
         array.push({ taskId: taskId });
       return array;
@@ -404,7 +369,7 @@ function removeFromObjectTasksArray (taskId, array) {
 }
 
 function ownsTask(task, typeObj) {
-  return task.requester._id.toString() === typeObj._id.toString();
+  return task.requester.requesterId.toString() === typeObj._id.toString();
 }
 
 function getIdsInArray(array) {
@@ -440,10 +405,10 @@ function getWorkersIds(jobs) {
   return { enterpriseIds: workersEnterprise, individualIds: workersIndividual };
 }
 
-function setStatusOfWorkers(workerIdArray, status, taskId, callBack, errorIds) {
-  var workerId = null;
+function setStatusOfWorkers(workerIdArray, status, taskId, callBack, errorIds, workerId) {
   if (!errorIds)
     errorIds = [];
+  workerId = null;
   if (workerIdArray.enterpriseIds) {
     workerId = workerIdArray.enterpriseIds.shift();
     if (workerIdArray.enterpriseIds.length <= 0)
@@ -451,19 +416,18 @@ function setStatusOfWorkers(workerIdArray, status, taskId, callBack, errorIds) {
     Enterprise.find({ '_id': workerId }, function(err, enterprise) {
       if (err) {
         errorIds.push({ error: err, workerId: workerId });
-        return setStatusOfWorkers(workerIdArray, status, taskId, callBack, errorIds);
-      }
-      if (enterprise.legnth > 0) {
+        return setStatusOfWorkers(workerIdArray, status, taskId, callBack, errorIds, workerId);
+      } else {
+        if (enterprise.legnth <= 0)
+          return setStatusOfWorkers(workerIdArray, status, taskId, callBack, errorIds, workerId);
         enterprise = enterprise[0];
         enterprise = removeTaskFromWorkerArray(taskId, enterprise);
         enterprise = addWorkerTaskWithStatus(status, taskId, enterprise);
         enterprise.save(function(err, enterprise) {
           if (err)
             errorIds.push({ error: err, workerId: workerId });
-          return setStatusOfWorkers(workerIdArray, status, taskId, callBack, errorIds);
+          return setStatusOfWorkers(workerIdArray, status, taskId, callBack, errorIds, workerId);
         });
-      } else {
-        return setStatusOfWorkers(workerIdArray, status, taskId, callBack, errorIds);
       }
     });
   } else if (workerIdArray.individualIds) {
@@ -473,20 +437,18 @@ function setStatusOfWorkers(workerIdArray, status, taskId, callBack, errorIds) {
     Individual.find({ '_id': workerId }, function(err, individual) {
       if (err) {
         errorIds.push({ error: err, workerId: workerId });
-        return setStatusOfWorkers(workerIdArray, status, taskId, callBack, errorIds);
-      }
-      if (individual.legnth > 0) {
+        return setStatusOfWorkers(workerIdArray, status, taskId, callBack, errorIds, workerId);
+      } else {
+        if (individual.legnth <= 0)
+          return setStatusOfWorkers(workerIdArray, status, taskId, callBack, errorIds, workerId);
         individual = individual[0];
         individual = removeTaskFromWorkerArray(taskId, individual);
         individual = addWorkerTaskWithStatus(status, taskId, individual);
         individual.save(function(err, individual) {
-          if (err) {
+          if (err)
             errorIds.push({ error: err, workerId: workerId });
-          }
-          return setStatusOfWorkers(workerIdArray, status, taskId, callBack, errorIds);
+          return setStatusOfWorkers(workerIdArray, status, taskId, callBack, errorIds, workerId);
         });
-      } else {
-        return setStatusOfWorkers(workerIdArray, status, taskId, callBack, errorIds);
       }
     });
   } else {
@@ -521,9 +483,15 @@ function addWorkerTaskWithStatus(status, taskId, typeObj) {
 
 function isRequester(user) {
   if (user.userRole)
-    if (user.userRole.indexOf('requester') !== -1) {
+    if (user.userRole.indexOf('requester') > -1)
       return true;
-    }
+  return false;
+}
+
+function isWorker(user) {
+  if (user.userRole)
+    if (user.userRole.indexOf('worker') > -1)
+      return true;
   return false;
 }
 
@@ -536,3 +504,9 @@ exports.ownsTask = ownsTask;
 exports.getIdsInArray = getIdsInArray;
 
 exports.isRequester = isRequester;
+
+exports.isWorker = isWorker;
+
+exports.removeTaskFromWorkerArray = removeTaskFromWorkerArray;
+
+exports.setStatus = setStatus;

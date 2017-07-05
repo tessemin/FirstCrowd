@@ -303,19 +303,19 @@ exports.taskByID = function(req, res, next, id) {
 
 exports.getAllOpenTasks = function (req, res) {
   getUserTypeObject(req, res, function(typeObj) {
-    taskFindWithOption({status: 'open', secret: false},
-    [{ 'jobs': { $not: { $elemMatch: { 'worker.workerId': typeObj._id }}}},
-    {'requester.requesterId': { $ne: typeObj._id }}],
-    function (err, tasks) {
-      if (err) {
-        return res.status(422).send({
-          message: errorHandler.getErrorMessage(err)
-        });
-      }
-      if (tasks)
-        tasks = removeExtraWorkers(tasks, 'This is not an ID');
-      return res.json({ tasks: tasks });
-    });
+    taskFindWithOption({ status: 'open', secret: false },
+      [{ 'jobs': { $not: { $elemMatch: { 'worker.workerId': typeObj._id } } } },
+      { 'requester.requesterId': { $ne: typeObj._id } }],
+      function (err, tasks) {
+        if (err) {
+          return res.status(422).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        }
+        if (tasks)
+          tasks = removeExtraWorkers(tasks, 'This is not an ID');
+        return res.json({ tasks: tasks });
+      });
   });
 };
 
@@ -354,8 +354,8 @@ exports.getTasksWithOptions = function(req, res) {
   getUserTypeObject(req, res, function(typeObj) {
     req.body.secret = false;
     taskFindWithOption(req.body,
-      [{ 'jobs': { $not: { $elemMatch: { 'worker.workerId': typeObj._id }}}},
-      { 'requester.requesterId': { $ne: typeObj._id }}],
+      [{ 'jobs': { $not: { $elemMatch: { 'worker.workerId': typeObj._id } } } },
+      { 'requester.requesterId': { $ne: typeObj._id } }],
       function (err, tasks) {
         if (err) {
           return res.status(422).send({
@@ -367,21 +367,23 @@ exports.getTasksWithOptions = function(req, res) {
         return res.json({ tasks: tasks });
       });
   });
-}
+};
 
 function removeExtraWorkers(tasks, workerId) {
-  if (tasks)
+  if (tasks) {
+    var job = null;
     if (Array.isArray(tasks)) { // multiple tasks
       for (var task = 0; task < tasks.length; task++)
         if (tasks[task].jobs)
-          for (var job = 0; job < tasks[task].jobs.length; job++)
+          for (job = 0; job < tasks[task].jobs.length; job++)
             if (tasks[task].jobs[job].worker.workerId.toString() !== workerId.toString())
-              tasks.splice(i, 1);
+              tasks.splice(job, 1);
     } else { // single task
       if (tasks.jobs)
-          for (var job = 0; job < tasks.jobs.length; job++)
-            if (tasks.jobs[job].worker.workerId.toString() !== workerId.toString())
-              tasks.splice(i, 1);
+        for (job = 0; job < tasks.jobs.length; job++)
+          if (tasks.jobs[job].worker.workerId.toString() !== workerId.toString())
+            tasks.splice(job, 1);
     }
+  }
   return tasks;
 }
