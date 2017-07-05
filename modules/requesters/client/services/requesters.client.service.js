@@ -112,13 +112,13 @@
       },
       // RATINGS
       makeRating: function (workerId_taskId) {
-        return this._makeRating(workerId).$promise;
+        return this._makeRating(workerId_taskId).$promise;
       },
       getAllWorkerRatings: function () {
         return this._getAllWorkerRatings().$promise;
       },
       deleteWorkerRating: function (workerId_taskId) {
-        return this._deleteWorkerRating(workerId).$promise;
+        return this._deleteWorkerRating(workerId_taskId).$promise;
       },
       // REQUESTER INFORMATION
       getRequesterData: function () {

@@ -17,7 +17,7 @@ var getUserTypeObject = taskTools.getUserTypeObject,
   removeTaskFromWorkerArray = taskTools.removeTaskFromWorkerArray,
   taskFindOne = taskSearch.taskFindOne;
   
-exports.take = function (req, res) {
+exports.takeTask = function (req, res) {
   getUserTypeObject(req, res, function(typeObj) {
     if (isWorker(req.user.user) && typeObj.worker) {
       addWorkerToTask(req.body.taskId, req, typeObj, function (err, task, typeObj) {

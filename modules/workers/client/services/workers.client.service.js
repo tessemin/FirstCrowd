@@ -52,6 +52,11 @@
         method: 'PUT',
         url: '/api/workers/recomendedTask/'
       },
+      // Worker Actions
+      _takeTask: {
+        method: 'POST',
+        url: '/api/workers/takeTask/'
+      },
       // General Task Functions
       _getAllOpenTasks: {
         method: 'POST',
@@ -106,6 +111,10 @@
       },
       updateRecomendedTask: function (Id) {
         return this._updateRecomendedTask(Id).$promise;
+      },
+      // Worker Actions
+      takeTask: function (taksId_bid) {
+        return this._takeTask(taksId_bid).$promise;
       },
       // all tasks
       getAllOpenTasks: function () {
