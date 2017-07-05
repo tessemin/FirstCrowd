@@ -11,27 +11,27 @@ var path = require('path'),
 
 function taskFindMany(taskArray, secretAllowed, callBack) {
   if (secretAllowed)
-    Task.find({ '_id': { $in: taskArray }}, callBack);
+    Task.find({ '_id': { $in: taskArray } }, callBack);
   else
     Task.find({ '_id': { $in: taskArray }, secret: false }, callBack);
 }
 
 function taskFindOne(taskId, callBack) {
-  Task.find({ '_id': taskId}, function(err, task) { if (task.length > 0) callBack(err, task[0]); else callBack(err, null); });
+  Task.find({ '_id': taskId }, function(err, task) { if (task.length > 0) callBack(err, task[0]); else callBack(err, null); });
 }
 
 function taskFindWithOption(options, nonOptions, callBack) {
   var requestOptions = [];
   if (Array.isArray(options))
-    requestOptions = requestOptions.concat(options)
+    requestOptions = requestOptions.concat(options);
   else
-    requestOptions.push(options)
+    requestOptions.push(options);
   if (Array.isArray(nonOptions))
-    requestOptions = requestOptions.concat(nonOptions)
+    requestOptions = requestOptions.concat(nonOptions);
   else
-    requestOptions.push(nonOptions)
+    requestOptions.push(nonOptions);
 
-  Task.find({ $and: requestOptions}, callBack);
+  Task.find({ $and: requestOptions }, callBack);
 }
 
 function findTaskWorker(task, worker) {

@@ -24,8 +24,7 @@ var getUserTypeObject = taskTools.getUserTypeObject,
 exports.requesterTasks = {
   all: function (req, res) {
     var tasks = getAllTasksForIds(req, res, function(typeObj) {
-      var ids = [].concat(getAllActiveTaskIds(typeObj), getAllRejectedTaskIds(typeObj), getAllCompletedTaskIds(typeObj), getAllSuspendedTaskIds(typeObj))
-      console.log(ids)
+      var ids = [].concat(getAllActiveTaskIds(typeObj), getAllRejectedTaskIds(typeObj), getAllCompletedTaskIds(typeObj), getAllSuspendedTaskIds(typeObj));
       return ids;
     }, function(tasks) {
       return res.json({ tasks: tasks });
@@ -83,7 +82,7 @@ exports.workerRating = {
               }
             }
             task.save(function(err, task) {
-              if(err) {
+              if (err) {
                 return res.status(422).send({
                   message: errorHandler.getErrorMessage(err)
                 });

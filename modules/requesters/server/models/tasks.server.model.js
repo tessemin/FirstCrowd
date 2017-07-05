@@ -75,6 +75,11 @@ var TaskSchema = new Schema({
     type: Number,
     default: 1
   },
+  successFactor: {
+    // this is the number of sccesses needed for the project to be considered a sccuess
+    type: Number,
+    default: 1
+  },
   preapproval: {
     type: Boolean,
     default: true
@@ -101,7 +106,7 @@ var TaskSchema = new Schema({
     type: [{
       status: {
         type: String,
-        enum: ['active', 'accepted', 'rejected'],
+        enum: ['active', 'accepted', 'rejected', 'submitted'],
         required: 'Please provide a status'
       },
       ratingOnWorker: {
@@ -141,6 +146,10 @@ var TaskSchema = new Schema({
         default: 0
       },
       paymentRecieved: {
+        type: Date,
+        default: null
+      },
+      dateStarted: {
         type: Date,
         default: null
       }

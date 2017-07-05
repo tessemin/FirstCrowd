@@ -29,9 +29,8 @@ module.exports = function(app) {
   app.route('/api/workers/recomendedTask/').put(workers.recomendedTask.update);
   app.route('/api/workers/recomendedTask/all').post(workers.recomendedTask.all);
 
-  // TAKE A TASKS WITHOUT PRE APPROVAL
-
-  // TAKE A TASKS WITH PRE APPROVAL
+  // WORKER ACTIONS
+  app.route('/api/workers/takeTask/').post(workers.takeTask);
 
   // TASKS NATIVE API
   app.route('/api/getAllTasks/open').post(workers.getAllOpenTasks);
