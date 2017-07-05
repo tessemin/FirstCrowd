@@ -15,11 +15,16 @@
   font-size: 1.25em;
 }
 
-.tasks-table {
-}
-
 .tasks-row {
   display: flex;
+  margin-bottom: 1em;
+  justify-content: center;
+}
+
+.clickable-looking {
+  color: blue;
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 .tasks-cell {
@@ -28,13 +33,28 @@
   text-align: center;
 }
 
+.tasks-description {
+  flex-grow: 0;
+  flex-shrink: 1;
+  flex-basis: 80%;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
 .filter-label {
+  font-weight: normal;
   width: 100%;
 }
 
 .task-filter {
-  float: right;
-  width: 50%;
+  width: 100%;
+  border: 1px solid;
+  border-radius: 2px;
+  background: #eeeeee;
 }
 
 .progress-slider.rzslider .rz-pointer {

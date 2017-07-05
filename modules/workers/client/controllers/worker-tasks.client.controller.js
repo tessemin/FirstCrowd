@@ -14,26 +14,36 @@
     vm.loaded = false;
     // Filters
     vm.filters = {};
-    vm.filters.name = '';
-    vm.filters.postingDate = '';
-    vm.filters.deadline = '';
-    vm.filters.status = '';
+    vm.clearFilters = function() {
+      vm.filters.name = '';
+      vm.filters.postingDate = '';
+      vm.filters.deadline = '';
+      vm.filters.status = '';
+    };
+    vm.clearFilters();
 
-    vm.taskActions = [
-      'Select Action',
-      'Quit Task',
-      'Submit Results'
-    ];
+    vm.taskActions = [];
     WorkersService.updateRecomendedTask({ '_id': 'rocks' })
       .then(function() {
       });
 
     vm.taskCategories = [
-      'Active Tasks',
-      'Completed Tasks',
-      'Uncompleted Tasks',
-      'Open Tasks',
-      'Recommended Tasks'
+      {
+        id: 'active',
+        bikeshed: 'My active tasks'
+      }, {
+        id: 'open',
+        bikeshed: 'Available tasks'
+      }, {
+        id: 'recommended',
+        bikeshed: 'Recommended tasks'
+      }, {
+        id: 'completed',
+        bikeshed: 'My completed tasks'
+      }, {
+        id: 'uncompleted',
+        bikeshed: 'My uncompleted tasks'
+      }
     ];
     vm.taskCategory = vm.taskCategories[0];
 
@@ -94,16 +104,70 @@
           var clientTask = {
             '_id': task._id,
             'name': task.title,
-            'category': 'whoops! category doesn\'t exist!',
+            'category': task.category,
             'description': task.description,
-            'skillsNeeded': task.skillsNeeded.join(),
+            'skillsNeeded': task.skillsNeeded.join(', '),
             'postingDate': postDate,
             'deadline': dueDate,
             'status': task.status,
-            'taskAction': 'Select Action'
+            'taskAction': 'Select Action',
+            'payment': {
+              'bidding': {
+                'bidable': task.payment.bidding.bidable,
+                'startingPrice': task.payment.bidding.startingPrice
+              },
+              'staticPrice': task.payment.staticPrice
+            }
           };
-          if(task.jobs.length > 0) {
+
+          if (task.jobs.length > 0) {
             clientTask.progress = task.jobs[0].progress;
+          } else {
+            clientTask.progress = 0;
+          }
+          vm.tasks.push(clientTask);
+        }
+      }
+    };
+
+    vm.loadOpenTasks = function(data) {
+      console.log(data);
+      if (data) {
+        vm.loaded = true;
+        vm.taskActions = ['Select Action...', 'Apply for Task'];
+        var task,
+          postDate,
+          dueDate;
+        for (var i = 0; i < data.tasks.length; ++i) {
+          task = data.tasks[i];
+          postDate = new Date(task.dateCreated);
+          postDate = postDate.toDateString();
+          dueDate = new Date(task.deadline);
+          dueDate = dueDate.toDateString();
+
+          var clientTask = {
+            '_id': task._id,
+            'name': task.title,
+            'category': task.category,
+            'description': task.description,
+            'skillsNeeded': task.skillsNeeded.length ? task.skillsNeeded.join(', ') : 'none',
+            'postingDate': postDate,
+            'deadline': dueDate,
+            'status': task.status,
+            'taskAction': vm.taskActions[0],
+            'payment': {
+              'bidding': {
+                'bidable': task.payment.bidding.bidable,
+                'startingPrice': task.payment.bidding.startingPrice
+              },
+              'staticPrice': task.payment.staticPrice
+            }
+          };
+
+          if (task.jobs.length > 0) {
+            clientTask.progress = task.jobs[0].progress;
+          } else {
+            clientTask.progress = 0;
           }
           vm.tasks.push(clientTask);
         }
@@ -114,33 +178,32 @@
       vm.tasks = [];
       vm.loaded = false;
       vm.selectedTask = -1;
-      switch (vm.taskCategory) {
-        case 'Completed Tasks':
+      switch (vm.taskCategory.id) {
+        case 'completed':
           WorkersService.getCompletedTasks()
             .then(function(data) {
               vm.loadData(data);
             });
           break;
-        case 'Uncompleted tasks':
+        case 'uncompleted':
           WorkersService.getRejectedTasks()
             .then(function(data) {
               vm.loadData(data);
             });
           break;
-        case 'Recommended Tasks':
+        case 'recommended':
           WorkersService.getRecomendedTasks()
             .then(function(data) {
               vm.loadData(data);
             });
           break;
-        case 'Open Tasks':
-        console.log('here')
+        case 'open':
           WorkersService.getAllOpenTasks()
             .then(function(data) {
-              vm.loadData(data);
+              vm.loadOpenTasks(data);
             });
           break;
-        case 'Active Tasks':
+        case 'active':
         default:
           WorkersService.getActiveTasks()
             .then(function(data) {
@@ -148,8 +211,14 @@
             });
       }
     };
-
     vm.changeTaskCategory();
+
+    vm.actOnTask = function(index, action) {
+      if (index < vm.tasks.length) {
+        console.log('perform ' + vm.tasks[index].taskAction + ' on task ' + index);
+        vm.tasks[index].taskAction = vm.taskActions[0];
+      }
+    };
 
     vm.selectedTask = -1;
     vm.selectTask = function(index) {
@@ -158,7 +227,7 @@
       } else if (index < vm.tasks.length) {
         vm.selectedTask = index;
       }
-    }
+    };
 
     // This function is necessary to initially render the progress sliders
     function refreshProgressSliders() {

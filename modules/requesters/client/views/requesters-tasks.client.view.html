@@ -33,7 +33,7 @@
     <a ui-sref="requesters.newtask">Create New Task</a>
   </div>
   <div class="col-md-9 tasks-table">
-    <div class="tasks-header">
+    <div class="tasks-row">
       <div class="tasks-cell">
         Title
       </div>
@@ -70,7 +70,7 @@
         <rzslider class="progress-slider" rz-slider-model="task.progress" rz-slider-options="vm.sliderOptions"></rzslider>
       </div>
       <div class="tasks-cell">
-        <select ng-model="vm.task[$index].taskAction" ng-options="x for x in vm.taskActions">
+        <select ng-model="vm.task[$index].taskAction" ng-options="x as x.bikeshed for x in vm.taskActions">
         </select>
       </div>
     </div> <!-- end ng-repeat -->

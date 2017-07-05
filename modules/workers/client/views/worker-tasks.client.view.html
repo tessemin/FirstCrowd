@@ -1,5 +1,5 @@
 <section class="row">
-  <nav class="col-md-3">
+  <nav class="col-md-2">
     <h3>Refine by:</h3>
     <ul class="list-group">
       <li class="list-group-item">
@@ -29,10 +29,10 @@
     </ul>
   </nav>
   <div class="tasks-caption">
-    <select ng-model="vm.taskCategory" ng-change="vm.changeTaskCategory()" ng-options="x for x in vm.taskCategories">
+    <select ng-model="vm.taskCategory" ng-change="vm.changeTaskCategory()" ng-options="x.bikeshed for x in vm.taskCategories">
     </select>
   </div>
-  <div class="col-md-9 tasks-table">
+  <div class="col-md-10 tasks-table">
     <div class="tasks-row">
       <div class="tasks-cell">
         Title
@@ -46,44 +46,56 @@
       <div class="tasks-cell">
         Status
       </div>
-      <div class="tasks-cell" ng-if="vm.taskCategory=='Active Tasks'">
+      <div class="tasks-cell" ng-if="vm.taskCategory.id === 'active'">
         Progress
       </div>
-      <div class="tasks-cell">
-        Actions
+      <div class="tasks-cell" ng-if="vm.taskCategory.id === 'open'">
+        Payment
       </div>
     </div>
     <div ng-repeat="task in vm.tasks | filter : vm.filters : false as results track by $index">
-      <div class="tasks-row" ng-click="vm.selectTask($index)">
-        <div class="tasks-cell">
-          {{task.name}}
+      <div class="task-item">
+        <div class="tasks-row" ng-click="vm.selectTask($index)">
+          <div class="tasks-cell clickable-looking">
+            {{task.name}}
+          </div>
+          <div class="tasks-cell">
+            {{task.postingDate}}
+          </div>
+          <div class="tasks-cell">
+            {{task.deadline}}
+          </div>
+          <div class="tasks-cell">
+            {{task.status}}
+          </div>
+          <div class="tasks-cell" ng-if="vm.taskCategory.id === 'active'">
+            <rzslider class="progress-slider" rz-slider-model="task.progress" rz-slider-options="vm.sliderOptions"></rzslider>
+          </div>
+          <div class="tasks-cell" ng-if="task.payment.bidding.bidable">
+            ${{task.payment.bidding.startingPrice}} (negotiable)
+          </div>
+          <div class="tasks-cell" ng-if="!task.payment.bidding.bidable">
+            ${{task.payment.staticPrice}}
+          </div>
         </div>
-        <div class="tasks-cell">
-          {{task.postingDate}}
-        </div>
-        <div class="tasks-cell">
-          {{task.deadline}}
-        </div>
-        <div class="tasks-cell">
-          {{task.status}}
-        </div>
-        <div class="tasks-cell" ng-if="vm.taskCategory=='Active Tasks'">
-          <rzslider class="progress-slider" rz-slider-model="task.progress" rz-slider-options="vm.sliderOptions"></rzslider>
-        </div>
-        <div class="tasks-cell">
-          <select ng-model="vm.tasks[$index].taskAction" ng-options="x for x in vm.taskActions">
-          </select>
-        </div>
-      </div>
-      <div class="tasks-row" ng-if="vm.selectedTask == $index">
-        <div class="tasks-cell">
-          {{task.category}}
-        </div>
-        <div class="tasks-cell">
-          {{task.description}}
-        </div>
-        <div class="tasks-cell">
-          Requires: {{task.skillsNeeded}}
+        <div ng-if="vm.selectedTask == $index">
+          <div class="tasks-row">
+            <div class="tasks-cell">
+              Categories: {{task.category}}
+            </div>
+            <div class="tasks-cell">
+              Requires: {{task.skillsNeeded}}
+            </div>
+            <div class="tasks-cell">
+              <select ng-model="vm.tasks[$index].taskAction" ng-options="x for x in vm.taskActions" ng-change="vm.actOnTask($index)">
+              </select>
+            </div>
+          </div>
+          <div class="tasks-row">
+            <div class="tasks-description">
+              Description: {{task.description}}
+            </div>
+          </div>
         </div>
       </div>
     </div> <!-- end ng-repeat -->
@@ -93,6 +105,10 @@
       </div>
       <div ng-if="vm.loaded === true && vm.tasks.length === 0">
         There are no tasks.
+      </div>
+      <div ng-if="vm.loaded === true && vm.tasks.length > 0 && results.length === 0">
+        None of the tasks match your filter settings.
+        <button type="button" class="btn" ng-click="vm.clearFilters()">Clear all filters</button>
       </div>
     </div>
   </div>

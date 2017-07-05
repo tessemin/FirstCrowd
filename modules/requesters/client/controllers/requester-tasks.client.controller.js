@@ -18,7 +18,18 @@
     vm.filters.status = '';
 
     vm.taskActions = [
-      'Fire Worker'
+      {
+        id: 'default',
+        bikeshed: 'Select action...'
+      },
+      {
+        id: 'delete',
+        bikeshed: 'Delete Task'
+      },
+      {
+        id: 'fire',
+        bikeshed: 'Fire Worker'
+      }
     ];
 
     vm.tasks = [];
@@ -43,7 +54,7 @@
             'deadline': dueDate,
             'status': task.status,
             'progress': task.totalProgress,
-            'taskAction': 'Select Action'
+            'taskAction': vm.taskActions[0]
           });
         }
       }
