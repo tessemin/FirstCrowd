@@ -6,9 +6,9 @@
     .module('requesters')
     .controller('RequesterTasksController', RequesterTasksController);
 
-  RequesterTasksController.$inject = ['$scope', '$state', '$timeout', 'RequestersService'];
+  RequesterTasksController.$inject = ['$scope', '$state', '$timeout', 'RequestersService', 'Notification'];
 
-  function RequesterTasksController ($scope, $state, $timeout, RequestersService) {
+  function RequesterTasksController ($scope, $state, $timeout, RequestersService, Notification) {
     var vm = this;
     // Filters
     vm.filters = {};
@@ -66,22 +66,18 @@
       }
     };
 
-    function onDeleteTaskSuccess() {
-      console.log('task deleted');
-    };
-
-    function onDeleteTaskFailure() {
-      console.log('FAILED to delete task');
-    };
-
     vm.actOnTask = function(index, action) {
       if (index < vm.tasks.length) {
-        console.log(vm.tasks[index]._id);
         switch(vm.tasks[index].taskAction.id) {
           case 'delete':
             RequestersService.deleteTask({taskId: vm.tasks[index]._id})
-              .then(onDeleteTaskSuccess)
-              .catch(onDeleteTaskFailure);
+              .then(function(response) {
+                vm.tasks.splice(index, 1);
+                Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> Task deleted!' });
+              })
+              .catch(function(response) {
+                Notification.error({ message: response.message, title: '<i class="glyphicon glyphicon-remove"></i> Deletion failed! Task not deleted!' });
+              });
             break;
           default:
             console.log('perform ' + vm.tasks[index].taskAction.bikeshed + ' on task ' + index);
