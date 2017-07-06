@@ -132,16 +132,16 @@
         return this._createTask(taskInfo).$promise;
       },
       deleteTask: function (taskId) {
-        return this._deleteTask().$promise;
+        return this._deleteTask(taskId).$promise;
       },
       updateTask: function (taskId_updateInfo) {
-        return this._updateTask().$promise;
+        return this._updateTask(taskId_updateInfo).$promise;
       },
       getWorkerRatingsForTask: function (taskId) {
-        return this._getWorkerRatingsForTask().$promise;
+        return this._getWorkerRatingsForTask(taskId).$promise;
       },
       getRequesterRatingsForTask: function (taskId) {
-        return this._getRequesterRatingsForTask().$promise;
+        return this._getRequesterRatingsForTask(taskId).$promise;
       }
     });
 

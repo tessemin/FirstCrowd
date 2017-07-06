@@ -83,8 +83,16 @@ exports.taskActions = {
               message: errorHandler.getErrorMessage(err)
             });
           }
+          if (!task)
+            return res.status(422).send({
+              message: 'No task found'
+            });
+          if (!task.requester || !task.requester.requesterId)
+              return res.status(422).send({
+                message: 'No owner for this task'
+              });
           if (ownsTask(task, typeObj)) {
-            if (task.jobs.length > 0) {
+            if (!task.jobs || task.jobs.length <= 0) {
               Task.findByIdAndRemove(taskId, function (err, task) {
                 if (err) {
                   return res.status(422).send({
