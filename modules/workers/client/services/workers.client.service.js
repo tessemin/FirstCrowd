@@ -113,8 +113,8 @@
         return this._updateRecomendedTask(Id).$promise;
       },
       // Worker Actions
-      takeTask: function (taksId_bid) {
-        return this._takeTask(taksId_bid).$promise;
+      takeTask: function (taskId_bid) {
+        return this._takeTask(taskId_bid).$promise;
       },
       // all tasks
       getAllOpenTasks: function () {
