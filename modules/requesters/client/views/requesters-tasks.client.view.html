@@ -70,7 +70,7 @@
         <rzslider class="progress-slider" rz-slider-model="task.progress" rz-slider-options="vm.sliderOptions"></rzslider>
       </div>
       <div class="tasks-cell">
-        <select ng-model="vm.tasks[$index].taskAction" ng-options="x as x.bikeshed for x in vm.taskActions">
+        <select ng-model="task.taskAction" ng-options="x as x.bikeshed for x in task.taskActions" ng-change="vm.actOnTask($index)">
         </select>
       </div>
     </div> <!-- end ng-repeat -->

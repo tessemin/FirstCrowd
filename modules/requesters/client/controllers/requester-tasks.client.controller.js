@@ -17,21 +17,6 @@
     vm.filters.deadline = '';
     vm.filters.status = '';
 
-    vm.taskActions = [
-      {
-        id: 'default',
-        bikeshed: 'Select action...'
-      },
-      {
-        id: 'delete',
-        bikeshed: 'Delete Task'
-      },
-      {
-        id: 'fire',
-        bikeshed: 'Fire Worker'
-      }
-    ];
-
     vm.tasks = [];
     vm.loaded = false;
     vm.loadData = function(data) {
@@ -39,6 +24,7 @@
       if (data) {
         vm.loaded = true;
         var task,
+          taskActions,
           postDate,
           dueDate;
         for (var i = 0; i < data.tasks.length; ++i) {
@@ -47,6 +33,25 @@
           postDate = postDate.toDateString();
           dueDate = new Date(task.deadline);
           dueDate = dueDate.toDateString();
+          taskActions = [
+            {
+              id: 'default',
+              bikeshed: 'Select action...'
+            }
+          ];
+          // If no one has ever worked on the task, allow deletion
+          if (task.status === 'inactive' || (task.status === 'open' && task.jobs.length === 0)) {
+            taskActions.push({
+              id: 'delete',
+              bikeshed: 'Delete Task'
+            });
+          }
+          if (task.status === 'open') {
+            taskActions.push({
+              id: 'suspend',
+              bikeshed: 'Suspend Task'
+            })
+          }
           vm.tasks.push({
             '_id': task._id,
             'name': task.title,
@@ -54,9 +59,34 @@
             'deadline': dueDate,
             'status': task.status,
             'progress': task.totalProgress,
-            'taskAction': vm.taskActions[0]
+            'taskActions': taskActions,
+            'taskAction': taskActions[0]
           });
         }
+      }
+    };
+
+    function onDeleteTaskSuccess() {
+      console.log('task deleted');
+    };
+
+    function onDeleteTaskFailure() {
+      console.log('FAILED to delete task');
+    };
+
+    vm.actOnTask = function(index, action) {
+      if (index < vm.tasks.length) {
+        console.log(vm.tasks[index]._id);
+        switch(vm.tasks[index].taskAction.id) {
+          case 'delete':
+            RequestersService.deleteTask({taskId: vm.tasks[index]._id})
+              .then(onDeleteTaskSuccess)
+              .catch(onDeleteTaskFailure);
+            break;
+          default:
+            console.log('perform ' + vm.tasks[index].taskAction.bikeshed + ' on task ' + index);
+        }
+        vm.tasks[index].taskAction = vm.tasks[index].taskActions[0];
       }
     };
 
