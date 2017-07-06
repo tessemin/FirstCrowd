@@ -96,22 +96,23 @@ exports.taskActions = {
               Task.findByIdAndRemove(taskId, function (err, task) {
                 if (err) {
                   return res.status(422).send({
-                    message: errorHandler.getErrorMessage(err)
+                    message: errorHandler.getErrorMessage(err),
                   });
                 } else {
                   return res.status(200).send({
-                    message: 'Task ' + task.title + ' deleted successfully'
+                    message: 'Task ' + task.title + ' deleted successfully',
+                    taskId: task._id
                   });
                 }
               });
             } else {
               return res.status(422).send({
-                message: 'Workers are working on that task\nPlease set status to suspended and resolve any conflicts'
+                message: 'Workers are working on that task\nPlease set status to suspended and resolve any conflicts',
               });
             }
           } else {
             return res.status(422).send({
-              message: 'You are not the owner of this task'
+              message: 'You are not the owner of this task',
             });
           }
         });

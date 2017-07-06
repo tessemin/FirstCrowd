@@ -34,9 +34,13 @@ exports.takeTask = function (req, res) {
               });
             } else {
               return res.status(200).send({
-                message: message.correct
+                message: 'You are now a worker for task ' + task.title
               });
             }
+          });
+        } else {
+          return res.status(200).send({
+            message: 'You are now a worker for task ' + task.title
           });
         }
       });
@@ -59,6 +63,7 @@ function addWorkerToTask(taskId, req, typeObj, callBack) {
     typeObj = removeTaskFromWorkerArray(task._id, typeObj);
     typeObj.worker.activeTasks.push(task._id);
     var bid = null;
+    // FOR BIDDING
     if (task.payment.bidding.bidable) {
       var workerBid = req.body.bid;
       if (!workerBid) {
@@ -82,7 +87,7 @@ function addWorkerToTask(taskId, req, typeObj, callBack) {
         task.bids.push(bid);
         return callBack(null, task, typeObj);
       }
-    } else if (task.preapproval) {
+    } else if (task.preapproval) { // FOR REQUIRE PREAROVAL
       bid = {
         worker: {
           workerId: typeObj._id
@@ -96,7 +101,7 @@ function addWorkerToTask(taskId, req, typeObj, callBack) {
         bid.worker.workerType.individual = true;
       task.bids.push(bid);
       return callBack(null, task, typeObj);
-    } else {
+    } else { // STATIC PRICE, NO PREAPROVAL
       var job = {
         status: 'active',
         worker: {
