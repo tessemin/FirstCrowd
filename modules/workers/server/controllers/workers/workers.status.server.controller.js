@@ -60,8 +60,11 @@ function addWorkerToTask(taskId, req, typeObj, callBack) {
       return callBack('No task found');
     if (task.secret && !isTaskRecomended(task._id, typeObj))
       return callBack('You don\'t have permission to work on that task');
+    if (task.multiplicity <= 0) 
+      return callBack('There are too many workers for this task');
     typeObj = removeTaskFromWorkerArray(task._id, typeObj);
     typeObj.worker.activeTasks.push(task._id);
+    --task.multiplicity;
     var bid = null;
     // FOR BIDDING
     if (task.payment.bidding.bidable) {
