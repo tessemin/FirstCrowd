@@ -33,12 +33,7 @@
           postDate = postDate.toDateString();
           dueDate = new Date(task.deadline);
           dueDate = dueDate.toDateString();
-          taskActions = [
-            {
-              id: 'default',
-              bikeshed: 'Select action...'
-            }
-          ];
+          taskActions = [];
           // If no one has ever worked on the task, allow deletion
           if (task.status === 'inactive' || (task.status === 'open' && task.jobs.length === 0)) {
             taskActions.push({
@@ -59,8 +54,7 @@
             'deadline': dueDate,
             'status': task.status,
             'progress': task.totalProgress,
-            'taskActions': taskActions,
-            'taskAction': taskActions[0]
+            'taskActions': taskActions
           });
         }
       }
@@ -68,7 +62,7 @@
 
     vm.actOnTask = function(index, action) {
       if (index < vm.tasks.length) {
-        switch(vm.tasks[index].taskAction.id) {
+        switch(action) {
           case 'delete':
             RequestersService.deleteTask({taskId: vm.tasks[index]._id})
               .then(function(response) {
@@ -80,9 +74,8 @@
               });
             break;
           default:
-            console.log('perform ' + vm.tasks[index].taskAction.bikeshed + ' on task ' + index);
+            console.log('perform ' + action + ' on task ' + index);
         }
-        vm.tasks[index].taskAction = vm.tasks[index].taskActions[0];
       }
     };
 

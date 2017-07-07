@@ -69,10 +69,16 @@
       <div class="tasks-cell">
         <rzslider class="progress-slider" rz-slider-model="task.progress" rz-slider-options="vm.sliderOptions"></rzslider>
       </div>
-      <div class="tasks-cell">
-        <select ng-model="task.taskAction" ng-options="x as x.bikeshed for x in task.taskActions" ng-change="vm.actOnTask($index)">
-        </select>
+      <div class="tasks-cell dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Actions
+        <span class="caret"></span></button>
+        <ul class="dropdown-menu">
+          <div ng-repeat="item in task.taskActions">
+            <li><button class="dropdown-button-item" ng-click="vm.actOnTask($parent.$index, item.id)">{{item.bikeshed}}</button></li>
+          </div>
+        </ul>
       </div>
+
     </div> <!-- end ng-repeat -->
     <div class="text-center form-group">
       <div ng-if="vm.loaded === false">
