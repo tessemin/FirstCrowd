@@ -15,6 +15,7 @@ module.exports = function(app) {
   
   // ACTIVE TASKS
   app.route('/api/requesters/activeTask/all').post(requesters.activeTask.all);
+  app.route('/api/requesters/activateTask').post(requesters.activateTask);
 
   // SUSPENDED TASKS
   app.route('/api/requesters/suspendedTask/all').post(requesters.suspendedTask.all);

@@ -22,6 +22,10 @@
         method: 'POST',
         url: '/api/requesters/activeTask/all'
       },
+      _activateTask: {
+        method: 'POST',
+        url: '/api/requesters/activateTask'
+      },
       // SUSPENDED TASKS
       _getSuspendedTasks: {
         method: 'POST',
@@ -97,6 +101,9 @@
       // ACTIVE TASKS
       getActiveTasks: function() {
         return this._getActiveTasks().$promise;
+      },
+      activateTask: function(taskId) {
+        return this._activateTask(taskId).$promise;
       },
       // SUSPENDED TASKS
       getSuspendedTasks: function() {
