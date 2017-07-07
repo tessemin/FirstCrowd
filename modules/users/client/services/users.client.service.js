@@ -77,15 +77,15 @@
             role: role
           });
 
-          if (role === 'requester') 
-            $state.go('requesters.list');
-          else if (role === 'worker') 
-            $state.go('workers.list');
-          else if (role === 'resourceOwner') 
+          if (role === 'requester')
+            $state.go('requesters.tasks');
+          else if (role === 'worker')
+            $state.go('workers.tasks');
+          else if (role === 'resourceOwner')
             $state.go('resourceOwners.list');
           else
             $state.go('home');
-          
+
         }
       }
     });

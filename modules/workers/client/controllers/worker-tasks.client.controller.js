@@ -215,6 +215,19 @@
 
     vm.actOnTask = function(index, action) {
       if (index < vm.tasks.length) {
+        switch(action.id) {
+          case 'take':
+            WorkersService.takeTask({taskId: vm.tasks[index].id})
+              .then(function(response) {
+                Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> Task Taken?' });
+              })
+              .catch(function(response) {
+                Notification.error({ message: response.message, title: '<i class="glyphicon glyphicon-remove"></i> Error! Task not taken!' });
+              });
+            break;
+          default:
+            break;
+        }
         console.log('perform ' + vm.tasks[index].taskAction + ' on task ' + index);
         vm.tasks[index].taskAction = vm.taskActions[0];
       }

@@ -8,7 +8,7 @@
   menuConfig.$inject = ['menuService', 'Authentication'];
 
   function menuConfig(menuService, Authentication) {
-    
+
     // adds view picker
     menuService.addMenuItem('topbar', {
       title: 'Views',
@@ -18,23 +18,23 @@
     });
     menuService.addSubMenuItem('topbar', 'views', {
       title: 'Worker View',
-      state: 'worker',
+      state: 'workers.tasks',
       userRole: ['worker']
     });
-    
+
     menuService.addSubMenuItem('topbar', 'views', {
       title: 'Requester View',
-      state: 'requester',
+      state: 'requesters.tasks',
       userRole: ['requester']
     });
-    
+
     menuService.addSubMenuItem('topbar', 'views', {
       title: 'Resource Owner View',
       state: 'resourceOwner',
       userRole: ['resourceOwner']
     });
 
-    
+
     menuService.addMenu('account', {
       roles: ['user']
     });
