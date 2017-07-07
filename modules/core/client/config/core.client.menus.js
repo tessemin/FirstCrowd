@@ -18,13 +18,13 @@
     });
     menuService.addSubMenuItem('topbar', 'views', {
       title: 'Worker View',
-      state: 'workers.tasks',
+      state: 'worker',
       userRole: ['worker']
     });
 
     menuService.addSubMenuItem('topbar', 'views', {
       title: 'Requester View',
-      state: 'requesters.tasks',
+      state: 'requester',
       userRole: ['requester']
     });
 
