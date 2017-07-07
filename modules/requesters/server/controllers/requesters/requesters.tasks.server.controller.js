@@ -18,6 +18,7 @@ var getUserTypeObject = taskTools.getUserTypeObject,
   ownsTask = taskTools.ownsTask,
   getIdsInArray = taskTools.getIdsInArray,
   isRequester = taskTools.isRequester,
+  setStatus = taskTools.setStatus,
   taskFindOne = taskSearch.taskFindOne,
   taskFindMany = taskSearch.taskFindMany;
   
@@ -112,6 +113,27 @@ exports.workerRating = {
     
   }
 };
+
+exports.activateTask = function (req, res) {
+  getUserTypeObject(req, res, function(typeObj) {
+    if (isRequester(req.user) && typeObj.requester) {
+      setStatus(req.body.taskId, 'open', typeObj, function (message) {
+        if (message.error) {
+          res.status(422).send({
+            message: message.error
+          });
+        }
+        res.status(200).send({
+          message: message.correct
+        });
+      });
+    } else {
+      return res.status(422).send({
+        message: 'No requester found.'
+      });
+    }
+  });
+}
 
 function getAllTasksForIds(req, res, taskIdGetFunction, callBack) {
   getUserTypeObject(req, res, function(typeObj) {
