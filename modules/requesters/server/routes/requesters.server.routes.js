@@ -44,7 +44,6 @@ module.exports = function(app) {
   app.route('/api/tasks/updateTask').put(requesters.taskActions.update);
   app.route('/api/tasks/getWorkerRatingsForTask').put(requesters.taskActions.getWorkerRatingsForTask);
   app.route('/api/tasks/getRequesterRatingsForTask').put(requesters.taskActions.getRequesterRatingsForTask);
-  app.route('/api/tasks/changeStatus').post(requesters.taskActions.changeStatus);
   app.route('/api/tasks/getTasksWithOptions').post(requesters.taskFindWithOption);
 
   // Finish by binding the Requester middleware

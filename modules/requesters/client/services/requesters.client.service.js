@@ -84,19 +84,12 @@
         method: 'POST',
         url: '/api/tasks/getRequesterRatingsForTask'
       },
-      _changeTaskStatus: {
-        method: 'POST',
-        url: '/api/tasks/changeTaskStatus'
-      }
     });
 
     angular.extend(Requesters, {
       // ALL REQUESTER TASKS
       getAllTasks: function() {
         return this._getAllTasks().$promise;
-      },
-      changeTaskStatus: function(status_task) {
-        return this._changeTaskStatus(status_task).$promise;
       },
       // ACTIVE TASKS
       getActiveTasks: function() {
