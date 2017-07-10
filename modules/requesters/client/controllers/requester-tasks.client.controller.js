@@ -90,13 +90,37 @@
             // init modal
             vm.modal = {};
             // put task info into modal
-            if (vm.tasks[index])
+            if (vm.tasks[index]) {
               vm.modal.showContent = true;
-            var task = vm.tasks[index].taskRef;
-            console.log(task)
-            vm.modal.title = task.title;
-            // open modal for payment
-            $("#reviewPaymentModal").modal()
+              var task = vm.tasks[index].taskRef;
+              if (task.payment.bidding.bidable) {
+                vm.modal.bidable = true;
+                vm.modal.bidding = {}
+                vm.modal.bidding.maxPricePerWorker = task.payment.bidding.startingPrice;
+                vm.modal.bidding.minPricePerWorker = task.payment.bidding.minPrice;
+                vm.modal.bidding.biddingStart = new Date(task.payment.bidding.timeRange.start);
+                vm.modal.bidding.biddingEnd = new Date(task.payment.bidding.timeRange.end);
+              } else {
+                vm.modal.bidable = false;
+                vm.modal.costPerWorker = task.payment.staticPrice;
+              }
+              console.log(task)
+              vm.modal.title = task.title;
+              vm.modal.description = task.description;
+              vm.modal.preapproval = task.preapproval;
+              vm.modal.secret = task.secret;
+              vm.modal.skillsNeeded = task.skillsNeeded.join(', ');
+              vm.modal.category = task.category;
+              vm.modal.multiplicity = task.multiplicity;
+              vm.modal.tax = 0.00;
+              vm.modal.deadline = vm.tasks[index].deadline;
+              vm.modal.dateCreated = vm.tasks[index].postingDate;
+              
+              // open modal for payment
+              $("#reviewPaymentModal").modal()
+            } else {
+              Notification.error({ message: 'Task index does not exist.', title: '<i class="glyphicon glyphicon-remove"></i> Cannot Find Task' });
+            }
             break;
           default:
             console.log('perform ' + action + ' on task ' + index);
