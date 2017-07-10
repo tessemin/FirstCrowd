@@ -39,6 +39,7 @@
 /* style glyph */
 .inner-addon .glyphicon {
   color: gray;
+  font-size: medium;
   padding: 10px;
   position: absolute;
   z-index: 100;
@@ -62,6 +63,7 @@
 
 .exit {
 /* 0.1 px to shut up css linter errors */
+  font-size: large !important;
   right: 0.1px !important;
   z-index: 0 !important;
 }

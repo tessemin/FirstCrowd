@@ -12,10 +12,12 @@
     <div ng-show="vm.sidebar" class="side-panel">
 
       <div class="form-group col-xs-12">
-        <div class="inner-addon right-addon">
+        <div class="inner-addon right-addon col-xs-10">
           <i class="glyphicon glyphicon-search" ng-click="vm.search()"></i>
-          <i class="exit glyphicon glyphicon-remove" ng-click="vm.close()"></i>
           <input class="form-control" type="text" ng-model="vm.searching" placeholder="Search">
+        </div>
+        <div class="col-xs-1 inner-addon">
+          <i class="exit glyphicon glyphicon-remove" ng-click="vm.close()"></i>
         </div>
       </div>
 
