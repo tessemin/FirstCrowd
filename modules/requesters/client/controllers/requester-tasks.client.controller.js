@@ -177,32 +177,56 @@
     
     vm.closePaymentModal = function () {
       $('#reviewPaymentModal').modal('hide');
-    }
+    };
     
     // TODO: Make this angular compliant
     // paypal payment action
     var payForTaskId = null;
-    paypal.Button.render({
-      env: 'sandbox', // Or 'sandbox'
+    var paymentData = null;
+    function paypalButtonRender() {
+      payForTaskId = null;
+      paymentData = null;
+      paypal.Button.render({
+        env: 'sandbox', // Or 'sandbox'
 
-      commit: true, // Show a 'Pay Now' button
-      click: function () {
-        vm.closePaymentModal();
-      },
-      payment: function() {
-        return paypal.request.post('/api/payment/paypal/create/', { taskId: payForTaskId }).then(function(data) {
-          return data.paymentId;
-        });
-      },
-      onAuthorize: function(data) {
-        return paypal.request.post('/api/payment/paypal/execute/', {
-          paymentID: data.paymentID,
-          payerID: data.payerID
-        }).then(function() {
-          // payment is complete!!!
-        });
-      }
-    }, '#paypal-button');
-    
+        commit: true, // Show a 'Pay Now' button
+        style: {
+            size: 'responsive',
+            color: 'blue',
+            shape: 'pill',
+            label: 'checkout'
+        },
+        payment: function() {
+          return paypal.request.post('/api/payment/paypal/create/', { taskId: payForTaskId }).then(function(data) {
+            // closes the payment review modal
+            vm.closePaymentModal();
+            paymentData = data;
+            paymentData.transactions = JSON.stringify(paymentData.transactions);
+            return data.paymentID;
+          });
+        },
+        onAuthorize: function(data) {
+          return paypal.request.post('/api/payment/paypal/execute/', {
+            paymentID: data.paymentID,
+            payerID: data.payerID,
+            transactions: paymentData.transactions,
+            taskId: paymentData.taskId
+          }).then(function(response) {
+            // payment completed success
+            Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> Payment Accepted!' });
+            // set task to active.
+            // re-render the paypal button
+            paypalButtonRender();
+          });
+        },
+        onError: function(err) {
+          // show a gracful error
+          Notification.error({ message: err.message, title: '<i class="glyphicon glyphicon-remove"></i> ' + err.title });
+          // re-render the paypal button
+            paypalButtonRender();
+        }
+      }, '#paypal-button');
+    }
+    paypalButtonRender();
   }
 }());

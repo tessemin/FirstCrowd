@@ -12,6 +12,7 @@ var path = require('path'),
   _ = require('lodash');
   
 var getUserTypeObject = taskTools.getUserTypeObject,
+  setStatus = taskTools.setStatus,
   taskFindOne = taskSearch.taskFindOne;
 
 paypal.configure({
@@ -24,8 +25,10 @@ exports.paypal = {
   create: function (req, res) {
     getUserTypeObject(req, res, function(typeObj) {
       taskFindOne(req.body.taskId, function(err, task) {
+        if (err)
+           return res.status(422).send(errorHandler.getErrorMessage(err));
         var create_payment_json = {
-          'intent': 'sale',
+          'intent': 'authorize',
           'payer': {
             'payment_method': 'paypal'
           },
@@ -51,7 +54,6 @@ exports.paypal = {
           }]
         };
         
-        
         if (req.body.returnURL)
           create_payment_json.redirect_urls.cancel_url = req.body.returnURL;
         if (req.body.cancelURL)
@@ -61,19 +63,56 @@ exports.paypal = {
           if (error) {
             return res.status(422).send({ name: error.name, message: error.message });
           } else {
-            return res.status(201).send({paymentId: createdPayment.id, taskId: task._id });
+            var returnObj = {
+              paymentID: createdPayment.id,
+              taskId: task._id,
+              transactions: []
+            };
+            for (var trans = 0; trans < createdPayment.transactions.length; trans++)
+              returnObj.transactions.push({ amount: createdPayment.transactions[trans].amount });
+            return res.status(201).send(returnObj);
           }
         });
       });
     });
   },
   execute: function (req, res) {
-    paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
-      if (error) {
-        return res.status(422).send({ name: error.name, message: error.message });
-      } else {
-        return res.status(200).send(payment);
-      }
+    getUserTypeObject(req, res, function(typeObj) {
+      taskFindOne(req.body.taskId, function(err, task) {
+        if (err)
+          return res.status(422).send({ message: errorHandler.getErrorMessage(err), title: 'Error Finding Task!' });
+        
+        // get the parse version of the transaction list
+        req.body.transactions = JSON.parse(req.body.transactions);
+        
+        if (!task.payment.staticPrice * task.multiplicity === req.body.transactions[0].amount.total)
+          return res.status(422).send({ message: 'Task total doesn\'t match payment total', title: 'Task Error!' });
+        
+        var execute_payment_json = {
+          "payer_id": req.body.payerID,
+          "transactions":  req.body.transactions
+        };
+        paypal.payment.execute(req.body.paymentID, execute_payment_json, function (error, payment) {
+          if (error) {
+            return res.status(422).send({ message: error.name, title: 'Error With Paypal' });
+          } else {
+            setStatus(task._id, 'open', typeObj, function (message) {
+              if (message.error) {
+                return res.status(422).send({
+                  message: message.error,
+                  title: 'Error setting task status!'
+                });
+              } else {
+                return res.status(200).send({ message: task.title + ' is now open.' });
+              }
+            });
+          }
+        });
+      });
     });
   }
 };
+
+function getTaskTotal(task) {
+  
+}
