@@ -162,4 +162,42 @@
       </div>
     </div>
   </div>
+
+<!-- Payment Modal -->
+<div id="reviewPaymentModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content" ng-show="vm.modal.showContent">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Task Information</h4>
+      </div>
+      <div class="modal-body">
+        
+        <h3>{{vm.modal.title}}</h3>
+        
+      </div>
+      <div class="modal-footer">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-5"></div>
+            <div class="col-md-3">
+              <div id="paypal-button"></div>
+            </div>
+            <div class="col-md-3">
+              <div class="container-fluid row">
+                <div class="col-md-6"><b>OR</b></div>
+                <div class="col-md-6">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
 </section>

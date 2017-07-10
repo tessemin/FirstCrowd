@@ -22,7 +22,6 @@
     vm.tasks = [];
     vm.loaded = false;
     vm.loadData = function(data) {
-      console.log(data);
       if (data) {
         vm.loaded = true;
         var task,
@@ -43,7 +42,13 @@
             taskActions.push({
               id: 'suspend',
               bikeshed: 'Suspend Task'
-            })
+            });
+          }
+          if (task.status === 'inactive') {
+            taskActions.push({
+              id: 'activate',
+              bikeshed: 'Activate Task'
+            });
           }
           vm.tasks.push({
             '_id': task._id,
@@ -52,7 +57,8 @@
             'deadline': new Date(task.deadline),
             'status': task.status,
             'progress': task.totalProgress,
-            'taskActions': taskActions
+            'taskActions': taskActions,
+            'taskRef': task
           });
         }
       }
@@ -79,6 +85,18 @@
               .catch(function(response) {
                 Notification.error({ message: response.message, title: '<i class="glyphicon glyphicon-remove"></i> Deletion failed! Task not deleted!' });
               });
+            break;
+          case 'activate':
+            // init modal
+            vm.modal = {};
+            // put task info into modal
+            if (vm.tasks[index])
+              vm.modal.showContent = true;
+            var task = vm.tasks[index].taskRef;
+            console.log(task)
+            vm.modal.title = task.title;
+            // open modal for payment
+            $("#reviewPaymentModal").modal()
             break;
           default:
             console.log('perform ' + action + ' on task ' + index);
@@ -124,5 +142,29 @@
         }
       }
     };
+    
+    // TODO: Make this angular compliant
+    // paypal payment action
+    var payForTask = '123';
+    paypal.Button.render({
+      env: 'sandbox', // Or 'sandbox'
+
+      commit: true, // Show a 'Pay Now' button
+      
+      payment: function() {
+        return paypal.request.post('/api/payment/paypal/create/', { taskId: payForTask }).then(function(data) {
+          return data.paymentId;
+        });
+      },
+      onAuthorize: function(data) {
+        return paypal.request.post('/api/payment/paypal/execute/', {
+          paymentID: data.paymentID,
+          payerID: data.payerID
+        }).then(function() {
+          // payment is complete!!!
+        });
+      }
+    }, '#paypal-button');
+    
   }
 }());
