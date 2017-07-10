@@ -98,11 +98,14 @@
                 vm.modal.bidding = {}
                 vm.modal.bidding.maxPricePerWorker = task.payment.bidding.startingPrice;
                 vm.modal.bidding.minPricePerWorker = task.payment.bidding.minPrice;
-                vm.modal.bidding.biddingStart = new Date(task.payment.bidding.timeRange.start);
-                vm.modal.bidding.biddingEnd = new Date(task.payment.bidding.timeRange.end);
+                if (task.payment.bidding.timeRange) {
+                  vm.modal.bidding.biddingStart = new Date(task.payment.bidding.timeRange.start);
+                  vm.modal.bidding.biddingEnd = new Date(task.payment.bidding.timeRange.end);
+                }
               } else {
                 vm.modal.bidable = false;
                 vm.modal.costPerWorker = task.payment.staticPrice;
+                payForTaskId = task._id;
               }
               console.log(task)
               vm.modal.title = task.title;
@@ -169,7 +172,7 @@
     
     // TODO: Make this angular compliant
     // paypal payment action
-    var payForTask = '123';
+    var payForTaskId = null;
     paypal.Button.render({
       env: 'sandbox', // Or 'sandbox'
 
