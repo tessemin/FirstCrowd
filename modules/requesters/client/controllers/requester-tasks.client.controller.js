@@ -16,6 +16,8 @@
     vm.filters.postingDate = '';
     vm.filters.deadline = '';
     vm.filters.status = '';
+    vm.sort = 'name';
+    vm.sortReversed = false;
 
     vm.tasks = [];
     vm.loaded = false;
@@ -29,10 +31,6 @@
           dueDate;
         for (var i = 0; i < data.tasks.length; ++i) {
           task = data.tasks[i];
-          postDate = new Date(task.dateCreated);
-          postDate = postDate.toDateString();
-          dueDate = new Date(task.deadline);
-          dueDate = dueDate.toDateString();
           taskActions = [];
           // If no one has ever worked on the task, allow deletion
           if (task.status === 'inactive' || (task.status === 'open' && task.jobs.length === 0)) {
@@ -50,13 +48,22 @@
           vm.tasks.push({
             '_id': task._id,
             'name': task.title,
-            'postingDate': postDate,
-            'deadline': dueDate,
+            'postingDate': new Date(task.dateCreated),
+            'deadline': new Date(task.deadline),
             'status': task.status,
             'progress': task.totalProgress,
             'taskActions': taskActions
           });
         }
+      }
+      console.log(vm.tasks);
+    };
+    vm.sortTasks = function(property) {
+      if (vm.sort === property) {
+        vm.sortReversed = !vm.sortReversed;
+      } else {
+        vm.sort = property;
+        vm.sortReversed = false;
       }
     };
 
