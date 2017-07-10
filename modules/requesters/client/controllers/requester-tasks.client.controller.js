@@ -144,7 +144,7 @@
               vm.modal.dateCreated = vm.tasks[index].postingDate;
 
               // open modal for payment
-              $("#reviewPaymentModal").modal()
+              vm.openPaymentModal();
             } else {
               Notification.error({ message: 'Task index does not exist.', title: '<i class="glyphicon glyphicon-remove"></i> Cannot Find Task' });
             }
@@ -193,6 +193,15 @@
       }
     };
 
+    // for payment modal
+    vm.openPaymentModal = function () {
+       $('#reviewPaymentModal').modal();
+    };
+
+    vm.closePaymentModal = function () {
+      $('#reviewPaymentModal').modal('hide');
+    }
+
     // TODO: Make this angular compliant
     // paypal payment action
     var payForTaskId = null;
@@ -200,9 +209,11 @@
       env: 'sandbox', // Or 'sandbox'
 
       commit: true, // Show a 'Pay Now' button
-
+      click: function () {
+        vm.closePaymentModal();
+      },
       payment: function() {
-        return paypal.request.post('/api/payment/paypal/create/', { taskId: payForTask }).then(function(data) {
+        return paypal.request.post('/api/payment/paypal/create/', { taskId: payForTaskId }).then(function(data) {
           return data.paymentId;
         });
       },

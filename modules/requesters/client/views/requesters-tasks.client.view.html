@@ -229,7 +229,7 @@
             <div class="col-md-5"></div>
             <div class="col-md-3">
               <div ng-hide="vm.modal.bidable">
-                <div id="paypal-button"></div>
+                <div id="paypal-button" ng-click="vm.closePaymentModal()"></div>
               </div>
               <button ng-show="vm.modal.bidable" type="button" class="btn btn-primary" style="width: 120%;">Activate</button>
             </div>
