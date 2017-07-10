@@ -1,3 +1,19 @@
+<div id="confirmDeletion" class="modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirm Deletion</h5>
+      </div>
+      <div class="modal-body">
+        <p>Really delete the task?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="vm.deleteTaskConfirmed()">Delete Task</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="vm.cancelDeletion()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
 <section class="row">
   <nav class="col-md-2">
     <h3>Refine by:</h3>
@@ -145,8 +161,8 @@
           <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Actions
           <span class="caret"></span></button>
           <ul class="dropdown-menu">
-            <div ng-repeat="item in task.taskActions">
-              <li><button class="dropdown-button-item" ng-click="vm.actOnTask($parent.$index, item.id)">{{item.bikeshed}}</button></li>
+            <div ng-repeat="action in task.taskActions">
+              <li><button class="dropdown-button-item" ng-click="vm.actOnTask($parent.task._id, action.id)">{{action.bikeshed}}</button></li>
             </div>
           </ul>
         </div>

@@ -58,6 +58,7 @@
       }
       console.log(vm.tasks);
     };
+
     vm.sortTasks = function(property) {
       if (vm.sort === property) {
         vm.sortReversed = !vm.sortReversed;
@@ -67,22 +68,39 @@
       }
     };
 
-    vm.actOnTask = function(index, action) {
-      if (index < vm.tasks.length) {
-        switch(action) {
-          case 'delete':
-            RequestersService.deleteTask({taskId: vm.tasks[index]._id})
-              .then(function(response) {
-                vm.tasks.splice(index, 1);
-                Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> Task deleted!' });
-              })
-              .catch(function(response) {
-                Notification.error({ message: response.message, title: '<i class="glyphicon glyphicon-remove"></i> Deletion failed! Task not deleted!' });
-              });
-            break;
-          default:
-            console.log('perform ' + action + ' on task ' + index);
-        }
+    // bootstrap modal seems difficult to work with so this is an awkward hack
+    vm.cancelDeletion = function() {
+      vm.taskForDeletion = -1;
+    }
+    vm.cancelDeletion();
+
+    vm.deleteTaskConfirmed = function() {
+      console.log('delete task with _id of ' + vm.taskForDeletion);
+      RequestersService.deleteTask({taskId: vm.taskForDeletion})
+        .then(function(response) {
+          for (var i = 0; i < vm.tasks.length; ++i) {
+            if (vm.tasks[i]._id === vm.taskForDeletion) {
+              vm.tasks.splice(i, 1);
+              break;
+            }
+          }
+          Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> Task deleted!' });
+          vm.taskForDeletion = -1;
+        })
+        .catch(function(response) {
+          Notification.error({ message: response.message, title: '<i class="glyphicon glyphicon-remove"></i> Deletion failed! Task not deleted!' });
+          vm.taskForDeletion = -1;
+        });
+    }
+
+    vm.actOnTask = function(taskId, action) {
+      switch(action) {
+        case 'delete':
+          vm.taskForDeletion = taskId;
+          $('#confirmDeletion').modal();
+          break;
+        default:
+          console.log('perform ' + action + ' on task ' + taskId);
       }
     };
 
