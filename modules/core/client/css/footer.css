@@ -3,7 +3,7 @@
   color: rgb(255, 255, 255);
 }
  /* Social media icons */
-.fa {
+.social-icon {
   border-radius: 50%;
   font-size: 1em !important;
   height: 2em !important;
@@ -14,7 +14,7 @@
   width: 2em !important;
 }
 
-.fa:hover {
+.social-icon:hover {
     opacity: 0.7;
 }
 
