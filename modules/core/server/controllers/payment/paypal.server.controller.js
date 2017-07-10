@@ -11,11 +11,12 @@ var path = require('path'),
 paypal.configure({
   'mode': 'sandbox',
   'client_id' : 'AecAzJEgQRFF8kL2hhPkyBjiNmvLLCxyQR3cCkNN4hmobtGKQBLyWpUAwUqYZK7hIJhQhRlX36X3YaAV',
-  'client_secret' : 'ENCJovwdfPv5qFTv9D7X_9jJ15y2ovEtU_ldyzTgVMwTkRPg8tH1gBhVCHs63aroGK0tp2yUwDgXu8s-'
+  'client_secret' : 'EI1O4k8WMGINV4HWteAeJsKEKGnSwnDSxxpIc4Lgzwkp0xxg2nnBDfH1QzQT-XfmZQJb5bVNPD0ALOP9'
 });
   
 exports.paypal = {
   create: function (req, res) {
+      var taskId = req.body.taskId;
       var create_payment_json = {
         'intent': 'sale',
         'payer': {
@@ -28,20 +29,21 @@ exports.paypal = {
         'transactions': [{
           'item_list': {
             'items': [{
-              'name': 'item',
-              'sku': 'item',
-              'price': '1.00',
+              'name': 'workers',
+              'sku': '',
+              'price': costOfEachWorker,
               'currency': 'USD',
-              'quantity': 1
+              'quantity': multiplicity
             }]
           },
           'amount': {
             'currency': 'USD',
-            'total': '1.00'
+            'total': totalCostOfTask
           },
-          'description': 'This is the payment description.'
+          'description': taskDescription
         }]
       };
+      
       
       if (req.body.returnURL)
         create_payment_json.redirect_urls.cancel_url = req.body.returnURL;
@@ -52,8 +54,7 @@ exports.paypal = {
         if (error) {
           return res.status(422).send({ name: error.name, message: error.message });
         } else {
-          console.log(createdPayment)
-          return res.status(201).send({paymentId: createdPayment.id});
+          return res.status(201).send({paymentId: createdPayment.id, taskId: taskId });
         }
       });
   },

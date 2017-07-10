@@ -22,7 +22,6 @@
     vm.tasks = [];
     vm.loaded = false;
     vm.loadData = function(data) {
-      console.log(data);
       if (data) {
         vm.loaded = true;
         var task,
@@ -43,7 +42,13 @@
             taskActions.push({
               id: 'suspend',
               bikeshed: 'Suspend Task'
-            })
+            });
+          }
+          if (task.status === 'inactive') {
+            taskActions.push({
+              id: 'activate',
+              bikeshed: 'Activate Task'
+            });
           }
           vm.tasks.push({
             '_id': task._id,
@@ -52,7 +57,8 @@
             'deadline': new Date(task.deadline),
             'status': task.status,
             'progress': task.totalProgress,
-            'taskActions': taskActions
+            'taskActions': taskActions,
+            'taskRef': task
           });
         }
       }
@@ -69,6 +75,14 @@
     };
 
     // bootstrap modal seems difficult to work with so this is an awkward hack
+    function getIndexFromTaskId(id) {
+      for (var i = 0; i < vm.tasks.length; ++i) {
+        if (vm.tasks[i]._id === id) {
+          return i;
+        }
+      }
+    };
+
     vm.cancelDeletion = function() {
       vm.taskForDeletion = -1;
     }
@@ -78,12 +92,8 @@
       console.log('delete task with _id of ' + vm.taskForDeletion);
       RequestersService.deleteTask({taskId: vm.taskForDeletion})
         .then(function(response) {
-          for (var i = 0; i < vm.tasks.length; ++i) {
-            if (vm.tasks[i]._id === vm.taskForDeletion) {
-              vm.tasks.splice(i, 1);
-              break;
-            }
-          }
+          var index = getIndexFromTaskId(vm.taskForDeletion);
+          vm.tasks.splice(index, 1);
           Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> Task deleted!' });
           vm.taskForDeletion = -1;
         })
@@ -93,15 +103,55 @@
         });
     }
 
-    vm.actOnTask = function(taskId, action) {
-      switch(action) {
-        case 'delete':
-          vm.taskForDeletion = taskId;
-          $('#confirmDeletion').modal();
-          break;
-        default:
-          console.log('perform ' + action + ' on task ' + taskId);
-      }
+    vm.actOnTask = function(id, action) {
+        switch(action) {
+          case 'delete':
+            vm.taskForDeletion = id;
+            $('#confirmDeletion').modal();
+            break;
+          case 'activate':
+            // init modal
+            vm.modal = {};
+            // put task info into modal
+            var index = getIndexFromTaskId(id);
+            if (vm.tasks[index]) {
+              vm.modal.showContent = true;
+              var task = vm.tasks[index].taskRef;
+              if (task.payment.bidding.bidable) {
+                vm.modal.bidable = true;
+                vm.modal.bidding = {}
+                vm.modal.bidding.maxPricePerWorker = task.payment.bidding.startingPrice;
+                vm.modal.bidding.minPricePerWorker = task.payment.bidding.minPrice;
+                if (task.payment.bidding.timeRange) {
+                  vm.modal.bidding.biddingStart = new Date(task.payment.bidding.timeRange.start);
+                  vm.modal.bidding.biddingEnd = new Date(task.payment.bidding.timeRange.end);
+                }
+              } else {
+                vm.modal.bidable = false;
+                vm.modal.costPerWorker = task.payment.staticPrice;
+                payForTaskId = task._id;
+              }
+              console.log(task)
+              vm.modal.title = task.title;
+              vm.modal.description = task.description;
+              vm.modal.preapproval = task.preapproval;
+              vm.modal.secret = task.secret;
+              vm.modal.skillsNeeded = task.skillsNeeded.join(', ');
+              vm.modal.category = task.category;
+              vm.modal.multiplicity = task.multiplicity;
+              vm.modal.tax = 0.00;
+              vm.modal.deadline = vm.tasks[index].deadline;
+              vm.modal.dateCreated = vm.tasks[index].postingDate;
+
+              // open modal for payment
+              $("#reviewPaymentModal").modal()
+            } else {
+              Notification.error({ message: 'Task index does not exist.', title: '<i class="glyphicon glyphicon-remove"></i> Cannot Find Task' });
+            }
+            break;
+          default:
+            console.log('perform ' + action + ' on task ' + id);
+        }
     };
 
     RequestersService.getAllTasks()
@@ -142,5 +192,29 @@
         }
       }
     };
+
+    // TODO: Make this angular compliant
+    // paypal payment action
+    var payForTaskId = null;
+    paypal.Button.render({
+      env: 'sandbox', // Or 'sandbox'
+
+      commit: true, // Show a 'Pay Now' button
+
+      payment: function() {
+        return paypal.request.post('/api/payment/paypal/create/', { taskId: payForTask }).then(function(data) {
+          return data.paymentId;
+        });
+      },
+      onAuthorize: function(data) {
+        return paypal.request.post('/api/payment/paypal/execute/', {
+          paymentID: data.paymentID,
+          payerID: data.payerID
+        }).then(function() {
+          // payment is complete!!!
+        });
+      }
+    }, '#paypal-button');
+
   }
 }());
