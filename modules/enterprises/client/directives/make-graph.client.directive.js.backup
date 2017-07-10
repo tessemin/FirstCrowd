@@ -22,15 +22,11 @@
           var width = $window.innerWidth;
           var height = $window.innerHeight;
 
-          var svg = d3.select('#graph').append('svg')
+          var newsvg = d3.select('#graph').append('svg')
                 .attr('width', width)
                 .attr('height', height);
 
-          // var context = svg.node().getContext("2d");
-          // console.log(context);
-
-          // context.fillStyle = '#564657';
-          // context.fillRect(0, 0, width, height);
+          var svg = d3.select('svg');
 
           var radius = 40;
           var nodes_data = [];
@@ -210,28 +206,6 @@
               return prevY;
             }
 
-            function addCoordinates(nodes) {
-              // var test = {};
-              // test.classifications = {'webdev': {}, 'design': {}, 'construction': {}, 'government': {}, 'lawyers': {}};
-              // for(var item in test.classifications) {
-              //   var obj = {companyName: [], 'customer': [], 'competitor': [], 'supplier': []};
-              //   for(var j = 0; j < Math.floor(Math.random() * 10000) + 1; j++) {
-              //     obj.companyName[j] = 'COMPANY ' + Math.floor((Math.random() * 10000) + 1);
-              //     for(var k = 0; k < Math.floor(Math.random() * 999) + 1; k++) {
-              //       obj['customer'].companyName[k] = 'CUSTOMER' + Math.floor((Math.random() * 10000) + 1);
-              //     }
-              //     for(var l = 0; l < Math.floor(Math.random() * 999) + 1; l++) {
-              //       obj['supplier'].companyName[l] = 'SUPPLIER' + Math.floor((Math.random() * 10000) + 1);
-              //     }
-              //     for(var e = 0; e < Math.floor(Math.random() * 999) + 1; e++) {
-              //       obj['competitor'].companyName[e] = 'COMPETITOR' + Math.floor((Math.random() * 10000) + 1);
-              //     }
-              //   }
-              //   test.classifications[item] = obj;
-              // }
-              // console.log(test);
-            }
-
             function wrapCoordinates(nodes) {
               var SUP_X = width / 4;
               var COM_X = width / 4 + width / 4;
@@ -240,13 +214,16 @@
               var y;
               var linkIndex = 0;
 
-
-              addCoordinates(nodes);
-
               for (var item in nodes) {
                 if (item === 'customer') {
                   y = 0;
                   for (index = 0; index < nodes[item].length; index++) {
+                    nodes[item][index].text = new Array(4);
+                    nodes[item][index].text[0] = 'Message ' + nodes[item][index].companyName;
+                    nodes[item][index].text[1] = 'View the ' + nodes[item][index].companyName + ' Profile';
+                    nodes[item][index].text[2] = 'See the ' + nodes[item][index].companyName + ' Connection Graph';
+                    nodes[item][index].text[3] = 'Compare your Company with ' + nodes[item][index].companyName;
+
                     nodes[item][index].x = CUS_X;
                     y = getY(nodes[item], item, y);
                     nodes[item][index].y = y;
@@ -261,6 +238,12 @@
                 } else if (item === 'supplier') {
                   y = 0;
                   for (index = 0; index < nodes[item].length; index++) {
+                    nodes[item][index].text = new Array(4);
+                    nodes[item][index].text[0] = 'Message ' + nodes[item][index].companyName;
+                    nodes[item][index].text[1] = 'View the ' + nodes[item][index].companyName + ' Profile';
+                    nodes[item][index].text[2] = 'See the ' + nodes[item][index].companyName + ' Connection Graph';
+                    nodes[item][index].text[3] = 'Compare your Company with ' + nodes[item][index].companyName;
+
                     nodes[item][index].x = SUP_X;
                     y = getY(nodes[item], item, y);
                     nodes[item][index].y = y;
@@ -275,6 +258,12 @@
                 } else if (item === 'competitor') {
                   y = 0;
                   for (index = 0; index < nodes[item].length; index++) {
+                    nodes[item][index].text = new Array(4);
+                    nodes[item][index].text[0] = 'Message ' + nodes[item][index].companyName;
+                    nodes[item][index].text[1] = 'View the ' + nodes[item][index].companyName + ' Profile';
+                    nodes[item][index].text[2] = 'See the ' + nodes[item][index].companyName + ' Connection Graph';
+                    nodes[item][index].text[3] = 'Compare your Company with ' + nodes[item][index].companyName;
+
                     nodes[item][index].x = COM_X;
                     y = getY(nodes[item], item, y);
                     nodes[item][index].y = y;
@@ -282,13 +271,18 @@
                     nodes_data.push(nodes[item][index]);
                   }
                 } else if (item === 'rootNode') {
+                  nodes[item].text = new Array(4);
+                  nodes[item].text[0] = 'Message ' + nodes[item].companyName;
+                  nodes[item].text[1] = 'View the ' + nodes[item].companyName + ' Profile';
+                  nodes[item].text[2] = 'See the ' + nodes[item].companyName + ' Connection Graph';
+                  nodes[item].text[3] = 'Compare your Company with ' + nodes[item].companyName;
+
                   nodes[item].x = width / 2;
                   nodes[item].y = height / 2;
                   nodes[item].img = 'http://www.e-pint.com/epint.jpg';
                   nodes_data.push(nodes[item]);
                 }
               }
-              console.log(nodes);
             }
           });
         });

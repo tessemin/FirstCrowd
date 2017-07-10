@@ -13,6 +13,7 @@
     vm.sidebar = false;
     vm.selected = {};
     vm.searching = '';
+    vm.text = [];
 
     vm.chooseCompany = chooseCompany;
     vm.toggleSidebar = toggleSidebar;
@@ -38,7 +39,11 @@
     function chooseCompany(obj) {
       $scope.$apply(
         vm.sidebar = true,
-        vm.selected = obj.selected
+        vm.selected = obj.selected,
+        vm.text[0] = 'Message ' + obj.selected.companyName,
+        vm.text[1] = 'View the ' + obj.selected.companyName + ' Profile',
+        vm.text[2] = 'See the ' + obj.selected.companyName + ' Connection Graph',
+        vm.text[3] = 'Compare your Company with ' + obj.selected.companyName
       );
     }
   }

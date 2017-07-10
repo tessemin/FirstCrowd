@@ -5,7 +5,6 @@
     <div class="inner-addon right-addon">
       <i class="glyphicon glyphicon-search" ng-click="vm.search()"></i>
       <input class="form-control" type="text" ng-model="vm.searching" placeholder="Search">
-      <div>Searching for: {{vm.searching}}</div>
     </div>
   </div>
 
@@ -17,7 +16,6 @@
           <i class="glyphicon glyphicon-search" ng-click="vm.search()"></i>
           <i class="exit glyphicon glyphicon-remove" ng-click="vm.close()"></i>
           <input class="form-control" type="text" ng-model="vm.searching" placeholder="Search">
-          <div>Searching for: {{vm.searching}}</div>
         </div>
       </div>
 
@@ -29,7 +27,7 @@
       <br>
       <br>
       <br>
-      <div ng-repeat="item in vm.selected.text">
+      <div ng-repeat="item in vm.text">
         <span class="glyphicon" ng-class="{'glyphicon-envelope': $index === 0, 'glyphicon-glass': $index === 1, 'glyphicon-home': $index === 2, 'glyphicon-signal': $index === 3 }"></span>
         {{item}}
       </div>
