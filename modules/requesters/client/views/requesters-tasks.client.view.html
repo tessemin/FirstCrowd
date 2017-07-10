@@ -1,5 +1,5 @@
 <section class="row">
-  <nav class="col-md-3">
+  <nav class="col-md-2">
     <h3>Refine by:</h3>
     <ul class="list-group">
       <li class="list-group-item">
@@ -30,38 +30,109 @@
   </nav>
   <div class="tasks-caption">
     <h4 class="tasks-">All My Tasks</h4>
+    <input placeholder="Search All My Tasks"/>
     <a ui-sref="requesters.newtask">Create New Task</a>
   </div>
-  <div class="col-md-9 tasks-table">
+  <div class="col-md-10 tasks-table">
     <div class="tasks-row">
       <div class="tasks-cell">
         Title
+        <button type="button" class="sort-button" ng-click="vm.sortTasks('name')">
+          <div ng-if="vm.sort !== 'name'">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+            <span class="sr-only">Sort</span>
+          </div>
+          <div ng-if="vm.sort === 'name' && vm.sortReversed === false">
+            <i class="fa fa-sort-asc" aria-hidden="true"></i>
+            <span class="sr-only">Sorted Ascending</span>
+          </div>
+          <div ng-if="vm.sort === 'name' && vm.sortReversed === true">
+            <i class="fa fa-sort-desc" aria-hidden="true"></i>
+            <span class="sr-only">Sorted Descending</span>
+          </div>
+        </button>
       </div>
       <div class="tasks-cell">
         Posting Date
+        <button type="button" class="sort-button" ng-click="vm.sortTasks('postingDate')">
+          <div ng-if="vm.sort !== 'postingDate'">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+            <span class="sr-only">Sort</span>
+          </div>
+          <div ng-if="vm.sort === 'postingDate' && vm.sortReversed === false">
+            <i class="fa fa-sort-asc" aria-hidden="true"></i>
+            <span class="sr-only">Sorted Ascending</span>
+          </div>
+          <div ng-if="vm.sort === 'postingDate' && vm.sortReversed === true">
+            <i class="fa fa-sort-desc" aria-hidden="true"></i>
+            <span class="sr-only">Sorted Descending</span>
+          </div>
+        </button>
       </div>
       <div class="tasks-cell">
         Deadline
+        <button type="button" class="sort-button" ng-click="vm.sortTasks('deadline')">
+          <div ng-if="vm.sort !== 'deadline'">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+            <span class="sr-only">Sort</span>
+          </div>
+          <div ng-if="vm.sort === 'deadline' && vm.sortReversed === false">
+            <i class="fa fa-sort-asc" aria-hidden="true"></i>
+            <span class="sr-only">Sorted Ascending</span>
+          </div>
+          <div ng-if="vm.sort === 'deadline' && vm.sortReversed === true">
+            <i class="fa fa-sort-desc" aria-hidden="true"></i>
+            <span class="sr-only">Sorted Descending</span>
+          </div>
+        </button>
       </div>
       <div class="tasks-cell">
         Status
+        <button type="button" class="sort-button" ng-click="vm.sortTasks('status')">
+          <div ng-if="vm.sort !== 'status'">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+            <span class="sr-only">Sort</span>
+          </div>
+          <div ng-if="vm.sort === 'status' && vm.sortReversed === false">
+            <i class="fa fa-sort-asc" aria-hidden="true"></i>
+            <span class="sr-only">Sorted Ascending</span>
+          </div>
+          <div ng-if="vm.sort === 'status' && vm.sortReversed === true">
+            <i class="fa fa-sort-desc" aria-hidden="true"></i>
+            <span class="sr-only">Sorted Descending</span>
+          </div>
+        </button>
       </div>
       <div class="tasks-cell">
         Progress
+        <button type="button" class="sort-button" ng-click="vm.sortTasks('progress')">
+          <div ng-if="vm.sort !== 'progress'">
+            <i class="fa fa-sort" aria-hidden="true"></i>
+            <span class="sr-only">Sort</span>
+          </div>
+          <div ng-if="vm.sort === 'progress' && vm.sortReversed === false">
+            <i class="fa fa-sort-asc" aria-hidden="true"></i>
+            <span class="sr-only">Sorted Ascending</span>
+          </div>
+          <div ng-if="vm.sort === 'progress' && vm.sortReversed === true">
+            <i class="fa fa-sort-desc" aria-hidden="true"></i>
+            <span class="sr-only">Sorted Descending</span>
+          </div>
+        </button>
       </div>
       <div class="tasks-cell">
         Actions
       </div>
     </div>
-    <div class="tasks-row" ng-repeat="task in vm.tasks | filter : vm.filters : false as results track by $index">
+    <div class="tasks-row" ng-repeat="task in vm.tasks | filter : vm.filters : false | orderBy: vm.sort : vm.sortReversed as results track by $index">
       <div class="tasks-cell">
         {{task.name}}
       </div>
       <div class="tasks-cell">
-        {{task.postingDate}}
+        {{task.postingDate.toDateString()}}
       </div>
       <div class="tasks-cell">
-        {{task.deadline}}
+        {{task.deadline.toDateString()}}
       </div>
       <div class="tasks-cell">
         {{task.status}}
@@ -70,9 +141,17 @@
         <rzslider class="progress-slider" rz-slider-model="task.progress" rz-slider-options="vm.sliderOptions"></rzslider>
       </div>
       <div class="tasks-cell">
-        <select ng-model="task.taskAction" ng-options="x as x.bikeshed for x in task.taskActions" ng-change="vm.actOnTask($index)">
-        </select>
+        <div class="dropdown">
+          <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Actions
+          <span class="caret"></span></button>
+          <ul class="dropdown-menu">
+            <div ng-repeat="item in task.taskActions">
+              <li><button class="dropdown-button-item" ng-click="vm.actOnTask($parent.$index, item.id)">{{item.bikeshed}}</button></li>
+            </div>
+          </ul>
+        </div>
       </div>
+
     </div> <!-- end ng-repeat -->
     <div class="text-center form-group">
       <div ng-if="vm.loaded === false">
@@ -83,4 +162,42 @@
       </div>
     </div>
   </div>
+
+<!-- Payment Modal -->
+<div id="reviewPaymentModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content" ng-show="vm.modal.showContent">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Task Information</h4>
+      </div>
+      <div class="modal-body">
+        
+        <h3>{{vm.modal.title}}</h3>
+        
+      </div>
+      <div class="modal-footer">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-5"></div>
+            <div class="col-md-3">
+              <div id="paypal-button"></div>
+            </div>
+            <div class="col-md-3">
+              <div class="container-fluid row">
+                <div class="col-md-6"><b>OR</b></div>
+                <div class="col-md-6">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
 </section>

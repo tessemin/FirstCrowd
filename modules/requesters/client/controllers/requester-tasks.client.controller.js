@@ -16,11 +16,12 @@
     vm.filters.postingDate = '';
     vm.filters.deadline = '';
     vm.filters.status = '';
+    vm.sort = 'name';
+    vm.sortReversed = false;
 
     vm.tasks = [];
     vm.loaded = false;
     vm.loadData = function(data) {
-      console.log(data);
       if (data) {
         vm.loaded = true;
         var task,
@@ -29,16 +30,7 @@
           dueDate;
         for (var i = 0; i < data.tasks.length; ++i) {
           task = data.tasks[i];
-          postDate = new Date(task.dateCreated);
-          postDate = postDate.toDateString();
-          dueDate = new Date(task.deadline);
-          dueDate = dueDate.toDateString();
-          taskActions = [
-            {
-              id: 'default',
-              bikeshed: 'Select action...'
-            }
-          ];
+          taskActions = [];
           // If no one has ever worked on the task, allow deletion
           if (task.status === 'inactive' || (task.status === 'open' && task.jobs.length === 0)) {
             taskActions.push({
@@ -50,25 +42,40 @@
             taskActions.push({
               id: 'suspend',
               bikeshed: 'Suspend Task'
-            })
+            });
+          }
+          if (task.status === 'inactive') {
+            taskActions.push({
+              id: 'activate',
+              bikeshed: 'Activate Task'
+            });
           }
           vm.tasks.push({
             '_id': task._id,
             'name': task.title,
-            'postingDate': postDate,
-            'deadline': dueDate,
+            'postingDate': new Date(task.dateCreated),
+            'deadline': new Date(task.deadline),
             'status': task.status,
             'progress': task.totalProgress,
             'taskActions': taskActions,
-            'taskAction': taskActions[0]
+            'taskRef': task
           });
         }
+      }
+      console.log(vm.tasks);
+    };
+    vm.sortTasks = function(property) {
+      if (vm.sort === property) {
+        vm.sortReversed = !vm.sortReversed;
+      } else {
+        vm.sort = property;
+        vm.sortReversed = false;
       }
     };
 
     vm.actOnTask = function(index, action) {
       if (index < vm.tasks.length) {
-        switch(vm.tasks[index].taskAction.id) {
+        switch(action) {
           case 'delete':
             RequestersService.deleteTask({taskId: vm.tasks[index]._id})
               .then(function(response) {
@@ -79,10 +86,21 @@
                 Notification.error({ message: response.message, title: '<i class="glyphicon glyphicon-remove"></i> Deletion failed! Task not deleted!' });
               });
             break;
+          case 'activate':
+            // init modal
+            vm.modal = {};
+            // put task info into modal
+            if (vm.tasks[index])
+              vm.modal.showContent = true;
+            var task = vm.tasks[index].taskRef;
+            console.log(task)
+            vm.modal.title = task.title;
+            // open modal for payment
+            $("#reviewPaymentModal").modal()
+            break;
           default:
-            console.log('perform ' + vm.tasks[index].taskAction.bikeshed + ' on task ' + index);
+            console.log('perform ' + action + ' on task ' + index);
         }
-        vm.tasks[index].taskAction = vm.tasks[index].taskActions[0];
       }
     };
 
@@ -124,5 +142,29 @@
         }
       }
     };
+    
+    // TODO: Make this angular compliant
+    // paypal payment action
+    var payForTask = '123';
+    paypal.Button.render({
+      env: 'sandbox', // Or 'sandbox'
+
+      commit: true, // Show a 'Pay Now' button
+      
+      payment: function() {
+        return paypal.request.post('/api/payment/paypal/create/', { taskId: payForTask }).then(function(data) {
+          return data.paymentId;
+        });
+      },
+      onAuthorize: function(data) {
+        return paypal.request.post('/api/payment/paypal/execute/', {
+          paymentID: data.paymentID,
+          payerID: data.payerID
+        }).then(function() {
+          // payment is complete!!!
+        });
+      }
+    }, '#paypal-button');
+    
   }
 }());

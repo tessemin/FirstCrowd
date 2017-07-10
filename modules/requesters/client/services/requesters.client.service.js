@@ -22,6 +22,10 @@
         method: 'POST',
         url: '/api/requesters/activeTask/all'
       },
+      _activateTask: {
+        method: 'POST',
+        url: '/api/requesters/activateTask'
+      },
       // SUSPENDED TASKS
       _getSuspendedTasks: {
         method: 'POST',
@@ -80,10 +84,6 @@
         method: 'POST',
         url: '/api/tasks/getRequesterRatingsForTask'
       },
-      _changeTaskStatus: {
-        method: 'POST',
-        url: '/api/tasks/changeTaskStatus'
-      }
     });
 
     angular.extend(Requesters, {
@@ -91,12 +91,12 @@
       getAllTasks: function() {
         return this._getAllTasks().$promise;
       },
-      changeTaskStatus: function(status_task) {
-        return this._changeTaskStatus(status_task).$promise;
-      },
       // ACTIVE TASKS
       getActiveTasks: function() {
         return this._getActiveTasks().$promise;
+      },
+      activateTask: function(taskId) {
+        return this._activateTask(taskId).$promise;
       },
       // SUSPENDED TASKS
       getSuspendedTasks: function() {

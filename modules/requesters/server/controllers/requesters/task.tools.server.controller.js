@@ -224,26 +224,6 @@ exports.taskActions = {
       }
       res.json(requesterRatings);
     });
-  },
-  changeStatus: function (req, res) {
-    getUserTypeObject(req, res, function(typeObj) {
-      if (isRequester(req.user) && typeObj.requester) {
-        setStatus(req.body.taskId, req.body.status, typeObj, function (message) {
-          if (message.error) {
-            res.status(422).send({
-              message: message.error
-            });
-          }
-          res.status(200).send({
-            message: message.correct
-          });
-        });
-      } else {
-        return res.status(422).send({
-          message: 'No requester found.'
-        });
-      }
-    });
   }
 };
 

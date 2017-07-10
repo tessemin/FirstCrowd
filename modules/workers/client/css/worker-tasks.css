@@ -74,3 +74,8 @@
 .progress-slider.rzslider .rz-pointer:after {
   display: none;
 }
+
+.sort-button {
+  background: inherit;
+  border: none;
+}
