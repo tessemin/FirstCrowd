@@ -132,17 +132,14 @@
                   });
 
             makeHomeButton();
-            var zoom = makeZoom();
 
-            svg.call(zoom);
+            var zoom = d3.zoom()
+                  .scaleExtent([1 / 12, 1.2])
+                  .on('zoom', zoom_actions);
+
+           svg.call(zoom);
 
             /** Functions **/
-            function makeZoom() {
-              return d3.zoom()
-                    .scaleExtent([1 / 2, 2])
-                    .on('zoom', zoom_actions);
-            }
-
             function makeHomeButton() {
               var home = d3.select('#graph')
                     .append('span')
@@ -262,18 +259,20 @@
         function getGraph() {
           return EnterprisesService.getEnterprise()
             .then(function(response) {
-              console.log(response);
-
               var rootNode = {};
               rootNode.companyName = response.profile.companyName;
               rootNode._id = response._id;
               rootNode.URL = response.profile.URL;
               response.partners.rootNode = rootNode;
 
-
-              EnterprisesService.getPartners({'enterpriseId': response._id}).then(function(res) {
+              EnterprisesService.setupGraph().then(function (res) {
                 console.log(res);
               });
+
+              EnterprisesService.getPartners({'enterpriseId': rootNode._id}).then(function (res) {
+                console.log('!', res);
+              });
+
               return response.partners;
             });
         }
