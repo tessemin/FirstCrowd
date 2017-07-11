@@ -34,6 +34,10 @@
       getEnterpriseItems: {
         method: 'GET',
         url: '/enterprises/api/enterprises/getEnterprise'
+      },
+      getEnterprisePartners: {
+        method: 'GET',
+        url: '/enterprises/api/enterprises/getEnterprisePartners'
       }
     });
 
@@ -52,6 +56,9 @@
       },
       getEnterprise: function () {
         return this.getEnterpriseItems().$promise;
+      },
+      getPartners: function (enterpriseId) {
+        return this.getEnterprisePartners(enterpriseId).$promise;
       }
     });
 
