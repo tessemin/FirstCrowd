@@ -321,16 +321,16 @@ function removeTaskFromRequesterArray(taskId, typeObj) {
 // removes that taskId from the worker arrays
 function removeTaskFromWorkerArray(taskId, typeObj) {
   if (typeObj.worker) {
-    if (typeObj.requester.activeTasks)
-      typeObj.requester.activeTasks = removeFromObjectTasksArray(taskId, typeObj.requester.activeTasks);
-    if (typeObj.requester.inactiveTasks)
-      typeObj.requester.inactiveTasks = removeFromObjectTasksArray(taskId, typeObj.requester.inactiveTasks);
-    if (typeObj.requester.completedTasks)
-      typeObj.requester.completedTasks = removeFromObjectTasksArray(taskId, typeObj.requester.completedTasks);
-    if (typeObj.requester.rejectedTasks)
-      typeObj.requester.rejectedTasks = removeFromObjectTasksArray(taskId, typeObj.requester.rejectedTasks);
-    if (typeObj.requester.recomendedTasks)
-      typeObj.requester.recomendedTasks = removeFromObjectTasksArray(taskId, typeObj.requester.recomendedTasks);
+    if (typeObj.worker.activeTasks)
+      typeObj.worker.activeTasks = removeFromObjectTasksArray(taskId, typeObj.worker.activeTasks);
+    if (typeObj.worker.inactiveTasks)
+      typeObj.worker.inactiveTasks = removeFromObjectTasksArray(taskId, typeObj.worker.inactiveTasks);
+    if (typeObj.worker.completedTasks)
+      typeObj.worker.completedTasks = removeFromObjectTasksArray(taskId, typeObj.worker.completedTasks);
+    if (typeObj.worker.rejectedTasks)
+      typeObj.worker.rejectedTasks = removeFromObjectTasksArray(taskId, typeObj.worker.rejectedTasks);
+    if (typeObj.worker.recomendedTasks)
+      typeObj.worker.recomendedTasks = removeFromObjectTasksArray(taskId, typeObj.worker.recomendedTasks);
   }
   return typeObj;
 }
@@ -352,7 +352,7 @@ function statusPushTo(taskId, array) {
 // finds the task in the array and if it matches the taskId, removes it
 function removeFromObjectTasksArray (taskId, array) {
   for (var i = 0; i < array.length; i++)
-    if (array[i].task.toString() === taskId.toString())
+    if (array[i].taskId.toString() === taskId.toString())
       array.splice(i, 1);
   return array;
 }
@@ -406,6 +406,8 @@ function setStatusOfWorkers(workerIdArray, status, taskId, callBack, errorIds, w
       if (err) {
         errorIds.push({ error: err, workerId: workerId });
         return setStatusOfWorkers(workerIdArray, status, taskId, callBack, errorIds, workerId);
+      } else if (enterprise.length <= 0) {
+        return setStatusOfWorkers(workerIdArray, status, taskId, callBack, errorIds, workerId);
       } else {
         if (enterprise.legnth <= 0)
           return setStatusOfWorkers(workerIdArray, status, taskId, callBack, errorIds, workerId);
@@ -426,6 +428,8 @@ function setStatusOfWorkers(workerIdArray, status, taskId, callBack, errorIds, w
     Individual.find({ '_id': workerId }, function(err, individual) {
       if (err) {
         errorIds.push({ error: err, workerId: workerId });
+        return setStatusOfWorkers(workerIdArray, status, taskId, callBack, errorIds, workerId);
+      } else if (individual.length <= 0) {
         return setStatusOfWorkers(workerIdArray, status, taskId, callBack, errorIds, workerId);
       } else {
         if (individual.legnth <= 0)

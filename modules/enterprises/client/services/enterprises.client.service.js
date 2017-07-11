@@ -34,6 +34,14 @@
       getEnterpriseItems: {
         method: 'GET',
         url: '/enterprises/api/enterprises/getEnterprise'
+      },
+      getEnterprisePartners: {
+        method: 'POST',
+        url: '/enterprises/api/enterprises/getEnterprisePartners'
+      },
+      setupEnterpriseGraph: {
+        method: 'POST',
+        url: '/enterprises/api/enterprises/setupEnterpriseGraph'
       }
     });
 
@@ -52,6 +60,12 @@
       },
       getEnterprise: function () {
         return this.getEnterpriseItems().$promise;
+      },
+      getPartners: function (enterpriseId) {
+        return this.getEnterprisePartners(enterpriseId).$promise;
+      },
+      setupGraph: function () {
+        return this.setupEnterpriseGraph().$promise;
       }
     });
 

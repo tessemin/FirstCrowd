@@ -25,14 +25,7 @@
           var svg = d3.select('#graph').append('svg')
                 .attr('width', width)
                 .attr('height', height);
-
-          // var context = svg.node().getContext("2d");
-          // console.log(context);
-
-          // context.fillStyle = '#564657';
-          // context.fillRect(0, 0, width, height);
-
-          var radius = 40;
+          var radius = 20;
           var nodes_data = [];
           var links_data = [];
 
@@ -52,7 +45,7 @@
                   .strength(0);
 
             var charge_force = d3.forceManyBody()
-                  .strength(40);
+                  .strength(100);
 
             var center_force = d3.forceCenter(width / 2, height / 2);
 
@@ -71,8 +64,9 @@
             var g = svg.append('g')
                   .attr('class', 'everything');
 
-            var defs = svg.append('defs')
-                  .selectAll('pattern')
+            var defs = svg.append('defs');
+
+                defs.selectAll('pattern')
                   .data(nodes_data)
                   .enter()
                   .append('pattern')
@@ -137,34 +131,28 @@
                     scope.$parent.vm.chooseCompany({ selected: data });
                   });
 
+            makeHomeButton();
 
-            var home = d3.select('#graph')
-                  .append('span')
-                  .attr('class', 'glyphicon glyphicon-home home')
-                  .on('click', centerHome)
-                  .on('mousedown', function() {
-                    d3.select(this).style('color', 'gray');
-                  })
-                  .on('mouseup', function() {
-                    d3.select(this).style('color', 'lightgray');
-                  });
-
-            // add zoom capabilities
             var zoom = d3.zoom()
-                  .scaleExtent([1 / 2, 2])
+                  .scaleExtent([1 / 12, 1.2])
                   .on('zoom', zoom_actions);
 
-            // svg.on("mousedown.zoom", null);
-            // svg.on("mousemove.zoom", null);
-            // svg.on("dblclick.zoom", null);
-            // svg.on("touchstart.zoom", null);
-            // svg.on("wheel.zoom", null);
-            // svg.on("mousewheel.zoom", null);
-            // svg.on("MozMousePixelScroll.zoom", null);
-
-            svg.call(zoom);
+           svg.call(zoom);
 
             /** Functions **/
+            function makeHomeButton() {
+              var home = d3.select('#graph')
+                    .append('span')
+                    .attr('class', 'glyphicon glyphicon-home home')
+                    .on('click', centerHome)
+                    .on('mousedown', function() {
+                      d3.select(this).style('color', 'gray');
+                    })
+                    .on('mouseup', function() {
+                      d3.select(this).style('color', 'lightgray');
+                    });
+            }
+
             function centerHome() {
               centerNode(node._groups[0][nodes.rootNode.index]);
             }
@@ -210,28 +198,6 @@
               return prevY;
             }
 
-            function addCoordinates(nodes) {
-              // var test = {};
-              // test.classifications = {'webdev': {}, 'design': {}, 'construction': {}, 'government': {}, 'lawyers': {}};
-              // for(var item in test.classifications) {
-              //   var obj = {companyName: [], 'customer': [], 'competitor': [], 'supplier': []};
-              //   for(var j = 0; j < Math.floor(Math.random() * 10000) + 1; j++) {
-              //     obj.companyName[j] = 'COMPANY ' + Math.floor((Math.random() * 10000) + 1);
-              //     for(var k = 0; k < Math.floor(Math.random() * 999) + 1; k++) {
-              //       obj['customer'].companyName[k] = 'CUSTOMER' + Math.floor((Math.random() * 10000) + 1);
-              //     }
-              //     for(var l = 0; l < Math.floor(Math.random() * 999) + 1; l++) {
-              //       obj['supplier'].companyName[l] = 'SUPPLIER' + Math.floor((Math.random() * 10000) + 1);
-              //     }
-              //     for(var e = 0; e < Math.floor(Math.random() * 999) + 1; e++) {
-              //       obj['competitor'].companyName[e] = 'COMPETITOR' + Math.floor((Math.random() * 10000) + 1);
-              //     }
-              //   }
-              //   test.classifications[item] = obj;
-              // }
-              // console.log(test);
-            }
-
             function wrapCoordinates(nodes) {
               var SUP_X = width / 4;
               var COM_X = width / 4 + width / 4;
@@ -239,9 +205,6 @@
               var index;
               var y;
               var linkIndex = 0;
-
-
-              addCoordinates(nodes);
 
               for (var item in nodes) {
                 if (item === 'customer') {
@@ -301,6 +264,15 @@
               rootNode._id = response._id;
               rootNode.URL = response.profile.URL;
               response.partners.rootNode = rootNode;
+
+              EnterprisesService.setupGraph().then(function (res) {
+                console.log(res);
+              });
+
+              EnterprisesService.getPartners({'enterpriseId': rootNode._id}).then(function (res) {
+                console.log('!', res);
+              });
+
               return response.partners;
             });
         }
