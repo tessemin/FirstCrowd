@@ -29,7 +29,7 @@ module.exports = function(app) {
   
   app.route('/enterprises/api/enterprises/getEnterprisePartners/').post(enterprises.getEnterprisePartners);
   
-  app.route('/enterprises/api/enterprises/setUpEntepriseGraph/').post(enterprises.setUpEntepriseGraph);
+  app.route('/enterprises/api/enterprises/setupEntepriseGraph/').post(enterprises.setupEntepriseGraph);
 
   // Finish by binding the Enterprise middleware
   app.param('enterpriseId', enterprises.enterpriseByID);

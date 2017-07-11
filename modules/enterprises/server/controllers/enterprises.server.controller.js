@@ -428,7 +428,7 @@ exports.getEnterprise = function(req, res) {
   });
 };
 
-exports.setUpEntepriseGraph = function(req, res) {
+exports.setupEntepriseGraph = function(req, res) {
   getEnterprise(req, res, function (myEnterprise) {
     var entConnect = [];
     for (var numEnts = getRandomNumber(10, 100); numEnts > 0; numEnts--) {
