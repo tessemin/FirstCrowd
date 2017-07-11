@@ -429,7 +429,7 @@ exports.getEnterprise = function(req, res) {
 exports.setupEnterpriseGraph = function(req, res) {
   getEnterprise(req, res, function (myEnterprise) {
     var entConnect = [];
-    for (var numEnts = getRandomNumber(10, 100); numEnts > 0; numEnts--) {
+    for (var numEnts = getRandomNumber(30, 100); numEnts > 0; numEnts--) {
       entConnect.push(makeNewEnterprise(req.user._id));
     }
     entConnect.push(myEnterprise);
@@ -442,51 +442,50 @@ exports.setupEnterpriseGraph = function(req, res) {
       for (var sup = 0; sup < thisEnt.partners.supplier.length; sup++) {
         random = getRandomNumber(0, stillCanCon.length - 1)
         while (!stillCanCon[random].canCon)
-          if (stillCanCon[random].canCon) {
-            thisEnt.partners.supplier[sup].enterpriseId = stillCanCon[random].entConnect._id;
-            stillCanCon[random].canCon = false;
-            break;
-          } else {
-            random = getRandomNumber(0, stillCanCon.length - 1)
-          }
+          random = getRandomNumber(0, stillCanCon.length - 1)
+        thisEnt.partners.supplier[sup].companyName = stillCanCon[random].ent.profile.companyName;
+        thisEnt.partners.supplier[sup].URL = stillCanCon[random].ent.profile.URL;
+        thisEnt.partners.supplier[sup].enterpriseId = stillCanCon[random].ent._id;
+        stillCanCon[random].canCon = false;
       }
       for (var cus = 0; cus < thisEnt.partners.customer.length; cus++) {
         random = getRandomNumber(0, stillCanCon.length - 1)
         while (!stillCanCon[random].canCon)
-          if (stillCanCon[random].canCon) {
-            thisEnt.partners.customer[cus].enterpriseId = stillCanCon[random].entConnect._id;
-            stillCanCon[random].canCon = false;
-            break;
-          } else {
-            random = getRandomNumber(0, stillCanCon.length - 1)
-          }
+          random = getRandomNumber(0, stillCanCon.length - 1)
+        thisEnt.partners.customer[cus].companyName = stillCanCon[random].ent.profile.companyName;
+        thisEnt.partners.customer[cus].URL = stillCanCon[random].ent.profile.URL;
+        thisEnt.partners.customer[cus].enterpriseId = stillCanCon[random].ent._id;
+        stillCanCon[random].canCon = false;
       }
       for (var com = 0; com < thisEnt.partners.competitor.length; com++) {
         random = getRandomNumber(0, stillCanCon.length - 1)
         while (!stillCanCon[random].canCon)
-          if (stillCanCon[random].canCon) {
-            thisEnt.partners.competitor[com].enterpriseId = stillCanCon[random].entConnect._id;
-            stillCanCon[random].canCon = false;
-            break;
-          } else {
-            random = getRandomNumber(0, stillCanCon.length - 1)
-          }
+          random = getRandomNumber(0, stillCanCon.length - 1)
+        thisEnt.partners.competitor[com].companyName = stillCanCon[random].ent.profile.companyName;
+        thisEnt.partners.competitor[com].URL = stillCanCon[random].ent.profile.URL;
+        thisEnt.partners.competitor[com].enterpriseId = stillCanCon[random].ent._id;
+        stillCanCon[random].canCon = false;
       }
     }
-    recurseSaveEnts(entConnect);
+    recurseSaveEnts(entConnect, res);
   });
 };
 
-function recurseSaveEnts(entArray) {
+function recurseSaveEnts(entArray, res, errors) {
   if (entArray.length > 0) {
     (entArray.pop()).save(function (err, ent) {
       if (err) {
-        console.log(err)
-      } else {
-        console.log(JSON.stringify(ent.partners));
-        recurseSaveEnts(entArray);
+        if (!errors)
+          errors = [];
+        errors.push(err);
       }
+      if (ent)
+        console.log(JSON.stringify(ent.partners, null, 1) + '\n');
+      return recurseSaveEnts(entArray, res, errors);
     });
+  } else {
+    console.log(errors)
+    return res.status(200).send(errors);
   }
 }
 
