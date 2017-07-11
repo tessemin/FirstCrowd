@@ -373,6 +373,23 @@ exports.updateCustomers = function(req, res) {
   }
 };
 
+// gets the enterprises partners
+exports.getEnterprisePartners = function(req, res) {
+  Enterprise.findById(req.body.enterpriseId, function (err, enterprise) {
+    if (err) {
+      return res.status(422).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else if (!enterprise) {
+      return res.status(422).send({
+        message: 'No Enterprise with that identifier has been found'
+      });
+    } else {
+      return res.status(200).send(enterprise.partners);
+    }
+  });
+}
+
 /**
  * get Enterprise object
  */

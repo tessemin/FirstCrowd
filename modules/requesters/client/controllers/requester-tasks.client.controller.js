@@ -64,6 +64,7 @@
       }
       console.log(vm.tasks);
     };
+
     vm.sortTasks = function(property) {
       if (vm.sort === property) {
         vm.sortReversed = !vm.sortReversed;
@@ -73,23 +74,46 @@
       }
     };
 
-    vm.actOnTask = function(index, action) {
-      if (index < vm.tasks.length) {
+    // bootstrap modal seems difficult to work with so this is an awkward hack
+    function getIndexFromTaskId(id) {
+      for (var i = 0; i < vm.tasks.length; ++i) {
+        if (vm.tasks[i]._id === id) {
+          return i;
+        }
+      }
+    };
+
+    vm.cancelDeletion = function() {
+      vm.taskForDeletion = -1;
+    }
+    vm.cancelDeletion();
+
+    vm.deleteTaskConfirmed = function() {
+      console.log('delete task with _id of ' + vm.taskForDeletion);
+      RequestersService.deleteTask({taskId: vm.taskForDeletion})
+        .then(function(response) {
+          var index = getIndexFromTaskId(vm.taskForDeletion);
+          vm.tasks.splice(index, 1);
+          Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> Task deleted!' });
+          vm.taskForDeletion = -1;
+        })
+        .catch(function(response) {
+          Notification.error({ message: response.message, title: '<i class="glyphicon glyphicon-remove"></i> Deletion failed! Task not deleted!' });
+          vm.taskForDeletion = -1;
+        });
+    }
+
+    vm.actOnTask = function(id, action) {
         switch(action) {
           case 'delete':
-            RequestersService.deleteTask({taskId: vm.tasks[index]._id})
-              .then(function(response) {
-                vm.tasks.splice(index, 1);
-                Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> Task deleted!' });
-              })
-              .catch(function(response) {
-                Notification.error({ message: response.message, title: '<i class="glyphicon glyphicon-remove"></i> Deletion failed! Task not deleted!' });
-              });
+            vm.taskForDeletion = id;
+            $('#confirmDeletion').modal();
             break;
           case 'activate':
             // init modal
             vm.modal = {};
             // put task info into modal
+            var index = getIndexFromTaskId(id);
             if (vm.tasks[index]) {
               vm.modal.showContent = true;
               var task = vm.tasks[index].taskRef;
@@ -118,7 +142,7 @@
               vm.modal.tax = 0.00;
               vm.modal.deadline = vm.tasks[index].deadline;
               vm.modal.dateCreated = vm.tasks[index].postingDate;
-              
+
               // open modal for payment
               vm.openPaymentModal();
             } else {
@@ -126,9 +150,8 @@
             }
             break;
           default:
-            console.log('perform ' + action + ' on task ' + index);
+            console.log('perform ' + action + ' on task ' + id);
         }
-      }
     };
 
     RequestersService.getAllTasks()
@@ -169,16 +192,16 @@
         }
       }
     };
-    
+
     // for payment modal
     vm.openPaymentModal = function () {
        $('#reviewPaymentModal').modal();
     };
-    
+
     vm.closePaymentModal = function () {
       $('#reviewPaymentModal').modal('hide');
     };
-    
+
     // TODO: Make this angular compliant
     // paypal payment action
     var payForTaskId = null;
@@ -188,7 +211,6 @@
       paymentData = null;
       paypal.Button.render({
         env: 'sandbox', // Or 'sandbox'
-
         commit: true, // Show a 'Pay Now' button
         style: {
             size: 'responsive',
