@@ -494,7 +494,7 @@ exports.setupEnterpriseGraph = function(req, res) {
     for (var numEnts = getRandomNumber(30, 100); numEnts > 0; numEnts--) {
       entConnect.push(makeNewEnterprise(req.user._id));
     }
-    myEnterpris.partners = {
+    myEnterprise.partners = {
       supplier: [],
       customer: [],
       competitor: []
