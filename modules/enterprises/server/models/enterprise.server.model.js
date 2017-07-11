@@ -136,6 +136,11 @@ var EnterpriseUserSchema = new Schema({
         default: '',
         trim: true,
         validate: [validateURL, 'Website must be in form: \'site.domain\'']
+      },
+      enterpriseId: {
+        type: Schema.ObjectId,
+        ref: 'Enterprise',
+        default: null
       }
     }],
     customer: [{
@@ -150,6 +155,11 @@ var EnterpriseUserSchema = new Schema({
         default: '',
         trim: true,
         validate: [validateURL, 'Website must be in form: \'site.domain\'']
+      },
+      enterpriseId: {
+        type: Schema.ObjectId,
+        ref: 'Enterprise',
+        default: null
       }
     }],
     competitor: [{
@@ -164,6 +174,11 @@ var EnterpriseUserSchema = new Schema({
         default: '',
         trim: true,
         validate: [validateURL, 'Website must be in form: \'site.domain\'']
+      },
+      enterpriseId: {
+        type: Schema.ObjectId,
+        ref: 'Enterprise',
+        default: null
       }
     }]
   },

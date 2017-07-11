@@ -27,7 +27,9 @@ module.exports = function(app) {
   
   app.route('/enterprises/api/enterprises/getEnterprise/').get(enterprises.getEnterprise);
   
-  app.route('/enterprises/api/enterprises/getEnterprisePartners/').get(enterprises.getEnterprisePartners);
+  app.route('/enterprises/api/enterprises/getEnterprisePartners/').post(enterprises.getEnterprisePartners);
+  
+  app.route('/enterprises/api/enterprises/setUpEntepriseGraph/').post(enterprises.setUpEntepriseGraph);
 
   // Finish by binding the Enterprise middleware
   app.param('enterpriseId', enterprises.enterpriseByID);

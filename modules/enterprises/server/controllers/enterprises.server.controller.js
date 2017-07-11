@@ -377,10 +377,12 @@ exports.updateCustomers = function(req, res) {
 exports.getEnterprisePartners = function(req, res) {
   Enterprise.findById(req.body.enterpriseId, function (err, enterprise) {
     if (err) {
+      console.log(err)
       return res.status(422).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else if (!enterprise) {
+      console.log(enterprise)
       return res.status(422).send({
         message: 'No Enterprise with that identifier has been found'
       });
@@ -388,7 +390,7 @@ exports.getEnterprisePartners = function(req, res) {
       return res.status(200).send(enterprise.partners);
     }
   });
-}
+};
 
 /**
  * get Enterprise object
@@ -425,5 +427,114 @@ exports.getEnterprise = function(req, res) {
     res.json(safeEnterpriseObject || null);
   });
 };
+
+exports.setUpEntepriseGraph = function(req, res) {
+  getEnterprise(req, res, function (myEnterprise) {
+    var entConnect = [];
+    for (var numEnts = getRandomNumber(10, 100); numEnts > 0; numEnts--) {
+      entConnect.push(makeNewEnteprise(req.user._id));
+    }
+    entConnect.push(myEnterprise);
+    var entLookCon = entConnect;
+    while (entLookCon.length > 0) {
+      var thisEnt = entLookCon.pop();
+      var stillCanCon= null;
+      stillCanCon = entConnect;
+      for (var sup = 0; sup < thisEnt.partners.supplier.length; sup++) {
+        var supConEnt = stillCanCon.splice(getRandomNumber(0, stillCanCon.length - 1), 1);
+        thisEnt.partners.supplier[sup].enterpriseId = supConEnt._id;
+      }
+      for (var cus = 0; cus < thisEnt.partners.customer.length; cus++) {
+        var supConEnt = stillCanCon.splice(getRandomNumber(0, stillCanCon.length - 1), 1);
+        thisEnt.partners.customer[cus].enterpriseId = supConEnt._id;
+      }
+      for (var com = 0; com < thisEnt.partners.competitor.length; com++) {
+        var supConEnt = stillCanCon.splice(getRandomNumber(0, stillCanCon.length - 1), 1);
+        thisEnt.partners.competitor[com].enterpriseId = supConEnt._id;
+      }
+    }
+    recurseSaveEnts(entConnect);
+  });
+};
+
+function recurseSaveEnts(entArray) {
+  if (entArray.length > 0) {
+    (entArray.pop()).save(function (err, ent) {
+      if (err) {
+        console.log(err)
+      } else {
+        console.log(JSNO.stringify(ent.partners));
+        recurseSaveEnts(entArray);
+      }
+    });
+  }
+}
+
+function makeNewEnteprise(userId) {
+  var ent = new Enterprise({
+    user: userId,
+    profile: {
+      countryOfBusiness: 'US',
+      companyAddress: {}
+    },
+    partners: {
+      supplier: [],
+      customer: [],
+      competitor: []
+    }
+  });
+  ent.profile.companyName = generateRandomString(10);
+  ent.profile.URL = 'www.' + generateRandomString(8) + '.com';
+  ent.profile.description = 'This is the description of ' + ent.profile.companyName;
+  ent.profile.yearEstablished = getRandomNumber(1950, 2017);
+  ent.profile.employeeCount = getRandomNumber(1, 10000);
+  ent.profile.companyAddress.country = 'US'
+  ent.profile.companyAddress.streetAddress = generateRandomString(5) + ' Rd';
+  ent.profile.companyAddress.city = generateRandomString(5) + 'burg'
+  ent.profile.companyAddress.state = 'IL'
+  ent.profile.companyAddress.zipCode = getRandomNumber(100000, 999999);
+  var partnerTimes = getRandomNumber(1, 5);
+  var i = 0;
+  for (i = 0; i < partnerTimes; i++) {
+    var sup = {};
+    sup.companyName = generateRandomString(10);
+    sup.URL = 'www.' + generateRandomString(8) + '.com';
+    ent.partners.supplier.push(sup);
+  }
+  
+  partnerTimes = getRandomNumber(1, 5);
+  i = 0;
+  for (i = 0; i < partnerTimes; i++) {
+    var cus = {};
+    cus.companyName = generateRandomString(10);
+    cus.URL = 'www.' + generateRandomString(8) + '.com';
+    ent.partners.customer.push(cus);
+  }
+  
+  partnerTimes = getRandomNumber(1, 5);
+  i = 0;
+  for (i = 0; i < partnerTimes; i++) {
+    var com = {};
+    com.companyName = generateRandomString(10);
+    com.URL = 'www.' + generateRandomString(8) + '.com';
+    ent.partners.competitor.push(sup);
+  }
+  
+}
+
+function getRandomNumber(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+
+function generateRandomString(length) {
+  var text = '';
+  var possible = 'abcdefghijklmnopqrstuvwxyz';
+
+  for (var i = 0; i < length; i++)
+    text += possible.charAt(getRandomNumber(0, possible.length - 1));
+  return text;
+}
 
 exports.getThisEnterprise = getEnterprise;
