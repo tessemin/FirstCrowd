@@ -63,6 +63,27 @@ var TaskSchema = new Schema({
     staticPrice: {
       type: Number,
       required: 'Please provide a price'
+    },
+    paymentInfo: {
+      paymentType: {
+        type: String,
+        enum: ['paypal'],
+        default: 'paypal',
+        required: 'Please provide a payment type'
+      },
+      paid: {
+        type: Boolean,
+        default: false
+      },
+      paymentId: {
+        type: String
+      },
+      payerId: {
+        type: String
+      },
+      paymentObject: {
+        type: Schema.Types.Mixed
+      }
     }
   },
   status: {

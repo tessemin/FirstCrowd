@@ -205,25 +205,24 @@
     // TODO: Make this angular compliant
     // paypal payment action
     var payForTaskId = null;
-    var paymentData = null;
+    var executePayTaskId = null;
     function paypalButtonRender() {
       payForTaskId = null;
-      paymentData = null;
+      executePayTaskId = null;
       paypal.Button.render({
         env: 'sandbox', // Or 'sandbox'
         commit: true, // Show a 'Pay Now' button
         style: {
             size: 'responsive',
             color: 'blue',
-            shape: 'pill',
-            label: 'checkout'
+            shape: 'rect',
+            label: 'pay'
         },
         payment: function() {
           return paypal.request.post('/api/payment/paypal/create/', { taskId: payForTaskId }).then(function(data) {
             // closes the payment review modal
             vm.closePaymentModal();
-            paymentData = data;
-            paymentData.transactions = JSON.stringify(paymentData.transactions);
+            executePayTaskId = data.taskId;
             return data.paymentID;
           });
         },
@@ -231,21 +230,15 @@
           return paypal.request.post('/api/payment/paypal/execute/', {
             paymentID: data.paymentID,
             payerID: data.payerID,
-            transactions: paymentData.transactions,
-            taskId: paymentData.taskId
+            taskId: executePayTaskId
           }).then(function(response) {
             // payment completed success
-            Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> Payment Accepted!' });
-            // set task to active.
-            // re-render the paypal button
-            paypalButtonRender();
+            Notification.success({ message: response, title: '<i class="glyphicon glyphicon-ok"></i> Payment Accepted!' });
           });
         },
         onError: function(err) {
           // show a gracful error
-          Notification.error({ message: err.message, title: '<i class="glyphicon glyphicon-remove"></i> ' + err.title });
-          // re-render the paypal button
-            paypalButtonRender();
+          Notification.error({ message: err.message, title: '<i class="glyphicon glyphicon-remove"></i> Error!'});
         }
       }, '#paypal-button');
     }
