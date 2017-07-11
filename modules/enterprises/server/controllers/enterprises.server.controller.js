@@ -439,31 +439,37 @@ exports.setupEnterpriseGraph = function(req, res) {
       var random = null;
       for (var i = 0; i < entConnect.length; i++)
         stillCanCon.push({ ent: entConnect[i], canCon: true });
-      for (var sup = 0; sup < thisEnt.partners.supplier.length; sup++) {
-        random = getRandomNumber(0, stillCanCon.length - 1)
-        while (!stillCanCon[random].canCon)
-          random = getRandomNumber(0, stillCanCon.length - 1)
-        thisEnt.partners.supplier[sup].companyName = stillCanCon[random].ent.profile.companyName;
-        thisEnt.partners.supplier[sup].URL = stillCanCon[random].ent.profile.URL;
-        thisEnt.partners.supplier[sup].enterpriseId = stillCanCon[random].ent._id;
+      for (var sup = getRandomNumber(1, 5); sup >= 0; sup--) {
+        random = getRandomNumber(0, stillCanCon.length - 1);
+        while (!stillCanCon[random].canCon && stillCanCon[random].ent._id.toString() !== thisEnt._id.toString())
+          random = getRandomNumber(0, stillCanCon.length - 1);
+        thisEnt.partners.supplier.push({
+          companyName: stillCanCon[random].ent.profile.companyName,
+          URL: stillCanCon[random].ent.profile.URL,
+          enterpriseId: stillCanCon[random].ent._id
+        });
         stillCanCon[random].canCon = false;
       }
-      for (var cus = 0; cus < thisEnt.partners.customer.length; cus++) {
-        random = getRandomNumber(0, stillCanCon.length - 1)
-        while (!stillCanCon[random].canCon)
-          random = getRandomNumber(0, stillCanCon.length - 1)
-        thisEnt.partners.customer[cus].companyName = stillCanCon[random].ent.profile.companyName;
-        thisEnt.partners.customer[cus].URL = stillCanCon[random].ent.profile.URL;
-        thisEnt.partners.customer[cus].enterpriseId = stillCanCon[random].ent._id;
+      for (var cus = getRandomNumber(1, 5); cus >= 0; cus--) {
+        random = getRandomNumber(0, stillCanCon.length - 1);
+        while (!stillCanCon[random].canCon && stillCanCon[random].ent._id.toString() !== thisEnt._id.toString())
+          random = getRandomNumber(0, stillCanCon.length - 1);
+        thisEnt.partners.customer.push({
+          companyName: stillCanCon[random].ent.profile.companyName,
+          URL: stillCanCon[random].ent.profile.URL,
+          enterpriseId: stillCanCon[random].ent._id
+        });
         stillCanCon[random].canCon = false;
       }
-      for (var com = 0; com < thisEnt.partners.competitor.length; com++) {
-        random = getRandomNumber(0, stillCanCon.length - 1)
-        while (!stillCanCon[random].canCon)
-          random = getRandomNumber(0, stillCanCon.length - 1)
-        thisEnt.partners.competitor[com].companyName = stillCanCon[random].ent.profile.companyName;
-        thisEnt.partners.competitor[com].URL = stillCanCon[random].ent.profile.URL;
-        thisEnt.partners.competitor[com].enterpriseId = stillCanCon[random].ent._id;
+      for (var com = getRandomNumber(1, 5); com >= 0; com--) {
+        random = getRandomNumber(0, stillCanCon.length - 1);
+        while (!stillCanCon[random].canCon && stillCanCon[random].ent._id.toString() !== thisEnt._id.toString())
+          random = getRandomNumber(0, stillCanCon.length - 1);
+        thisEnt.partners.competitor.push({
+          companyName: stillCanCon[random].ent.profile.companyName,
+          URL: stillCanCon[random].ent.profile.URL,
+          enterpriseId: stillCanCon[random].ent._id
+        });
         stillCanCon[random].canCon = false;
       }
     }
@@ -484,7 +490,7 @@ function recurseSaveEnts(entArray, res, errors) {
       return recurseSaveEnts(entArray, res, errors);
     });
   } else {
-    console.log(errors)
+    console.log(errors);
     return res.status(200).send(errors);
   }
 }
@@ -507,37 +513,11 @@ function makeNewEnterprise(userId) {
   ent.profile.description = 'This is the description of ' + ent.profile.companyName;
   ent.profile.yearEstablished = getRandomNumber(1950, 2017);
   ent.profile.employeeCount = getRandomNumber(1, 10000);
-  ent.profile.companyAddress.country = 'US'
+  ent.profile.companyAddress.country = 'US';
   ent.profile.companyAddress.streetAddress = generateRandomString(5) + ' Rd';
-  ent.profile.companyAddress.city = generateRandomString(5) + 'burg'
-  ent.profile.companyAddress.state = 'IL'
+  ent.profile.companyAddress.city = generateRandomString(5) + 'burg';
+  ent.profile.companyAddress.state = 'IL';
   ent.profile.companyAddress.zipCode = getRandomNumber(100000, 999999);
-  var partnerTimes = getRandomNumber(1, 5);
-  var i = 0;
-  for (i = 0; i < partnerTimes; i++) {
-    var sup = {};
-    sup.companyName = generateRandomString(10);
-    sup.URL = 'www.' + generateRandomString(8) + '.com';
-    ent.partners.supplier.push(sup);
-  }
-  
-  partnerTimes = getRandomNumber(1, 5);
-  i = 0;
-  for (i = 0; i < partnerTimes; i++) {
-    var cus = {};
-    cus.companyName = generateRandomString(10);
-    cus.URL = 'www.' + generateRandomString(8) + '.com';
-    ent.partners.customer.push(cus);
-  }
-  
-  partnerTimes = getRandomNumber(1, 5);
-  i = 0;
-  for (i = 0; i < partnerTimes; i++) {
-    var com = {};
-    com.companyName = generateRandomString(10);
-    com.URL = 'www.' + generateRandomString(8) + '.com';
-    ent.partners.competitor.push(sup);
-  }
   return ent;
 }
 
