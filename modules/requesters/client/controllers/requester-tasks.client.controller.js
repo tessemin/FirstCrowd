@@ -123,6 +123,7 @@
     vm.actOnTask = function(index, action) {
         switch(action) {
           case 'delete':
+            console.log(index);
             vm.taskForDeletion = vm.tasks[index]._id;
             $('#confirmDeletion').modal();
             break;

@@ -163,7 +163,7 @@
             <span class="caret"></span></button>
             <ul class="dropdown-menu">
               <div ng-repeat="action in task.taskActions">
-                <li><button class="dropdown-button-item" ng-click="vm.actOnTask($parent.index, action.id)">{{action.bikeshed}}</button></li>
+                <li><button class="dropdown-button-item" ng-click="vm.actOnTask($parent.$index, action.id)">{{action.bikeshed}}</button></li>
               </div>
             </ul>
           </div>
