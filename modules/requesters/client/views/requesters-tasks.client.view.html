@@ -1,3 +1,19 @@
+<div id="confirmDeletion" class="modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirm Deletion</h5>
+      </div>
+      <div class="modal-body">
+        <p>Really delete the task?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="vm.deleteTaskConfirmed()">Delete Task</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="vm.cancelDeletion()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
 <section class="row">
   <nav class="col-md-2">
     <h3>Refine by:</h3>
@@ -145,8 +161,8 @@
           <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Actions
           <span class="caret"></span></button>
           <ul class="dropdown-menu">
-            <div ng-repeat="item in task.taskActions">
-              <li><button class="dropdown-button-item" ng-click="vm.actOnTask($parent.$index, item.id)">{{item.bikeshed}}</button></li>
+            <div ng-repeat="action in task.taskActions">
+              <li><button class="dropdown-button-item" ng-click="vm.actOnTask($parent.task._id, action.id)">{{action.bikeshed}}</button></li>
             </div>
           </ul>
         </div>
@@ -174,16 +190,48 @@
         <h4 class="modal-title">Task Information</h4>
       </div>
       <div class="modal-body">
-        
-        <h3>{{vm.modal.title}}</h3>
-        
+        <h2>{{vm.modal.title}}</h3>
+        <p>
+          <b>Description: </b>{{vm.modal.description}}<br>
+          <b>Created On: </b>{{vm.modal.dateCreated.toDateString()}}<br>
+          <b>Deadline: </b>{{vm.modal.deadline.toDateString()}}<br>
+          <b>Skills Needed: </b>{{vm.modal.skillsNeeded}}<br>
+          <b>Category: </b>{{vm.modal.category}}<br>
+          <b>Requires worker preapproval: </b>{{vm.modal.preapproval}}<br>
+          <b>Only available to reccomended workers: </b>{{vm.modal.secret}}
+        </p>
+        <br>
+        <h4><b>Cost Breakdown</b></h4>
+        <div ng-hide="vm.modal.bidable">
+          <p>
+            <b>Number of possible workers: </b>{{vm.modal.multiplicity}}<br>
+            <b>Cost per worker: </b>{{vm.modal.costPerWorker | number: 2}}<br>
+            <b>Tax: </b>{{vm.modal.tax | number: 2}}<br>
+            <b>Total Cost: </b>{{vm.modal.costPerWorker * vm.modal.multiplicity + (vm.modal.costPerWorker * vm.modal.multiplicity * vm.modal.tax) | number: 2}}
+          </p>
+        </div>
+        <div ng-show="vm.modal.bidable">
+          <p>
+            <b>Number of possible workers: </b>{{vm.modal.multiplicity}}<br>
+            <b>Max cost per worker: </b>{{vm.modal.bidding.maxPricePerWorker | number: 2}}<br>
+            <b>Min cost per worker: </b>{{vm.modal.bidding.minPricePerWorker | number: 2}}<br>
+            <b>Tax: </b>{{vm.modal.tax | number: 2}}<br>
+            <b>Maximum possible Cost: </b>{{vm.modal.bidding.maxPricePerWorker * vm.modal.multiplicity + (vm.modal.bidding.maxPricePerWorker * vm.modal.multiplicity * tax) | number: 2}}<br>
+            <b>Minimum possible Cost: </b>{{vm.modal.bidding.minPricePerWorker * vm.modal.multiplicity + (vm.modal.bidding.minPricePerWorker * vm.modal.multiplicity * tax) | number: 2}}<br>
+            <b>Bidding Start: </b>{{vm.modal.bidding.biddingStart.toDateString()}}<br>
+            <b>Bidding End: </b>{{vm.modal.bidding.biddingEnd.toDateString()}}
+          </p>
+        </div>
       </div>
       <div class="modal-footer">
         <div class="container-fluid">
           <div class="row">
             <div class="col-md-5"></div>
             <div class="col-md-3">
-              <div id="paypal-button"></div>
+              <div ng-hide="vm.modal.bidable">
+                <div id="paypal-button" ng-click="vm.closePaymentModal()"></div>
+              </div>
+              <button ng-show="vm.modal.bidable" type="button" class="btn btn-primary" style="width: 120%;">Activate</button>
             </div>
             <div class="col-md-3">
               <div class="container-fluid row">
