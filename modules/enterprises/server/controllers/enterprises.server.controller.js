@@ -428,11 +428,11 @@ exports.getEnterprise = function(req, res) {
   });
 };
 
-exports.setupEntepriseGraph = function(req, res) {
+exports.setupEnterpriseGraph = function(req, res) {
   getEnterprise(req, res, function (myEnterprise) {
     var entConnect = [];
     for (var numEnts = getRandomNumber(10, 100); numEnts > 0; numEnts--) {
-      entConnect.push(makeNewEnteprise(req.user._id));
+      entConnect.push(makeNewEnterprise(req.user._id));
     }
     entConnect.push(myEnterprise);
     var entLookCon = entConnect;
@@ -470,7 +470,7 @@ function recurseSaveEnts(entArray) {
   }
 }
 
-function makeNewEnteprise(userId) {
+function makeNewEnterprise(userId) {
   var ent = new Enterprise({
     user: userId,
     profile: {
