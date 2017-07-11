@@ -157,8 +157,15 @@
               Requires: {{task.skillsNeeded}}
             </div>
             <div class="tasks-cell">
-              <select ng-model="vm.tasks[$index].taskAction" ng-options="x for x in vm.taskActions" ng-change="vm.actOnTask($index, 'take')">
-              </select>
+              <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Actions
+                <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <div ng-repeat="action in task.taskActions">
+                    <li><button class="dropdown-button-item" ng-click="vm.actOnTask(vm.tasks.indexOf(task), action.id)">{{action.bikeshed}}</button></li>
+                  </div>
+                </ul>
+              </div>
             </div>
           </div>
           <div class="tasks-row">

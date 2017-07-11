@@ -21,8 +21,6 @@
       vm.filters.status = '';
     };
     vm.clearFilters();
-
-    vm.taskActions = [];
     WorkersService.updateRecomendedTask({ '_id': 'rocks' })
       .then(function() {
       });
@@ -134,8 +132,8 @@
       console.log(data);
       if (data) {
         vm.loaded = true;
-        vm.taskActions = ['Select Action...', 'Apply for Task'];
         var task,
+          taskActions,
           postDate,
           dueDate;
         for (var i = 0; i < data.tasks.length; ++i) {
@@ -144,6 +142,7 @@
           postDate = postDate.toDateString();
           dueDate = new Date(task.deadline);
           dueDate = dueDate.toDateString();
+          taskActions = [];
 
           var clientTask = {
             '_id': task._id,
@@ -154,7 +153,7 @@
             'postingDate': postDate,
             'deadline': dueDate,
             'status': task.status,
-            'taskAction': vm.taskActions[0],
+            'taskActions': taskActions,
             'payment': {
               'bidding': {
                 'bidable': task.payment.bidding.bidable,

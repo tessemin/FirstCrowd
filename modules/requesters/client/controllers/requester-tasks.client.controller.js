@@ -102,22 +102,21 @@
     vm.cancelDeletion = function() {
       vm.taskForDeletion = -1;
     }
-    vm.cancelDeletion();
 
     vm.deleteTaskConfirmed = function() {
       console.log('delete task with _id of ' + vm.taskForDeletion);
       console.log('task is at index ' + getIndexFromTaskId(vm.taskForDeletion));
-      /*RequestersService.deleteTask({taskId: vm.taskForDeletion})
+      RequestersService.deleteTask({taskId: vm.taskForDeletion})
         .then(function(response) {
           var index = getIndexFromTaskId(vm.taskForDeletion);
           vm.tasks.splice(index, 1);
+          vm.cancelDeletion();
           Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> Task deleted!' });
-          vm.taskForDeletion = -1;
         })
         .catch(function(response) {
           Notification.error({ message: response.message, title: '<i class="glyphicon glyphicon-remove"></i> Deletion failed! Task not deleted!' });
-          vm.taskForDeletion = -1;
-        });*/
+          vm.cancelDeletion();
+        });
     }
 
     vm.actOnTask = function(index, action) {
@@ -196,7 +195,7 @@
         if (value === 100) {
           return 'rgb(0, 221, 0)';
         } else {
-          return 'rgb(128, 128, 160)';
+          return 'rgb(128, 128, 255)';
         }
       }
     };
