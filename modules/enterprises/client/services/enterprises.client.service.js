@@ -36,7 +36,7 @@
         url: '/enterprises/api/enterprises/getEnterprise'
       },
       getEnterprisePartners: {
-        method: 'GET',
+        method: 'POST',
         url: '/enterprises/api/enterprises/getEnterprisePartners'
       }
     });
