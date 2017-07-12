@@ -150,8 +150,8 @@
           <div class="tasks-cell">
             {{task.status}}
           </div>
-          <div class="tasks-cell" ng-if="vm.taskCategory.id === 'active'">
-            <rzslider class="worker-slider" rz-slider-model="task.progress" rz-slider-options="vm.sliderOptions"></rzslider>
+          <div class="tasks-cell" ng-if="vm.taskCategory.id === 'active'" ng-click="$event.stopPropagation()">
+            <rzslider class="worker-slider" rz-slider-model="task.progress" rz-slider-options="vm.getSliderOptions(vm.tasks.indexOf(task))"></rzslider>
           </div>
           <div class="tasks-cell" ng-if="task.payment.bidding.bidable">
             ${{task.payment.bidding.startingPrice}} (negotiable)
@@ -169,14 +169,16 @@
               Requires: {{task.skillsNeeded}}
             </div>
             <div class="tasks-cell">
-              <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Actions
-                <span class="caret"></span></button>
-                <ul class="dropdown-menu">
-                  <div ng-repeat="action in task.taskActions">
-                    <li><button class="dropdown-button-item" ng-click="vm.actOnTask(vm.tasks.indexOf(task), action)">{{action.bikeshed}}</button></li>
-                  </div>
-                </ul>
+              <div>
+                <div class="dropdown">
+                  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Actions
+                  <span class="caret"></span></button>
+                  <ul class="dropdown-menu">
+                    <div ng-repeat="action in task.taskActions">
+                      <li><button class="dropdown-button-item" ng-click="vm.actOnTask(vm.tasks.indexOf(task), action)">{{action.bikeshed}}</button></li>
+                    </div>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>

@@ -41,44 +41,47 @@
     ];
     vm.taskCategory = vm.taskCategories[0];
 
-    vm.sliderOptions = {
-      floor: 0,
-      ceil: 100,
-      hideLimitLabels: true,
-      showSelectionBar: true,
-      translate: function(value) {
-        return value + '%';
-      },
-      getPointerColor: function(value) {
-        if (value <= 50) { // 0 - 50 red - yellow
-          return 'rgb(255, ' + Math.floor(value * 5.1) + ', 60)';
-        } else if (value < 100) { // 50 - 99 yellow - lightgreen
-          return 'rgb(' + Math.floor(255 - ((value - 50) * 5.1)) + ', 255, 60)';
-        } else { // 100% = distinct shade of green
-          return 'rgb(0, 255, 30)';
-        }
-      },
-      getSelectionBarColor: function(value) {
-        if (value === 100) {
-          return '#00cc00';
-        } else {
-          return '#0db9f0';
-        }
-      },
-      // Update progress on backend after changing progress slider of task
-      onEnd: function(sliderId, modelValue, highValue, pointerType) {
-        console.log('sliderId: ' + sliderId);
-        console.log('onEnd: ' + modelValue);
-        var update = {
-          _id: vm.tasks[sliderId]._id,
-          progress: vm.tasks[sliderId].progress
-        };
-        console.log('update: ' + JSON.stringify(update, null ,' '));
+    vm.getSliderOptions = function(id) {
+      return {
+        'id': id,
+        floor: 0,
+        ceil: 100,
+        hideLimitLabels: true,
+        showSelectionBar: true,
+        translate: function(value) {
+          return value + '%';
+        },
+        getPointerColor: function(value) {
+          if (value <= 50) { // 0 - 50 red - yellow
+            return 'rgb(255, ' + Math.floor(value * 5.1) + ', 60)';
+          } else if (value < 100) { // 50 - 99 yellow - lightgreen
+            return 'rgb(' + Math.floor(255 - ((value - 50) * 5.1)) + ', 255, 60)';
+          } else { // 100% = distinct shade of green
+            return 'rgb(0, 255, 30)';
+          }
+        },
+        getSelectionBarColor: function(value) {
+          if (value === 100) {
+            return '#00cc00';
+          } else {
+            return '#0db9f0';
+          }
+        },
+        // Update progress on backend after changing progress slider of task
+        onEnd: function(sliderId, modelValue, highValue, pointerType) {
+          console.log('sliderId: ' + sliderId);
+          console.log('onEnd: ' + modelValue);
+          var update = {
+            _id: vm.tasks[sliderId]._id,
+            progress: vm.tasks[sliderId].progress
+          };
+          console.log('update: ' + JSON.stringify(update, null ,' '));
 
-        WorkersService.updateActiveTask(update)
-          .then(function(data) {
-            console.log(data);
-          });
+          WorkersService.updateActiveTask(update)
+            .then(function(data) {
+              console.log(data);
+            });
+        }
       }
     };
 
@@ -242,7 +245,8 @@
             console.log('take task ' + vm.tasks[index]._id);
             WorkersService.takeTask({taskId: vm.tasks[index]._id})
               .then(function(response) {
-                Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> Task Taken?' });
+                vm.tasks.splice(index, 1);
+                Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> Task Taken!' });
               })
               .catch(function(response) {
                 Notification.error({ message: response.message, title: '<i class="glyphicon glyphicon-remove"></i> Error! Task not taken!' });

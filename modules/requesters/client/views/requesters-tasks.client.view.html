@@ -1,3 +1,4 @@
+<!-- Deletion Confirmation Modal -->
 <div id="confirmDeletion" class="modal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -13,8 +14,8 @@
       </div>
     </div>
   </div>
-</div>
-<section class="row">
+</div> <!-- end deletion confirmation modal -->
+<section class="row"> <!-- Page body -->
   <nav class="col-md-2">
     <h3>Refine by:</h3>
     <ul class="list-group">
@@ -167,7 +168,7 @@
           {{task.status}}
         </div>
         <div class="tasks-cell">
-          <rzslider class="requester-slider" rz-slider-model="task.progress" rz-slider-options="vm.sliderOptions"></rzslider>
+          <rzslider class="requester-slider" rz-slider-model="task.progress" rz-slider-options="vm.getSliderOptions(vm.tasks.indexOf(task))"></rzslider>
         </div>
         <div class="tasks-cell">
           <div class="dropdown">

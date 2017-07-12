@@ -178,20 +178,23 @@
       }
     })();
 
-    vm.sliderOptions = {
-      floor: 0,
-      ceil: 100,
-      hideLimitLabels: true,
-      showSelectionBar: true,
-      readOnly: true,
-      translate: function(value) {
-        return value + '%';
-      },
-      getSelectionBarColor: function(value) {
-        if (value === 100) {
-          return 'rgb(0, 221, 0)';
-        } else {
-          return 'rgb(128, 128, 255)';
+    vm.getSliderOptions = function(id) {
+      return {
+        'id': id,
+        floor: 0,
+        ceil: 100,
+        hideLimitLabels: true,
+        showSelectionBar: true,
+        readOnly: true,
+        translate: function(value) {
+          return value + '%';
+        },
+        getSelectionBarColor: function(value) {
+          if (value === 100) {
+            return 'rgb(0, 221, 0)';
+          } else {
+            return 'rgb(128, 128, 255)';
+          }
         }
       }
     };

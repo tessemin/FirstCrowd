@@ -53,6 +53,7 @@ exports.taskActions = {
               message: 'Error connecting your profile with task: ' + newTask.title
             });
           } else {
+            console.log(newTask);
             newTask.save(function (err, task) {
               if (err) {
                 return res.status(422).send({
@@ -250,7 +251,7 @@ function setStatus(taskId, status, typeObj, callBack) {
           }
         });
       });
-    }); 
+    });
   });
 }
 
