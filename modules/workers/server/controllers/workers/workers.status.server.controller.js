@@ -10,16 +10,18 @@ var path = require('path'),
   taskTools = require(path.resolve('modules/requesters/server/controllers/requesters/task.tools.server.controller')),
   taskSearch = require(path.resolve('./modules/requesters/server/controllers/requesters/task.search.server.controller')),
   _ = require('lodash');
-  
+
 var getUserTypeObject = taskTools.getUserTypeObject,
   setStatus = taskTools.setStatus,
   isWorker = taskTools.isWorker,
   removeTaskFromWorkerArray = taskTools.removeTaskFromWorkerArray,
   taskFindOne = taskSearch.taskFindOne;
-  
+
 exports.takeTask = function (req, res) {
+  console.log(req.user);
+  console.log(req.body);
   getUserTypeObject(req, res, function(typeObj) {
-    if (isWorker(req.user.user) && typeObj.worker) {
+    if (isWorker(req.user) && typeObj.worker) {
       addWorkerToTask(req.body.taskId, req, typeObj, function (err, task, typeObj) {
         if (err) {
           return res.status(422).send({
@@ -60,7 +62,7 @@ function addWorkerToTask(taskId, req, typeObj, callBack) {
       return callBack('No task found');
     if (task.secret && !isTaskRecomended(task._id, typeObj))
       return callBack('You don\'t have permission to work on that task');
-    if (task.multiplicity <= 0) 
+    if (task.multiplicity <= 0)
       return callBack('There are too many workers for this task');
     typeObj = removeTaskFromWorkerArray(task._id, typeObj);
     typeObj.worker.activeTasks.push(task._id);

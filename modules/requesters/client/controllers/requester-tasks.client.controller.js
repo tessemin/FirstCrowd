@@ -10,17 +10,16 @@
 
   function RequesterTasksController ($scope, $state, $timeout, RequestersService, Notification) {
     var vm = this;
+    vm.tasks = [];
+    vm.loaded = false;
     // Filters
-    vm.filters = {};
-    vm.filters.name = '';
-    vm.filters.postingDate = '';
-    vm.filters.deadline = '';
-    vm.filters.status = '';
+    vm.clearFilters = function() {
+      vm.filters = {};
+    };
+    vm.clearFilters();
     vm.sort = 'name';
     vm.sortReversed = false;
 
-    vm.tasks = [];
-    vm.loaded = false;
     vm.loadData = function(data) {
       if (data) {
         vm.loaded = true;
@@ -53,6 +52,9 @@
           vm.tasks.push({
             '_id': task._id,
             'name': task.title,
+            'category': task.category,
+            'description': task.description,
+            'skillsNeeded': task.skillsNeeded.length ? task.skillsNeeded.join(', ') : 'none',
             'postingDate': new Date(task.dateCreated),
             'deadline': new Date(task.deadline),
             'status': task.status,
@@ -65,6 +67,15 @@
       console.log(vm.tasks);
     };
 
+    vm.selectedTask = -1;
+    vm.selectTask = function(index) {
+      if (index < vm.tasks.length && index !== vm.selectedTask) {
+        vm.selectedTask = index;
+      } else {
+        vm.selectedTask = -1;
+      }
+    };
+
     vm.sortTasks = function(property) {
       if (vm.sort === property) {
         vm.sortReversed = !vm.sortReversed;
@@ -72,6 +83,7 @@
         vm.sort = property;
         vm.sortReversed = false;
       }
+      vm.selectTask(-1);
     };
 
     // bootstrap modal seems difficult to work with so this is an awkward hack
@@ -86,34 +98,34 @@
     vm.cancelDeletion = function() {
       vm.taskForDeletion = -1;
     }
-    vm.cancelDeletion();
 
     vm.deleteTaskConfirmed = function() {
       console.log('delete task with _id of ' + vm.taskForDeletion);
+      console.log('task is at index ' + getIndexFromTaskId(vm.taskForDeletion));
       RequestersService.deleteTask({taskId: vm.taskForDeletion})
         .then(function(response) {
           var index = getIndexFromTaskId(vm.taskForDeletion);
           vm.tasks.splice(index, 1);
+          vm.cancelDeletion();
           Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> Task deleted!' });
-          vm.taskForDeletion = -1;
         })
         .catch(function(response) {
           Notification.error({ message: response.message, title: '<i class="glyphicon glyphicon-remove"></i> Deletion failed! Task not deleted!' });
-          vm.taskForDeletion = -1;
+          vm.cancelDeletion();
         });
     }
 
-    vm.actOnTask = function(id, action) {
+    vm.actOnTask = function(index, action) {
         switch(action) {
           case 'delete':
-            vm.taskForDeletion = id;
+            console.log(index);
+            vm.taskForDeletion = vm.tasks[index]._id;
             $('#confirmDeletion').modal();
             break;
           case 'activate':
             // init modal
             vm.modal = {};
             // put task info into modal
-            var index = getIndexFromTaskId(id);
             if (vm.tasks[index]) {
               vm.modal.showContent = true;
               var task = vm.tasks[index].taskRef;
@@ -175,20 +187,11 @@
       translate: function(value) {
         return value + '%';
       },
-      getPointerColor: function(value) {
-        if (value <= 50) { // 0 - 50 red - yellow
-          return 'rgb(255, ' + Math.floor(value * 4.42) + ', 30)';
-        } else if (value < 100) { // 50 - 99 yellow - lightgreen
-          return 'rgb(' + Math.floor(255 - ((value - 50) * 2.55)) + ', 221, 30)';
-        } else { // 100% = distinct shade of green
-          return 'rgb(0, 255, 30)';
-        }
-      },
       getSelectionBarColor: function(value) {
         if (value === 100) {
           return 'rgb(0, 221, 0)';
         } else {
-          return 'rgb(128, 128, 160)';
+          return 'rgb(128, 128, 255)';
         }
       }
     };
@@ -205,25 +208,24 @@
     // TODO: Make this angular compliant
     // paypal payment action
     var payForTaskId = null;
-    var paymentData = null;
+    var executePayTaskId = null;
     function paypalButtonRender() {
       payForTaskId = null;
-      paymentData = null;
+      executePayTaskId = null;
       paypal.Button.render({
         env: 'sandbox', // Or 'sandbox'
         commit: true, // Show a 'Pay Now' button
         style: {
             size: 'responsive',
             color: 'blue',
-            shape: 'pill',
-            label: 'checkout'
+            shape: 'rect',
+            label: 'pay'
         },
         payment: function() {
           return paypal.request.post('/api/payment/paypal/create/', { taskId: payForTaskId }).then(function(data) {
             // closes the payment review modal
             vm.closePaymentModal();
-            paymentData = data;
-            paymentData.transactions = JSON.stringify(paymentData.transactions);
+            executePayTaskId = data.taskId;
             return data.paymentID;
           });
         },
@@ -231,21 +233,15 @@
           return paypal.request.post('/api/payment/paypal/execute/', {
             paymentID: data.paymentID,
             payerID: data.payerID,
-            transactions: paymentData.transactions,
-            taskId: paymentData.taskId
+            taskId: executePayTaskId
           }).then(function(response) {
             // payment completed success
-            Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> Payment Accepted!' });
-            // set task to active.
-            // re-render the paypal button
-            paypalButtonRender();
+            Notification.success({ message: response, title: '<i class="glyphicon glyphicon-ok"></i> Payment Accepted!' });
           });
         },
         onError: function(err) {
           // show a gracful error
-          Notification.error({ message: err.message, title: '<i class="glyphicon glyphicon-remove"></i> ' + err.title });
-          // re-render the paypal button
-            paypalButtonRender();
+          Notification.error({ message: err.message, title: '<i class="glyphicon glyphicon-remove"></i> Error!'});
         }
       }, '#paypal-button');
     }
