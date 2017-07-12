@@ -42,6 +42,18 @@
             <input class="task-filter" ng-model="vm.filters.status" ng-change="vm.selectTask(-1)">
         </label>
       </li>
+      <li class="list-group-item">
+        <label class="filter-label">
+          Category:
+            <input class="task-filter" ng-model="vm.filters.category">
+        </label>
+      </li>
+      <li class="list-group-item">
+        <label class="filter-label">
+          Description:
+            <input class="task-filter" ng-model="vm.filters.description">
+        </label>
+      </li>
     </ul>
   </nav>
   <div class="tasks-caption">

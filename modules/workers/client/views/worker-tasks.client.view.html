@@ -26,6 +26,18 @@
             <input class="task-filter" ng-model="vm.filters.status">
         </label>
       </li>
+      <li class="list-group-item">
+        <label class="filter-label">
+          Category:
+            <input class="task-filter" ng-model="vm.filters.category">
+        </label>
+      </li>
+      <li class="list-group-item">
+        <label class="filter-label">
+          Description:
+            <input class="task-filter" ng-model="vm.filters.description">
+        </label>
+      </li>
     </ul>
   </nav>
   <div class="tasks-caption">
@@ -162,7 +174,7 @@
                 <span class="caret"></span></button>
                 <ul class="dropdown-menu">
                   <div ng-repeat="action in task.taskActions">
-                    <li><button class="dropdown-button-item" ng-click="vm.actOnTask(vm.tasks.indexOf(task), action.id)">{{action.bikeshed}}</button></li>
+                    <li><button class="dropdown-button-item" ng-click="vm.actOnTask(vm.tasks.indexOf(task), action)">{{action.bikeshed}}</button></li>
                   </div>
                 </ul>
               </div>

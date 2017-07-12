@@ -13,12 +13,8 @@
     vm.tasks = [];
     vm.loaded = false;
     // Filters
-    vm.filters = {};
     vm.clearFilters = function() {
-      vm.filters.name = '';
-      vm.filters.postingDate = '';
-      vm.filters.deadline = '';
-      vm.filters.status = '';
+      vm.filters = {};
     };
     vm.clearFilters();
     vm.sort = 'name';

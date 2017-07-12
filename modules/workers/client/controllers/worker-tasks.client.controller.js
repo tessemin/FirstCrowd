@@ -6,19 +6,15 @@
     .module('workers')
     .controller('WorkerTasksController', WorkerTasksController);
 
-  WorkerTasksController.$inject = ['$scope', '$state', 'WorkersService'];
+  WorkerTasksController.$inject = ['$scope', '$state', 'WorkersService', 'Notification'];
 
-  function WorkerTasksController ($scope, $state, WorkersService) {
+  function WorkerTasksController ($scope, $state, WorkersService, Notification) {
     var vm = this;
     vm.tasks = [];
     vm.loaded = false;
     // Filters
-    vm.filters = {};
     vm.clearFilters = function() {
-      vm.filters.name = '';
-      vm.filters.postingDate = '';
-      vm.filters.deadline = '';
-      vm.filters.status = '';
+      vm.filters = {};
     };
     vm.clearFilters();
     WorkersService.updateRecomendedTask({ '_id': 'rocks' })
@@ -108,7 +104,6 @@
             'postingDate': postDate,
             'deadline': dueDate,
             'status': task.status,
-            'taskAction': 'Select Action',
             'payment': {
               'bidding': {
                 'bidable': task.payment.bidding.bidable,
@@ -128,6 +123,10 @@
       }
     };
 
+    function workerIsEligible(task) {
+      return true;
+    };
+
     vm.loadOpenTasks = function(data) {
       console.log(data);
       if (data) {
@@ -143,7 +142,26 @@
           dueDate = new Date(task.deadline);
           dueDate = dueDate.toDateString();
           taskActions = [];
+          if (workerIsEligible(task)) {
+            if (task.payment.bidding.bidable) {
+              taskActions.push({
+                id: 'bid',
+                bikeshed: 'Bid on Task'
+              });
+            } else if (task.preapproval) {
+              taskActions.push({
+                id: 'apply',
+                bikeshed: 'Apply for Task'
+              });
+            } else {
+              taskActions.push({
+                id: 'take',
+                bikeshed: 'Accept Task'
+              });
+            }
+          } else {
 
+          }
           var clientTask = {
             '_id': task._id,
             'name': task.title,
@@ -214,9 +232,15 @@
 
     vm.actOnTask = function(index, action) {
       if (index < vm.tasks.length) {
+        console.log(action.id);
         switch(action.id) {
+          case 'apply':
+            break;
+          case 'bid':
+            break;
           case 'take':
-            WorkersService.takeTask({taskId: vm.tasks[index].id})
+            console.log('take task ' + vm.tasks[index]._id);
+            WorkersService.takeTask({taskId: vm.tasks[index]._id})
               .then(function(response) {
                 Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> Task Taken?' });
               })
@@ -227,8 +251,7 @@
           default:
             break;
         }
-        console.log('perform ' + vm.tasks[index].taskAction + ' on task ' + index);
-        vm.tasks[index].taskAction = vm.taskActions[0];
+        console.log('perform ' + action.id + ' on task ' + index);
       }
     };
 
