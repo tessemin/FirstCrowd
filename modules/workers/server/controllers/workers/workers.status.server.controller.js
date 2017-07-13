@@ -15,6 +15,7 @@ var getUserTypeObject = taskTools.getUserTypeObject,
   setStatus = taskTools.setStatus,
   isWorker = taskTools.isWorker,
   removeTaskFromWorkerArray = taskTools.removeTaskFromWorkerArray,
+  statusPushTo = taskTools.statusPushTo,
   taskFindOne = taskSearch.taskFindOne;
 
 exports.takeTask = function (req, res) {
@@ -65,7 +66,7 @@ function addWorkerToTask(taskId, req, typeObj, callBack) {
     if (task.multiplicity <= 0)
       return callBack('There are too many workers for this task');
     typeObj = removeTaskFromWorkerArray(task._id, typeObj);
-    typeObj.worker.activeTasks.push(task._id);
+    typeObj.worker.activeTasks = statusPushTo(task._id, typeObj.worker.activeTasks);
     --task.multiplicity;
     var bid = null;
     // FOR BIDDING

@@ -379,10 +379,12 @@ exports.updateCustomers = function(req, res) {
 exports.getEnterprisePartners = function(req, res) {
   Enterprise.findById(req.body.enterpriseId, function (err, enterprise) {
     if (err) {
+      console.log(err)
       return res.status(422).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else if (!enterprise) {
+      console.log('here')
       return res.status(422).send({
         message: 'No Enterprise with that identifier has been found'
       });

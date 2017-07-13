@@ -338,10 +338,11 @@ function removeTaskFromWorkerArray(taskId, typeObj) {
 
 // changes tasks current status and adds task to one of the requester arrays
 function statusPushTo(taskId, array) {
+  console.log(taskId)
+  console.log(array)
   if (typeof array != 'undefined' && array instanceof Array)
     if (array.length > 0 && taskId) {
-      if (taskId)
-        array.push({ taskId: taskId });
+      array.push({ taskId: taskId });
       return array;
     }
   array = [];
@@ -352,6 +353,11 @@ function statusPushTo(taskId, array) {
 
 // finds the task in the array and if it matches the taskId, removes it
 function removeFromObjectTasksArray (taskId, array) {
+  console.log('\n array: ')
+  console.log(array);
+  console.log('\n taskId: ')
+  console.log(taskId)
+  console.log('\n')
   for (var i = 0; i < array.length; i++)
     if (array[i].taskId.toString() === taskId.toString())
       array.splice(i, 1);
@@ -504,3 +510,5 @@ exports.isWorker = isWorker;
 exports.removeTaskFromWorkerArray = removeTaskFromWorkerArray;
 
 exports.setStatus = setStatus;
+
+exports.statusPushTo = statusPushTo;
