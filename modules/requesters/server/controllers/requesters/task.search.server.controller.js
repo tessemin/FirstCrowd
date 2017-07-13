@@ -35,11 +35,18 @@ function taskFindWithOption(options, nonOptions, callBack) {
 }
 
 function findTaskWorker(task, worker) {
-  if (task.jobs)
+  var job = findJobByWorker(task, worker);
+  if (job)
+    return job.worker;
+  return false;
+}
+
+function findJobByWorker(task, worker) {
+  if (task.jobs && worker)
     for (var i = 0; i < task.jobs.length; i++) {
-      if (task.jobs[i] && task.jobs[i].worker)
-        if (task.jobs[i].worker.workerId === worker._id) {
-          return task.jobs[i].worker;
+      if (task.jobs[i] && task.jobs[i].worker && task.jobs[i].worker.workerId)
+        if (task.jobs[i].worker.workerId.toString() === worker._id.toString()) {
+          return task.jobs[i];
         }
     }
   return false;
@@ -50,3 +57,4 @@ exports.taskFindOne = taskFindOne;
 exports.findTaskWorker = findTaskWorker;
 exports.taskFindWithOption = taskFindWithOption;
 exports.findTaskWorker = findTaskWorker;
+exports.findJobByWorker = findJobByWorker;
