@@ -72,7 +72,7 @@
           console.log('sliderId: ' + sliderId);
           console.log('onEnd: ' + modelValue);
           var update = {
-            _id: vm.tasks[sliderId]._id,
+            taskId: vm.tasks[sliderId]._id,
             progress: vm.tasks[sliderId].progress
           };
           console.log('update: ' + JSON.stringify(update, null ,' '));

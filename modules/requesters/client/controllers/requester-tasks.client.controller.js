@@ -240,6 +240,7 @@
           }).then(function(response) {
             // payment completed success
             Notification.success({ message: response, title: '<i class="glyphicon glyphicon-ok"></i> Payment Accepted!' });
+            vm.tasks[getIndexFromTaskId(payForTaskId)].status = 'open';
           });
         },
         onError: function(err) {
