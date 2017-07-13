@@ -317,7 +317,7 @@ exports.partners = {
     });
   },
 
-  getCompetitor: function(req, res) {
+  getCompetitors: function(req, res) {
     Enterprise.findById(req.body.enterpriseId, function (err, enterprise) {
       if (err) {
         return res.status(422).send({
