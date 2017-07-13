@@ -18,7 +18,10 @@ module.exports = function(app) {
   
   app.route('/enterprises/api/enterprises/getEnterprise/').get(enterprises.getEnterprise);
   
-  app.route('/enterprises/api/enterprises/getEnterprisePartners/').post(enterprises.getEnterprisePartners);
+  app.route('/enterprises/api/enterprises/partners/getCustomers/').post(enterprises.partners.getCustomers);
+  app.route('/enterprises/api/enterprises/partners/getSuppliers/').post(enterprises.partners.getSuppliers);
+  app.route('/enterprises/api/enterprises/partners/getCompetitors/').post(enterprises.partners.getCompetitors);
+  
   
   app.route('/enterprises/api/enterprises/setupEnterpriseGraph/').post(enterprises.setupEnterpriseGraph);
 

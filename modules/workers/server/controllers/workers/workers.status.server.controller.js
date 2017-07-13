@@ -19,8 +19,6 @@ var getUserTypeObject = taskTools.getUserTypeObject,
   taskFindOne = taskSearch.taskFindOne;
 
 exports.takeTask = function (req, res) {
-  console.log(req.user);
-  console.log(req.body);
   getUserTypeObject(req, res, function(typeObj) {
     if (isWorker(req.user) && typeObj.worker) {
       addWorkerToTask(req.body.taskId, req, typeObj, function (err, task, typeObj) {
@@ -105,7 +103,9 @@ function addWorkerToTask(taskId, req, typeObj, callBack) {
         bid.worker.workerType.enterprise = true;
       else if (req.user.individual && !req.user.enterprise)
         bid.worker.workerType.individual = true;
+      
       task.bids.push(bid);
+      
       return callBack(null, task, typeObj);
     } else { // STATIC PRICE, NO PREAPROVAL
       var job = {
@@ -120,6 +120,9 @@ function addWorkerToTask(taskId, req, typeObj, callBack) {
         job.worker.workerType.enterprise = true;
       else if (req.user.individual && !req.user.enterprise)
         job.worker.workerType.individual = true;
+      
+      task.jobs.push(job);
+      
       return callBack(null, task, typeObj);
     }
   });

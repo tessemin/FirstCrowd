@@ -338,8 +338,6 @@ function removeTaskFromWorkerArray(taskId, typeObj) {
 
 // changes tasks current status and adds task to one of the requester arrays
 function statusPushTo(taskId, array) {
-  console.log(taskId)
-  console.log(array)
   if (typeof array != 'undefined' && array instanceof Array)
     if (array.length > 0 && taskId) {
       array.push({ taskId: taskId });
