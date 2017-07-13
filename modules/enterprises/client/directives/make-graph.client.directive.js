@@ -19,16 +19,27 @@
       link: function(scope, element, attrs) {
 
         d3().then(function(d3) {
+
+          d3.select('.footer').remove();
+          var headerBox = d3.select('header')._groups[0][0];
+          var header = getBounds(headerBox);
+
           var widthBot = 0;
           var heightBot = 0;
           var width = $window.innerWidth;
+          // var height = $window.innerHeight - header.offsetHeight;
           var height = $window.innerHeight;
+          console.log(height);
           var widthTop = width;
           var heightTop = height;
 
+          d3.select('.content').style('margin-top', function() { return header.offsetHeight + 'px';});
+
           var svg = d3.select('#graph').append('svg')
+                // .style('padding', '30px')
                 .attr('width', width)
-                .attr('height', height);
+                .attr('height', height -  header.offsetHeight - 5);
+
           var radius = 25;
           var nodes_data = [];
           var links_data = [];
@@ -163,7 +174,6 @@
                     }
                     var y = d3.select(this)._groups[0][0].cy.baseVal.value - 70;
                     var menuLen = items.length * itemHeight;
-                    console.log(y, height);
                     if(y + menuLen > height) {
                       y = y - 30;
                     }
@@ -232,6 +242,7 @@
             function makeHomeButton() {
               var home = d3.select('#graph')
                     .append('span')
+                    .style('margin-top', function() { return (header.offsetHeight - 30) + 'px';})
                     .attr('class', 'glyphicon glyphicon-home home')
                     .on('click', centerHome)
                     .on('mousedown', function() {
@@ -291,7 +302,7 @@
 
             // Zoom functions
             function zoom_actions() {
-              console.log(d3.event.transform);
+              // console.log(d3.event.transform);
               // heightBot
               // heightTop
               // widthBot
@@ -313,6 +324,7 @@
               }
               return prevY;
             }
+
 
             function wrapCoordinates(nodes) {
               var SUP_X = width / 4;
@@ -385,13 +397,23 @@
               //   console.log(res);
               // });
 
-              EnterprisesService.getPartners({'enterpriseId': rootNode._id}).then(function (res) {
-                console.log('!', res);
-              });
+              // EnterprisesService.getPartners({'enterpriseId': rootNode._id}).then(function (res) {
+              //   console.log('!', res);
+              // });
 
               return response.partners;
             });
         }
+
+        function getBounds(htmlElement){
+          return {
+            offsetHeight: htmlElement.offsetHeight,
+            offsetLeft: htmlElement.offsetLeft,
+            offsetParent: htmlElement.offsetParent,
+            offsetTop: htmlElement.offsetTop,
+            offsetWidth: htmlElement.offsetWidth
+          };
+        };
 
         function d3() {
           var d = $q.defer();
