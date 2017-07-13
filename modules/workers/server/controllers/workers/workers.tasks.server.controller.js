@@ -16,10 +16,12 @@ var workerWhitelistedFields = ['progress'],
   // functions for task tools
   getUserTypeObject = taskTools.getUserTypeObject,
   getIdsInArray = taskTools.getIdsInArray,
+  updateTotalTaskProgress = taskTools.updateTotalTaskProgress,
   taskFindOne = taskSearch.taskFindOne,
   taskFindMany = taskSearch.taskFindMany,
   taskFindWithOption = taskSearch.taskFindWithOption,
-  findTaskWorker = taskSearch.findTaskWorker;
+  findTaskWorker = taskSearch.findTaskWorker,
+  findJobByWorker = taskSearch.findJobByWorker;
 
 
 /*
@@ -31,26 +33,40 @@ exports.activeTask = {
   update: function(req, res) {
     getUserTypeObject(req, res, function(typeObj) {
       if (typeObj.worker) {
-        taskId = req.body._id;
+        taskId = req.body.taskId;
         taskFindOne(taskId, function(err, task) {
           if (err) {
             return res.status(422).send({
               message: errorHandler.getErrorMessage(err)
             });
           }
-          var taskWorker = findTaskWorker(task, typeObj);
-          if (!taskWorker) {
+          var taskJob = findJobByWorker(task, typeObj);
+          if (!taskJob) {
             return res.status(422).send({
               message: 'You are not a worker for this task'
             });
           }
-          taskWorker.save(function(err) {
+          taskJob = _.extend(taskJob, _.pick(req.body, workerWhitelistedFields));
+          taskJob.save(function(err) {
             if (err) {
               return res.status(422).send({
                 message: errorHandler.getErrorMessage(err)
               });
             } else {
-              res.json(taskWorker);
+              updateTotalTaskProgress(task, function(response) {
+                if (!response)
+                  return res.status(422).send({
+                    message: 'Error seting total progress'
+                  });
+                else if (response.error)
+                  return res.status(422).send({
+                    message: response.error
+                  });
+                else
+                  return res.status(200).send({
+                    message: 'Updated successfully!'
+                  });
+              });
             }
           });
         });

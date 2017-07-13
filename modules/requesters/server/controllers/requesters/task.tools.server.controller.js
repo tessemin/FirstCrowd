@@ -495,6 +495,29 @@ function isWorker(user) {
   return false;
 }
 
+function updateTotalTaskProgress(task, callBack) {
+  if (task && task.jobs) {
+    var agregateProgress = 0;
+    var workers = 0;
+    for (var job = 0; job < task.jobs.length; job++) {
+      if (task.jobs[job] && task.jobs[job].worker && task.jobs[job].worker.workerId) {
+        workers++;
+        agregateProgress += task.jobs[job].progress;
+      }
+    }
+    task.totalProgress = totalProgress / workers;
+    task.save(function(err, task) {
+      if (err)
+        callBack({ error: errorHandler.getErrorMessage(err) })
+      else
+        callBack(task.totalProgress);
+    });
+    
+  } else {
+    callBack(false); 
+  }
+}
+
 exports.getUserTypeObject = getUserTypeObject;
 
 exports.taskWhiteListedFields = taskWhiteListedFields;
@@ -512,3 +535,5 @@ exports.removeTaskFromWorkerArray = removeTaskFromWorkerArray;
 exports.setStatus = setStatus;
 
 exports.statusPushTo = statusPushTo;
+
+exports.updateTotalTaskProgress = updateTotalTaskProgress;
