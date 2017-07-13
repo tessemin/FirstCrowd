@@ -178,7 +178,8 @@
             'payment': {
               'bidding': {
                 'bidable': task.payment.bidding.bidable,
-                'startingPrice': task.payment.bidding.startingPrice
+                'startingPrice': task.payment.bidding.startingPrice,
+                'myBid': task.payment.bidding.startingPrice
               },
               'staticPrice': task.payment.staticPrice
             }
