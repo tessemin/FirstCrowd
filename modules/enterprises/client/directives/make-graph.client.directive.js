@@ -29,7 +29,7 @@
           var svg = d3.select('#graph').append('svg')
                 .attr('width', width)
                 .attr('height', height);
-          var radius = 20;
+          var radius = 25;
           var nodes_data = [];
           var links_data = [];
 
@@ -70,21 +70,21 @@
 
             var defs = svg.append('defs');
 
-                defs.selectAll('pattern')
-                  .data(nodes_data)
-                  .enter()
-                  .append('pattern')
-                  .attr('id', function (d, i) { return 'image' + i; })
-                  .attr('x', 0)
-                  .attr('y', 0)
-                  .attr('height', radius * 2)
-                  .attr('width', radius * 2)
-                  .append('image')
-                  .attr('x', 0)
-                  .attr('y', 0)
-                  .attr('height', radius * 2)
-                  .attr('width', radius * 2)
-                  .attr('xlink:href', function (d) { return d.img; });
+            defs.selectAll('pattern')
+              .data(nodes_data)
+              .enter()
+              .append('pattern')
+              .attr('id', function (d, i) { return 'image' + i; })
+              .attr('x', 0)
+              .attr('y', 0)
+              .attr('height', radius * 2)
+              .attr('width', radius * 2)
+              .append('image')
+              .attr('x', 0)
+              .attr('y', 0)
+              .attr('height', radius * 2)
+              .attr('width', radius * 2)
+              .attr('xlink:href', function (d) { return d.img; });
 
             // build the arrow.
             svg.append('svg:defs').selectAll('marker')
@@ -130,25 +130,30 @@
                   .style('fill', function(d, i) { return 'url(#image' + i + ')'; })
                   .style('stroke', 'black')
                   .style('stroke-width', 1)
-                  .on('click', function(d, i) {
+                  .on('dblclick', function(d) {
 
-                    // menu.remove();
+                    d3.selectAll('text').remove();
+                    d3.selectAll('rect').remove();
+                    centerNode(d3.select(this)._groups[0][0]);
+                    scope.$parent.vm.chooseCompany({ selected: d3.select(this)._groups[0][0].__data__});
+                  })
+                  .on('click', function(d, i) {
                     d3.selectAll('text').remove();
                     d3.selectAll('rect').remove();
 
                     d3.select('#selected-circle').style('stroke', 'black').style('stroke-width', 1).attr('id', '');
                     d3.select(this).transition().duration(300)
-                      .style('stroke', '#e5394d')
-                      .style('stroke-width', 4)
+                      .style('stroke', 'red')
+                      .style('stroke-width', 5)
                       .attr('id', 'selected-circle');
 
                     var items = [
-                      {'text': 'Center Graph on Company', 'y': 1},
-                      {'text': 'View Product/Service Catalog', 'y': 2},
-                      {'text': 'View Demands', 'y': 3},
-                      {'text': 'View Suppliers', 'y': 4},
-                      {'text': 'View Customers', 'y': 5},
-                      {'text': 'View Competitors', 'y': 6}
+                      {'func': centerNode, 'text': 'Center Graph on Company', 'y': 1},
+                      {'func': viewCatalog, 'text': 'View Product/Service Catalog', 'y': 2},
+                      {'func': viewDemands, 'text': 'View Demands', 'y': 3},
+                      {'func': viewSuppliers, 'text': 'View Suppliers', 'y': 4},
+                      {'func': viewCustomers, 'text': 'View Customers', 'y': 5},
+                      {'func': viewCompetitors, 'text': 'View Competitors', 'y': 6}
                     ];
                     var menuWidth = 200;
                     var itemHeight = 30;
@@ -159,22 +164,9 @@
                     var y = d3.select(this)._groups[0][0].cy.baseVal.value - 70;
                     var menuLen = items.length * itemHeight;
                     console.log(y, height);
-                      if(y + menuLen > height) {
-                        y = y - 30;
-                      }
-
-                    // menu = g.append('rect').attr('class', 'conmenu').style('fill', '#d3d3d3')
-                    //   .attr('width', 160).attr('height', 200)
-                    //   .style('stroke', 'black')
-                    //   .style('stroke-width', 0.5)
-                    //   .attr('x', x)
-                    //   .attr('y', y);
-
-                    // menu = d3.select('body').append('div')
-                    //   .style('position', 'absolute').style('left', x).style('top', function(d) { return y + (30 * (d-1)); })
-                    //   .attr('class', 'div-boi').data(items).enter()
-                    //   .append('div').attr('class', 'div-boi-item')
-                    //   .style('border', 'solid black 1px').html(function(d) { return d; });
+                    if(y + menuLen > height) {
+                      y = y - 30;
+                    }
 
                     menuItems = g.selectAll('rect').data(items).enter()
                       .append('rect').attr('class', 'conmenu-items')
@@ -187,7 +179,14 @@
                         d3.select(this).style('fill', '#fff');
                       })
                       .on('click', function(d) {
-                        console.log(d);
+                        d3.selectAll('text').remove();
+                        d3.selectAll('rect').remove();
+
+                        if(d.func === centerNode) {
+                          d.func(d3.select('#selected-circle')._groups[0][0]);
+                        } else {
+                          d.func(d3.select('#selected-circle')._groups[0][0].__data__);
+                        }
                       })
                       .style('stroke', 'black')
                       .style('stroke-width', 0.5)
@@ -206,7 +205,7 @@
                       })
                       .text(function (d){ return d.text; });
 
-                      // .attr('x', d3.select(this)._groups[0][0].cx.baseVal.value + 40)
+                    // .attr('x', d3.select(this)._groups[0][0].cx.baseVal.value + 40)
 
                     // centerNode(d3.select(this)._groups[0][0]);
 
@@ -217,10 +216,11 @@
             makeHomeButton();
 
             var zoom = d3.zoom()
-                  .scaleExtent([1 / 12, 1.2])
+                  .scaleExtent([1 / 2, 1.2])
                   .on('zoom', zoom_actions);
 
-           svg.call(zoom);
+            svg.call(zoom);
+            d3.select("svg").on("dblclick.zoom", null);
 
             // d3.select('body')
             //   .on('click', function() {
@@ -255,6 +255,27 @@
               svg.transition()
                 .duration(500)
                 .call(zoom.transform, d3.zoomIdentity.translate(x, y));
+            }
+
+
+            function viewCompetitors(x) {
+              scope.$parent.vm.viewCompetitors({ selected: x });
+            }
+
+            function viewCustomers(x) {
+              scope.$parent.vm.viewCustomers({ selected: x });
+            }
+
+            function viewSuppliers(x) {
+              scope.$parent.vm.viewSuppliers({ selected: x });
+            }
+
+            function viewDemands(x) {
+              scope.$parent.vm.viewDemands({ selected: x });
+            }
+
+            function viewCatalog(x) {
+              scope.$parent.vm.viewCatalog({ selected: x });
             }
 
             function ticked() {

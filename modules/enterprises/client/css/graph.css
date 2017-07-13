@@ -67,3 +67,9 @@
   right: 0.1px !important;
   z-index: 0 !important;
 }
+
+html .competition{
+  background-color: lightgray;
+  height: 100%;
+
+}

@@ -14,11 +14,17 @@
     vm.selected = {};
     vm.searching = '';
     vm.text = [];
+    vm.list = [];
 
     vm.chooseCompany = chooseCompany;
     vm.toggleSidebar = toggleSidebar;
     vm.close = close;
     vm.search = search;
+    vm.viewCatalog = viewCatalog;
+    vm.viewDemands = viewDemands;
+    vm.viewSuppliers = viewSuppliers;
+    vm.viewCustomers = viewCustomers;
+    vm.viewCompetitors = viewCompetitors;
 
     var x = '';
     function close() {
@@ -34,6 +40,47 @@
 
     function toggleSidebar() {
       vm.sidebar = !vm.sidebar;
+    }
+
+    function viewCatalog(obj) {
+      // console.log(obj.selected);
+      // EnterprisesService.getPartners(obj.enterpriseId).then(function(res) {
+      //   console.log(res);
+
+      //   // vm.list = res.
+      // });
+    }
+    function viewDemands(obj) {
+      // console.log(obj.selected);
+      // EnterprisesService.getPartners(obj.enterpriseId).then(function(res) {
+      //   console.log(res);
+
+      //   // vm.list = res.
+      // });
+    }
+    function viewSuppliers(obj) {
+      console.log(obj.selected.enterpriseId);
+      EnterprisesService.getPartners(obj.selected.enterpriseId).then(function(req, res, err) {
+        console.log(req, res, err);
+
+        // vm.list = res.
+      });
+    }
+    function viewCustomers(obj) {
+      console.log(obj.selected.enterpriseId);
+      EnterprisesService.getPartners(obj.selected.enterpriseId).then(function(req, res, err) {
+        console.log(req, res, err);
+
+        // vm.list = res.
+      });
+    }
+    function viewCompetitors(obj) {
+      console.log(obj.selected.enterpriseId);
+      EnterprisesService.getPartners(obj.selected.enterpriseId).then(function(req, res, err) {
+        console.log(req, res, err);
+
+        // vm.list = res.
+      });
     }
 
     function chooseCompany(obj) {
