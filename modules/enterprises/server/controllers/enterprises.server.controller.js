@@ -395,12 +395,12 @@ function setXYForPartners(partner) {
   var yVal = null;
   var times = 0;
   for (var part = 0; part < partner.length; part++) {
-    xVal = getRandomNumber(minVals, maxVals);
-    yVal = getRandomNumber(minVals, maxVals);
+    xVal = getRandomNumber(minXYVals, maxXYVals);
+    yVal = getRandomNumber(minXYVals, maxXYVals);
     times = 0;
     while (usedXYValues.indexOf({ x: xVal, y: yVal }) !== -1) {
-      xVal = getRandomNumber(minVals, maxVals);
-      yVal = getRandomNumber(minVals, maxVals);
+      xVal = getRandomNumber(minXYVals, maxXYVals);
+      yVal = getRandomNumber(minXYVals, maxXYVals);
       if (times > 100) {
         minVals += 100;
         maxVals += 100;

@@ -81,7 +81,8 @@ exports.activeTask = {
   all: function (req, res) {
     getUserTypeObject(req, res, function(typeObj) {
       if (typeObj.worker) {
-        taskFindMany(typeObj.worker.activeTasks, false, function(err, tasks) {
+        
+        taskFindMany(getIdsInArray(typeObj.worker.activeTasks), false, function(err, tasks) {
           if (err) {
             return res.status(422).send({
               message: errorHandler.getErrorMessage(err)
@@ -136,7 +137,7 @@ exports.rejectedTask = {
   all: function (req, res) {
     getUserTypeObject(req, res, function(typeObj) {
       if (typeObj.worker) {
-        taskFindMany(typeObj.worker.rejectedTasks, function(err, tasks) {
+        taskFindMany(getIdsInArray(typeObj.worker.rejectedTasks), function(err, tasks) {
           if (err) {
             return res.status(422).send({
               message: errorHandler.getErrorMessage(err)
@@ -191,7 +192,7 @@ exports.completedTask = {
   all: function (req, res) {
     getUserTypeObject(req, res, function(typeObj) {
       if (typeObj.worker) {
-        taskFindMany(typeObj.worker.completedTasks, false, function(err, tasks) {
+        taskFindMany(getIdsInArray(typeObj.worker.completedTasks), false, function(err, tasks) {
           if (err) {
             return res.status(422).send({
               message: errorHandler.getErrorMessage(err)
@@ -246,7 +247,7 @@ exports.inactiveTask = {
   all: function (req, res) {
     getUserTypeObject(req, res, function(typeObj) {
       if (typeObj.worker) {
-        taskFindMany(typeObj.worker.inactiveTasks, false, function(err, tasks) {
+        taskFindMany(getIdsInArray(typeObj.worker.inactiveTasks), false, function(err, tasks) {
           if (err) {
             return res.status(422).send({
               message: errorHandler.getErrorMessage(err)

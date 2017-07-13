@@ -117,7 +117,7 @@ exports.workerRating = {
 exports.activateTask = function (req, res) {
   getUserTypeObject(req, res, function(typeObj) {
     if (isRequester(req.user) && typeObj.requester) {
-      setStatus(req.body.taskId, 'open', typeObj, function (message) {
+      setStatus(req.body.taskId, 'open', function (message) {
         if (message.error) {
           res.status(422).send({
             message: message.error

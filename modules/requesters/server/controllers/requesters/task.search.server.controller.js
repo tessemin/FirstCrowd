@@ -6,6 +6,8 @@
 var path = require('path'),
   mongoose = require('mongoose'),
   Task = mongoose.model('Task'),
+  Enterprise = mongoose.model('Enterprise'),
+  Individual = mongoose.model('Individual'),
   _ = require('lodash');
 
 
@@ -42,7 +44,7 @@ function findTaskWorker(task, worker) {
 }
 
 function findJobByWorker(task, worker) {
-  if (task.jobs && worker)
+  if (task && task.jobs && worker)
     for (var i = 0; i < task.jobs.length; i++) {
       if (task.jobs[i] && task.jobs[i].worker && task.jobs[i].worker.workerId)
         if (task.jobs[i].worker.workerId.toString() === worker._id.toString()) {
@@ -52,9 +54,55 @@ function findJobByWorker(task, worker) {
   return false;
 }
 
+function findRequesterByTask(task, callBack) {
+  if (task && task.requester)
+    if (task.requester.requesterType.enterprise && !task.requester.requesterType.individual) {
+      Enterprise.findById(task.requester.requesterId, function (err, requester) { 
+        if (err) {
+          callBack({ error: errorHandler.getErrorMessage(err) }) 
+        }
+        if (requester)
+          callBack(null, requester)
+        else
+          callBack('no requester found');
+      });
+    } else if (task.requester.requesterType.individual && !task.requester.requesterType.enterprise) {
+      Individual.findById(task.requester.requesterId, function (err, requester) { 
+        if (err) {
+          callBack({ error: errorHandler.getErrorMessage(err) }) 
+        }
+        if (requester)
+          callBack(null, requester)
+        else
+          callBack('no requester found');
+      });
+    } else if (task.requester.requesterType.individual && task.requester.requesterType.enterprise) {
+      Enterprise.findById(task.requester.requesterId, function (err, requester) { 
+        if (err) {
+          callBack({ error: errorHandler.getErrorMessage(err) }) 
+        }
+        if (requester)
+          callBack(requester)
+        else
+          Individual.findById(task.requester.requestrerId, function (err, requester) { 
+            if (err) {
+              callBack(errorHandler.getErrorMessage(err)) 
+            }
+            if (requester)
+              callBack(null, requester)
+            else
+              callBack('no requester found');
+          });
+      });
+    }
+  else
+    callBack('Must provide a task');
+}
+
 exports.taskFindMany = taskFindMany;
 exports.taskFindOne = taskFindOne;
 exports.findTaskWorker = findTaskWorker;
 exports.taskFindWithOption = taskFindWithOption;
 exports.findTaskWorker = findTaskWorker;
 exports.findJobByWorker = findJobByWorker;
+exports.findRequesterByTask = findRequesterByTask;
