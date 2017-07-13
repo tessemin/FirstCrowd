@@ -10,7 +10,7 @@
 
 .side-panel {
   background-color: lightgray;
-  height: 100vh;
+  height: 100%;
   padding: 5px;
   position: absolute;
   width: 22em;
@@ -27,12 +27,14 @@
 }
 
 .side-logo {
-  height: 10em;
+  height: 7em;
+  padding: 15px;
   /* margin-top: 3vh; */
-  width: 10em;
+  width: 7em;
 }
 
 .inner-addon {
+  padding-top: 10px;
   position: relative;
 }
 
@@ -41,6 +43,7 @@
   color: gray;
   font-size: medium;
   padding: 10px;
+  padding-top: 20px;
   position: absolute;
   z-index: 100;
 }
@@ -72,4 +75,24 @@ html .competition{
   background-color: lightgray;
   height: 100%;
 
+}
+
+.side-list {
+	/* border-top:1px solid #fff; */
+  float: left;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.side-list-item {
+  padding: 10px;
+}
+
+.spacer {
+    background:black;
+    background: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 150, from(#000), to(#fff));
+    border:none;
+    color:white;
+    display:block;
+    height:1px;
 }

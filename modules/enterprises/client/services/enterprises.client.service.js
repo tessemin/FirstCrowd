@@ -35,9 +35,29 @@
         method: 'GET',
         url: '/enterprises/api/enterprises/getEnterprise'
       },
-      getEnterprisePartners: {
+      getEnterpriseDemands: {
         method: 'POST',
-        url: '/enterprises/api/enterprises/getEnterprisePartners'
+        url: '/enterprises/api/enterprises/getDemands'
+      },
+      getEnterpriseCompetitors: {
+        method: 'POST',
+        url: '/enterprises/api/enterprises/partners/getCompetitors'
+      },
+      getEnterpriseCustomers: {
+        method: 'POST',
+        url: '/enterprises/api/enterprises/partners/getCustomers'
+      },
+      getEnterpriseSuppliers: {
+        method: 'POST',
+        url: '/enterprises/api/enterprises/partners/getSuppliers'
+      },
+      getEnterpriseProducts: {
+        method: 'POST',
+        url: '/enterprises/api/enterprises/catalog/getProducts'
+      },
+      getEnterpriseServices: {
+        method: 'POST',
+        url: '/enterprises/api/enterprises/catalog/getServices'
       },
       setupEnterpriseGraph: {
         method: 'POST',
@@ -66,8 +86,27 @@
       },
       setupGraph: function () {
         return this.setupEnterpriseGraph().$promise;
+      },
+      getDemands: function (enterpriseId) {
+        return this.getEnterpriseDemands(enterpriseId).$promise;
+      },
+      getCompetitors: function (enterpriseId) {
+        return this.getEnterpriseCompetitors(enterpriseId).$promise;
+      },
+      getCustomers: function (enterpriseId) {
+        return this.getEnterpriseCustomers(enterpriseId).$promise;
+      },
+      getSuppliers: function (enterpriseId) {
+        return this.getEnterpriseSuppliers(enterpriseId).$promise;
+      },
+      getProducts: function (enterpriseId) {
+        return this.getEnterpriseProducts(enterpriseId).$promise;
+      },
+      getServices: function (enterpriseId) {
+        return this.getEnterpriseServices(enterpriseId).$promise;
       }
     });
+
 
     return Enterprises;
   }
