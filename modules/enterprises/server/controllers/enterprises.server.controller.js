@@ -282,7 +282,6 @@ exports.updateCustomers = function(req, res) {
 };
 
 exports.partners = {
-  
   getSuppliers: function(req, res) {
     Enterprise.findById(req.body.enterpriseId, function (err, enterprise) {
       if (err) {
@@ -299,7 +298,6 @@ exports.partners = {
       }
     });
   },
-
   getCustomers: function(req, res) {
     Enterprise.findById(req.body.enterpriseId, function (err, enterprise) {
       if (err) {
@@ -316,7 +314,6 @@ exports.partners = {
       }
     });
   },
-
   getCompetitors: function(req, res) {
     Enterprise.findById(req.body.enterpriseId, function (err, enterprise) {
       if (err) {
@@ -334,6 +331,64 @@ exports.partners = {
     });
   }
 };
+
+exports.catalog = {
+  getProducts: function(req, res) {
+    Enterprise.findById(req.body.enterpriseId, function (err, enterprise) {
+      if (err) {
+        return res.status(422).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else if (!enterprise) {
+        return res.status(422).send({
+          message: 'No Enterprise with that identifier has been found'
+        });
+      } else {
+        if (enterprise.catalog && enterprise.catalog.products)
+          return res.status(200).send(enterprise.catalog.products);
+        else
+          return res.status(200).send([]);
+      }
+    });
+  },
+  getServices: function(req, res) {
+    Enterprise.findById(req.body.enterpriseId, function (err, enterprise) {
+      if (err) {
+        return res.status(422).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else if (!enterprise) {
+        return res.status(422).send({
+          message: 'No Enterprise with that identifier has been found'
+        });
+      } else {
+        if (enterprise.catalog && enterprise.catalog.services)
+          return res.status(200).send(enterprise.catalog.services);
+        else
+          return res.status(200).send([]);
+      }
+    });
+  }
+}
+
+exports.getDemands = function(req, res) {
+  Enterprise.findById(req.body.enterpriseId, function (err, enterprise) {
+    if (err) {
+      return res.status(422).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else if (!enterprise) {
+      return res.status(422).send({
+        message: 'No Enterprise with that identifier has been found'
+      });
+    } else {
+      if (enterprise.demands)
+        return res.status(200).send(enterprise.demands);
+      else
+        return res.status(200).send([]);
+    }
+  });
+}
 
 function setXYForPartners(partner) {
   var xVal = null;

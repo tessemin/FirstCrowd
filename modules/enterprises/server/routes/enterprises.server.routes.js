@@ -22,6 +22,10 @@ module.exports = function(app) {
   app.route('/enterprises/api/enterprises/partners/getSuppliers/').post(enterprises.partners.getSuppliers);
   app.route('/enterprises/api/enterprises/partners/getCompetitors/').post(enterprises.partners.getCompetitors);
   
+  app.route('/enterprises/api/enterprises/catalog/getProducts/').post(enterprises.catalog.getProducts);
+  app.route('/enterprises/api/enterprises/catalog/getServices/').post(enterprises.catalog.getServices);
+  
+  app.route('/enterprises/api/enterprises/getDemands/').post(enterprises.getDemands);
   
   app.route('/enterprises/api/enterprises/setupEnterpriseGraph/').post(enterprises.setupEnterpriseGraph);
 
