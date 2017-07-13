@@ -15,6 +15,7 @@
     vm.searching = '';
     vm.text = [];
     vm.list = [];
+    vm.header = 'Header!';
 
     vm.chooseCompany = chooseCompany;
     vm.toggleSidebar = toggleSidebar;
@@ -43,43 +44,46 @@
     }
 
     function viewCatalog(obj) {
-      // console.log(obj.selected);
-      // EnterprisesService.getPartners(obj.enterpriseId).then(function(res) {
-      //   console.log(res);
-
-      //   // vm.list = res.
-      // });
+      EnterprisesService.getProducts({enterpriseId: obj.selected.enterpriseId}).then(function(res) {
+        console.log(res);
+        // vm.list = res.
+      });
     }
     function viewDemands(obj) {
-      // console.log(obj.selected);
-      // EnterprisesService.getPartners(obj.enterpriseId).then(function(res) {
-      //   console.log(res);
-
-      //   // vm.list = res.
-      // });
-    }
-    function viewSuppliers(obj) {
-      console.log(obj.selected.enterpriseId);
-      EnterprisesService.getPartners(obj.selected.enterpriseId).then(function(req, res, err) {
-        console.log(req, res, err);
+      EnterprisesService.getDemands({enterpriseId: obj.selected.enterpriseId}).then(function(res) {
+        console.log(res);
 
         // vm.list = res.
+      });
+    }
+    function viewSuppliers(obj) {
+      vm.selected = obj.selected;
+      vm.sidebar = true;
+      vm.header = 'Suppliers for ';
+      EnterprisesService.getSuppliers({enterpriseId: obj.selected.enterpriseId}).then(function(res) {
+        console.log(res);
+
+        vm.list = res;
       });
     }
     function viewCustomers(obj) {
-      console.log(obj.selected.enterpriseId);
-      EnterprisesService.getPartners(obj.selected.enterpriseId).then(function(req, res, err) {
-        console.log(req, res, err);
+      vm.selected = obj.selected;
+      vm.sidebar = true;
+      vm.header = 'Customers for ';
+      EnterprisesService.getCustomers({enterpriseId: obj.selected.enterpriseId}).then(function(res) {
+        console.log(res);
 
-        // vm.list = res.
+        vm.list = res;
       });
     }
     function viewCompetitors(obj) {
-      console.log(obj.selected.enterpriseId);
-      EnterprisesService.getPartners(obj.selected.enterpriseId).then(function(req, res, err) {
-        console.log(req, res, err);
+      vm.selected = obj.selected;
+      vm.sidebar = true;
+      vm.header = 'Competitors for ';
+      EnterprisesService.getCompetitors({enterpriseId: obj.selected.enterpriseId}).then(function(res) {
+        console.log(res);
 
-        // vm.list = res.
+        vm.list = res;
       });
     }
 

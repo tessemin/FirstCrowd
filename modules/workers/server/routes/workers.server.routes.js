@@ -10,7 +10,7 @@ var workersPolicy = require('../policies/workers.server.policy'),
 module.exports = function(app) {
 
   // ACTIVE TASKS
-  app.route('/api/workers/activeTask/').put(workers.activeTask.update);
+  app.route('/api/workers/activeTask/update').post(workers.activeTask.update);
   app.route('/api/workers/activeTask/all').post(workers.activeTask.all);
 
   // REJECTED TASKS

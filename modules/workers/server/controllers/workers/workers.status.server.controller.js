@@ -27,11 +27,23 @@ exports.takeTask = function (req, res) {
             message: err
           });
         }
-        if (task.multiplicity <= 0) {
-          setStatus(req.body.taskId, 'taken', typeObj, function (message) {
-            if (message.error) {
-              return res.status(422).send({
-                message: message.error
+        typeObj.save(function(err, typeObj) {
+          if (err)
+            return res.status(422).send({
+              message: errorHandler.getErrorMessage(err)
+            });
+          task.save(function(err, task) {
+            if (task.multiplicity <= 0) {
+              setStatus(req.body.taskId, 'taken', function (message) {
+                if (message.error) {
+                  return res.status(422).send({
+                    message: message.error
+                  });
+                } else {
+                  return res.status(200).send({
+                    message: 'You are now a worker for task ' + task.title
+                  });
+                }
               });
             } else {
               return res.status(200).send({
@@ -39,11 +51,7 @@ exports.takeTask = function (req, res) {
               });
             }
           });
-        } else {
-          return res.status(200).send({
-            message: 'You are now a worker for task ' + task.title
-          });
-        }
+        });
       });
     } else {
       return res.status(422).send({

@@ -117,17 +117,17 @@ var EnterpriseUserSchema = new Schema({
   }],
   catalog: {
     products: [{
-      type: Schema.Types.Mixed,
-      default: null
+      type: String,
+      default: ''
     }],
     services: [{
-      type: Schema.Types.Mixed,
-      default: null
+      type: String,
+      default: ''
     }]
   },
   demands: [{
     type: String,
-    default: null
+    default: ''
   }],
   partners: {
     supplier: [{

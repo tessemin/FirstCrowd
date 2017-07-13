@@ -15,7 +15,8 @@ var path = require('path'),
   _ = require('lodash');
 
 var taskFindOne = taskSearch.taskFindOne,
-  taskFindMany = taskSearch.taskFindMany;
+  taskFindMany = taskSearch.taskFindMany,
+  findRequesterByTask = taskSearch.findRequesterByTask;
 var taskWhiteListedFields = ['status'],
   taskId = null;
 /**
@@ -228,30 +229,35 @@ exports.taskActions = {
   }
 };
 
-function setStatus(taskId, status, typeObj, callBack) {
+function setStatus(taskId, status, callBack) {
   taskFindOne(taskId, function (err, task) {
     if (err) {
       // TODO: *** should remove from requester task list *** //
       callBack({ error: errorHandler.getErrorMessage(err) });
     }
-    setStatusRequester(status, task._id, typeObj, callBack, function (typeObj) {
-      setStatusOfWorkers(getWorkersIds(task.jobs), status, task._id, function() {
-        task.status = status;
-        typeObj.save(function (typeErr, typeObj) {
-          if (typeErr) {
-            callBack({ error: errorHandler.getErrorMessage(typeErr) });
-          } else {
-            task.save(function (err, task) {
-              if (err) {
-                callBack({ error: errorHandler.getErrorMessage(err) });
-              } else {
-                callBack({ correct: 'Status for task ' + task.title + ' updated successfully' });
-              }
-            });
-          }
+    findRequesterByTask(task, function(err, requester) {
+      if (err)
+        callBack({ error: err });
+      setStatusRequester(status, task._id, requester, callBack, function (typeObj) {
+        setStatusOfWorkers(getWorkersIds(task.jobs), status, task._id, function() {
+          task.status = status;
+          typeObj.save(function (typeErr, typeObj) {
+            if (typeErr) {
+              callBack({ error: errorHandler.getErrorMessage(typeErr) });
+            } else {
+              task.save(function (err, task) {
+                if (err) {
+                  callBack({ error: errorHandler.getErrorMessage(err) });
+                } else {
+                  callBack({ correct: 'Status for task ' + task.title + ' updated successfully' });
+                }
+              });
+            }
+          });
         });
       });
-    });
+    })
+
   });
 }
 
@@ -351,11 +357,6 @@ function statusPushTo(taskId, array) {
 
 // finds the task in the array and if it matches the taskId, removes it
 function removeFromObjectTasksArray (taskId, array) {
-  console.log('\n array: ')
-  console.log(array);
-  console.log('\n taskId: ')
-  console.log(taskId)
-  console.log('\n')
   for (var i = 0; i < array.length; i++)
     if (array[i].taskId.toString() === taskId.toString())
       array.splice(i, 1);
@@ -503,7 +504,10 @@ function updateTotalTaskProgress(task, callBack) {
         agregateProgress += task.jobs[job].progress;
       }
     }
-    task.totalProgress = totalProgress / workers;
+    if (workers > 0 && agregateProgress > 0)
+      task.totalProgress = agregateProgress / workers;
+    else
+      task.totalProgress = 0;
     task.save(function(err, task) {
       if (err)
         callBack({ error: errorHandler.getErrorMessage(err) })

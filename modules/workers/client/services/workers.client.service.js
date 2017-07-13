@@ -17,8 +17,8 @@
         url: '/api/workers/activeTask/all'
       },
       _updateActiveTask: {
-        method: 'PUT',
-        url: '/api/workers/activeTask/'
+        method: 'POST',
+        url: '/api/workers/activeTask/update'
       },
       _getRejectedTasks: {
         method: 'POST',

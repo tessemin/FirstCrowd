@@ -144,7 +144,7 @@ exports.paypal = {
                   return res.status(422).send({
                     message: errorHandler.getErrorMessage(err)
                   });
-                setStatus(task._id, 'open', typeObj, function (message) {
+                setStatus(task._id, 'open', function (message) {
                   if (message.error) {
                     return res.status(422).send({
                       message: message.error
