@@ -115,14 +115,16 @@ var EnterpriseUserSchema = new Schema({
     type: Schema.Types.Mixed,
     default: null
   }],
-  products: [{
-    type: Schema.Types.Mixed,
-    default: null
-  }],
-  services: [{
-    type: Schema.Types.Mixed,
-    default: null
-  }],
+  catalog: {
+    products: [{
+      type: Schema.Types.Mixed,
+      default: null
+    }],
+    services: [{
+      type: Schema.Types.Mixed,
+      default: null
+    }]
+  },
   demands: [{
     type: String,
     default: null

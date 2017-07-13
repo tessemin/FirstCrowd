@@ -15,6 +15,8 @@ var path = require('path'),
   superEnterprise = null;
   
 var usedXYValues = [{ x: 0, y: 0 }];
+var minXYVals = -300;
+var maxXYVals = 300;
 
 var whitelistedFields = ['contactPreference', 'email', 'phone', 'username', 'middleName', 'displayName'];
 
@@ -279,84 +281,84 @@ exports.updateCustomers = function(req, res) {
   }
 };
 
-// gets the enterprises partners
-exports.getEnterprisePartners = function(req, res) {
-  Enterprise.findById(req.body.enterpriseId, function (err, enterprise) {
-    if (err) {
-      console.log(err)
-      return res.status(422).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else if (!enterprise) {
-      console.log('here')
-      return res.status(422).send({
-        message: 'No Enterprise with that identifier has been found'
-      });
-    } else {
-      var partners = enterprise.partners;
-      var xVal = null;
-      var yVal = null;
-      var times = 0;
-      var minVals = -300;
-      var maxVals = 300;
-      for (var sup = 0; sup < partners.supplier.length; sup++) {
-        xVal = getRandomNumber(minVals, maxVals);
-        yVal = getRandomNumber(minVals, maxVals);
-        times = 0;
-        while (usedXYValues.indexOf({ x: xVal, y: yVal }) !== -1) {
-          xVal = getRandomNumber(minVals, maxVals);
-          yVal = getRandomNumber(minVals, maxVals);
-          if (times > 100) {
-            minVals += 100;
-            maxVals += 100;
-            times = 0;
-          }
-          times++;
-        }
-        usedXYValues.push({ x: xVal, y: yVal });
-        partners.supplier.x = xVal
-        partners.supplier.y = yVal
+exports.partners = {
+  
+  getSuppliers: function(req, res) {
+    Enterprise.findById(req.body.enterpriseId, function (err, enterprise) {
+      if (err) {
+        return res.status(422).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else if (!enterprise) {
+        return res.status(422).send({
+          message: 'No Enterprise with that identifier has been found'
+        });
+      } else {
+        var suppliers = setXYForPartners(enterprise.partners.supplier);
+        return res.status(200).send(suppliers);
       }
-      for (var cus = 0; cus < partners.customer.length; cus++) {
-        xVal = getRandomNumber(minVals, maxVals);
-        yVal = getRandomNumber(minVals, maxVals);
-        times = 0;
-        while (usedXYValues.indexOf({ x: xVal, y: yVal }) !== -1) {
-          xVal = getRandomNumber(minVals, maxVals);
-          yVal = getRandomNumber(minVals, maxVals);
-          if (times > 100) {
-            minVals += 100;
-            maxVals += 100;
-            times = 0;
-          }
-          times++;
-        }
-        usedXYValues.push({ x: xVal, y: yVal });
-        partners.customer.x = xVal
-        partners.customer.y = yVal
+    });
+  },
+
+  getCustomers: function(req, res) {
+    Enterprise.findById(req.body.enterpriseId, function (err, enterprise) {
+      if (err) {
+        return res.status(422).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else if (!enterprise) {
+        return res.status(422).send({
+          message: 'No Enterprise with that identifier has been found'
+        });
+      } else {
+        var customers = setXYForPartners(enterprise.partners.customer);
+        return res.status(200).send(customers);
       }
-      for (var com = 0; com < partners.competitor.length; com++) {
-        xVal = getRandomNumber(minVals, maxVals);
-        yVal = getRandomNumber(minVals, maxVals);
-        times = 0;
-        while (usedXYValues.indexOf({ x: xVal, y: yVal }) !== -1) {
-          xVal = getRandomNumber(minVals, maxVals);
-          yVal = getRandomNumber(minVals, maxVals);
-          if (times > 100) {
-            minVals += 100;
-            maxVals += 100;
-            times = 0;
-          }
-          times++;
-        }
-        usedXYValues.push({ x: xVal, y: yVal });
-        partners.competitor.x = xVal
-        partners.competitor.y = yVal
+    });
+  },
+
+  getCompetitor: function(req, res) {
+    Enterprise.findById(req.body.enterpriseId, function (err, enterprise) {
+      if (err) {
+        return res.status(422).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      } else if (!enterprise) {
+        return res.status(422).send({
+          message: 'No Enterprise with that identifier has been found'
+        });
+      } else {
+        var competitors = setXYForPartners(enterprise.partners.competitor);
+        return res.status(200).send(competitors);
       }
-      return res.status(200).send(partners);
-    }
-  });
+    });
+  }
 };
+
+function setXYForPartners(partner) {
+  var xVal = null;
+  var yVal = null;
+  var times = 0;
+  for (var part = 0; part < partner.length; part++) {
+    xVal = getRandomNumber(minVals, maxVals);
+    yVal = getRandomNumber(minVals, maxVals);
+    times = 0;
+    while (usedXYValues.indexOf({ x: xVal, y: yVal }) !== -1) {
+      xVal = getRandomNumber(minVals, maxVals);
+      yVal = getRandomNumber(minVals, maxVals);
+      if (times > 100) {
+        minVals += 100;
+        maxVals += 100;
+        times = 0;
+      }
+      times++;
+    }
+    usedXYValues.push({ x: xVal, y: yVal });
+    partner[part].x = xVal
+    partner[part].y = yVal
+  }
+  return partner;
+}
 
 /**
  * get Enterprise object
