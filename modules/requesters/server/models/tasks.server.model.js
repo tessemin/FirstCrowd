@@ -62,7 +62,7 @@ var TaskSchema = new Schema({
     },
     staticPrice: {
       type: Number,
-      required: 'Please provide a price'
+      default: null
     },
     paymentInfo: {
       paymentType: {

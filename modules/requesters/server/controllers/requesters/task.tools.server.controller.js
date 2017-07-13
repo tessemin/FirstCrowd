@@ -57,6 +57,7 @@ exports.taskActions = {
             console.log(newTask);
             newTask.save(function (err, task) {
               if (err) {
+                console.log(err)
                 return res.status(422).send({
                   message: 'Error creating task: ' + newTask.title
                 });

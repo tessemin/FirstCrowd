@@ -284,22 +284,22 @@
             </span>
             <span class="summary-row">
               <span class="summary-label">Max cost per worker: </span>
-              <span class="summary-element">{{vm.modal.bidding.maxPricePerWorker | number: 2}}</span><br>
+              <span class="summary-element">&#36;{{vm.modal.bidding.maxPricePerWorker | number: 2}}</span><br>
             </span>
             <span class="summary-row">
               <span class="summary-label">Min cost per worker: </span>
-              <span class="summary-element">{{vm.modal.bidding.minPricePerWorker | number: 2}}</span><br>
+              <span class="summary-element">&#36;{{vm.modal.bidding.minPricePerWorker | number: 2}}</span><br>
             </span>
             <span class="summary-row">
               <span class="summary-label">Tax: </span>
-              <span class="summary-element">{{vm.modal.tax | number: 2}}</span><br>
+              <span class="summary-element">&#36;{{vm.modal.tax | number: 2}}</span><br>
             <span class="summary-row">
               <span class="summary-label">Maximum possible Cost: </span>
-              <span class="summary-element">{{vm.modal.bidding.maxPricePerWorker * vm.modal.multiplicity + (vm.modal.bidding.maxPricePerWorker * vm.modal.multiplicity * tax) | number: 2}}</span><br>
+              <span class="summary-element">&#36;{{(vm.modal.bidding.maxPricePerWorker * vm.modal.multiplicity + (vm.modal.bidding.maxPricePerWorker * vm.modal.multiplicity * vm.modal.tax)) | number: 2}}</span><br>
             </span>
             <span class="summary-row">
               <span class="summary-label">Minimum possible Cost: </span>
-              <span class="summary-element">{{vm.modal.bidding.minPricePerWorker * vm.modal.multiplicity + (vm.modal.bidding.minPricePerWorker * vm.modal.multiplicity * tax) | number: 2}}</span><br>
+              <span class="summary-element">&#36;{{(vm.modal.bidding.minPricePerWorker * vm.modal.multiplicity + (vm.modal.bidding.minPricePerWorker * vm.modal.multiplicity * vm.modal.tax)) | number: 2}}</span><br>
             </span>
             <span class="summary-row">
               <span class="summary-label">Bidding Start: </span>
