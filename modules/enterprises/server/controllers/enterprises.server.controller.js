@@ -294,7 +294,7 @@ exports.partners = {
         });
       } else {
         var suppliers = setXYForPartners(enterprise.partners.supplier);
-        return res.status(200).send(suppliers);
+        return res.json(suppliers);
       }
     });
   },
@@ -310,7 +310,7 @@ exports.partners = {
         });
       } else {
         var customers = setXYForPartners(enterprise.partners.customer);
-        return res.status(200).send(customers);
+        return res.json(customers);
       }
     });
   },
@@ -326,7 +326,7 @@ exports.partners = {
         });
       } else {
         var competitors = setXYForPartners(enterprise.partners.competitor);
-        return res.status(200).send(competitors);
+        return res.json(competitors);
       }
     });
   }
@@ -345,9 +345,9 @@ exports.catalog = {
         });
       } else {
         if (enterprise.catalog && enterprise.catalog.products)
-          return res.status(200).send(enterprise.catalog.products);
+          return res.json(enterprise.catalog.products);
         else
-          return res.status(200).send([]);
+          return res.json([]);
       }
     });
   },
@@ -363,9 +363,9 @@ exports.catalog = {
         });
       } else {
         if (enterprise.catalog && enterprise.catalog.services)
-          return res.status(200).send(enterprise.catalog.services);
+          return res.json(enterprise.catalog.services);
         else
-          return res.status(200).send([]);
+          return res.json([]);
       }
     });
   }
@@ -383,9 +383,9 @@ exports.getDemands = function(req, res) {
       });
     } else {
       if (enterprise.demands)
-        return res.status(200).send(enterprise.demands);
+        return res.json(enterprise.demands);
       else
-        return res.status(200).send([]);
+        return res.json([]);
     }
   });
 }
