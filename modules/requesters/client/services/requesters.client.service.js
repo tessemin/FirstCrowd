@@ -92,6 +92,10 @@
       _rejectBid: {
         method: 'POST',
         url: '/api/tasks/bidding/reject'
+      },
+      _activateBidable: {
+        method: 'POST',
+        url: '/api/tasks/bidding/activate'
       }
     });
 
@@ -158,6 +162,9 @@
       },
       acceptBid: function (taskId_bidId) {
         return this._acceptBid(taskId_bidId).$promise;
+      },
+      activateBidable: function (taskId) {
+        return this._activateBidable(taskId).$promise;
       }
     });
 

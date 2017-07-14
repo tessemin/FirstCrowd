@@ -117,99 +117,112 @@ exports.workerRating = {
   }
 };
 
-exports.activateTask = function (req, res) {
-  getUserTypeObject(req, res, function(typeObj) {
-    if (isRequester(req.user) && typeObj.requester) {
-      setStatus(req.body.taskId, 'open', function (message) {
-        if (message.error) {
-          res.status(422).send({
-            message: message.error
-          });
-        }
-        res.status(200).send({
-          message: message.correct
-        });
-      });
-    } else {
-      return res.status(422).send({
-        message: 'No requester found.'
-      });
-    }
-  });
-};
-
 exports.biddingActions = {
-  acceptBid: function (req, res) {
+  activateBidableTask: function (req, res) {
     getUserTypeObject(req, res, function(typeObj) {
       taskFindOne(req.body.taskId, function (err, task) {
-        var bidId = req.body.bidId,
-          foundBid = false,
-          bid = 0;
-        for (bid = 0; bid < task.bids.length && bidId; bid++) {
-          if (task.bids[bid]._id && task.bids[bid]._id.toString() === bidId.toString()) {
-            foundBid = true;
-            break;
-          }
-        }
-        if (foundBid) {
-          findWorkerByWorkerTaskObject(task.bids[bid].worker, function (err, workerObj) {
+        if (ownsTask(task, typeObj)) {
+          setStatus(task._id, 'open', function(err, correctMessage) {
             if (err)
               return res.status(422).send({
                 message: err
               });
-            workerObj = removeTaskFromWorkerArray(task._id, workerObj);
-            workerObj.worker.activeTasks = statusPushTo(task._id, workerObj.worker.activeTasks);
-            --task.multiplicity;
-            task.bids[bid].status = 'accepted';
-            task.jobs.push({
-              status: 'active',
-              worker: task.bids[bid].worker,
-              awardAmount: task.bids[bid].bid
-            });
-            workerObj.save(function (err, workerObj) {
+            else
+              return res.status(200).send({
+                message: 'Status for task ' + task.title + ' is now open!'
+              });
+          });
+        } else {
+          return res.status(422).send({
+            message: 'You are not the owner of this task'
+          });
+        }
+      });
+    });
+  },
+  acceptBid: function (req, res) {
+    getUserTypeObject(req, res, function(typeObj) {
+      taskFindOne(req.body.taskId, function (err, task) {
+        if (ownsTask(task, typeObj)) {
+          var bidId = req.body.bidId,
+            foundBid = false,
+            bid = 0;
+          for (bid = 0; bid < task.bids.length && bidId; bid++) {
+            if (task.bids[bid]._id && task.bids[bid]._id.toString() === bidId.toString()) {
+              foundBid = true;
+              break;
+            }
+          }
+          if (foundBid) {
+            findWorkerByWorkerTaskObject(task.bids[bid].worker, function (err, workerObj) {
               if (err)
                 return res.status(422).send({
-                  message: errorHandler.getErrorMessage(err)
+                  message: err
                 });
-              task.save(function (err, task) {
+              workerObj = removeTaskFromWorkerArray(task._id, workerObj);
+              workerObj.worker.activeTasks = statusPushTo(task._id, workerObj.worker.activeTasks);
+              --task.multiplicity;
+              task.bids[bid].status = 'accepted';
+              task.jobs.push({
+                status: 'active',
+                worker: task.bids[bid].worker,
+                awardAmount: task.bids[bid].bid
+              });
+              workerObj.save(function (err, workerObj) {
                 if (err)
                   return res.status(422).send({
                     message: errorHandler.getErrorMessage(err)
                   });
-                return res.status(200).send({
-                  message: 'Bid accepted!'
+                task.save(function (err, task) {
+                  if (err)
+                    return res.status(422).send({
+                      message: errorHandler.getErrorMessage(err)
+                    });
+                  return res.status(200).send({
+                    message: 'Bid accepted!'
+                  });
                 });
               });
             });
+          }
+          return res.status(422).send({
+            message: 'No bid with that Id found.'
+          });
+        } else {
+          return res.status(422).send({
+            message: 'You are not the owner of this task'
           });
         }
-        return res.status(422).send({
-          message: 'No bid with that Id found.'
-        });
       });
     });
   },
   rejectBid: function (req, res) {
     getUserTypeObject(req, res, function(typeObj) {
       taskFindOne(req.body.taskId, function (err, task) {
-        var bidId = req.body.bidId;
-        for (var bid = 0; bid < task.bids.length && bidId; bid++) {
-          if (task.bids[bid]._id && task.bids[bid]._id.toString() === bidId.toString()) {
-            task.bids[bid].status = 'rejected';
-            task.save(function (err, task) {
-              if (err)
-                return res.status(422).send({
-                  message: errorHandler.getErrorMessage(err)
+        if (ownsTask(task, typeObj)) {
+          var bidId = req.body.bidId;
+          for (var bid = 0; bid < task.bids.length && bidId; bid++) {
+            if (task.bids[bid]._id && task.bids[bid]._id.toString() === bidId.toString()) {
+              task.bids[bid].status = 'rejected';
+              task.save(function (err, task) {
+                if (err)
+                  return res.status(422).send({
+                    message: errorHandler.getErrorMessage(err)
+                  });
+                return res.status(200).send({
+                  message: 'Bid rejected successfully.'
                 });
-              return res.status(200).send({
-                message: 'Bid rejected successfully.'
               });
-            });
+            }
           }
+          return res.status(422).send({
+            message: 'No bid with that Id found.'
+          });
+        } else {
+          return res.status(422).send({
+            message: 'You are not the owner of this task'
+          });
         }
-        return res.status(422).send({
-          message: 'No bid with that Id found.'
-        });
       });
     });
   }

@@ -144,13 +144,13 @@ exports.paypal = {
                   return res.status(422).send({
                     message: errorHandler.getErrorMessage(err)
                   });
-                setStatus(task._id, 'open', function (message) {
-                  if (message.error) {
+                setStatus(task._id, 'open', function (err, correctMsg) {
+                  if (err) {
                     return res.status(422).send({
-                      message: message.error
+                      message: err
                     });
                   } else {
-                    return res.status(200).send(task.title + ' is now open.');
+                    return res.status(200).send(correctMsg);
                   }
                 });
               });
@@ -158,6 +158,9 @@ exports.paypal = {
           });
         } else {
           // not paypal
+          return res.status(422).send({
+            message: 'Paypal is currently the only supported payment type for First Crowd!'
+          });
         }
       });
     });

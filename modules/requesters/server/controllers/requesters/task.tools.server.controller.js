@@ -236,19 +236,19 @@ function setStatus(taskId, status, callBack) {
     }
     findRequesterByTask(task, function(err, requester) {
       if (err)
-        callBack({ error: err });
+        callBack(err);
       setStatusRequester(status, task._id, requester, callBack, function (typeObj) {
         setStatusOfWorkers(getWorkersIds(task.jobs), status, task._id, function() {
           task.status = status;
           typeObj.save(function (typeErr, typeObj) {
             if (typeErr) {
-              callBack({ error: errorHandler.getErrorMessage(typeErr) });
+              callBack(errorHandler.getErrorMessage(typeErr));
             } else {
               task.save(function (err, task) {
                 if (err) {
-                  callBack({ error: errorHandler.getErrorMessage(err) });
+                  callBack(errorHandler.getErrorMessage(err));
                 } else {
-                  callBack({ correct: 'Status for task ' + task.title + ' updated successfully' });
+                  callBack(null, 'Status for task ' + task.title + ' updated successfully');
                 }
               });
             }
