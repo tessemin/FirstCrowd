@@ -4,7 +4,7 @@ module.exports = function (app) {
   // Root routing
   var core = require('../controllers/core.server.controller');
   
-  var payment = require('../controllers/payment.server.controller')
+  var payment = require('../controllers/payment.server.controller');
 
   // Define error pages
   app.route('/server-error').get(core.renderServerError);

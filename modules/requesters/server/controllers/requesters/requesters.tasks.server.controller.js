@@ -19,6 +19,8 @@ var getUserTypeObject = taskTools.getUserTypeObject,
   getIdsInArray = taskTools.getIdsInArray,
   isRequester = taskTools.isRequester,
   setStatus = taskTools.setStatus,
+  removeTaskFromWorkerArray = taskTools.removeTaskFromWorkerArray,
+  statusPushTo = taskTools.statusPushTo,
   taskFindOne = taskSearch.taskFindOne,
   taskFindMany = taskSearch.taskFindMany,
   findWorkerByWorkerTaskObject = taskSearch.findWorkerByWorkerTaskObject;
@@ -140,46 +142,52 @@ exports.biddingActions = {
   acceptBid: function (req, res) {
     getUserTypeObject(req, res, function(typeObj) {
       taskFindOne(req.body.taskId, function (err, task) {
-        var bidId = req.body.bidId;
-        for (var bid = 0; bid < task.bids.length  && bidId; bid++) {
+        var bidId = req.body.bidId,
+          foundBid = false,
+          bid = 0;
+        for (bid = 0; bid < task.bids.length && bidId; bid++) {
           if (task.bids[bid]._id && task.bids[bid]._id.toString() === bidId.toString()) {
-            findWorkerByWorkerTaskObject(task.bids[bid].worker, function (err, workerObj ) {
+            foundBid = true;
+            break;
+          }
+        }
+        if (foundBid) {
+          findWorkerByWorkerTaskObject(task.bids[bid].worker, function (err, workerObj) {
+            if (err)
+              return res.status(422).send({
+                message: err
+              });
+            workerObj = removeTaskFromWorkerArray(task._id, workerObj);
+            workerObj.worker.activeTasks = statusPushTo(task._id, workerObj.worker.activeTasks);
+            --task.multiplicity;
+            task.bids[bid].status = 'accepted';
+            task.jobs.push({
+              status: 'active',
+              worker: task.bids[bid].worker,
+              awardAmount: task.bids[bid].bid
+            });
+            workerObj.save(function (err, workerObj) {
               if (err)
                 return res.status(422).send({
-                  message: err
+                  message: errorHandler.getErrorMessage(err)
                 });
-              workerObj = removeTaskFromWorkerArray(task._id, workerObj);
-              workerObj.worker.activeTasks = statusPushTo(task._id, workerObj.worker.activeTasks);
-              --task.multiplicity;
-              task.bids[bid].status = 'accepted';
-              task.jobs.push({
-                status: 'active',
-                worker: task.bids[bid].worker,
-                awardAmount: task.bids[bid].bid
-              });
-              workerObj.save(function (err, workerObj) {
+              task.save(function (err, task) {
                 if (err)
                   return res.status(422).send({
                     message: errorHandler.getErrorMessage(err)
                   });
-                task.save(function (err, task) {
-                  if (err)
-                    return res.status(422).send({
-                      message: errorHandler.getErrorMessage(err)
-                    });
-                  return res.status(200).send({
-                    message: 'Bid accepted!'
-                  });
+                return res.status(200).send({
+                  message: 'Bid accepted!'
                 });
               });
             });
-          }
+          });
         }
         return res.status(422).send({
           message: 'No bid with that Id found.'
         });
       });
-    }
+    });
   },
   rejectBid: function (req, res) {
     getUserTypeObject(req, res, function(typeObj) {
@@ -203,7 +211,7 @@ exports.biddingActions = {
           message: 'No bid with that Id found.'
         });
       });
-    }
+    });
   }
 };
 
