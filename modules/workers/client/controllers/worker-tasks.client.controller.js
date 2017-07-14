@@ -248,10 +248,10 @@
               bid: vm.tasks[index].payment.bidding.myBid
             })
               .then(function(response) {
-                vm.tasks.splice(index, 1);
                 Notification.success({ message: response.messsage, title: '<i class="glyphicon glyphicon-ok"></i> Bid submitted!' });
               })
               .catch(function(response) {
+                console.log(response);
                 Notification.error({ message: response.message, title: '<i class="glyphicon glyphicon-remove"></i> Error! Bid not submitted!' });
               });
             break;
