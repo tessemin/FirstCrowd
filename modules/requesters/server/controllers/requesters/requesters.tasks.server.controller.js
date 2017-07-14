@@ -129,7 +129,7 @@ exports.biddingActions = {
               });
             else
               return res.status(200).send({
-                message: 'Status for task ' + task.title + ' is now open!'
+                taskId: task._id
               });
           });
         } else {
