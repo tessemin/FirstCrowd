@@ -23,22 +23,25 @@
           d3.select('.footer').remove();
           var headerBox = d3.select('header')._groups[0][0];
           var header = getBounds(headerBox);
+          var sideHeight = getBounds(d3.select('.form-group')._groups[0][0]);
 
           var widthBot = 0;
           var heightBot = 0;
           var width = $window.innerWidth;
           // var height = $window.innerHeight - header.offsetHeight;
           var height = $window.innerHeight;
-          console.log(height);
+          // console.log(height);
           var widthTop = width;
           var heightTop = height;
 
+          d3.select('.display').style('height', function() { return (height + 1 - sideHeight.offsetTop - header.offsetHeight) + 'px';});
+          d3.select('.side-list').style('max-height', function() { return (height - header.offsetHeight - sideHeight.offsetTop - sideHeight.offsetHeight - 80) + 'px'; });
           d3.select('.content').style('margin-top', function() { return header.offsetHeight + 'px';});
 
           var svg = d3.select('#graph').append('svg')
                 // .style('padding', '30px')
                 .attr('width', width)
-                .attr('height', height -  header.offsetHeight - 5);
+                .attr('height', height - header.offsetHeight - 5);
 
           var radius = 25;
           var nodes_data = [];
@@ -55,7 +58,7 @@
                   .on('tick', ticked);
 
             var link_force = d3.forceLink(links_data)
-                  .id(function(d) { return d._id; })
+                  .id(function(d) { return d.enterpriseId; })
                   .distance(220)
                   .strength(0);
 
@@ -146,7 +149,7 @@
                     d3.selectAll('text').remove();
                     d3.selectAll('rect').remove();
                     centerNode(d3.select(this)._groups[0][0]);
-                    scope.$parent.vm.chooseCompany({ selected: d3.select(this)._groups[0][0].__data__});
+                    scope.$parent.vm.chooseCompany({ selected: d3.select(this)._groups[0][0].__data__ });
                   })
                   .on('click', function(d, i) {
                     d3.selectAll('text').remove();
@@ -159,22 +162,22 @@
                       .attr('id', 'selected-circle');
 
                     var items = [
-                      {'func': centerNode, 'text': 'Center Graph on Company', 'y': 1},
-                      {'func': viewCatalog, 'text': 'View Product/Service Catalog', 'y': 2},
-                      {'func': viewDemands, 'text': 'View Demands', 'y': 3},
-                      {'func': viewSuppliers, 'text': 'View Suppliers', 'y': 4},
-                      {'func': viewCustomers, 'text': 'View Customers', 'y': 5},
-                      {'func': viewCompetitors, 'text': 'View Competitors', 'y': 6}
+                      { 'func': centerNode, 'text': 'Center Graph on Company', 'y': 1 },
+                      { 'func': viewCatalog, 'text': 'View Product/Service Catalog', 'y': 2 },
+                      { 'func': viewDemands, 'text': 'View Demands', 'y': 3 },
+                      { 'func': viewSuppliers, 'text': 'View Suppliers', 'y': 4 },
+                      { 'func': viewCustomers, 'text': 'View Customers', 'y': 5 },
+                      { 'func': viewCompetitors, 'text': 'View Competitors', 'y': 6 }
                     ];
                     var menuWidth = 200;
                     var itemHeight = 30;
                     var x = d3.select(this)._groups[0][0].cx.baseVal.value + 40;
-                    if(x + menuWidth > width) {
+                    if (x + menuWidth > width) {
                       x = x - 280;
                     }
                     var y = d3.select(this)._groups[0][0].cy.baseVal.value - 70;
                     var menuLen = items.length * itemHeight;
-                    if(y + menuLen > height) {
+                    if (y + menuLen > height) {
                       y = y - 30;
                     }
 
@@ -192,7 +195,7 @@
                         d3.selectAll('text').remove();
                         d3.selectAll('rect').remove();
 
-                        if(d.func === centerNode) {
+                        if (d.func === centerNode) {
                           d.func(d3.select('#selected-circle')._groups[0][0]);
                         } else {
                           d.func(d3.select('#selected-circle')._groups[0][0].__data__);
@@ -213,14 +216,7 @@
                       .attr('y', function(d) {
                         return y + 20 + (30 * (d.y));
                       })
-                      .text(function (d){ return d.text; });
-
-                    // .attr('x', d3.select(this)._groups[0][0].cx.baseVal.value + 40)
-
-                    // centerNode(d3.select(this)._groups[0][0]);
-
-                    // var data = d3.select(this)._groups[0][0].__data__;
-                    // scope.$parent.vm.chooseCompany({ selected: data });
+                      .text(function (d) { return d.text; });
                   });
 
             makeHomeButton();
@@ -230,7 +226,7 @@
                   .on('zoom', zoom_actions);
 
             svg.call(zoom);
-            d3.select("svg").on("dblclick.zoom", null);
+            d3.select('svg').on('dblclick.zoom', null);
 
             // d3.select('body')
             //   .on('click', function() {
@@ -325,6 +321,37 @@
               return prevY;
             }
 
+            addNodeAndLink({ enterpriseId: rootNodeId }, { x: 10, y: 20, enterpriseId: '1234' }, 'suppliers');
+
+            function addNodeAndLink(oldNode, newNode, name) {
+              var newLink = { 'source': null, 'target': null };
+              if (name === 'suppliers') {
+                newLink.source = newNode.enterpriseId;
+                newLink.target = oldNode.enterpriseId;
+              } else if (name === 'customers') {
+                newLink.source = oldNode.enterpriseId;
+                newLink.target = newNode.enterpriseId;
+              } else {
+                return;
+              }
+
+              console.log(nodes_data);
+              console.log(links_data);
+              nodes_data = nodes_data.concat(newNode);
+              links_data = links_data.concat(newLink);
+              console.log(nodes_data);
+              console.log(links_data);
+
+
+              link_force = d3.forceLink(links_data)
+                    .id(function(d) { return d.enterpriseId; })
+                    .distance(220)
+                    .strength(0);
+
+              simulation.nodes(nodes_data);
+              simulation.alpha(0.2).restart();
+              // simulation.restart();
+            }
 
             function wrapCoordinates(nodes) {
               var SUP_X = width / 4;
@@ -346,7 +373,7 @@
 
                     links_data[linkIndex] = { 'source': null, 'target': null };
                     links_data[linkIndex].source = rootNodeId;
-                    links_data[linkIndex].target = nodes[item][index]._id;
+                    links_data[linkIndex].target = nodes[item][index].enterpriseId;
                     linkIndex++;
                   }
                 } else if (item === 'supplier') {
@@ -359,7 +386,7 @@
                     nodes_data.push(nodes[item][index]);
 
                     links_data[linkIndex] = { 'source': null, 'target': null };
-                    links_data[linkIndex].source = nodes[item][index]._id;
+                    links_data[linkIndex].source = nodes[item][index].enterpriseId;
                     links_data[linkIndex].target = rootNodeId;
                     linkIndex++;
                   }
@@ -376,6 +403,7 @@
                   nodes[item].x = width / 2;
                   nodes[item].y = height / 2;
                   nodes[item].img = 'http://www.e-pint.com/epint.jpg';
+                  nodes[item].enterpriseId = nodes[item]._id;
                   nodes_data.push(nodes[item]);
                 }
               }
@@ -405,7 +433,7 @@
             });
         }
 
-        function getBounds(htmlElement){
+        function getBounds(htmlElement) {
           return {
             offsetHeight: htmlElement.offsetHeight,
             offsetLeft: htmlElement.offsetLeft,
@@ -413,7 +441,7 @@
             offsetTop: htmlElement.offsetTop,
             offsetWidth: htmlElement.offsetWidth
           };
-        };
+        }
 
         function d3() {
           var d = $q.defer();
