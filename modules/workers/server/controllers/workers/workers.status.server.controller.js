@@ -71,9 +71,6 @@ function addWorkerToTask(taskId, req, typeObj, callBack) {
       return callBack('You don\'t have permission to work on that task');
     if (task.multiplicity <= 0)
       return callBack('There are too many workers for this task');
-    typeObj = removeTaskFromWorkerArray(task._id, typeObj);
-    typeObj.worker.activeTasks = statusPushTo(task._id, typeObj.worker.activeTasks);
-    --task.multiplicity;
     var bid = null;
     // FOR BIDDING
     if (task.payment.bidding.bidable) {
@@ -96,7 +93,10 @@ function addWorkerToTask(taskId, req, typeObj, callBack) {
           bid.worker.workerType.enterprise = true;
         else if (req.user.individual && !req.user.enterprise)
           bid.worker.workerType.individual = true;
+        
+        task.bids = removeOldBid(task.bids, typeObj._id);
         task.bids.push(bid);
+        
         return callBack(null, task, typeObj);
       }
     } else if (task.preapproval) { // FOR REQUIRE PREAROVAL
@@ -116,11 +116,15 @@ function addWorkerToTask(taskId, req, typeObj, callBack) {
       
       return callBack(null, task, typeObj);
     } else { // STATIC PRICE, NO PREAPROVAL
+      typeObj = removeTaskFromWorkerArray(task._id, typeObj);
+      typeObj.worker.activeTasks = statusPushTo(task._id, typeObj.worker.activeTasks);
+      --task.multiplicity;
       var job = {
         status: 'active',
         worker: {
           workerId: typeObj._id
-        }
+        },
+        awardAmount: task.payment.staticPrice
       };
       job.dateStarted = Date.now();
       job.worker.workerType = {};
@@ -134,6 +138,14 @@ function addWorkerToTask(taskId, req, typeObj, callBack) {
       return callBack(null, task, typeObj);
     }
   });
+}
+
+function removeOldBid(bids, workerId) {
+  for (var bid = 0; bid < bids.length; bid++) {
+    if (bids[bid].worker.workerId.toString() === workerId.toString())
+      bids.splice(bid, 1);
+  }
+  return bids;
 }
 
 function isTaskRecomended(taskId, typeObj) {

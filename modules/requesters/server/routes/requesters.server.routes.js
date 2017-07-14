@@ -45,6 +45,10 @@ module.exports = function(app) {
   app.route('/api/tasks/getWorkerRatingsForTask').put(requesters.taskActions.getWorkerRatingsForTask);
   app.route('/api/tasks/getRequesterRatingsForTask').put(requesters.taskActions.getRequesterRatingsForTask);
   app.route('/api/tasks/getTasksWithOptions').post(requesters.taskFindWithOption);
+  
+  // Bidding
+  app.route('/api/tasks/bidding/accept').post(requesters.biddingActions.acceptBid);
+  app.route('/api/tasks/bidding/reject').post(requesters.biddingActions.rejectBid);
 
   // Finish by binding the Requester middleware
   app.param('requesterId', requesters.requesterByID);
