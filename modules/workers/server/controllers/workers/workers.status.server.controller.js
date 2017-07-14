@@ -78,8 +78,6 @@ function addWorkerToTask(taskId, req, typeObj, callBack) {
       var workerBid = req.body.bid;
       if (!workerBid) {
         return callBack('Please provide a bid for this task');
-      } else if (workerBid > task.payment.bidding.startingPrice) {
-        return callBack('Bid must be less than starting price');
       } else if (workerBid < task.payment.bidding.minPrice) {
         return callBack('Bid must be greater than minimum price');
       } else {
