@@ -15,10 +15,15 @@
   font-size: 1.25em;
 }
 
+.tasks-group {
+  border-bottom: 1px solid #8888ff;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
 .tasks-row {
   display: flex;
   justify-content: center;
-  margin-bottom: 1em;
 }
 
 .clickable-looking {

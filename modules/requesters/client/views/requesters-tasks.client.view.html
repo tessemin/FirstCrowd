@@ -63,7 +63,7 @@
     <a ui-sref="requesters.newtask">Create New Task</a>
   </div>
   <div class="col-md-10 tasks-table">
-    <div class="tasks-row">
+    <div class="tasks-row tasks-group">
       <div class="tasks-cell">
         Title
         <button type="button" class="sort-button" ng-click="vm.sortTasks('name')">
@@ -153,7 +153,7 @@
         Actions
       </div>
     </div>
-    <div ng-repeat="task in vm.tasks | filter : vm.filters : false | orderBy: vm.sort : vm.sortReversed as results track by $index">
+    <div class="tasks-group" ng-repeat="task in vm.tasks | filter : vm.filters : false | orderBy: vm.sort : vm.sortReversed as results track by $index">
       <div class="tasks-row" ng-click="vm.selectTask($index)">
         <div class="tasks-cell  clickable-looking">
           {{task.name}}
@@ -190,6 +190,15 @@
           <div class="tasks-cell">
             Requires: {{task.skillsNeeded}}
           </div>
+          <div ng-if="task.BIDS.length > 0">
+            <div class="tasks-cell">
+              <select ng-size="5" ng-model="task.selectedBid" ng-options="bid as (bid.usersname + ' ' + bid.amount) in task.bids">
+              </select>
+            </div>
+            <div class="tasks-cell">
+                <button class="btn" ng-disabled="!task.selectedBid" ng-click="vm.viewResume()">View Resume</button>
+                <button class="btn btn-primary" ng-disabled="!task.selectedBid" ng-click="vm.approveForTask()">Approve for task</button>
+            </div>
         </div>
         <div class="tasks-row">
           <div class="tasks-description">
@@ -320,7 +329,7 @@
               <div ng-hide="vm.modal.bidable">
                 <div id="paypal-button"></div>
               </div>
-              <button ng-show="vm.modal.bidable" ng-click="vm.closePaymentModal()" type="button" class="btn btn-primary" style="width: 120%;">Activate</button>
+              <button ng-show="vm.modal.bidable" ng-click="vm.activateBidableTask()" type="button" class="btn btn-primary" style="width: 120%;">Activate</button>
             </div>
             <div class="col-md-3">
               <div class="container-fluid row">
