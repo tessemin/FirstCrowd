@@ -244,7 +244,7 @@
           case 'bid':
             console.log('bid $' + vm.tasks[index].payment.bidding.myBid + ' task ' + vm.tasks[index]._id);
             WorkersService.takeTask({
-              taskId: vm.tasks[index].taskId,
+              taskId: vm.tasks[index]._id,
               bid: vm.tasks[index].payment.bidding.myBid
             })
               .then(function(response) {
