@@ -141,8 +141,8 @@
               } else {
                 vm.modal.bidable = false;
                 vm.modal.costPerWorker = task.payment.staticPrice;
-                payForTaskId = task._id;
               }
+              activateTaskId = task._id;
               console.log(task)
               vm.modal.title = task.title;
               vm.modal.description = task.description;
@@ -204,17 +204,31 @@
        $('#reviewPaymentModal').modal();
     };
 
+    vm.activateBidableTask = function() {
+      vm.closePaymentModal();
+      RequestersService.activateBidable({taskId: activateTaskId})
+        .then(function(response) {
+          var index = getIndexFromTaskId(response.taskId);
+          vm.tasks[index].status = 'open';
+          Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> Task activated!' });
+          activateTaskId = null;
+        })
+        .catch(function(response) {
+          Notification.error({ message: response.message, title: '<i class="glyphicon glyphicon-remove"></i> Activation failed! Task not activated!' });
+          activateTaskId = null;
+        });
+    };
+
     vm.closePaymentModal = function () {
       $('#reviewPaymentModal').modal('hide');
     };
 
     // TODO: Make this angular compliant
     // paypal payment action
-    var payForTaskId = null;
-    var executePayTaskId = null;
+    var activateTaskId = null;
     function paypalButtonRender() {
-      payForTaskId = null;
-      executePayTaskId = null;
+      activateTaskId = null;
+      var executePayTaskId = null;
       paypal.Button.render({
         env: 'sandbox', // Or 'sandbox'
         commit: true, // Show a 'Pay Now' button
@@ -225,7 +239,7 @@
             label: 'pay'
         },
         payment: function() {
-          return paypal.request.post('/api/payment/paypal/create/', { taskId: payForTaskId }).then(function(data) {
+          return paypal.request.post('/api/payment/paypal/create/', { taskId: activateTaskId }).then(function(data) {
             // closes the payment review modal
             vm.closePaymentModal();
             executePayTaskId = data.taskId;
@@ -240,11 +254,14 @@
           }).then(function(response) {
             // payment completed success
             Notification.success({ message: response, title: '<i class="glyphicon glyphicon-ok"></i> Payment Accepted!' });
+            vm.tasks[getIndexFromTaskId(activateTaskId)].status = 'open';
+            activateTaskId = null;
           });
         },
         onError: function(err) {
           // show a gracful error
           Notification.error({ message: err.message, title: '<i class="glyphicon glyphicon-remove"></i> Error!'});
+          activateTaskId = null;
         }
       }, '#paypal-button');
     }

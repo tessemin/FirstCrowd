@@ -63,7 +63,7 @@
     <a ui-sref="requesters.newtask">Create New Task</a>
   </div>
   <div class="col-md-10 tasks-table">
-    <div class="tasks-row">
+    <div class="tasks-row tasks-group">
       <div class="tasks-cell">
         Title
         <button type="button" class="sort-button" ng-click="vm.sortTasks('name')">
@@ -153,7 +153,7 @@
         Actions
       </div>
     </div>
-    <div ng-repeat="task in vm.tasks | filter : vm.filters : false | orderBy: vm.sort : vm.sortReversed as results track by $index">
+    <div class="tasks-group" ng-repeat="task in vm.tasks | filter : vm.filters : false | orderBy: vm.sort : vm.sortReversed as results track by $index">
       <div class="tasks-row" ng-click="vm.selectTask($index)">
         <div class="tasks-cell  clickable-looking">
           {{task.name}}
@@ -190,6 +190,15 @@
           <div class="tasks-cell">
             Requires: {{task.skillsNeeded}}
           </div>
+          <div ng-if="task.BIDS.length > 0">
+            <div class="tasks-cell">
+              <select ng-size="5" ng-model="task.selectedBid" ng-options="bid as (bid.usersname + ' ' + bid.amount) in task.bids">
+              </select>
+            </div>
+            <div class="tasks-cell">
+                <button class="btn" ng-disabled="!task.selectedBid" ng-click="vm.viewResume()">View Resume</button>
+                <button class="btn btn-primary" ng-disabled="!task.selectedBid" ng-click="vm.approveForTask()">Approve for task</button>
+            </div>
         </div>
         <div class="tasks-row">
           <div class="tasks-description">
@@ -284,22 +293,22 @@
             </span>
             <span class="summary-row">
               <span class="summary-label">Max cost per worker: </span>
-              <span class="summary-element">{{vm.modal.bidding.maxPricePerWorker | number: 2}}</span><br>
+              <span class="summary-element">&#36;{{vm.modal.bidding.maxPricePerWorker | number: 2}}</span><br>
             </span>
             <span class="summary-row">
               <span class="summary-label">Min cost per worker: </span>
-              <span class="summary-element">{{vm.modal.bidding.minPricePerWorker | number: 2}}</span><br>
+              <span class="summary-element">&#36;{{vm.modal.bidding.minPricePerWorker | number: 2}}</span><br>
             </span>
             <span class="summary-row">
               <span class="summary-label">Tax: </span>
-              <span class="summary-element">{{vm.modal.tax | number: 2}}</span><br>
+              <span class="summary-element">&#36;{{vm.modal.tax | number: 2}}</span><br>
             <span class="summary-row">
               <span class="summary-label">Maximum possible Cost: </span>
-              <span class="summary-element">{{vm.modal.bidding.maxPricePerWorker * vm.modal.multiplicity + (vm.modal.bidding.maxPricePerWorker * vm.modal.multiplicity * tax) | number: 2}}</span><br>
+              <span class="summary-element">&#36;{{(vm.modal.bidding.maxPricePerWorker * vm.modal.multiplicity + (vm.modal.bidding.maxPricePerWorker * vm.modal.multiplicity * vm.modal.tax)) | number: 2}}</span><br>
             </span>
             <span class="summary-row">
               <span class="summary-label">Minimum possible Cost: </span>
-              <span class="summary-element">{{vm.modal.bidding.minPricePerWorker * vm.modal.multiplicity + (vm.modal.bidding.minPricePerWorker * vm.modal.multiplicity * tax) | number: 2}}</span><br>
+              <span class="summary-element">&#36;{{(vm.modal.bidding.minPricePerWorker * vm.modal.multiplicity + (vm.modal.bidding.minPricePerWorker * vm.modal.multiplicity * vm.modal.tax)) | number: 2}}</span><br>
             </span>
             <span class="summary-row">
               <span class="summary-label">Bidding Start: </span>
@@ -318,9 +327,9 @@
             <div class="col-md-5"></div>
             <div class="col-md-3">
               <div ng-hide="vm.modal.bidable">
-                <div id="paypal-button" ng-click="vm.closePaymentModal()"></div>
+                <div id="paypal-button"></div>
               </div>
-              <button ng-show="vm.modal.bidable" type="button" class="btn btn-primary" style="width: 120%;">Activate</button>
+              <button ng-show="vm.modal.bidable" ng-click="vm.activateBidableTask()" type="button" class="btn btn-primary" style="width: 120%;">Activate</button>
             </div>
             <div class="col-md-3">
               <div class="container-fluid row">

@@ -110,7 +110,8 @@
             'payment': {
               'bidding': {
                 'bidable': task.payment.bidding.bidable,
-                'startingPrice': task.payment.bidding.startingPrice
+                'startingPrice': task.payment.bidding.startingPrice,
+                'myBid': 0
               },
               'staticPrice': task.payment.staticPrice
             }
@@ -178,7 +179,8 @@
             'payment': {
               'bidding': {
                 'bidable': task.payment.bidding.bidable,
-                'startingPrice': task.payment.bidding.startingPrice
+                'startingPrice': task.payment.bidding.startingPrice,
+                'myBid': task.payment.bidding.startingPrice
               },
               'staticPrice': task.payment.staticPrice
             }
@@ -240,10 +242,24 @@
           case 'apply':
             break;
           case 'bid':
+            console.log('bid $' + vm.tasks[index].payment.bidding.myBid + ' task ' + vm.tasks[index]._id);
+            WorkersService.takeTask({
+              taskId: vm.tasks[index].taskId,
+              bid: vm.tasks[index].payment.bidding.myBid
+            })
+              .then(function(response) {
+                vm.tasks.splice(index, 1);
+                Notification.success({ message: response.messsage, title: '<i class="glyphicon glyphicon-ok"></i> Bid submitted!' });
+              })
+              .catch(function(response) {
+                Notification.error({ message: response.message, title: '<i class="glyphicon glyphicon-remove"></i> Error! Bid not submitted!' });
+              });
             break;
           case 'take':
             console.log('take task ' + vm.tasks[index]._id);
-            WorkersService.takeTask({taskId: vm.tasks[index]._id})
+            WorkersService.takeTask({
+              taskId: vm.tasks[index]._id
+            })
               .then(function(response) {
                 vm.tasks.splice(index, 1);
                 Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> Task Taken!' });

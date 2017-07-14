@@ -18,8 +18,8 @@ var getUserTypeObject = taskTools.getUserTypeObject,
 
 paypal.configure({
   'mode': 'sandbox',
-  'client_id' : 'AecAzJEgQRFF8kL2hhPkyBjiNmvLLCxyQR3cCkNN4hmobtGKQBLyWpUAwUqYZK7hIJhQhRlX36X3YaAV',
-  'client_secret' : 'EI1O4k8WMGINV4HWteAeJsKEKGnSwnDSxxpIc4Lgzwkp0xxg2nnBDfH1QzQT-XfmZQJb5bVNPD0ALOP9'
+  'client_id': 'AecAzJEgQRFF8kL2hhPkyBjiNmvLLCxyQR3cCkNN4hmobtGKQBLyWpUAwUqYZK7hIJhQhRlX36X3YaAV',
+  'client_secret': 'EI1O4k8WMGINV4HWteAeJsKEKGnSwnDSxxpIc4Lgzwkp0xxg2nnBDfH1QzQT-XfmZQJb5bVNPD0ALOP9'
 });
 
 var paypalWebProfileId = 'XP-BSQB-HQRX-4474-GGLT';
@@ -43,7 +43,7 @@ exports.paypal = {
     getUserTypeObject(req, res, function(typeObj) {
       taskFindOne(req.body.taskId, function(err, task) {
         if (err)
-           return res.status(422).send(errorHandler.getErrorMessage(err));
+          return res.status(422).send(errorHandler.getErrorMessage(err));
          
         if (!ownsTask(task, typeObj))
           return res.status(422).send('You are not the owner for this task.');
@@ -87,19 +87,19 @@ exports.paypal = {
         // adds our paypal web profile so no shipping option pops up
         create_payment_json.experience_profile_id = paypalWebProfileId;
         
-        paypal.payment.create(create_payment_json, function(error, createdPayment){
+        paypal.payment.create(create_payment_json, function(error, createdPayment) {
           if (error) {
             return res.status(422).send(error.message);
           } else {
             task.payment.paymentInfo.paymentType = 'paypal';
             task.payment.paymentInfo.paymentId = createdPayment.id;
             task.payment.paymentInfo.paymentObject = createdPayment;
-            task.save(function(err, task){
+            task.save(function(err, task) {
               if (err)
                 return res.status(422).send({
                   message: errorHandler.getErrorMessage(err)
                 });
-              return res.status(201).send({paymentID: createdPayment.id, taskId: task._id});
+              return res.status(201).send({ paymentID: createdPayment.id, taskId: task._id });
             });
           }
         });
@@ -129,8 +129,8 @@ exports.paypal = {
             return res.status(422).send('Payment object total does not match actual total.');
           
           var execute_payment_json = {
-            "payer_id": req.body.payerID,
-            "transactions":  transactions
+            'payer_id': req.body.payerID,
+            'transactions': transactions
           };
           paypal.payment.execute(req.body.paymentID, execute_payment_json, function (error, payment) {
             if (error) {
@@ -139,18 +139,18 @@ exports.paypal = {
               task.payment.paymentInfo.paid = true;
               task.payment.paymentInfo.payerId = req.body.payerID;
               task.payment.paymentInfo.paymentObject = payment;
-              task.save(function(err, task){
+              task.save(function(err, task) {
                 if (err)
                   return res.status(422).send({
                     message: errorHandler.getErrorMessage(err)
                   });
-                setStatus(task._id, 'open', function (message) {
-                  if (message.error) {
+                setStatus(task._id, 'open', function (err, correctMsg) {
+                  if (err) {
                     return res.status(422).send({
-                      message: message.error
+                      message: err
                     });
                   } else {
-                    return res.status(200).send(task.title + ' is now open.');
+                    return res.status(200).send(correctMsg);
                   }
                 });
               });
@@ -158,12 +158,11 @@ exports.paypal = {
           });
         } else {
           // not paypal
+          return res.status(422).send({
+            message: 'Paypal is currently the only supported payment type for First Crowd!'
+          });
         }
       });
     });
   }
 };
-
-function getTaskTotal(task) {
-  
-}

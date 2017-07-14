@@ -15,7 +15,6 @@ module.exports = function(app) {
   
   // ACTIVE TASKS
   app.route('/api/requesters/activeTask/all').post(requesters.activeTask.all);
-  app.route('/api/requesters/activateTask').post(requesters.activateTask);
 
   // SUSPENDED TASKS
   app.route('/api/requesters/suspendedTask/all').post(requesters.suspendedTask.all);
@@ -45,6 +44,11 @@ module.exports = function(app) {
   app.route('/api/tasks/getWorkerRatingsForTask').put(requesters.taskActions.getWorkerRatingsForTask);
   app.route('/api/tasks/getRequesterRatingsForTask').put(requesters.taskActions.getRequesterRatingsForTask);
   app.route('/api/tasks/getTasksWithOptions').post(requesters.taskFindWithOption);
+  
+  // Bidding
+  app.route('/api/tasks/bidding/accept').post(requesters.biddingActions.acceptBid);
+  app.route('/api/tasks/bidding/reject').post(requesters.biddingActions.rejectBid);
+  app.route('/api/tasks/bidding/activate').post(requesters.biddingActions.activateBidableTask);
 
   // Finish by binding the Requester middleware
   app.param('requesterId', requesters.requesterByID);

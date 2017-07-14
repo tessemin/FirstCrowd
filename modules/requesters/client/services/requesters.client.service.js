@@ -84,6 +84,19 @@
         method: 'POST',
         url: '/api/tasks/getRequesterRatingsForTask'
       },
+      // Biding actions
+      _acceptBid: {
+        method: 'POST',
+        url: '/api/tasks/bidding/accept'
+      },
+      _rejectBid: {
+        method: 'POST',
+        url: '/api/tasks/bidding/reject'
+      },
+      _activateBidable: {
+        method: 'POST',
+        url: '/api/tasks/bidding/activate'
+      }
     });
 
     angular.extend(Requesters, {
@@ -142,6 +155,16 @@
       },
       getRequesterRatingsForTask: function (taskId) {
         return this._getRequesterRatingsForTask(taskId).$promise;
+      },
+      // Biding actions
+      rejectBid: function (taskId_bidId) {
+        return this._rejectBid(taskId_bidId).$promise;
+      },
+      acceptBid: function (taskId_bidId) {
+        return this._acceptBid(taskId_bidId).$promise;
+      },
+      activateBidable: function (taskId) {
+        return this._activateBidable(taskId).$promise;
       }
     });
 

@@ -369,7 +369,7 @@ exports.catalog = {
       }
     });
   }
-}
+};
 
 exports.getDemands = function(req, res) {
   Enterprise.findById(req.body.enterpriseId, function (err, enterprise) {
@@ -383,12 +383,12 @@ exports.getDemands = function(req, res) {
       });
     } else {
       if (enterprise.demands)
-          return res.json({ demands: enterprise.demands });
-        else
-          return res.json({ demands: [] });
+        return res.json({ demands: enterprise.demands });
+      else
+        return res.json({ demands: [] });
     }
   });
-}
+};
 
 function setXYForPartners(partner) {
   var xVal = null;
@@ -402,15 +402,15 @@ function setXYForPartners(partner) {
       xVal = getRandomNumber(minXYVals, maxXYVals);
       yVal = getRandomNumber(minXYVals, maxXYVals);
       if (times > 100) {
-        minVals += 100;
-        maxVals += 100;
+        minXYVals += 100;
+        maxXYVals += 100;
         times = 0;
       }
       times++;
     }
     usedXYValues.push({ x: xVal, y: yVal });
-    partner[part].x = xVal
-    partner[part].y = yVal
+    partner[part].x = xVal;
+    partner[part].y = yVal;
   }
   return partner;
 }

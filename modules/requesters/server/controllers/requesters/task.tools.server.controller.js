@@ -54,7 +54,6 @@ exports.taskActions = {
               message: 'Error connecting your profile with task: ' + newTask.title
             });
           } else {
-            console.log(newTask);
             newTask.save(function (err, task) {
               if (err) {
                 return res.status(422).send({
@@ -90,15 +89,15 @@ exports.taskActions = {
               message: 'No task found'
             });
           if (!task.requester || !task.requester.requesterId)
-              return res.status(422).send({
-                message: 'No owner for this task'
-              });
+            return res.status(422).send({
+              message: 'No owner for this task'
+            });
           if (ownsTask(task, typeObj)) {
             if (!task.jobs || task.jobs.length <= 0) {
               Task.findByIdAndRemove(taskId, function (err, task) {
                 if (err) {
                   return res.status(422).send({
-                    message: errorHandler.getErrorMessage(err),
+                    message: errorHandler.getErrorMessage(err)
                   });
                 } else {
                   return res.status(200).send({
@@ -109,12 +108,12 @@ exports.taskActions = {
               });
             } else {
               return res.status(422).send({
-                message: 'Workers are working on that task\nPlease set status to suspended and resolve any conflicts',
+                message: 'Workers are working on that task\nPlease set status to suspended and resolve any conflicts'
               });
             }
           } else {
             return res.status(422).send({
-              message: 'You are not the owner of this task',
+              message: 'You are not the owner of this task'
             });
           }
         });
@@ -237,26 +236,26 @@ function setStatus(taskId, status, callBack) {
     }
     findRequesterByTask(task, function(err, requester) {
       if (err)
-        callBack({ error: err });
+        callBack(err);
       setStatusRequester(status, task._id, requester, callBack, function (typeObj) {
         setStatusOfWorkers(getWorkersIds(task.jobs), status, task._id, function() {
           task.status = status;
           typeObj.save(function (typeErr, typeObj) {
             if (typeErr) {
-              callBack({ error: errorHandler.getErrorMessage(typeErr) });
+              callBack(errorHandler.getErrorMessage(typeErr));
             } else {
               task.save(function (err, task) {
                 if (err) {
-                  callBack({ error: errorHandler.getErrorMessage(err) });
+                  callBack(errorHandler.getErrorMessage(err));
                 } else {
-                  callBack({ correct: 'Status for task ' + task.title + ' updated successfully' });
+                  callBack(null, 'Status for task ' + task.title + ' updated successfully');
                 }
               });
             }
           });
         });
       });
-    })
+    });
 
   });
 }
@@ -510,7 +509,7 @@ function updateTotalTaskProgress(task, callBack) {
       task.totalProgress = 0;
     task.save(function(err, task) {
       if (err)
-        callBack({ error: errorHandler.getErrorMessage(err) })
+        callBack({ error: errorHandler.getErrorMessage(err) });
       else
         callBack(task.totalProgress);
     });
