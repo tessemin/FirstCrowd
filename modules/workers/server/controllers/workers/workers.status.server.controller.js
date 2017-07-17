@@ -32,12 +32,13 @@ exports.takeTask = function (req, res) {
             return res.status(422).send({
               message: errorHandler.getErrorMessage(err)
             });
+          console.log(task)
           task.save(function(err, task) {
             if (task.multiplicity <= 0) {
-              setStatus(req.body.taskId, 'taken', function (message) {
-                if (message.error) {
+              setStatus(req.body.taskId, 'taken', function (err, correctMsg) {
+                if (err) {
                   return res.status(422).send({
-                    message: message.error
+                    message: err
                   });
                 } else {
                   return res.status(200).send({
@@ -77,8 +78,6 @@ function addWorkerToTask(taskId, req, typeObj, callBack) {
       var workerBid = req.body.bid;
       if (!workerBid) {
         return callBack('Please provide a bid for this task');
-      } else if (workerBid > task.payment.bidding.startingPrice) {
-        return callBack('Bid must be less than starting price');
       } else if (workerBid < task.payment.bidding.minPrice) {
         return callBack('Bid must be greater than minimum price');
       } else {
@@ -94,7 +93,7 @@ function addWorkerToTask(taskId, req, typeObj, callBack) {
         else if (req.user.individual && !req.user.enterprise)
           bid.worker.workerType.individual = true;
         
-        task.bids = removeOldBid(task.bids, typeObj._id);
+        task.bids = removeOldBids(task.bids, typeObj._id);
         task.bids.push(bid);
         
         return callBack(null, task, typeObj);
@@ -112,6 +111,7 @@ function addWorkerToTask(taskId, req, typeObj, callBack) {
       else if (req.user.individual && !req.user.enterprise)
         bid.worker.workerType.individual = true;
       
+      task.bids = removeOldBids(task.bids, typeObj._id);
       task.bids.push(bid);
       
       return callBack(null, task, typeObj);
@@ -140,12 +140,13 @@ function addWorkerToTask(taskId, req, typeObj, callBack) {
   });
 }
 
-function removeOldBid(bids, workerId) {
-  for (var bid = 0; bid < bids.length; bid++) {
-    if (bids[bid].worker.workerId.toString() === workerId.toString())
-      bids.splice(bid, 1);
-  }
-  return bids;
+function removeOldBids(bids, workerId) {
+  var returnArray = [];
+  bids.forEach(function (element) {
+    if (element.worker.workerId.toString() !== workerId.toString())
+      returnArray.push(element)
+  });
+  return returnArray;
 }
 
 function isTaskRecomended(taskId, typeObj) {

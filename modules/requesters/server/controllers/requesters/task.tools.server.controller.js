@@ -36,7 +36,7 @@ exports.taskActions = {
         }
         var newTask = new Task(req.body);
         if (req.user.enterprise) {
-          newTask.requester.requesterType.enteprise = true;
+          newTask.requester.requesterType.enterprise = true;
           newTask.requester.requesterId = typeObj._id;
         } else if (req.user.individual) {
           newTask.requester.requesterType.individual = true;
@@ -61,6 +61,7 @@ exports.taskActions = {
                 });
               } else {
                 return res.status(200).send({
+                  taskId: task._id,
                   message: 'New task: ' + task.title + ' created successfully'
                 });
               }
