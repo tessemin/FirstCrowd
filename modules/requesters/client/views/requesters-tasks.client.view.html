@@ -190,15 +190,15 @@
           <div class="tasks-cell">
             Requires: {{task.skillsNeeded}}
           </div>
-          <div ng-if="task.BIDS.length > 0">
-            <div class="tasks-cell">
-              <select ng-size="5" ng-model="task.selectedBid" ng-options="bid as (bid.usersname + ' ' + bid.amount) in task.bids">
-              </select>
-            </div>
-            <div class="tasks-cell">
-                <button class="btn" ng-disabled="!task.selectedBid" ng-click="vm.viewResume()">View Resume</button>
-                <button class="btn btn-primary" ng-disabled="!task.selectedBid" ng-click="vm.approveForTask()">Approve for task</button>
-            </div>
+          <div class="tasks-cell" ng-if="task.bids.length > 0">
+            Examine bids:
+            <select ng-size="5" ng-model="task.selectedBid" ng-options="bid._id as ('$' + bid.bid) for bid in task.bids">
+            </select>
+          </div>
+          <div class="tasks-cell" ng-if="task.bids.length > 0">
+              <button class="btn" ng-disabled="!task.selectedBid" ng-click="vm.viewResume()">View Resume</button>
+              <button class="btn btn-primary" ng-disabled="!task.selectedBid" ng-click="vm.approveForTask(task.selectedBid)">Approve for task</button>
+          </div>
         </div>
         <div class="tasks-row">
           <div class="tasks-description">

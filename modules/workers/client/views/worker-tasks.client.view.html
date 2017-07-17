@@ -136,7 +136,7 @@
       </div>
     </div>
     <div ng-repeat="task in vm.tasks | filter : vm.filters : false | orderBy: vm.sort : vm.sortReversed as results track by $index">
-      <div class="task-item">
+      <div class="tasks-group">
         <div class="tasks-row" ng-click="vm.selectTask($index)">
           <div class="tasks-cell clickable-looking">
             {{task.name}}
