@@ -284,7 +284,7 @@ function getMongoIndividuals(indIds, callBack) {
     Individual.find({ '_id': { $in: indIds } }, function(err, inds) {
       if (err)
         callBack(errorHandler.getErrorMessage(err));
-      return callBack(null, inds) 
+      return callBack(null, inds);
     });
   return callBack(null, []);
 }
@@ -293,7 +293,7 @@ function getMongoEnterprises(entIds, callBack) {
   if (entIds.length > 0)
     Enterprise.find({ '_id': { $in: entIds } }, function(err, ents) {
       if (err)
-        callBack(errorHandler.getErrorMessage(err))
+        callBack(errorHandler.getErrorMessage(err));
       return callBack(null, ents);
     });
   return callBack(null, []);
