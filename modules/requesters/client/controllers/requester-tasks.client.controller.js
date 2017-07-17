@@ -22,6 +22,7 @@
 
     vm.loadData = function(data) {
       if (data) {
+        console.log(data);
         vm.loaded = true;
         var task,
           taskActions,
@@ -60,7 +61,8 @@
             'status': task.status,
             'progress': task.totalProgress,
             'taskActions': taskActions,
-            'taskRef': task
+            'taskRef': task,
+            'bids': task.bids
           });
         }
       }
@@ -218,6 +220,18 @@
           activateTaskId = null;
         });
     };
+
+    vm.approveBid = function(bidId) {
+      RequestersService.activateBidable({taskId: bidId})
+        .then(function(response) {
+          var index = getIndexFromTaskId(response.taskId);
+          vm.tasks[index].status = 'taken';
+          Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> Bid approved! Task assigned!' });
+        })
+        .catch(function(response) {
+          Notification.error({ message: response.message, title: '<i class="glyphicon glyphicon-remove"></i> Approval failed! Task not assigned!' });
+        });
+    }
 
     vm.closePaymentModal = function () {
       $('#reviewPaymentModal').modal('hide');
