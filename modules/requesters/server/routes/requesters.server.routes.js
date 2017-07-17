@@ -49,6 +49,7 @@ module.exports = function(app) {
   app.route('/api/tasks/bidding/accept').post(requesters.biddingActions.acceptBid);
   app.route('/api/tasks/bidding/reject').post(requesters.biddingActions.rejectBid);
   app.route('/api/tasks/bidding/activate').post(requesters.biddingActions.activateBidableTask);
+  app.route('/api/tasks/bidding/bidder/info').post(requesters.biddingActions.bidderInfo);
 
   // Finish by binding the Requester middleware
   app.param('requesterId', requesters.requesterByID);

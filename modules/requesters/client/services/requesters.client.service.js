@@ -96,6 +96,10 @@
       _activateBidable: {
         method: 'POST',
         url: '/api/tasks/bidding/activate'
+      },
+      _getBidderInfo: {
+        method: 'POST',
+        url: '/api/tasks/bidding/bidder/info'
       }
     });
 
@@ -165,6 +169,9 @@
       },
       activateBidable: function (taskId) {
         return this._activateBidable(taskId).$promise;
+      },
+      getBidderInfo: function (taskId) {
+        return this._getBidderInfo(taskId).$promise;
       }
     });
 

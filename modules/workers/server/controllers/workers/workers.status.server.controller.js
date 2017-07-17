@@ -32,7 +32,6 @@ exports.takeTask = function (req, res) {
             return res.status(422).send({
               message: errorHandler.getErrorMessage(err)
             });
-          console.log(task)
           task.save(function(err, task) {
             if (task.multiplicity <= 0) {
               setStatus(req.body.taskId, 'taken', function (err, correctMsg) {
@@ -144,7 +143,7 @@ function removeOldBids(bids, workerId) {
   var returnArray = [];
   bids.forEach(function (element) {
     if (element.worker.workerId.toString() !== workerId.toString())
-      returnArray.push(element)
+      returnArray.push(element);
   });
   return returnArray;
 }

@@ -6,6 +6,9 @@
 var path = require('path'),
   mongoose = require('mongoose'),
   Task = mongoose.model('Task'),
+  Enterprise = mongoose.model('Enterprise'),
+  Individual = mongoose.model('Individual'),
+  User = mongoose.model('User'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   taskTools = require(path.resolve('./modules/requesters/server/controllers/requesters/task.tools.server.controller')),
   taskSearch = require(path.resolve('./modules/requesters/server/controllers/requesters/task.search.server.controller')),
@@ -24,6 +27,9 @@ var getUserTypeObject = taskTools.getUserTypeObject,
   taskFindOne = taskSearch.taskFindOne,
   taskFindMany = taskSearch.taskFindMany,
   findWorkerByWorkerTaskObject = taskSearch.findWorkerByWorkerTaskObject;
+  
+var individualWhiteListFields = ['_id', 'schools', 'jobExperience', 'certification', 'tools', 'specialities', 'skills', 'worker.requesterRatingsPerCategory', 'worker.acceptanceRatesPerCategory', 'worker.acceptanceRate', 'worker.averageCompletionTime', 'worker.preferedCategories'],
+  enterpriseWhiteListFields = ['_id', 'profile.companyName', 'profile.yearEstablished', 'profile.classifications', 'profile.description', 'specialities', 'catalog', 'worker.requesterRatingsPerCategory', 'worker.acceptanceRatesPerCategory', 'worker.acceptanceRate', 'worker.averageCompletionTime', 'worker.preferedCategories'];
   
 exports.requesterTasks = {
   all: function (req, res) {
@@ -225,8 +231,83 @@ exports.biddingActions = {
         }
       });
     });
+  },
+  bidderInfo: function (req, res) {
+    getUserTypeObject(req, res, function(typeObj) {
+      taskFindOne(req.body.taskId, function (err, task) {
+        if (ownsTask(task, typeObj)) {
+          var indBiddersIds = [],
+            entBiddersIds = [];
+          for (var bid = 0; bid < task.task.bids[bid].length; bid++) {
+            if (task.bids[bid].worker.workerType.enterprise && !task.bids[bid].worker.workerType.individual) {
+              entBiddersIds.push(task.bids[bid].worker.workerId);
+            } else if (task.bids[bid].worker.workerType.individual && !task.bids[bid].worker.workerType.enterprise) {
+              indBiddersIds.push(task.bids[bid].worker.workerId);
+            } else {
+              indBiddersIds.push(task.bids[bid].worker.workerId);
+              entBiddersIds.push(task.bids[bid].worker.workerId);
+            }
+          }
+          getMongoIndividuals(indBiddersIds, function (err, individuals) {
+            if (err)
+              return res.status(422).send({
+                message: err
+              });
+            getMongoEnterprises(entBiddersIds, function (err, enterprises) {
+              if (err)
+                return res.status(422).send({
+                  message: err
+                });
+              individuals = _.pick(individuals, individualWhiteListFields);
+              individuals.forEach(function(ind) {
+                ind.displayId = hashTypeObjId(ind._id);
+              });
+              enterprises = _.pick(enterprises, enterpriseWhiteListFields);
+              enterprises.forEach(function(ent) {
+                ent.displayId = hashTypeObjId(ent._id);
+              });
+              res.json({ individuals: individuals, enterprises: enterprises });
+            });
+          });
+        } else {
+          return res.status(422).send({
+            message: 'You are not the owner of this task'
+          });
+        }
+      });
+    });
   }
 };
+
+function getMongoIndividuals(indIds, callBack) {
+  if (indIds.length > 0)
+    Individual.find({ '_id': { $in: indIds } }, function(err, inds) {
+      if (err)
+        callBack(errorHandler.getErrorMessage(err));
+      return callBack(null, inds) 
+    });
+  return callBack(null, []);
+}
+
+function getMongoEnterprises(entIds, callBack) {
+  if (entIds.length > 0)
+    Enterprise.find({ '_id': { $in: entIds } }, function(err, ents) {
+      if (err)
+        callBack(errorHandler.getErrorMessage(err))
+      return callBack(null, ents);
+    });
+  return callBack(null, []);
+}
+
+function hashTypeObjId(id) {
+  var returnVal = null;
+  for (var i = 1; i <= id.length; i++) {
+    returnVal += id.codePointAt(i - 1) * i;
+  }
+  if (returnVal)
+    return returnVal.toString(16);
+  return null;
+}
 
 function getAllTasksForIds(req, res, taskIdGetFunction, callBack) {
   getUserTypeObject(req, res, function(typeObj) {
