@@ -154,7 +154,7 @@
       </div>
     </div>
     <div class="tasks-group" ng-repeat="task in vm.tasks | filter : vm.filters : false | orderBy: vm.sort : vm.sortReversed as results track by $index">
-      <div class="tasks-row" ng-click="vm.selectTask($index)">
+      <div class="tasks-row" ng-click="vm.toggleTask($index)">
         <div class="tasks-cell  clickable-looking">
           {{task.name}}
         </div>
@@ -172,7 +172,7 @@
         </div>
         <div class="tasks-cell">
           <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Actions
+            <button class="btn btn-primary dropdown-toggle" ng-click="vm.selectTask($index); $event.stopPropagation()" type="button" data-toggle="dropdown">Actions
             <span class="caret"></span></button>
             <ul class="dropdown-menu">
               <div ng-repeat="action in task.taskActions">
@@ -191,13 +191,7 @@
             Requires: {{task.skillsNeeded}}
           </div>
           <div class="tasks-cell" ng-if="task.bids.length > 0">
-            Examine bids:
-            <select ng-size="5" ng-model="task.selectedBid" ng-options="bid._id as ('$' + bid.bid) for bid in task.bids">
-            </select>
-          </div>
-          <div class="tasks-cell" ng-if="task.bids.length > 0">
-              <button class="btn" ng-disabled="!task.selectedBid" ng-click="vm.viewResume()">View Resume</button>
-              <button class="btn btn-primary" ng-disabled="!task.selectedBid" ng-click="vm.approveForTask(task.selectedBid)">Approve for task</button>
+            {{task.bids.length}} Applicants
           </div>
         </div>
         <div class="tasks-row">

@@ -70,8 +70,15 @@
     };
 
     vm.selectedTask = -1;
+    vm.toggleTask = function(index) {
+      if (index !== vm.selectedTask) {
+        vm.selectTask(index);
+      } else {
+        vm.selectedTask = -1;
+      }
+    };
     vm.selectTask = function(index) {
-      if (index < vm.tasks.length && index !== vm.selectedTask) {
+      if (index < vm.tasks.length) {
         vm.selectedTask = index;
       } else {
         vm.selectedTask = -1;
