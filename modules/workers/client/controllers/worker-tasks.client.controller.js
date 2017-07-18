@@ -75,14 +75,14 @@
             taskId: vm.tasks[sliderId]._id,
             progress: vm.tasks[sliderId].progress
           };
-          console.log('update: ' + JSON.stringify(update, null ,' '));
+          console.log('update: ' + JSON.stringify(update, null, ' '));
 
           WorkersService.updateActiveTask(update)
             .then(function(data) {
               console.log(data);
             });
         }
-      }
+      };
     };
 
     vm.loadData = function(data) {
@@ -129,7 +129,7 @@
 
     function workerIsEligible(task) {
       return true;
-    };
+    }
 
     vm.loadOpenTasks = function(data) {
       console.log(data);
@@ -163,9 +163,7 @@
                 bikeshed: 'Accept Task'
               });
             }
-          } else {
-
-          }
+          } // else {
           var clientTask = {
             '_id': task._id,
             'name': task.title,
@@ -238,7 +236,7 @@
     vm.actOnTask = function(index, action) {
       if (index < vm.tasks.length) {
         console.log(action.id);
-        switch(action.id) {
+        switch (action.id) {
           case 'apply':
             break;
           case 'bid':
@@ -287,7 +285,7 @@
     // This function is necessary to initially render the progress sliders
     function refreshProgressSliders() {
       $scope.$broadcast('rzSliderForceRender');
-    };
+    }
     refreshProgressSliders();
   }
 }());

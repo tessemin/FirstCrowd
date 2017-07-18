@@ -37,7 +37,7 @@
     }
 
     function submitTask(isValid) {
-      if(!isValid) {
+      if (!isValid) {
         console.log('not valid!');
         $scope.$broadcast('show-errors-check-validity', 'vm.newTaskForm');
         Notification.error({ message: 'Check the form for errors!' });
@@ -48,7 +48,7 @@
       RequestersService.createTask(vm.newTask)
         .then(onSubmitNewTaskSuccess)
         .catch(onSubmitNewTaskFailure);
-    };
+    }
 
     vm.addNote = addNote;
     vm.removeNote = removeNote;
@@ -56,16 +56,16 @@
 
     function onSubmitNewTaskSuccess(response) {
       console.log(response);
-      if(typeof response != "undefined" && response.message) {
-        Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-suc"></i> Success:'});
+      if (typeof response != 'undefined' && response.message) {
+        Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-suc"></i> Success:' });
       }
-    };
+    }
 
     function onSubmitNewTaskFailure(response) {
-      if(typeof response != "undefined" && response.data) {
-        console.log(response)
+      if (typeof response != 'undefined' && response.data) {
+        console.log(response);
         Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Submission failed! Task not submitted!' });
       }
-    };
+    }
   }
 }());
