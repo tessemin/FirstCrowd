@@ -1,27 +1,27 @@
 <section id="graph">
   <make-graph></make-graph>
 
-  <div class="toggle-side form-group col-xs-3"  ng-if="!vm.selected.companyName">
+  <div class="toggle-side form-group col-xs-3"  ng-show="!vm.selected.companyName">
     <div class="inner-addon right-addon">
-      <i class="glyphicon glyphicon-search" ng-click="vm.search()"></i>
-      <input class="form-control" type="text" ng-model="vm.searching" placeholder="Search">
+      <i class="glyphicon glyphicon-search" ng-click="vm.search(vm.query)"></i>
+      <input class="form-control" type="text" ng-model="vm.query" placeholder="Search">
     </div>
   </div>
 
-  <div ng-if="vm.selected.companyName">
+  <div ng-show="vm.selected.companyName">
     <div ng-show="vm.sidebar" class="side-panel">
 
       <div class="form-group col-xs-12">
         <div class="inner-addon right-addon col-xs-10">
-          <i class="glyphicon glyphicon-search" ng-click="vm.search()"></i>
-          <input class="form-control" type="text" ng-model="vm.searching" placeholder="Search">
+          <i class="glyphicon glyphicon-search" ng-click="vm.search(vm.query)"></i>
+          <input class="form-control" type="text" ng-model="vm.query" placeholder="Search">
         </div>
         <div class="col-xs-1 inner-addon">
           <i class="exit glyphicon glyphicon-remove" ng-click="vm.close()"></i>
         </div>
       </div>
 
-      <div class="col-xs-12">
+      <div class="display col-xs-12">
         <div>
           <h3>
             <span ng-bind="vm.header"></span>
@@ -34,6 +34,9 @@
               hi {{item.companyName}}
             </div>
           </div>
+        <div class="see-all col-xs-12">
+          Click <a>here</a> to see all <span ng-bind="vm.head"></span>
+        </div>
         </div>
       </div>
 

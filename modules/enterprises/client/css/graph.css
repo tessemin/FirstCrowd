@@ -10,7 +10,6 @@
 
 .side-panel {
   background-color: lightgray;
-  height: 100%;
   padding: 5px;
   position: absolute;
   width: 22em;
@@ -78,9 +77,6 @@ html .competition{
 }
 
 .side-list {
-	/* border-top:1px solid #fff; */
-  float: left;
-  max-height: 60vh;
   overflow-y: auto;
 }
 
@@ -95,4 +91,8 @@ html .competition{
     color:white;
     display:block;
     height:1px;
+}
+
+.see-all {
+  padding-top: 10px;
 }
