@@ -49,7 +49,7 @@
               id: 'suspend',
               bikeshed: 'Suspend Task'
             });
-            if(task.bids.length > 0) {
+            if (task.bids.length > 0) {
               taskActions.push({
                 id: 'getBidderInfo',
                 bikeshed: 'Choose Worker'
@@ -108,16 +108,16 @@
           return i;
         }
       }
-    };
+    }
 
     vm.cancelDeletion = function() {
       vm.taskForDeletion = -1;
-    }
+    };
 
     vm.deleteTaskConfirmed = function() {
       console.log('delete task with _id of ' + vm.taskForDeletion);
       console.log('task is at index ' + getIndexFromTaskId(vm.taskForDeletion));
-      RequestersService.deleteTask({taskId: vm.taskForDeletion})
+      RequestersService.deleteTask({ taskId: vm.taskForDeletion })
         .then(function(response) {
           var index = getIndexFromTaskId(vm.taskForDeletion);
           vm.tasks.splice(index, 1);
@@ -128,65 +128,65 @@
           Notification.error({ message: response.message, title: '<i class="glyphicon glyphicon-remove"></i> Deletion failed! Task not deleted!' });
           vm.cancelDeletion();
         });
-    }
+    };
 
     vm.actOnTask = function(index, action) {
-        switch(action) {
-          case 'delete':
-            console.log(index);
-            vm.taskForDeletion = vm.tasks[index]._id;
-            $('#confirmDeletion').modal();
-            break;
-          case 'getBidderInfo':
-            RequestersService.getBidderInfo({taskId: vm.tasks[index]._id})
-              .then(function(response) {
-                console.log(response);
-              })
-              .catch(function(response) {
-              });
-            break;
-          case 'activate':
-            // init modal
-            vm.modal = {};
-            // put task info into modal
-            if (vm.tasks[index]) {
-              vm.modal.showContent = true;
-              var task = vm.tasks[index].taskRef;
-              if (task.payment.bidding.bidable) {
-                vm.modal.bidable = true;
-                vm.modal.bidding = {}
-                vm.modal.bidding.maxPricePerWorker = task.payment.bidding.startingPrice;
-                vm.modal.bidding.minPricePerWorker = task.payment.bidding.minPrice;
-                if (task.payment.bidding.timeRange) {
-                  vm.modal.bidding.biddingStart = new Date(task.payment.bidding.timeRange.start);
-                  vm.modal.bidding.biddingEnd = new Date(task.payment.bidding.timeRange.end);
-                }
-              } else {
-                vm.modal.bidable = false;
-                vm.modal.costPerWorker = task.payment.staticPrice;
+      switch (action) {
+        case 'delete':
+          console.log(index);
+          vm.taskForDeletion = vm.tasks[index]._id;
+          $('#confirmDeletion').modal();
+          break;
+        case 'getBidderInfo':
+          RequestersService.getBidderInfo({ taskId: vm.tasks[index]._id })
+            .then(function(response) {
+              console.log(response);
+            })
+            .catch(function(response) {
+            });
+          break;
+        case 'activate':
+          // init modal
+          vm.modal = {};
+          // put task info into modal
+          if (vm.tasks[index]) {
+            vm.modal.showContent = true;
+            var task = vm.tasks[index].taskRef;
+            if (task.payment.bidding.bidable) {
+              vm.modal.bidable = true;
+              vm.modal.bidding = {};
+              vm.modal.bidding.maxPricePerWorker = task.payment.bidding.startingPrice;
+              vm.modal.bidding.minPricePerWorker = task.payment.bidding.minPrice;
+              if (task.payment.bidding.timeRange) {
+                vm.modal.bidding.biddingStart = new Date(task.payment.bidding.timeRange.start);
+                vm.modal.bidding.biddingEnd = new Date(task.payment.bidding.timeRange.end);
               }
-              activateTaskId = task._id;
-              console.log(task)
-              vm.modal.title = task.title;
-              vm.modal.description = task.description;
-              vm.modal.preapproval = task.preapproval;
-              vm.modal.secret = task.secret;
-              vm.modal.skillsNeeded = task.skillsNeeded.join(', ');
-              vm.modal.category = task.category;
-              vm.modal.multiplicity = task.multiplicity;
-              vm.modal.tax = 0.00;
-              vm.modal.deadline = vm.tasks[index].deadline;
-              vm.modal.dateCreated = vm.tasks[index].postingDate;
-
-              // open modal for payment
-              vm.openPaymentModal();
             } else {
-              Notification.error({ message: 'Task index does not exist.', title: '<i class="glyphicon glyphicon-remove"></i> Cannot Find Task' });
+              vm.modal.bidable = false;
+              vm.modal.costPerWorker = task.payment.staticPrice;
             }
-            break;
-          default:
-            console.log('perform ' + action + ' on task ' + id);
-        }
+            activateTaskId = task._id;
+            console.log(task)
+            vm.modal.title = task.title;
+            vm.modal.description = task.description;
+            vm.modal.preapproval = task.preapproval;
+            vm.modal.secret = task.secret;
+            vm.modal.skillsNeeded = task.skillsNeeded.join(', ');
+            vm.modal.category = task.category;
+            vm.modal.multiplicity = task.multiplicity;
+            vm.modal.tax = 0.00;
+            vm.modal.deadline = vm.tasks[index].deadline;
+            vm.modal.dateCreated = vm.tasks[index].postingDate;
+
+            // open modal for payment
+            vm.openPaymentModal();
+          } else {
+            Notification.error({ message: 'Task index does not exist.', title: '<i class="glyphicon glyphicon-remove"></i> Cannot Find Task' });
+          }
+          break;
+        default:
+          console.log('perform ' + action + ' on task ' + id);
+      }
     };
 
     RequestersService.getAllTasks()
