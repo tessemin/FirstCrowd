@@ -289,13 +289,8 @@ exports.partners = {
           message: 'No Enterprise with that identifier has been found'
         });
       } else {
-        getUsersByIds(userIds, function (err, users) {
-          if (err)
-            return res.status(422).send({
-              message: 'Error connecting suppliers to users'
-            });
-        });
-        return res.json({ suppliers: suppliers });
+
+        return res.json({ suppliers: enterprise.partners.supplier });
       }
     });
   },
@@ -310,13 +305,8 @@ exports.partners = {
           message: 'No Enterprise with that identifier has been found'
         });
       } else {
-        getUsersByIds(typeObjs, function (err, users) {
-          if (err)
-            return res.status(422).send({
-              message: 'Error connecting customers to users'
-            });
-        });
-        return res.json({ customers: customers });
+
+        return res.json({ customers: enterprise.partners.customer });
       }
     });
   },
