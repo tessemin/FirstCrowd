@@ -447,8 +447,9 @@ exports.fuzzyEntepriseQuery = function(req, res) {
         'profile.companyName'
       ]
     };
-    var fuse = new Fuse(ents, options); // "list" is the item array
+    var fuse = new Fuse(ents, options);
     var result = fuse.search(req.body.query);
+    res.json({ result: result });
   });
 };
 
