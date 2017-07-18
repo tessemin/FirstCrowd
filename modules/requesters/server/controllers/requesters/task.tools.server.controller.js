@@ -324,11 +324,9 @@ function getNestedProperties(object, propertyNames) {
     for (var prop = 0; prop < propertyNames.length; prop++) {
       if (propertyNames[prop].includes('.')) {
         var parts = propertyNames[prop].split('.'),
-          length = parts.length,
-          i,
           nestedObj = returnObjs,
           property = object || this;
-        for ( i = 0; i < length; i++ ) {
+        for (var i = 0; i < parts.length; i++ ) {
           if (!nestedObj[parts[i]])
             nestedObj[parts[i]] = {};
           if (i < length - 1)

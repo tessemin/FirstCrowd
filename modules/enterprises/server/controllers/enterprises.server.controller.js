@@ -14,10 +14,6 @@ var path = require('path'),
   validator = require('validator'),
   superEnterprise = null;
   
-var usedXYValues = [{ x: 0, y: 0 }];
-var minXYVals = -300;
-var maxXYVals = 300;
-
 var whitelistedFields = ['contactPreference', 'email', 'phone', 'username', 'middleName', 'displayName'];
 
 /**
@@ -293,7 +289,12 @@ exports.partners = {
           message: 'No Enterprise with that identifier has been found'
         });
       } else {
-        var suppliers = setXYForPartners(enterprise.partners.supplier);
+        getUsersByIds(userIds, function (err, users) {
+          if (err)
+            return res.status(422).send({
+              message: 'Error connecting suppliers to users'
+            });
+        });
         return res.json({ suppliers: suppliers });
       }
     });
@@ -309,24 +310,59 @@ exports.partners = {
           message: 'No Enterprise with that identifier has been found'
         });
       } else {
-        var customers = setXYForPartners(enterprise.partners.customer);
+        getUsersByIds(typeObjs, function (err, users) {
+          if (err)
+            return res.status(422).send({
+              message: 'Error connecting customers to users'
+            });
+        });
         return res.json({ customers: customers });
       }
     });
   },
   getCompetitors: function(req, res) {
-    Enterprise.findById(req.body.enterpriseId, function (err, enterprise) {
+    Enterprise.findById(req.body.enterpriseId, function (err, thisEnterprise) {
       if (err) {
         return res.status(422).send({
           message: errorHandler.getErrorMessage(err)
         });
-      } else if (!enterprise) {
+      } else if (!thisEnterprise) {
         return res.status(422).send({
           message: 'No Enterprise with that identifier has been found'
         });
       } else {
-        var competitors = setXYForPartners(enterprise.partners.competitor);
-        return res.json({ competitors: competitors });
+        var entIds = [];
+        thisEnterprise.partners.competitor.forEach(function(ele) {
+          if (ele.enterpriseId)
+            entIds.push(ele.enterpriseId);
+        }, function () {
+          Enterprise.find({ '_id': { $in: entIds } }, function (err, enterprises) {
+            if (err)
+              return res.status(422).send({
+                message: errorHandler.getErrorMessage(err)
+              });
+            var userIds = [];
+            enterprises.forEach(function(ele) {
+              if (ele.enterpriseId)
+                userIds.push(ele.user);
+            }, function () {
+              User.find({ '_id': { $in: userIds } }, function (err, users) {
+                if (err)
+                  return res.status(422).send({
+                    message: 'Error connecting competitors to users'
+                  });
+                var competitors = thisEnterprise.partners.competitor.map(function(ent) {
+                  for (var user = 0; user < users.length; user++) {
+                    if (users[user]._id.toString() === ent.user)
+                      ent.img = users[user].profileImageURL;
+                  }
+                }, function(map){
+                  return res.json({ competitors: map });
+                });
+              });
+            });
+          });
+        });
       }
     });
   }
@@ -389,31 +425,6 @@ exports.getDemands = function(req, res) {
     }
   });
 };
-
-function setXYForPartners(partner) {
-  var xVal = null;
-  var yVal = null;
-  var times = 0;
-  for (var part = 0; part < partner.length; part++) {
-    xVal = getRandomNumber(minXYVals, maxXYVals);
-    yVal = getRandomNumber(minXYVals, maxXYVals);
-    times = 0;
-    while (usedXYValues.indexOf({ x: xVal, y: yVal }) !== -1) {
-      xVal = getRandomNumber(minXYVals, maxXYVals);
-      yVal = getRandomNumber(minXYVals, maxXYVals);
-      if (times > 100) {
-        minXYVals += 100;
-        maxXYVals += 100;
-        times = 0;
-      }
-      times++;
-    }
-    usedXYValues.push({ x: xVal, y: yVal });
-    partner[part].x = xVal;
-    partner[part].y = yVal;
-  }
-  return partner;
-}
 
 /**
  * get Enterprise object
