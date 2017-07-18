@@ -38,17 +38,23 @@
               bikeshed: 'Delete Task'
             });
           }
-          if (task.status === 'open') {
-            taskActions.push({
-              id: 'suspend',
-              bikeshed: 'Suspend Task'
-            });
-          }
           if (task.status === 'inactive') {
             taskActions.push({
               id: 'activate',
               bikeshed: 'Activate Task'
             });
+          }
+          if (task.status === 'open') {
+            taskActions.push({
+              id: 'suspend',
+              bikeshed: 'Suspend Task'
+            });
+            if(task.bids.length > 0) {
+              taskActions.push({
+                id: 'getBidderInfo',
+                bikeshed: 'Choose Worker'
+              });
+            }
           }
           vm.tasks.push({
             '_id': task._id,
@@ -130,6 +136,14 @@
             console.log(index);
             vm.taskForDeletion = vm.tasks[index]._id;
             $('#confirmDeletion').modal();
+            break;
+          case 'getBidderInfo':
+            RequestersService.getBidderInfo({taskId: vm.tasks[index]._id})
+              .then(function(response) {
+                console.log(response);
+              })
+              .catch(function(response) {
+              });
             break;
           case 'activate':
             // init modal
