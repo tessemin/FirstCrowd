@@ -171,8 +171,8 @@
           <rzslider class="requester-slider" rz-slider-model="task.progress" rz-slider-options="vm.getSliderOptions(vm.tasks.indexOf(task))"></rzslider>
         </div>
         <div class="tasks-cell">
-          <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle" ng-click="$event.originalEvent.dropdown = true; vm.selectTask($index)" type="button" data-toggle="dropdown">Actions
+          <div class="dropdown" ng-click="$event.originalEvent.dropdown = true">
+            <button class="btn btn-primary dropdown-toggle" ng-click="vm.selectTask($index)" type="button" data-toggle="dropdown">Actions
             <span class="caret"></span></button>
             <ul class="dropdown-menu">
               <div ng-repeat="action in task.taskActions">
