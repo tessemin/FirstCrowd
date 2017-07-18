@@ -329,11 +329,11 @@ function getNestedProperties(object, propertyNames) {
         for (var i = 0; i < parts.length; i++ ) {
           if (!nestedObj[parts[i]])
             nestedObj[parts[i]] = {};
-          if (i < length - 1)
+          if (i < parts.length - 1)
             nestedObj = nestedObj[parts[i]];
           property = property[[parts[i]]];
         }
-        nestedObj[parts[length - 1]] = property;
+        nestedObj[parts[parts.length - 1]] = property;
       }
       else {
         returnObjs[propertyNames[prop]] = object[propertyNames[prop]];
