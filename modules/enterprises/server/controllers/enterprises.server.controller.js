@@ -429,7 +429,7 @@ exports.getDemands = function(req, res) {
   });
 };
 
-exports.fuzzyEntepriseSearch = function(req, res) {
+exports.fuzzyEntepriseQuery = function(req, res) {
   Enterprise.find({}, function (err, ents) {
     if (err) {
       return res.status(422).send({
@@ -448,7 +448,7 @@ exports.fuzzyEntepriseSearch = function(req, res) {
       ]
     };
     var fuse = new Fuse(ents, options); // "list" is the item array
-    var result = fuse.search(req.body.search);
+    var result = fuse.search(req.body.query);
   });
 };
 
