@@ -174,9 +174,9 @@
           <div class="dropdown">
             <button class="btn btn-primary dropdown-toggle" ng-click="vm.selectTask($index); $event.stopPropagation()" type="button" data-toggle="dropdown">Actions
             <span class="caret"></span></button>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu actions-dropdown-menu">
               <div ng-repeat="action in task.taskActions">
-                <li><button class="dropdown-button-item" ng-click="vm.actOnTask(vm.tasks.indexOf(task), action.id)">{{action.bikeshed}}</button></li>
+                <li class="dropdown-button-item actions-dropdown-button-item" ng-click="vm.actOnTask(vm.tasks.indexOf(task), action.id)">{{action.bikeshed}}</li>
               </div>
             </ul>
           </div>
