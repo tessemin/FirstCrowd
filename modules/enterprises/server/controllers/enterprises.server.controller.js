@@ -12,6 +12,7 @@ var path = require('path'),
   coreController = require(path.resolve('./modules/core/server/controllers/core.server.controller')),
   taskTools = require(path.resolve('modules/requesters/server/controllers/requesters/task.tools.server.controller')),
   _ = require('lodash'),
+  fuse = require('fuse.js'),
   validator = require('validator'),
   superEnterprise = null;
   
@@ -428,6 +429,29 @@ exports.getDemands = function(req, res) {
   });
 };
 
+exports.fuzzyEntepriseSearch = function(req, res) {
+  Enterprise.find({}, function (err, ents) {
+    if (err) {
+      return res.status(422).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    }
+    var options = {
+      shouldSort: true,
+      threshold: 0.6,
+      location: 0,
+      distance: 100,
+      maxPatternLength: 32,
+      minMatchCharLength: 1,
+      keys: [
+        'profile.companyName'
+      ]
+    };
+    var fuse = new Fuse(ents, options); // "list" is the item array
+    var result = fuse.search(req.body.search);
+  });
+};
+
 /**
  * get Enterprise object
  */
@@ -464,6 +488,8 @@ exports.getEnterprise = function(req, res) {
   });
 };
 
+
+// WILL BE GONE, FOR TESTING ONLY
 exports.setupEnterpriseGraph = function(req, res) {
   getEnterprise(req, res, function (myEnterprise) {
     var entConnect = [];
@@ -578,5 +604,7 @@ function generateRandomString(length) {
     text += possible.charAt(getRandomNumber(0, possible.length - 1));
   return text;
 }
+
+
 
 exports.getThisEnterprise = getEnterprise;
