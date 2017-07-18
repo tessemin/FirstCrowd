@@ -63,9 +63,9 @@
         method: 'POST',
         url: '/enterprises/api/enterprises/setupEnterpriseGraph'
       },
-      fuzzyEntSearch: {
+      fuzzyEntQuery: {
         method: 'POST',
-        url: '/enterprises/api/enterprises/fuzzyEntepriseSearch/'
+        url: '/enterprises/api/enterprises/fuzzyEntepriseQuery/'
       }
     });
 
@@ -109,8 +109,8 @@
       getServices: function (enterpriseId) {
         return this.getEnterpriseServices(enterpriseId).$promise;
       },
-      fuzzySearch: function (query) {
-        return this.fuzzyEntSearch(query).$promise;
+      fuzzyQuery: function (query) {
+        return this.fuzzyEntQuery(query).$promise;
       }
     });
 
