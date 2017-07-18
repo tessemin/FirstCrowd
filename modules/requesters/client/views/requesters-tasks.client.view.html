@@ -150,18 +150,18 @@
         </button>
       </div>
       <div class="tasks-cell">
-        Actions
+        <!-- 'Actions' doesn't need a column label, but we need one to line up other elements -->
       </div>
     </div>
     <div class="tasks-group" ng-repeat="task in vm.tasks | filter : vm.filters : false | orderBy: vm.sort : vm.sortReversed as results track by $index">
-      <div class="tasks-row" ng-click="vm.toggleTask($index)">
+      <div class="tasks-row" ng-click="$event.originalEvent.dropdown || (vm.toggleTask($index))">
         <div class="tasks-cell  clickable-looking">
           {{task.name}}
         </div>
         <div class="tasks-cell ">
           {{task.postingDate.toDateString()}}
         </div>
-        <div class="tasks-cell">
+        <div class="tasks-cell">,
           {{task.deadline.toDateString()}}
         </div>
         <div class="tasks-cell">
@@ -172,7 +172,7 @@
         </div>
         <div class="tasks-cell">
           <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle" ng-click="vm.selectTask($index); $event.stopPropagation()" type="button" data-toggle="dropdown">Actions
+            <button class="btn btn-primary dropdown-toggle" ng-click="$event.originalEvent.dropdown = true; vm.selectTask($index)" type="button" data-toggle="dropdown">Actions
             <span class="caret"></span></button>
             <ul class="dropdown-menu">
               <div ng-repeat="action in task.taskActions">
