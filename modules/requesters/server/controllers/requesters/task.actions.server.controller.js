@@ -13,9 +13,9 @@ var path = require('path'),
   
 var getUserTypeObject = taskTools.getUserTypeObject,
   isRequester = taskTools.isRequester,
-  taskFindOne = taskTools.taskFindOne,
   statusPushTo = taskTools.statusPushTo,
-  ownsTask = taskTools.ownsTask;
+  ownsTask = taskTools.ownsTask,
+  taskFindOne = taskSearch.taskFindOne;
   
 var taskId = null;
   

@@ -12,6 +12,10 @@
     var vm = this;
     vm.tasks = [];
     vm.loaded = false;
+    
+    // For activating a task
+    var activateTaskId = null;
+    
     // Filters
     vm.clearFilters = function() {
       vm.filters = {};
@@ -49,7 +53,7 @@
               id: 'suspend',
               bikeshed: 'Suspend Task'
             });
-            if(task.bids.length > 0) {
+            if (task.bids.length > 0) {
               taskActions.push({
                 id: 'getBidderInfo',
                 bikeshed: 'Choose Worker'
@@ -108,16 +112,16 @@
           return i;
         }
       }
-    };
+    }
 
     vm.cancelDeletion = function() {
       vm.taskForDeletion = -1;
-    }
+    };
 
     vm.deleteTaskConfirmed = function() {
       console.log('delete task with _id of ' + vm.taskForDeletion);
       console.log('task is at index ' + getIndexFromTaskId(vm.taskForDeletion));
-      RequestersService.deleteTask({taskId: vm.taskForDeletion})
+      RequestersService.deleteTask({ taskId: vm.taskForDeletion })
         .then(function(response) {
           var index = getIndexFromTaskId(vm.taskForDeletion);
           vm.tasks.splice(index, 1);
@@ -128,65 +132,64 @@
           Notification.error({ message: response.message, title: '<i class="glyphicon glyphicon-remove"></i> Deletion failed! Task not deleted!' });
           vm.cancelDeletion();
         });
-    }
+    };
 
     vm.actOnTask = function(index, action) {
-        switch(action) {
-          case 'delete':
-            console.log(index);
-            vm.taskForDeletion = vm.tasks[index]._id;
-            $('#confirmDeletion').modal();
-            break;
-          case 'getBidderInfo':
-            RequestersService.getBidderInfo({taskId: vm.tasks[index]._id})
-              .then(function(response) {
-                console.log(response);
-              })
-              .catch(function(response) {
-              });
-            break;
-          case 'activate':
-            // init modal
-            vm.modal = {};
-            // put task info into modal
-            if (vm.tasks[index]) {
-              vm.modal.showContent = true;
-              var task = vm.tasks[index].taskRef;
-              if (task.payment.bidding.bidable) {
-                vm.modal.bidable = true;
-                vm.modal.bidding = {}
-                vm.modal.bidding.maxPricePerWorker = task.payment.bidding.startingPrice;
-                vm.modal.bidding.minPricePerWorker = task.payment.bidding.minPrice;
-                if (task.payment.bidding.timeRange) {
-                  vm.modal.bidding.biddingStart = new Date(task.payment.bidding.timeRange.start);
-                  vm.modal.bidding.biddingEnd = new Date(task.payment.bidding.timeRange.end);
-                }
-              } else {
-                vm.modal.bidable = false;
-                vm.modal.costPerWorker = task.payment.staticPrice;
+      switch (action) {
+        case 'delete':
+          console.log(index);
+          vm.taskForDeletion = vm.tasks[index]._id;
+          $('#confirmDeletion').modal();
+          break;
+        case 'getBidderInfo':
+          RequestersService.getBidderInfo({ taskId: vm.tasks[index]._id })
+            .then(function(response) {
+              console.log(response);
+            })
+            .catch(function(response) {
+            });
+          break;
+        case 'activate':
+          // init modal
+          vm.modal = {};
+          // put task info into modal
+          if (vm.tasks[index]) {
+            vm.modal.showContent = true;
+            var task = vm.tasks[index].taskRef;
+            if (task.payment.bidding.bidable) {
+              vm.modal.bidable = true;
+              vm.modal.bidding = {};
+              vm.modal.bidding.maxPricePerWorker = task.payment.bidding.startingPrice;
+              vm.modal.bidding.minPricePerWorker = task.payment.bidding.minPrice;
+              if (task.payment.bidding.timeRange) {
+                vm.modal.bidding.biddingStart = new Date(task.payment.bidding.timeRange.start);
+                vm.modal.bidding.biddingEnd = new Date(task.payment.bidding.timeRange.end);
               }
-              activateTaskId = task._id;
-              console.log(task)
-              vm.modal.title = task.title;
-              vm.modal.description = task.description;
-              vm.modal.preapproval = task.preapproval;
-              vm.modal.secret = task.secret;
-              vm.modal.skillsNeeded = task.skillsNeeded.join(', ');
-              vm.modal.category = task.category;
-              vm.modal.multiplicity = task.multiplicity;
-              vm.modal.tax = 0.00;
-              vm.modal.deadline = vm.tasks[index].deadline;
-              vm.modal.dateCreated = vm.tasks[index].postingDate;
-
-              // open modal for payment
-              vm.openPaymentModal();
             } else {
-              Notification.error({ message: 'Task index does not exist.', title: '<i class="glyphicon glyphicon-remove"></i> Cannot Find Task' });
+              vm.modal.bidable = false;
+              vm.modal.costPerWorker = task.payment.staticPrice;
             }
-            break;
-          default:
-            console.log('perform ' + action + ' on task ' + id);
-        }
+            activateTaskId = task._id;
+            vm.modal.title = task.title;
+            vm.modal.description = task.description;
+            vm.modal.preapproval = task.preapproval;
+            vm.modal.secret = task.secret;
+            vm.modal.skillsNeeded = task.skillsNeeded.join(', ');
+            vm.modal.category = task.category;
+            vm.modal.multiplicity = task.multiplicity;
+            vm.modal.tax = 0.00;
+            vm.modal.deadline = vm.tasks[index].deadline;
+            vm.modal.dateCreated = vm.tasks[index].postingDate;
+
+            // open modal for payment
+            vm.openPaymentModal();
+          } else {
+            Notification.error({ message: 'Task index does not exist.', title: '<i class="glyphicon glyphicon-remove"></i> Cannot Find Task' });
+          }
+          break;
+        default:
+          console.log('perform ' + action + ' on task ' + vm.tasks[index]._id);
+      }
     };
 
     RequestersService.getAllTasks()
@@ -197,9 +200,8 @@
     // This function is necessary to initially render the progress sliders
     (function refreshProgressSliders() {
       $scope.$broadcast('rzSliderForceRender');
-      for(var i = 0; i < vm.tasks.length; ++i) {
-      }
-    })();
+      for (var i = 0; i < vm.tasks.length; ++i) { i; }
+    }());
 
     vm.getSliderOptions = function(id) {
       return {
@@ -219,17 +221,17 @@
             return 'rgb(128, 128, 255)';
           }
         }
-      }
+      };
     };
 
     // for payment modal
     vm.openPaymentModal = function () {
-       $('#reviewPaymentModal').modal();
+      $('#reviewPaymentModal').modal();
     };
 
     vm.activateBidableTask = function() {
       vm.closePaymentModal();
-      RequestersService.activateBidable({taskId: activateTaskId})
+      RequestersService.activateBidable({ taskId: activateTaskId })
         .then(function(response) {
           var index = getIndexFromTaskId(response.taskId);
           vm.tasks[index].status = 'open';
@@ -243,7 +245,7 @@
     };
 
     vm.approveBid = function(bidId) {
-      RequestersService.activateBidable({taskId: bidId})
+      RequestersService.activateBidable({ taskId: bidId })
         .then(function(response) {
           var index = getIndexFromTaskId(response.taskId);
           vm.tasks[index].status = 'taken';
@@ -252,7 +254,7 @@
         .catch(function(response) {
           Notification.error({ message: response.message, title: '<i class="glyphicon glyphicon-remove"></i> Approval failed! Task not assigned!' });
         });
-    }
+    };
 
     vm.closePaymentModal = function () {
       $('#reviewPaymentModal').modal('hide');
@@ -260,18 +262,17 @@
 
     // TODO: Make this angular compliant
     // paypal payment action
-    var activateTaskId = null;
-    function paypalButtonRender() {
+    (function paypalButtonRender() {
       activateTaskId = null;
       var executePayTaskId = null;
       paypal.Button.render({
         env: 'sandbox', // Or 'sandbox'
         commit: true, // Show a 'Pay Now' button
         style: {
-            size: 'responsive',
-            color: 'blue',
-            shape: 'rect',
-            label: 'pay'
+          size: 'responsive',
+          color: 'blue',
+          shape: 'rect',
+          label: 'pay'
         },
         payment: function() {
           return paypal.request.post('/api/payment/paypal/create/', { taskId: activateTaskId }).then(function(data) {
@@ -295,11 +296,10 @@
         },
         onError: function(err) {
           // show a gracful error
-          Notification.error({ message: err.message, title: '<i class="glyphicon glyphicon-remove"></i> Error!'});
+          Notification.error({ message: err.message, title: '<i class="glyphicon glyphicon-remove"></i> Error!' });
           activateTaskId = null;
         }
       }, '#paypal-button');
-    }
-    paypalButtonRender();
+    }())
   }
 }());
