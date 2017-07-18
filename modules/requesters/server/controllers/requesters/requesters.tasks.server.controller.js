@@ -24,6 +24,7 @@ var getUserTypeObject = taskTools.getUserTypeObject,
   setStatus = taskTools.setStatus,
   removeTaskFromWorkerArray = taskTools.removeTaskFromWorkerArray,
   statusPushTo = taskTools.statusPushTo,
+  extractChildren = taskTools.extractChildren,
   taskFindOne = taskSearch.taskFindOne,
   taskFindMany = taskSearch.taskFindMany,
   findWorkerByWorkerTaskObject = taskSearch.findWorkerByWorkerTaskObject;
@@ -235,10 +236,15 @@ exports.biddingActions = {
   bidderInfo: function (req, res) {
     getUserTypeObject(req, res, function(typeObj) {
       taskFindOne(req.body.taskId, function (err, task) {
+        if (err) {
+          return res.status(422).send({
+            message: err
+          });
+        }
         if (ownsTask(task, typeObj)) {
           var indBiddersIds = [],
             entBiddersIds = [];
-          for (var bid = 0; bid < task.task.bids[bid].length; bid++) {
+          for (var bid = 0; bid < task.bids.length; bid++) {
             if (task.bids[bid].worker.workerType.enterprise && !task.bids[bid].worker.workerType.individual) {
               entBiddersIds.push(task.bids[bid].worker.workerId);
             } else if (task.bids[bid].worker.workerType.individual && !task.bids[bid].worker.workerType.enterprise) {
@@ -258,14 +264,16 @@ exports.biddingActions = {
                 return res.status(422).send({
                   message: err
                 });
-              individuals = _.pick(individuals, individualWhiteListFields);
               individuals.forEach(function(ind) {
+                //ind = extractChildren(ind, individualWhiteListFields);
                 ind.displayId = hashTypeObjId(ind._id);
               });
-              enterprises = _.pick(enterprises, enterpriseWhiteListFields);
               enterprises.forEach(function(ent) {
+                //ent = extractChildren(ent, enterpriseWhiteListFields);
                 ent.displayId = hashTypeObjId(ent._id);
               });
+              console.log(individuals)
+              console.log(enterprises)
               res.json({ individuals: individuals, enterprises: enterprises });
             });
           });
@@ -284,9 +292,12 @@ function getMongoIndividuals(indIds, callBack) {
     Individual.find({ '_id': { $in: indIds } }, function(err, inds) {
       if (err)
         callBack(errorHandler.getErrorMessage(err));
-      return callBack(null, inds);
+      if (inds)
+        return callBack(null, inds);
+      return callBack(null, []);
     });
-  return callBack(null, []);
+  else
+    return callBack(null, []);
 }
 
 function getMongoEnterprises(entIds, callBack) {
@@ -294,9 +305,12 @@ function getMongoEnterprises(entIds, callBack) {
     Enterprise.find({ '_id': { $in: entIds } }, function(err, ents) {
       if (err)
         callBack(errorHandler.getErrorMessage(err));
-      return callBack(null, ents);
+      if (ents)
+        return callBack(null, ents);
+      return callBack(null, []);
     });
-  return callBack(null, []);
+  else
+    return callBack(null, []);
 }
 
 function hashTypeObjId(id) {
