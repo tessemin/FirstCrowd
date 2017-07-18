@@ -12,10 +12,11 @@
     var vm = this;
     vm.sidebar = false;
     vm.selected = {};
-    vm.searching = '';
+    vm.query = '';
     vm.text = [];
     vm.list = [];
     vm.header = 'Header!';
+    vm.head = 'Head';
 
     vm.chooseCompany = chooseCompany;
     vm.toggleSidebar = toggleSidebar;
@@ -27,16 +28,14 @@
     vm.viewCustomers = viewCustomers;
     vm.viewCompetitors = viewCompetitors;
 
-    var x = '';
     function close() {
       vm.selected = {};
-      // x = 'close';
-      // console.log(x);
     }
 
-    function search() {
-      x = 'search';
-      console.log(x);
+    function search(query) {
+      EnterprisesService.fuzzyQuery({query: query }).then(function (res) {
+        console.log(res);
+      });
     }
 
     function toggleSidebar() {
@@ -44,6 +43,10 @@
     }
 
     function viewCatalog(obj) {
+      EnterprisesService.getServices({enterpriseId: obj.selected.enterpriseId}).then(function(res) {
+        console.log(res);
+        // vm.list = res.
+      });
       EnterprisesService.getProducts({enterpriseId: obj.selected.enterpriseId}).then(function(res) {
         console.log(res);
         // vm.list = res.
@@ -52,38 +55,35 @@
     function viewDemands(obj) {
       EnterprisesService.getDemands({enterpriseId: obj.selected.enterpriseId}).then(function(res) {
         console.log(res);
-
-        // vm.list = res.
+        vm.list = res.demands;
       });
     }
     function viewSuppliers(obj) {
       vm.selected = obj.selected;
       vm.sidebar = true;
+      vm.head = 'Suppliers';
       vm.header = 'Suppliers for ';
       EnterprisesService.getSuppliers({enterpriseId: obj.selected.enterpriseId}).then(function(res) {
-        console.log(res);
-
-        vm.list = res;
+        vm.list = res.suppliers;
       });
     }
     function viewCustomers(obj) {
       vm.selected = obj.selected;
       vm.sidebar = true;
+      vm.head = 'Customers';
       vm.header = 'Customers for ';
       EnterprisesService.getCustomers({enterpriseId: obj.selected.enterpriseId}).then(function(res) {
-        console.log(res);
-
-        vm.list = res;
+        vm.list = res.customers;
       });
     }
     function viewCompetitors(obj) {
       vm.selected = obj.selected;
       vm.sidebar = true;
+      vm.head = 'Competitors';
       vm.header = 'Competitors for ';
       EnterprisesService.getCompetitors({enterpriseId: obj.selected.enterpriseId}).then(function(res) {
-        console.log(res);
-
-        vm.list = res;
+        vm.list = res.competitors;
+        console.log(vm.list);
       });
     }
 

@@ -28,8 +28,9 @@
           var height = $window.innerHeight;
           // var widthTop = width;
           // var heightTop = height;
+          var transform = d3.zoomIdentity;
 
-          d3.select('.display').style('height', function() { return (height - sideHeight.offsetTop - header.offsetHeight + 1) + 'px';});
+          d3.select('.display').style('height', function() { return (height - sideHeight.offsetTop - header.offsetHeight) + 'px';});
           d3.select('.side-list').style('max-height', function() { return (height - header.offsetHeight - sideHeight.offsetTop - sideHeight.offsetHeight - 80) + 'px'; });
           d3.select('.content').style('margin-top', function() { return header.offsetHeight + 'px';});
 
@@ -38,122 +39,13 @@
                 .attr('width', width)
                 .attr('height', height - header.offsetHeight - 5);
 
+          svg.on('mousedown', function(d) {
+            console.log(d3.event);
+          });
+
           var color = d3.scaleOrdinal(d3.schemeCategory10);
 
-
-
-
-          //   var menuText = g.append('text');
-          //   var menuItems = g.append('rect');
-
-          //   // draw circles for the nodes
-          //   node = g.append('g')
-          //         .attr('class', 'node')
-          //         .selectAll('circle')
-          //         .data(nodes_data)
-          //         .enter()
-          //         .append('circle')
-          //         .attr('cx', function(d) { return d.x; })
-          //         .attr('cy', function(d) { return d.y; })
-          //         .attr('r', radius)
-          //         .style('fill', function(d, i) { return 'url(#image' + i + ')'; })
-          //         .style('stroke', 'black')
-          //         .style('stroke-width', 1)
-          //         .on('dblclick', function(d) {
-
-          //           d3.selectAll('text').remove();
-          //           d3.selectAll('rect').remove();
-          //           centerNode(d3.select(this)._groups[0][0]);
-          //           scope.$parent.vm.chooseCompany({ selected: d3.select(this)._groups[0][0].__data__ });
-          //         })
-          //         .on('click', function(d, i) {
-          //           d3.selectAll('text').remove();
-          //           d3.selectAll('rect').remove();
-
-          //           d3.select('#selected-circle').style('stroke', 'black').style('stroke-width', 1).attr('id', '');
-          //           d3.select(this).transition().duration(300)
-          //             .style('stroke', 'red')
-          //             .style('stroke-width', 5)
-          //             .attr('id', 'selected-circle');
-
-          //           var items = [
-          //             { 'func': centerNode, 'text': 'Center Graph on Company', 'y': 1 },
-          //             { 'func': viewCatalog, 'text': 'View Product/Service Catalog', 'y': 2 },
-          //             { 'func': viewDemands, 'text': 'View Demands', 'y': 3 },
-          //             { 'func': viewSuppliers, 'text': 'View Suppliers', 'y': 4 },
-          //             { 'func': viewCustomers, 'text': 'View Customers', 'y': 5 },
-          //             { 'func': viewCompetitors, 'text': 'View Competitors', 'y': 6 }
-          //           ];
-          //           var menuWidth = 200;
-          //           var itemHeight = 30;
-          //           var x = d3.select(this)._groups[0][0].cx.baseVal.value + 40;
-          //           if (x + menuWidth > width) {
-          //             x = x - 280;
-          //           }
-          //           var y = d3.select(this)._groups[0][0].cy.baseVal.value - 70;
-          //           var menuLen = items.length * itemHeight;
-          //           if (y + menuLen > height) {
-          //             y = y - 30;
-          //           }
-
-          //           menuItems = g.selectAll('rect').data(items).enter()
-          //             .append('rect').attr('class', 'conmenu-items')
-          //             .attr('width', menuWidth).attr('height', itemHeight)
-          //             .style('fill', '#d3d3d3')
-          //             .on('mouseout', function(d) {
-          //               d3.select(this).style('fill', '#d3d3d3');
-          //             })
-          //             .on('mouseover', function(d) {
-          //               d3.select(this).style('fill', '#fff');
-          //             })
-          //             .on('click', function(d) {
-          //               d3.selectAll('text').remove();
-          //               d3.selectAll('rect').remove();
-
-          //               if (d.func === centerNode) {
-          //                 d.func(d3.select('#selected-circle')._groups[0][0]);
-          //               } else {
-          //                 d.func(d3.select('#selected-circle')._groups[0][0].__data__);
-          //               }
-          //             })
-          //             .style('stroke', 'black')
-          //             .style('stroke-width', 0.5)
-          //             .attr('x', x)
-          //             .attr('y', function(d) {
-          //               return y + (30 * (d.y));
-          //             });
-
-          //           menuText = g.selectAll('text').data(items).enter()
-          //             .append('text')
-          //             .style('cursor', 'default')
-          //             .style('pointer-events', 'none')
-          //             .attr('x', x + 3)
-          //             .attr('y', function(d) {
-          //               return y + 20 + (30 * (d.y));
-          //             })
-          //             .text(function (d) { return d.text; });
-          //         });
-          //   }
-
           //   function addNodeToGraph(newNode) {
-          //         node
-          //         .selectAll('circle')
-          //         .data(nodes_data)
-          //         .enter()
-          //         .append('circle')
-          //         .attr('cx', function(d) { return d.x; })
-          //         .attr('cy', function(d) { return d.y; })
-          //         .attr('r', radius)
-          //         .style('fill', function(d, i) { return 'url(#image' + i + ')'; })
-          //         .style('stroke', 'black')
-          //         .style('stroke-width', 1)
-          //         .on('dblclick', function(d) {
-
-          //           d3.selectAll('text').remove();
-          //           d3.selectAll('rect').remove();
-          //           centerNode(d3.select(this)._groups[0][0]);
-          //           scope.$parent.vm.chooseCompany({ selected: d3.select(this)._groups[0][0].__data__ });
-          //         })
           //         .on('click', function(d, i) {
           //           d3.selectAll('text').remove();
           //           d3.selectAll('rect').remove();
@@ -243,6 +135,9 @@
               link = g.append('g').attr('stroke', '#000').attr('stroke-width', 1.5).selectAll('.link'),
               node = g.append('g').attr('stroke', '#fff').attr('stroke-width', 1.5).selectAll('.node');
 
+            var menuText = g.append('text');
+            var menuItems = g.append('rect');
+
             var zoom = d3.zoom()
                   .scaleExtent([1 / 4, 1.2])
                   .on('zoom', zoom_actions);
@@ -260,16 +155,24 @@
                 .data(nodes)
                 .enter()
                 .append('pattern')
-                .attr('id', function (d) { return 'image' + d.enterpriseId; })
+                .attr('id', function (d) { return 'image' + d._id; })
                 .attr('x', 0)
                 .attr('y', 0)
                 .attr('height', radius * 2)
                 .attr('width', radius * 2)
+                .on('mouseover', function(d) {
+                  console.log(d3.select(this));
+                  d3.select(this).transition().duration(600).attr('height', radius * 4).attr('width', radius * 4);
+                })
                 .append('image')
                 .attr('x', 0)
                 .attr('y', 0)
                 .attr('height', radius * 2)
                 .attr('width', radius * 2)
+                .on('mouseover', function(d) {
+                  console.log(d3.select(this));
+                  d3.select(this).transition().duration(600).attr('height', radius * 4).attr('width', radius * 4);
+                })
                 .attr('xlink:href', function (d) { return d.img; });
             }
 
@@ -278,8 +181,8 @@
                 .nodes(nodes)
                 .force('charge', d3.forceManyBody().strength(0.2))
                 .force('center', d3.forceCenter(width / 2, height / 2))
-                .force('link', d3.forceLink(links).id(function(d) { return d.enterpriseId; }).distance(20).strength(0))
-                .force('x', d3.forceX().x(function(d) { return d.x; }).strength(3))
+                .force('link', d3.forceLink(links).id(function(d) { return d._id; }).distance(20).strength(0))
+                .force('x', d3.forceX().x(function(d) { return d.x; }).strength(3.5))
                 // .force('y', d3.forceY(1).strength(0.1))
                 .force('collision', d3.forceCollide().radius(function() {
                   return 30;
@@ -305,6 +208,11 @@
             }
 
             function zoom_actions() {
+              console.log(d3.max(nodes.map(d => d.x)));
+              console.log(d3.max(nodes.map(d => d.y)));
+
+              transform = d3.event.transform;
+              console.log(transform);
               g.attr('transform', d3.event.transform);
             }
 
@@ -315,7 +223,7 @@
 
             function drawCustomers(root, levels, x) {
               if (levels >= 1) {
-                EnterprisesService.getCustomers({ 'enterpriseId': root.enterpriseId }).then(function (res) {
+                EnterprisesService.getCustomers({ 'enterpriseId': root._id }).then(function (res) {
                   var tmpNode = [];
                   for (var i = 0; i < res.customers.length; i++) {
                     var newNode = res.customers[i];
@@ -337,7 +245,7 @@
 
             function drawSuppliers(root, levels, x) {
               if (levels >= 1) {
-                EnterprisesService.getSuppliers({ 'enterpriseId': root.enterpriseId }).then(function (res) {
+                EnterprisesService.getSuppliers({ 'enterpriseId': root._id }).then(function (res) {
                   var tmpNode = [];
                   for (var i = 0; i < res.suppliers.length; i++) {
                     var newNode = res.suppliers[i];
@@ -363,19 +271,18 @@
               // Apply the general update pattern to the nodes.
               node = node.data(nodes, function(d) { return d.id;});
               node.exit().remove();
-              node = node.enter().append('circle').attr('fill', function(d) { return color(d.id); }).attr('cx', function(d) { return d.x; }).attr('cy', function(d) { return d.y; }).style('fill', function(d) { return 'url(#image' + d.enterpriseId + ')'; }).attr('r', radius).merge(node);
+              node = node.enter().append('circle').attr('fill', function(d) { return color(d.id); }).attr('cx', function(d) { return d.x; }).attr('cy', function(d) { return d.y; }).style('fill', function(d) { return 'url(#image' + d._id + ')'; }).attr('r', radius).merge(node);
               // Apply node behaviors
               node = node
                 .on('mouseover', mouseover)
                 .on('mouseout', mouseout)
-                      .on('dblclick', function(d) {
-
-                        d3.selectAll('text').remove();
-                        d3.selectAll('rect').remove();
-                        centerNode(d3.select(this)._groups[0][0]);
-                        scope.$parent.vm.chooseCompany({ selected: d3.select(this)._groups[0][0].__data__ });
-                      });
-
+                .on('dblclick', function(d) {
+                  d3.selectAll('text').remove();
+                  d3.selectAll('rect').remove();
+                  centerNode(d3.select(this)._groups[0][0]);
+                  scope.$parent.vm.chooseCompany({ selected: d3.select(this)._groups[0][0].__data__ });
+                })
+                .on('click', menuClick);
 
               // Apply the general update pattern to the links.
               link = link.data(links, function(d) { return d.source.id + '-' + d.target.id; });
@@ -389,26 +296,27 @@
             }
 
             function mouseout(d) {
-              d3.select(this).transition().duration(600).attr('r', radius);
+              // d3.select(this).transition().duration(600).attr('r', radius);
             }
 
             // TODO Finish hover highlighting
             function mouseover(d) {
-              d3.select(this).transition().duration(600).attr('r', radius * 2);
-              console.log(d3.select(this));
-              var id = d3.select(this)._groups[0][0].__data__.enterpriseId;
-              console.log(id);
+              console.log('mouseover', d3.event);
+              // d3.select(this).transition().duration(600).attr('r', radius * 2);
+              // console.log(d3.select(this));
+              var id = d3.select(this)._groups[0][0].__data__._id;
+              // console.log(id);
               var connectingLinks = links.filter(function(d) {
-                if(d.source.enterpriseId === id || d.target.enterpriseId === id) {
+                if(d.source._id === id || d.target._id === id) {
                   return d;
                 }
               });
 
-              console.log(connectingLinks);
-              var sourceLinks = connectingLinks.map(d => d.source.enterpriseId);
-              var targetLinks = connectingLinks.map(d => d.target.enterpriseId);
-              console.log(sourceLinks);
-              console.log(targetLinks);
+              // console.log(connectingLinks);
+              var sourceLinks = connectingLinks.map(d => d.source._id);
+              var targetLinks = connectingLinks.map(d => d.target._id);
+              // console.log(sourceLinks);
+              // console.log(targetLinks);
             }
 
             function ticked() {
@@ -419,6 +327,75 @@
                 .attr('y1', function(d) { return d.source.y; })
                 .attr('x2', function(d) { return d.target.x; })
                 .attr('y2', function(d) { return d.target.y; });
+            }
+
+            function menuClick(d, i) {
+                  d3.selectAll('text').remove();
+                  d3.selectAll('rect').remove();
+
+                  d3.select('#selected-circle').style('stroke', '#fff').style('stroke-width', 1).attr('id', '');
+                  d3.select(this).transition().duration(300)
+                    .style('stroke', 'red')
+                    .style('stroke-width', 3)
+                    .attr('id', 'selected-circle');
+
+                  var items = [
+                    { 'func': centerNode, 'text': 'Center Graph on Company', 'y': 1 },
+                    { 'func': viewCatalog, 'text': 'View Product/Service Catalog', 'y': 2 },
+                    { 'func': viewDemands, 'text': 'View Demands', 'y': 3 },
+                    { 'func': viewSuppliers, 'text': 'View Suppliers', 'y': 4 },
+                    { 'func': viewCustomers, 'text': 'View Customers', 'y': 5 },
+                    { 'func': viewCompetitors, 'text': 'View Competitors', 'y': 6 }
+                  ];
+                  var menuWidth = 200;
+                  var itemHeight = 30;
+                  var x = d3.select(this)._groups[0][0].cx.baseVal.value + 40;
+                  if (x + menuWidth > width) {
+                    x = x - 280;
+                  }
+                  var y = d3.select(this)._groups[0][0].cy.baseVal.value - 70;
+                  var menuLen = items.length * itemHeight;
+                  if (y + menuLen > height) {
+                    y = y - 30;
+                  }
+
+                  menuItems = g.selectAll('rect').data(items).enter()
+                      .append('rect').attr('class', 'conmenu-items')
+                      .attr('width', menuWidth).attr('height', itemHeight)
+                      .style('fill', '#d3d3d3')
+                      .on('mouseout', function(d) {
+                        d3.select(this).style('fill', '#d3d3d3');
+                      })
+                      .on('mouseover', function(d) {
+                        d3.select(this).style('fill', '#fff');
+                      })
+                      .on('click', function(d) {
+                        d3.selectAll('text').remove();
+                        d3.selectAll('rect').remove();
+
+                        if (d.func === centerNode) {
+                          d.func(d3.select('#selected-circle')._groups[0][0]);
+                        } else {
+                          d.func(d3.select('#selected-circle')._groups[0][0].__data__);
+                        }
+                      })
+                      .style('stroke', 'black')
+                      .style('stroke-width', 0.5)
+                      .attr('x', x)
+                      .attr('y', function(d) {
+                        return y + (30 * (d.y));
+                      });
+
+                    menuText = g.selectAll('text').data(items).enter()
+                      .append('text')
+                      .style('cursor', 'default')
+                      .style('pointer-events', 'none')
+                      .attr('x', x + 3)
+                      .attr('y', function(d) {
+                        return y + 20 + (30 * (d.y));
+                      })
+                      .text(function (d) { return d.text; });
+
             }
 
             function makeHomeButton() {
@@ -1011,7 +988,6 @@
               var rootNode = {};
               rootNode.companyName = response.profile.companyName;
               rootNode._id = response._id;
-              rootNode.enterpriseId = response._id;
               rootNode.URL = response.profile.URL;
               return rootNode;
             });

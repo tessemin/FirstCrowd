@@ -28,6 +28,8 @@ module.exports = function(app) {
   app.route('/enterprises/api/enterprises/getDemands/').post(enterprises.getDemands);
   
   app.route('/enterprises/api/enterprises/setupEnterpriseGraph/').post(enterprises.setupEnterpriseGraph);
+  
+  app.route('/enterprises/api/enterprises/fuzzyEntepriseQuery/').post(enterprises.fuzzyEntepriseQuery);
 
   // Finish by binding the Enterprise middleware
   app.param('enterpriseId', enterprises.enterpriseByID);

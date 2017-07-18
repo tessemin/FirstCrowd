@@ -18,7 +18,8 @@
     "angular-bootstrap-multiselect": "https://github.com/bentorfs/angular-bootstrap-multiselect.git#^1.1.7",
     "d3": "^4.9.1",
     "angular-multi-select-tree": "https://github.com/a5hik/angular-multi-select-tree.git",
-    "angularjs-slider": "^6.2.2"
+    "angularjs-slider": "^6.2.2",
+    "paypal-checkout": "https://www.paypalobjects.com/api/checkout.js"
   },
   "resolutions": {
     "angular": "~1.5.0"

@@ -10,15 +10,16 @@ var path = require('path'),
   passport = require('passport'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   coreController = require(path.resolve('./modules/core/server/controllers/core.server.controller')),
+  taskTools = require(path.resolve('modules/requesters/server/controllers/requesters/task.tools.server.controller')),
   _ = require('lodash'),
+  fuse = require('fuse.js'),
   validator = require('validator'),
   superEnterprise = null;
   
-var usedXYValues = [{ x: 0, y: 0 }];
-var minXYVals = -300;
-var maxXYVals = 300;
+var whitelistedFields = ['contactPreference', 'email', 'phone', 'username', 'middleName', 'displayName'],
+  whitelistedPartnersFields = ['img', '_id', 'profile.companyName', 'profile.countryOfBusiness', 'profile.URL', 'profile.description', 'profile.classifications', 'profile.yearEstablished', 'specialities', 'catalog', 'demands'];
 
-var whitelistedFields = ['contactPreference', 'email', 'phone', 'username', 'middleName', 'displayName'];
+var getNestedProperties = taskTools.getNestedProperties;
 
 /**
  * Find the Enterprise
@@ -283,54 +284,92 @@ exports.updateCustomers = function(req, res) {
 
 exports.partners = {
   getSuppliers: function(req, res) {
-    Enterprise.findById(req.body.enterpriseId, function (err, enterprise) {
+    Enterprise.findById(req.body.enterpriseId, function (err, thisEnterprise) {
       if (err) {
-        return res.status(422).send({
-          message: errorHandler.getErrorMessage(err)
-        });
-      } else if (!enterprise) {
-        return res.status(422).send({
-          message: 'No Enterprise with that identifier has been found'
-        });
+        return res.status(422).send({ message: errorHandler.getErrorMessage(err) });
+      } else if (!thisEnterprise) {
+        return res.status(422).send({ message: 'No Enterprise with that identifier has been found' });
       } else {
-        var suppliers = setXYForPartners(enterprise.partners.supplier);
-        return res.json({ suppliers: suppliers });
+        var entIds = [];
+        thisEnterprise.partners.supplier.forEach(function(ele) {
+          if (ele.enterpriseId)
+            entIds.push(ele.enterpriseId);
+        });
+        findPartnersWhiteFields(entIds, function(err, suppliers) {
+          if (err)
+            return res.status(422).send({ message: err });
+          return res.json({ suppliers: suppliers });
+        });
       }
     });
   },
   getCustomers: function(req, res) {
-    Enterprise.findById(req.body.enterpriseId, function (err, enterprise) {
+    Enterprise.findById(req.body.enterpriseId, function (err, thisEnterprise) {
       if (err) {
-        return res.status(422).send({
-          message: errorHandler.getErrorMessage(err)
-        });
-      } else if (!enterprise) {
-        return res.status(422).send({
-          message: 'No Enterprise with that identifier has been found'
-        });
+        return res.status(422).send({ message: errorHandler.getErrorMessage(err) });
+      } else if (!thisEnterprise) {
+        return res.status(422).send({ message: 'No Enterprise with that identifier has been found' });
       } else {
-        var customers = setXYForPartners(enterprise.partners.customer);
-        return res.json({ customers: customers });
+        var entIds = [];
+        thisEnterprise.partners.customer.forEach(function(ele) {
+          if (ele.enterpriseId)
+            entIds.push(ele.enterpriseId);
+        });
+        findPartnersWhiteFields(entIds, function(err, customers) {
+          if (err)
+            return res.status(422).send({ message: err });
+          return res.json({ customers: customers });
+        });
       }
     });
   },
   getCompetitors: function(req, res) {
-    Enterprise.findById(req.body.enterpriseId, function (err, enterprise) {
+    Enterprise.findById(req.body.enterpriseId, function (err, thisEnterprise) {
       if (err) {
-        return res.status(422).send({
-          message: errorHandler.getErrorMessage(err)
-        });
-      } else if (!enterprise) {
-        return res.status(422).send({
-          message: 'No Enterprise with that identifier has been found'
-        });
+        return res.status(422).send({ message: errorHandler.getErrorMessage(err) });
+      } else if (!thisEnterprise) {
+        return res.status(422).send({ message: 'No Enterprise with that identifier has been found' });
       } else {
-        var competitors = setXYForPartners(enterprise.partners.competitor);
-        return res.json({ competitors: competitors });
+        var entIds = [];
+        thisEnterprise.partners.competitor.forEach(function(ele) {
+          if (ele.enterpriseId)
+            entIds.push(ele.enterpriseId);
+        });
+        findPartnersWhiteFields(entIds, function(err, competitors) {
+          if (err)
+            return res.status(422).send({ message: err });
+          return res.json({ competitors: competitors });
+        });
       }
     });
   }
 };
+
+function findPartnersWhiteFields(enterpriseIds, callBack) {
+  Enterprise.find({ '_id': { $in: enterpriseIds } }, function (err, enterprises) {
+    if (err)
+      return callBack(errorHandler.getErrorMessage(err));
+    var userIds = [];
+    enterprises.forEach(function(ele) {
+      if (ele.user)
+        userIds.push(ele.user);
+    });
+    User.find({ '_id': { $in: userIds } }, function (err, users) {
+      if (err)
+        return callBack('Error connecting partners to users');
+      var partners = enterprises.map(function(ent) {
+        for (var user = 0; user < users.length; user++) {
+          if (users[user]._id.toString() === ent.user.toString()) {
+            ent.img = users[user].profileImageURL;
+            break;
+          }
+        }
+        return getNestedProperties(ent, whitelistedPartnersFields);;
+      });
+      callBack(null, partners);
+    });
+  });
+}
 
 exports.catalog = {
   getProducts: function(req, res) {
@@ -390,30 +429,29 @@ exports.getDemands = function(req, res) {
   });
 };
 
-function setXYForPartners(partner) {
-  var xVal = null;
-  var yVal = null;
-  var times = 0;
-  for (var part = 0; part < partner.length; part++) {
-    xVal = getRandomNumber(minXYVals, maxXYVals);
-    yVal = getRandomNumber(minXYVals, maxXYVals);
-    times = 0;
-    while (usedXYValues.indexOf({ x: xVal, y: yVal }) !== -1) {
-      xVal = getRandomNumber(minXYVals, maxXYVals);
-      yVal = getRandomNumber(minXYVals, maxXYVals);
-      if (times > 100) {
-        minXYVals += 100;
-        maxXYVals += 100;
-        times = 0;
-      }
-      times++;
+exports.fuzzyEntepriseQuery = function(req, res) {
+  Enterprise.find({}, function (err, ents) {
+    if (err) {
+      return res.status(422).send({
+        message: errorHandler.getErrorMessage(err)
+      });
     }
-    usedXYValues.push({ x: xVal, y: yVal });
-    partner[part].x = xVal;
-    partner[part].y = yVal;
-  }
-  return partner;
-}
+    var options = {
+      shouldSort: true,
+      threshold: 0.6,
+      location: 0,
+      distance: 100,
+      maxPatternLength: 32,
+      minMatchCharLength: 1,
+      keys: [
+        'profile.companyName'
+      ]
+    };
+    var fuse = new Fuse(ents, options);
+    var result = fuse.search(req.body.query);
+    res.json({ result: result });
+  });
+};
 
 /**
  * get Enterprise object
@@ -451,6 +489,8 @@ exports.getEnterprise = function(req, res) {
   });
 };
 
+
+// WILL BE GONE, FOR TESTING ONLY
 exports.setupEnterpriseGraph = function(req, res) {
   getEnterprise(req, res, function (myEnterprise) {
     var entConnect = [];
@@ -565,5 +605,7 @@ function generateRandomString(length) {
     text += possible.charAt(getRandomNumber(0, possible.length - 1));
   return text;
 }
+
+
 
 exports.getThisEnterprise = getEnterprise;

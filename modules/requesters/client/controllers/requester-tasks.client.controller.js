@@ -12,6 +12,10 @@
     var vm = this;
     vm.tasks = [];
     vm.loaded = false;
+
+    // For activating a task
+    var activateTaskId = null;
+
     // Filters
     vm.clearFilters = function() {
       vm.filters = {};
@@ -180,7 +184,6 @@
               vm.modal.costPerWorker = task.payment.staticPrice;
             }
             activateTaskId = task._id;
-            console.log(task)
             vm.modal.title = task.title;
             vm.modal.description = task.description;
             vm.modal.preapproval = task.preapproval;
@@ -199,7 +202,7 @@
           }
           break;
         default:
-          console.log('perform ' + action + ' on task ' + id);
+          console.log('perform ' + action + ' on task ' + vm.tasks[index]._id);
       }
     };
 
@@ -211,9 +214,8 @@
     // This function is necessary to initially render the progress sliders
     (function refreshProgressSliders() {
       $scope.$broadcast('rzSliderForceRender');
-      for(var i = 0; i < vm.tasks.length; ++i) {
-      }
-    })();
+      for (var i = 0; i < vm.tasks.length; ++i) { i; }
+    }());
 
     vm.getSliderOptions = function(id) {
       return {
@@ -233,17 +235,17 @@
             return 'rgb(128, 128, 255)';
           }
         }
-      }
+      };
     };
 
     // for payment modal
     vm.openPaymentModal = function () {
-       $('#reviewPaymentModal').modal();
+      $('#reviewPaymentModal').modal();
     };
 
     vm.activateBidableTask = function() {
       vm.closePaymentModal();
-      RequestersService.activateBidable({taskId: activateTaskId})
+      RequestersService.activateBidable({ taskId: activateTaskId })
         .then(function(response) {
           var index = getIndexFromTaskId(response.taskId);
           vm.tasks[index].status = 'open';
@@ -257,7 +259,7 @@
     };
 
     vm.approveBid = function(bidId) {
-      RequestersService.activateBidable({taskId: bidId})
+      RequestersService.activateBidable({ taskId: bidId })
         .then(function(response) {
           var index = getIndexFromTaskId(response.taskId);
           vm.tasks[index].status = 'taken';
@@ -266,7 +268,7 @@
         .catch(function(response) {
           Notification.error({ message: response.message, title: '<i class="glyphicon glyphicon-remove"></i> Approval failed! Task not assigned!' });
         });
-    }
+    };
 
     vm.closePaymentModal = function () {
       $('#reviewPaymentModal').modal('hide');
@@ -279,18 +281,17 @@
 
     // TODO: Make this angular compliant
     // paypal payment action
-    var activateTaskId = null;
-    function paypalButtonRender() {
+    (function paypalButtonRender() {
       activateTaskId = null;
       var executePayTaskId = null;
       paypal.Button.render({
         env: 'sandbox', // Or 'sandbox'
         commit: true, // Show a 'Pay Now' button
         style: {
-            size: 'responsive',
-            color: 'blue',
-            shape: 'rect',
-            label: 'pay'
+          size: 'responsive',
+          color: 'blue',
+          shape: 'rect',
+          label: 'pay'
         },
         payment: function() {
           return paypal.request.post('/api/payment/paypal/create/', { taskId: activateTaskId }).then(function(data) {
@@ -314,11 +315,10 @@
         },
         onError: function(err) {
           // show a gracful error
-          Notification.error({ message: err.message, title: '<i class="glyphicon glyphicon-remove"></i> Error!'});
+          Notification.error({ message: err.message, title: '<i class="glyphicon glyphicon-remove"></i> Error!' });
           activateTaskId = null;
         }
       }, '#paypal-button');
-    }
-    paypalButtonRender();
+    }())
   }
 }());

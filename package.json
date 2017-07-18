@@ -46,6 +46,7 @@
     "express": "~4.15.2",
     "express-hbs": "^1.0.4",
     "express-session": "~1.15.2",
+    "fuse.js": "^3.0.5",
     "generate-password": "~1.3.0",
     "glob": "~7.1.1",
     "helmet": "~2.3.0",

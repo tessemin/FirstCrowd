@@ -62,6 +62,10 @@
       setupEnterpriseGraph: {
         method: 'POST',
         url: '/enterprises/api/enterprises/setupEnterpriseGraph'
+      },
+      fuzzyEntQuery: {
+        method: 'POST',
+        url: '/enterprises/api/enterprises/fuzzyEntepriseQuery/'
       }
     });
 
@@ -104,6 +108,9 @@
       },
       getServices: function (enterpriseId) {
         return this.getEnterpriseServices(enterpriseId).$promise;
+      },
+      fuzzyQuery: function (query) {
+        return this.fuzzyEntQuery(query).$promise;
       }
     });
 
