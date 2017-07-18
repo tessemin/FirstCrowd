@@ -24,7 +24,7 @@ var getUserTypeObject = taskTools.getUserTypeObject,
   setStatus = taskTools.setStatus,
   removeTaskFromWorkerArray = taskTools.removeTaskFromWorkerArray,
   statusPushTo = taskTools.statusPushTo,
-  extractChildren = taskTools.extractChildren,
+  getNestedProperties = taskTools.getNestedProperties,
   taskFindOne = taskSearch.taskFindOne,
   taskFindMany = taskSearch.taskFindMany,
   findWorkerByWorkerTaskObject = taskSearch.findWorkerByWorkerTaskObject;
@@ -265,11 +265,11 @@ exports.biddingActions = {
                   message: err
                 });
               individuals.forEach(function(ind) {
-                //ind = extractChildren(ind, individualWhiteListFields);
+                ind = getNestedProperties(ind, individualWhiteListFields);
                 ind.displayId = hashTypeObjId(ind._id);
               });
               enterprises.forEach(function(ent) {
-                //ent = extractChildren(ent, enterpriseWhiteListFields);
+                ent = getNestedProperties(ent, enterpriseWhiteListFields);
                 ent.displayId = hashTypeObjId(ent._id);
               });
               console.log(individuals)
