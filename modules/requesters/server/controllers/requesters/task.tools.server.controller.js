@@ -318,24 +318,27 @@ function updateTotalTaskProgress(task, callBack) {
 }
 
 
-function extractChildren(source, specKey) {
-    let results = [];
-    let search = function(source, specKey) {
-        _.forEach(source, function(item) {
-            if (!!item[specKey]) {
-                let obj = {};
-                obj[specKey] = item[specKey];
-                results.push(obj);
-                return;
-            }
-
-            search(item, specKey);
-        });
-    };
-
-    search(source, specKey);
-    return results;
-};
+function getNestedProperties(object, propertyNames) {
+  if (object) {
+    var returnObjs = {};
+    for (var prop = 0; prop < propertyNames.length; prop++) {
+      var parts = propertyNames[prop].split('.'),
+        length = parts.length,
+        i,
+        property = object || this,
+        nestedObj = returnObjs;
+      for ( i = 0; i < length; i++ ) {
+        if (!nestedObj[parts[i]])
+          nestedObj[parts[i]] = {};
+        nestedObj = nestedObj[parts[i]]
+        property = property[parts[i]];
+      }
+      returnObjs[propertyNames[prop]] = property;
+    }
+    return returnObjs;
+  }
+  return null;
+}
 
 
 exports.getUserTypeObject = getUserTypeObject;
@@ -358,4 +361,4 @@ exports.statusPushTo = statusPushTo;
 
 exports.updateTotalTaskProgress = updateTotalTaskProgress;
 
-exports.extractChildren = extractChildren;
+exports.getNestedProperties = getNestedProperties;
