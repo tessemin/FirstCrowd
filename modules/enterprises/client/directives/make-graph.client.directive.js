@@ -29,7 +29,7 @@
           // var widthTop = width;
           // var heightTop = height;
 
-          d3.select('.display').style('height', function() { return (height - sideHeight.offsetTop - header.offsetHeight + 1) + 'px';});
+          d3.select('.display').style('height', function() { return (height - sideHeight.offsetTop - header.offsetHeight) + 'px';});
           d3.select('.side-list').style('max-height', function() { return (height - header.offsetHeight - sideHeight.offsetTop - sideHeight.offsetHeight - 80) + 'px'; });
           d3.select('.content').style('margin-top', function() { return header.offsetHeight + 'px';});
 
@@ -38,122 +38,13 @@
                 .attr('width', width)
                 .attr('height', height - header.offsetHeight - 5);
 
+          svg.on('mousedown', function(d) {
+            console.log(d3.event);
+          });
+
           var color = d3.scaleOrdinal(d3.schemeCategory10);
 
-
-
-
-          //   var menuText = g.append('text');
-          //   var menuItems = g.append('rect');
-
-          //   // draw circles for the nodes
-          //   node = g.append('g')
-          //         .attr('class', 'node')
-          //         .selectAll('circle')
-          //         .data(nodes_data)
-          //         .enter()
-          //         .append('circle')
-          //         .attr('cx', function(d) { return d.x; })
-          //         .attr('cy', function(d) { return d.y; })
-          //         .attr('r', radius)
-          //         .style('fill', function(d, i) { return 'url(#image' + i + ')'; })
-          //         .style('stroke', 'black')
-          //         .style('stroke-width', 1)
-          //         .on('dblclick', function(d) {
-
-          //           d3.selectAll('text').remove();
-          //           d3.selectAll('rect').remove();
-          //           centerNode(d3.select(this)._groups[0][0]);
-          //           scope.$parent.vm.chooseCompany({ selected: d3.select(this)._groups[0][0].__data__ });
-          //         })
-          //         .on('click', function(d, i) {
-          //           d3.selectAll('text').remove();
-          //           d3.selectAll('rect').remove();
-
-          //           d3.select('#selected-circle').style('stroke', 'black').style('stroke-width', 1).attr('id', '');
-          //           d3.select(this).transition().duration(300)
-          //             .style('stroke', 'red')
-          //             .style('stroke-width', 5)
-          //             .attr('id', 'selected-circle');
-
-          //           var items = [
-          //             { 'func': centerNode, 'text': 'Center Graph on Company', 'y': 1 },
-          //             { 'func': viewCatalog, 'text': 'View Product/Service Catalog', 'y': 2 },
-          //             { 'func': viewDemands, 'text': 'View Demands', 'y': 3 },
-          //             { 'func': viewSuppliers, 'text': 'View Suppliers', 'y': 4 },
-          //             { 'func': viewCustomers, 'text': 'View Customers', 'y': 5 },
-          //             { 'func': viewCompetitors, 'text': 'View Competitors', 'y': 6 }
-          //           ];
-          //           var menuWidth = 200;
-          //           var itemHeight = 30;
-          //           var x = d3.select(this)._groups[0][0].cx.baseVal.value + 40;
-          //           if (x + menuWidth > width) {
-          //             x = x - 280;
-          //           }
-          //           var y = d3.select(this)._groups[0][0].cy.baseVal.value - 70;
-          //           var menuLen = items.length * itemHeight;
-          //           if (y + menuLen > height) {
-          //             y = y - 30;
-          //           }
-
-          //           menuItems = g.selectAll('rect').data(items).enter()
-          //             .append('rect').attr('class', 'conmenu-items')
-          //             .attr('width', menuWidth).attr('height', itemHeight)
-          //             .style('fill', '#d3d3d3')
-          //             .on('mouseout', function(d) {
-          //               d3.select(this).style('fill', '#d3d3d3');
-          //             })
-          //             .on('mouseover', function(d) {
-          //               d3.select(this).style('fill', '#fff');
-          //             })
-          //             .on('click', function(d) {
-          //               d3.selectAll('text').remove();
-          //               d3.selectAll('rect').remove();
-
-          //               if (d.func === centerNode) {
-          //                 d.func(d3.select('#selected-circle')._groups[0][0]);
-          //               } else {
-          //                 d.func(d3.select('#selected-circle')._groups[0][0].__data__);
-          //               }
-          //             })
-          //             .style('stroke', 'black')
-          //             .style('stroke-width', 0.5)
-          //             .attr('x', x)
-          //             .attr('y', function(d) {
-          //               return y + (30 * (d.y));
-          //             });
-
-          //           menuText = g.selectAll('text').data(items).enter()
-          //             .append('text')
-          //             .style('cursor', 'default')
-          //             .style('pointer-events', 'none')
-          //             .attr('x', x + 3)
-          //             .attr('y', function(d) {
-          //               return y + 20 + (30 * (d.y));
-          //             })
-          //             .text(function (d) { return d.text; });
-          //         });
-          //   }
-
           //   function addNodeToGraph(newNode) {
-          //         node
-          //         .selectAll('circle')
-          //         .data(nodes_data)
-          //         .enter()
-          //         .append('circle')
-          //         .attr('cx', function(d) { return d.x; })
-          //         .attr('cy', function(d) { return d.y; })
-          //         .attr('r', radius)
-          //         .style('fill', function(d, i) { return 'url(#image' + i + ')'; })
-          //         .style('stroke', 'black')
-          //         .style('stroke-width', 1)
-          //         .on('dblclick', function(d) {
-
-          //           d3.selectAll('text').remove();
-          //           d3.selectAll('rect').remove();
-          //           centerNode(d3.select(this)._groups[0][0]);
-          //           scope.$parent.vm.chooseCompany({ selected: d3.select(this)._groups[0][0].__data__ });
-          //         })
           //         .on('click', function(d, i) {
           //           d3.selectAll('text').remove();
           //           d3.selectAll('rect').remove();
@@ -242,6 +133,9 @@
             var g = svg.append('g'),
               link = g.append('g').attr('stroke', '#000').attr('stroke-width', 1.5).selectAll('.link'),
               node = g.append('g').attr('stroke', '#fff').attr('stroke-width', 1.5).selectAll('.node');
+
+            var menuText = g.append('text');
+            var menuItems = g.append('rect');
 
             var zoom = d3.zoom()
                   .scaleExtent([1 / 4, 1.2])
@@ -368,14 +262,13 @@
               node = node
                 .on('mouseover', mouseover)
                 .on('mouseout', mouseout)
-                      .on('dblclick', function(d) {
-
-                        d3.selectAll('text').remove();
-                        d3.selectAll('rect').remove();
-                        centerNode(d3.select(this)._groups[0][0]);
-                        scope.$parent.vm.chooseCompany({ selected: d3.select(this)._groups[0][0].__data__ });
-                      });
-
+                .on('dblclick', function(d) {
+                  d3.selectAll('text').remove();
+                  d3.selectAll('rect').remove();
+                  centerNode(d3.select(this)._groups[0][0]);
+                  scope.$parent.vm.chooseCompany({ selected: d3.select(this)._groups[0][0].__data__ });
+                })
+                .on('click', menuClick);
 
               // Apply the general update pattern to the links.
               link = link.data(links, function(d) { return d.source.id + '-' + d.target.id; });
@@ -419,6 +312,75 @@
                 .attr('y1', function(d) { return d.source.y; })
                 .attr('x2', function(d) { return d.target.x; })
                 .attr('y2', function(d) { return d.target.y; });
+            }
+
+            function menuClick(d, i) {
+                  d3.selectAll('text').remove();
+                  d3.selectAll('rect').remove();
+
+                  d3.select('#selected-circle').style('stroke', 'black').style('stroke-width', 1).attr('id', '');
+                  d3.select(this).transition().duration(300)
+                    .style('stroke', 'red')
+                    .style('stroke-width', 5)
+                    .attr('id', 'selected-circle');
+
+                  var items = [
+                    { 'func': centerNode, 'text': 'Center Graph on Company', 'y': 1 },
+                    { 'func': viewCatalog, 'text': 'View Product/Service Catalog', 'y': 2 },
+                    { 'func': viewDemands, 'text': 'View Demands', 'y': 3 },
+                    { 'func': viewSuppliers, 'text': 'View Suppliers', 'y': 4 },
+                    { 'func': viewCustomers, 'text': 'View Customers', 'y': 5 },
+                    { 'func': viewCompetitors, 'text': 'View Competitors', 'y': 6 }
+                  ];
+                  var menuWidth = 200;
+                  var itemHeight = 30;
+                  var x = d3.select(this)._groups[0][0].cx.baseVal.value + 40;
+                  if (x + menuWidth > width) {
+                    x = x - 280;
+                  }
+                  var y = d3.select(this)._groups[0][0].cy.baseVal.value - 70;
+                  var menuLen = items.length * itemHeight;
+                  if (y + menuLen > height) {
+                    y = y - 30;
+                  }
+
+                  menuItems = g.selectAll('rect').data(items).enter()
+                      .append('rect').attr('class', 'conmenu-items')
+                      .attr('width', menuWidth).attr('height', itemHeight)
+                      .style('fill', '#d3d3d3')
+                      .on('mouseout', function(d) {
+                        d3.select(this).style('fill', '#d3d3d3');
+                      })
+                      .on('mouseover', function(d) {
+                        d3.select(this).style('fill', '#fff');
+                      })
+                      .on('click', function(d) {
+                        d3.selectAll('text').remove();
+                        d3.selectAll('rect').remove();
+
+                        if (d.func === centerNode) {
+                          d.func(d3.select('#selected-circle')._groups[0][0]);
+                        } else {
+                          d.func(d3.select('#selected-circle')._groups[0][0].__data__);
+                        }
+                      })
+                      .style('stroke', 'black')
+                      .style('stroke-width', 0.5)
+                      .attr('x', x)
+                      .attr('y', function(d) {
+                        return y + (30 * (d.y));
+                      });
+
+                    menuText = g.selectAll('text').data(items).enter()
+                      .append('text')
+                      .style('cursor', 'default')
+                      .style('pointer-events', 'none')
+                      .attr('x', x + 3)
+                      .attr('y', function(d) {
+                        return y + 20 + (30 * (d.y));
+                      })
+                      .text(function (d) { return d.text; });
+
             }
 
             function makeHomeButton() {
