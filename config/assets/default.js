@@ -28,7 +28,9 @@ module.exports = {
         'public/lib/owasp-password-strength-test/owasp-password-strength-test.js',
         // added packages
         'public/lib/angular-bootstrap-multiselect/dist/angular-bootstrap-multiselect.js',
-        'public/lib/angularjs-slider/dist/rzslider.min.js'
+        'public/lib/angularjs-slider/dist/rzslider.min.js',
+        // paypal payment
+        'public/lib/paypal-checkout/index.js'
         // endbower
       ],
       tests: ['public/lib/angular-mocks/angular-mocks.js']
