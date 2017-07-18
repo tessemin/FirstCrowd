@@ -264,17 +264,18 @@ exports.biddingActions = {
                 return res.status(422).send({
                   message: err
                 });
-              individuals.forEach(function(ind) {
+              var safeInds = individuals.map(function(ind) {
                 ind = getNestedProperties(ind, individualWhiteListFields);
+                console.log(ind)
                 ind.displayId = hashTypeObjId(ind._id);
+                return ind;
               });
-              enterprises.forEach(function(ent) {
+              var safeEnts = enterprises.map(function(ent) {
                 ent = getNestedProperties(ent, enterpriseWhiteListFields);
                 ent.displayId = hashTypeObjId(ent._id);
+                return ent;
               });
-              console.log(individuals)
-              console.log(enterprises)
-              res.json({ individuals: individuals, enterprises: enterprises });
+              res.json({ individuals: safeInds, enterprises: safeEnts });
             });
           });
         } else {
@@ -314,6 +315,7 @@ function getMongoEnterprises(entIds, callBack) {
 }
 
 function hashTypeObjId(id) {
+  id = id.toString();
   var returnVal = null;
   for (var i = 1; i <= id.length; i++) {
     returnVal += id.codePointAt(i - 1) * i;

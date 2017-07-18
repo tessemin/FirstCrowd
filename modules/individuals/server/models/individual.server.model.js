@@ -344,7 +344,7 @@ var IndividualUserSchema = new Schema({
         default: 0.0
       }
     }],
-    acceptanceRatesPerCategory: {
+    acceptanceRatesPerCategory: [{
       category: {
         type: Schema.Types.Mixed
       },
@@ -352,10 +352,10 @@ var IndividualUserSchema = new Schema({
         type: Number,
         default: 0
       }
-    },
+    }],
     acceptanceRate: {
       type: Number,
-      default: 0.0
+      default: 0
     },
     preferedCategories: [{
       category: Schema.Types.Mixed,
