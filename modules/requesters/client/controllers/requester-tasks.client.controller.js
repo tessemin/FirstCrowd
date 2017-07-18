@@ -138,18 +138,19 @@
           RequestersService.getBidderInfo({ taskId: vm.tasks[index]._id })
             .then(function(response) {
               for (var i = 0; i < vm.tasks[index].bids.length; ++i) {
+              //  if WORKERTYPE IS INDIVIDUAL
                 for (var j = 0; j < response.individuals.length; ++j) {
                   if (vm.tasks[index].bids[i].worker.workerid === response.individuals[j]._id) {
                     vm.tasks[index].bids[i].bidDetails = response.individuals[j]);
                   }
                 }
-                if (!vm.tasks[index].bids[i].hasOwnProperty('bidDetails')) {
+            //  } else {
                   for (var k = 0; k < response.enterprises.length; ++k) {
                     if (vm.tasks[index].bids[i].worker.workerid === false) {
-                      
+                      vm.tasks[index].bids[i].bidDetails = response.enterprises[j]);
                     }
                   }
-                }
+          //      }
               }
               vm.tasks[index].individualBids = response.individuals;
               vm.tasks[index].enterpriseBids = response.enterprises;
