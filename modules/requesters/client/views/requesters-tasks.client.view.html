@@ -196,7 +196,7 @@
             Description: {{task.description}}
           </div>
         </div>
-        <div class="tasks-row">
+        <div class="tasks-row" ng-if="task.status === 'open'">
           <div class="tasks-col tasks-cell tasks-smaller">
             <div class="tasks-cell" ng-if="task.bids.length > 0">
               Applicants:
