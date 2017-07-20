@@ -181,6 +181,9 @@ exports.biddingActions = {
               workerObj = removeTaskFromWorkerArray(task._id, workerObj);
               workerObj.worker.activeTasks = statusPushTo(task._id, workerObj.worker.activeTasks);
               --task.multiplicity;
+              if (task.multiplicity <= 0) {
+                task.status = 'taken';
+              }
               task.bids[bid].status = 'accepted';
               task.jobs.push({
                 status: 'active',
