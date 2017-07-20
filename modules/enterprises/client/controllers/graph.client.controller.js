@@ -33,7 +33,7 @@
     }
 
     function search(query) {
-      EnterprisesService.fuzzyQuery({query: query }).then(function (res) {
+      EnterprisesService.fuzzyQuery({ query: query }).then(function (res) {
         console.log(res);
       });
     }

@@ -18,226 +18,275 @@
       },
       link: function(scope, element, attrs) {
         d3().then(function(d3) {
+
+          getGraph().then(function(rootNode) {
+            rootNode.parentId = null;
+
+            var stratify = d3.stratify()
+                  .id(function(d) { return d._id; })
+                  .parentId(function(d) { return d.parentId; });
+
+            var nodeArray = [rootNode];
+            var nodes = stratify(nodeArray);
+
+          // set the dimensions and margins of the diagram
+          var margin = {top: 40, right: 30, bottom: 50, left: 30},
+              width = 660 - margin.left - margin.right,
+              height = 500 - margin.top - margin.bottom;
+
+          // declares a tree layout and assigns the size
+          var treemap = d3.tree()
+                .size([width, height]);
+
+          // assigns the data to a hierarchy using parent-child relationships
+          nodes = d3.hierarchy(nodes);
+
+          // maps the node data to the tree layout
+          nodes = treemap(nodes);
+
+          // append the svg obgect to the body of the page
+          // appends a 'group' element to 'svg'
+          // moves the 'group' element to the top left margin
+          var svg = d3.select('body').append('svg')
+                .attr('width', width + margin.left + margin.right)
+                .attr('height', height + margin.top + margin.bottom),
+              g = svg.append('g')
+                .attr('transform',
+                      'translate(' + margin.left + ',' + margin.top + ')');
+
+          // adds the links between the nodes
+          var link = g.selectAll('.link')
+                .data( nodes.descendants().slice(1))
+                .enter().append('path')
+                .attr('class', 'link')
+                .attr('d', function(d) {
+                  return 'M' + d.y + ',' + d.x
+                    + 'C' + (d.y + d.parent.y) / 2 + ',' + d.x
+                    + ' ' + (d.y + d.parent.y) / 2 + ',' + d.x
+                    + ' ' + d.parent.y + ',' + d.parent.x;
+                });
+
+          // adds the circle to the node
+          var node = g.selectAll('.node')
+                .data(nodes.descendants())
+                .enter()
+                .append('circle')
+                .attr('r', 10)
+                .attr('class', function(d) {
+                  return 'node' +
+                    (d.children ? ' node--internal' : ' node--leaf'); })
+                .attr('transform', function(d) {
+                  return 'translate(' + d.y + ',' + d.x + ')'; });
+          // adds the text to the node
+          // .append('text')
+          //   .attr('dy', '.35em')
+          //   .attr('y', function(d) { return d.children ? -20 : 20; })
+          //   .style('text-anchor', 'middle')
+          //   .text(function(d) { return d.data.name; });
+
+
+            function restart() {
+              nodes = stratify(nodeArray);
+              nodes = treemap(nodes);
+
+              console.log('restart', nodes);
+
+              link = link
+                .data( nodes.descendants().slice(1));
+
+              node = node
+                .data(nodes.descendants());
+            }
+
+
+            spiderWeb(rootNode, 2);
+
+            function spiderWeb(startNode, levels) {
+              console.log(startNode);
+              // drawCustomers(startNode, levels);
+              drawSuppliers(startNode, levels);
+            }
+
+            function drawCustomers(parentNode, levels) {
+              if (levels >= 1) {
+                // EnterprisesService.getCustomers({ 'enterpriseId': parentNode._id }).then(function (res) {
+                EnterprisesService.getCustomers({ 'enterpriseId': parentNode._id }).then(function (res) {
+                  var tmpNode = [];
+                  for (var i = 0; i < res.customers.length; i++) {
+                    var newNode = res.customers[i];
+                    // newNode.x = x;
+                    // newNode.y = height / 2;
+                    newNode.img = 'https://cdn4.iconfinder.com/data/icons/seo-and-data/500/magnifier-data-128.png';
+                    newNode.parentId = parentNode._id;
+
+                    tmpNode.push(newNode);
+                    nodeArray.push(newNode);
+                    restart();
+                    // links.push({ source: root, target: newNode });
+                  }
+                  // restart();
+                  for (var j = 0; j < tmpNode.length; j++) {
+                    drawCustomers(tmpNode[j], levels - 1);
+                  }
+                }).catch(function(err) {
+                  console.log(err);
+                });
+              }
+            }
+
+            function drawSuppliers(parentNode, levels) {
+              if (levels >= 1) {
+                EnterprisesService.getSuppliers({ 'enterpriseId': parentNode._id }).then(function (res) {
+                  var tmpNode = [];
+                  for (var i = 0; i < res.suppliers.length; i++) {
+                    var newNode = res.suppliers[i];
+                    // newNode.x = x;
+                    // newNode.y = height / 2;
+                    newNode.img = 'https://cdn4.iconfinder.com/data/icons/seo-and-data/500/gear-clock-128.png';
+                    newNode.parentId = parentNode._id;
+
+                    tmpNode.push(newNode);
+                    nodeArray.push(newNode);
+                    restart();
+                    // links.push({ source: newNode, target: root });
+                  }
+                  // restart();
+                  for (var j = 0; j < tmpNode.length; j++) {
+                    drawSuppliers(tmpNode[j], levels - 1);
+                  }
+                });
+              }
+            }
+
+
+
+
+          });
+
+
+
+
+
+
+
+
+          // var treeData =
+          //       {
+          //         'name': 'Top Level',
+          //         'children': [
+          //           {
+          //             'name': 'Level 2: A',
+          //             'children': [
+          //               { 'name': 'Son of A' },
+          //               { 'name': 'Daughter of A' }
+          //             ]
+          //           },
+          //           { 'name': 'Level 2: B' }
+          //         ]
+          //       };
+
+
+          // var root = d3.hierarchy(treeData, function(d) { return d.children; });
+
+          // console.log('1', root);
+
+          // var width = $window.innerWidth;
+          // var height = $window.innerHeight;
+
+          // var tree = d3.tree().size([width, height]);
+
+          // root = tree(root);
+
+          // console.log(root.descendants().slice(1));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           d3.select('.footer').remove();
           var header = getBounds(d3.select('header')._groups[0][0]);
           var sideHeight = getBounds(d3.select('.form-group')._groups[0][0]);
 
-          // var widthBot = 0;
-          // var heightBot = 0;
           var width = $window.innerWidth;
           var height = $window.innerHeight;
-          // var widthTop = width;
-          // var heightTop = height;
-          var transform = d3.zoomIdentity;
 
           d3.select('.display').style('height', function() { return (height - sideHeight.offsetTop - header.offsetHeight) + 'px';});
           d3.select('.side-list').style('max-height', function() { return (height - header.offsetHeight - sideHeight.offsetTop - sideHeight.offsetHeight - 80) + 'px'; });
           d3.select('.content').style('margin-top', function() { return header.offsetHeight + 'px';});
 
-          var svg = d3.select('#graph').append('svg')
-                .style('padding', '30px')
-                .attr('width', width)
-                .attr('height', height - header.offsetHeight - 5);
-
-          svg.on('mousedown', function(d) {
-            console.log(d3.event);
-          });
+          // var svg = d3.select('#graph').append('svg')
+          //       .style('padding', '30px')
+          //       .attr('width', width)
+          //       .attr('height', height - header.offsetHeight - 5);
 
           var color = d3.scaleOrdinal(d3.schemeCategory10);
 
-          //   function addNodeToGraph(newNode) {
-          //         .on('click', function(d, i) {
-          //           d3.selectAll('text').remove();
-          //           d3.selectAll('rect').remove();
-
-          //           d3.select('#selected-circle').style('stroke', 'black').style('stroke-width', 1).attr('id', '');
-          //           d3.select(this).transition().duration(300)
-          //             .style('stroke', 'red')
-          //             .style('stroke-width', 5)
-          //             .attr('id', 'selected-circle');
-
-          //           var items = [
-          //             { 'func': centerNode, 'text': 'Center Graph on Company', 'y': 1 },
-          //             { 'func': viewCatalog, 'text': 'View Product/Service Catalog', 'y': 2 },
-          //             { 'func': viewDemands, 'text': 'View Demands', 'y': 3 },
-          //             { 'func': viewSuppliers, 'text': 'View Suppliers', 'y': 4 },
-          //             { 'func': viewCustomers, 'text': 'View Customers', 'y': 5 },
-          //             { 'func': viewCompetitors, 'text': 'View Competitors', 'y': 6 }
-          //           ];
-          //           var menuWidth = 200;
-          //           var itemHeight = 30;
-          //           var x = d3.select(this)._groups[0][0].cx.baseVal.value + 40;
-          //           if (x + menuWidth > width) {
-          //             x = x - 280;
-          //           }
-          //           var y = d3.select(this)._groups[0][0].cy.baseVal.value - 70;
-          //           var menuLen = items.length * itemHeight;
-          //           if (y + menuLen > height) {
-          //             y = y - 30;
-          //           }
-
-          //           menuItems = g.selectAll('rect').data(items).enter()
-          //             .append('rect').attr('class', 'conmenu-items')
-          //             .attr('width', menuWidth).attr('height', itemHeight)
-          //             .style('fill', '#d3d3d3')
-          //             .on('mouseout', function(d) {
-          //               d3.select(this).style('fill', '#d3d3d3');
-          //             })
-          //             .on('mouseover', function(d) {
-          //               d3.select(this).style('fill', '#fff');
-          //             })
-          //             .on('click', function(d) {
-          //               d3.selectAll('text').remove();
-          //               d3.selectAll('rect').remove();
-
-          //               if (d.func === centerNode) {
-          //                 d.func(d3.select('#selected-circle')._groups[0][0]);
-          //               } else {
-          //                 d.func(d3.select('#selected-circle')._groups[0][0].__data__);
-          //               }
-          //             })
-          //             .style('stroke', 'black')
-          //             .style('stroke-width', 0.5)
-          //             .attr('x', x)
-          //             .attr('y', function(d) {
-          //               return y + (30 * (d.y));
-          //             });
-
-          //           menuText = g.selectAll('text').data(items).enter()
-          //             .append('text')
-          //             .style('cursor', 'default')
-          //             .style('pointer-events', 'none')
-          //             .attr('x', x + 3)
-          //             .attr('y', function(d) {
-          //               return y + 20 + (30 * (d.y));
-          //             })
-          //             .text(function (d) { return d.text; });
-          //         });
-          //   }
-
-
           getGraph().then(function(rootNode) {
-            var radius = 15;
-            var xStep = width / 4;
-            var centerX = width / 2;
-            var centerY = height / 2;
-            var nodes = [rootNode],
-                links = [];
+            rootNode.parentId = null;
 
-            rootNode.x = centerX;
-            rootNode.y = centerY;
-            rootNode.img = 'http://www.e-pint.com/epint.jpg';
+            var stratify = d3.stratify()
+                  .id(function(d) { return d._id; })
+                  .parentId(function(d) { return d.parentId; });
 
-            var simulation = buildForces();
-            makeLineArrow();
+            var root = stratify([rootNode]);
 
-            var g = svg.append('g'),
-              link = g.append('g').attr('stroke', '#000').attr('stroke-width', 1.5).selectAll('.link'),
-              node = g.append('g').attr('stroke', '#fff').attr('stroke-width', 1.5).selectAll('.node');
+            var customerTree = d3.tree().size([width, height]);
 
-            var menuText = g.append('text');
-            var menuItems = g.append('rect');
+            console.log(root);
+            customerTree(root);
 
-            var zoom = d3.zoom()
-                  .scaleExtent([1 / 4, 1.2])
-                  .on('zoom', zoom_actions);
+            // var nodes = customerTree.nodes(root).reverse();
+            // var links = customerTree.links(nodes);
 
-            svg.call(zoom);
-            d3.select('svg').on('dblclick.zoom', null);
+            console.log(root);
 
-            makeHomeButton();
+            var nodes = root.descendants(),
+                links = root.descendants().slice(1);
 
-            spiderWeb(rootNode, 2);
+            nodes.forEach(function(d){ d.y = d.depth * 180; });
 
-            function makeNodeImages() {
-              return svg.append('defs')
-                .selectAll('pattern')
-                .data(nodes)
-                .enter()
-                .append('pattern')
-                .attr('id', function (d) { return 'image' + d._id; })
-                .attr('x', 0)
-                .attr('y', 0)
-                .attr('height', radius * 2)
-                .attr('width', radius * 2)
-                .on('mouseover', function(d) {
-                  console.log(d3.select(this));
-                  d3.select(this).transition().duration(600).attr('height', radius * 4).attr('width', radius * 4);
-                })
-                .append('image')
-                .attr('x', 0)
-                .attr('y', 0)
-                .attr('height', radius * 2)
-                .attr('width', radius * 2)
-                .on('mouseover', function(d) {
-                  console.log(d3.select(this));
-                  d3.select(this).transition().duration(600).attr('height', radius * 4).attr('width', radius * 4);
-                })
-                .attr('xlink:href', function (d) { return d.img; });
+
+
+
+
+
+
+
+            spiderWeb(root, 2);
+
+            function spiderWeb(startNode, levels) {
+              console.log(startNode);
+              drawCustomers(startNode, levels, width / 2);
+              // drawSuppliers(startNode, levels, width / 2);
             }
 
-            function buildForces() {
-              return d3.forceSimulation()
-                .nodes(nodes)
-                .force('charge', d3.forceManyBody().strength(0.2))
-                .force('center', d3.forceCenter(width / 2, height / 2))
-                .force('link', d3.forceLink(links).id(function(d) { return d._id; }).distance(20).strength(0))
-                .force('x', d3.forceX().x(function(d) { return d.x; }).strength(3.5))
-                // .force('y', d3.forceY(1).strength(0.1))
-                .force('collision', d3.forceCollide().radius(function() {
-                  return 30;
-                }))
-                .alphaTarget(0)
-                .on('tick', ticked);
-            }
-
-            function makeLineArrow() {
-              // build the arrow.
-              svg.append('svg:defs').selectAll('marker')
-                .data(['end'])      // Different link/path types can be defined here
-                .enter().append('svg:marker')    // This section adds in the arrows
-                .attr('id', String)
-                .attr('viewBox', '0 -5 10 10')
-                .attr('refX', 100)
-                .attr('refY', 0)
-                .attr('markerWidth', 8)
-                .attr('markerHeight', 8)
-                .attr('orient', 'auto')
-                .append('svg:path')
-                .attr('d', 'M0,-5L10,0L0,5');
-            }
-
-            function zoom_actions() {
-              console.log(d3.max(nodes.map(d => d.x)));
-              console.log(d3.max(nodes.map(d => d.y)));
-
-              transform = d3.event.transform;
-              console.log(transform);
-              g.attr('transform', d3.event.transform);
-            }
-
-            function spiderWeb(node, levels) {
-              drawCustomers(rootNode, levels, width / 2);
-              drawSuppliers(rootNode, levels, width / 2);
-            }
-
-            function drawCustomers(root, levels, x) {
+            function drawCustomers(parentNode, levels, x) {
               if (levels >= 1) {
-                EnterprisesService.getCustomers({ 'enterpriseId': root._id }).then(function (res) {
+                EnterprisesService.getCustomers({ 'enterpriseId': parentNode._id }).then(function (res) {
                   var tmpNode = [];
                   for (var i = 0; i < res.customers.length; i++) {
                     var newNode = res.customers[i];
-                    newNode.x = x + xStep;
-                    newNode.y = height / 2;
+                    // newNode.x = x;
+                    // newNode.y = height / 2;
                     newNode.img = 'https://cdn4.iconfinder.com/data/icons/seo-and-data/500/magnifier-data-128.png';
+                    newNode.parentId = parentNode._id;
 
                     tmpNode.push(newNode);
                     nodes.push(newNode);
                     links.push({ source: root, target: newNode });
                   }
-                  restart();
+                  // restart();
                   for (var j = 0; j < tmpNode.length; j++) {
-                    drawCustomers(tmpNode[j], levels - 1, x + xStep);
+                    drawCustomers(tmpNode[j], levels - 1, x + 100);
                   }
                 });
               }
@@ -257,7 +306,7 @@
                     nodes.push(newNode);
                     links.push({ source: newNode, target: root });
                   }
-                  restart();
+                  // restart();
                   for (var j = 0; j < tmpNode.length; j++) {
                     drawSuppliers(tmpNode[j], levels - 1, x - xStep);
                   }
@@ -265,717 +314,8 @@
               }
             }
 
-            function restart() {
-              var defs = makeNodeImages();
 
-              // Apply the general update pattern to the nodes.
-              node = node.data(nodes, function(d) { return d.id;});
-              node.exit().remove();
-              node = node.enter().append('circle').attr('fill', function(d) { return color(d.id); }).attr('cx', function(d) { return d.x; }).attr('cy', function(d) { return d.y; }).style('fill', function(d) { return 'url(#image' + d._id + ')'; }).attr('r', radius).merge(node);
-              // Apply node behaviors
-              node = node
-                .on('mouseover', mouseover)
-                .on('mouseout', mouseout)
-                .on('dblclick', function(d) {
-                  d3.selectAll('text').remove();
-                  d3.selectAll('rect').remove();
-                  centerNode(d3.select(this)._groups[0][0]);
-                  scope.$parent.vm.chooseCompany({ selected: d3.select(this)._groups[0][0].__data__ });
-                })
-                .on('click', menuClick);
-
-              // Apply the general update pattern to the links.
-              link = link.data(links, function(d) { return d.source.id + '-' + d.target.id; });
-              link.exit().remove();
-              link = link.enter().append('line').attr('marker-end', 'url(#end)').merge(link);
-
-              // Update and restart the simulation.
-              simulation.nodes(nodes);
-              simulation.force('link').links(links);
-              simulation.alpha(0.3).restart();
-            }
-
-            function mouseout(d) {
-              // d3.select(this).transition().duration(600).attr('r', radius);
-            }
-
-            // TODO Finish hover highlighting
-            function mouseover(d) {
-              console.log('mouseover', d3.event);
-              // d3.select(this).transition().duration(600).attr('r', radius * 2);
-              // console.log(d3.select(this));
-              var id = d3.select(this)._groups[0][0].__data__._id;
-              // console.log(id);
-              var connectingLinks = links.filter(function(d) {
-                if(d.source._id === id || d.target._id === id) {
-                  return d;
-                }
-              });
-
-              // console.log(connectingLinks);
-              var sourceLinks = connectingLinks.map(d => d.source._id);
-              var targetLinks = connectingLinks.map(d => d.target._id);
-              // console.log(sourceLinks);
-              // console.log(targetLinks);
-            }
-
-            function ticked() {
-              node.attr('cx', function(d) { return d.x; })
-                .attr('cy', function(d) { return d.y; });
-
-              link.attr('x1', function(d) { return d.source.x; })
-                .attr('y1', function(d) { return d.source.y; })
-                .attr('x2', function(d) { return d.target.x; })
-                .attr('y2', function(d) { return d.target.y; });
-            }
-
-            function menuClick(d, i) {
-                  d3.selectAll('text').remove();
-                  d3.selectAll('rect').remove();
-
-                  d3.select('#selected-circle').style('stroke', '#fff').style('stroke-width', 1).attr('id', '');
-                  d3.select(this).transition().duration(300)
-                    .style('stroke', 'red')
-                    .style('stroke-width', 3)
-                    .attr('id', 'selected-circle');
-
-                  var items = [
-                    { 'func': centerNode, 'text': 'Center Graph on Company', 'y': 1 },
-                    { 'func': viewCatalog, 'text': 'View Product/Service Catalog', 'y': 2 },
-                    { 'func': viewDemands, 'text': 'View Demands', 'y': 3 },
-                    { 'func': viewSuppliers, 'text': 'View Suppliers', 'y': 4 },
-                    { 'func': viewCustomers, 'text': 'View Customers', 'y': 5 },
-                    { 'func': viewCompetitors, 'text': 'View Competitors', 'y': 6 }
-                  ];
-                  var menuWidth = 200;
-                  var itemHeight = 30;
-                  var x = d3.select(this)._groups[0][0].cx.baseVal.value + 40;
-                  if (x + menuWidth > width) {
-                    x = x - 280;
-                  }
-                  var y = d3.select(this)._groups[0][0].cy.baseVal.value - 70;
-                  var menuLen = items.length * itemHeight;
-                  if (y + menuLen > height) {
-                    y = y - 30;
-                  }
-
-                  menuItems = g.selectAll('rect').data(items).enter()
-                      .append('rect').attr('class', 'conmenu-items')
-                      .attr('width', menuWidth).attr('height', itemHeight)
-                      .style('fill', '#d3d3d3')
-                      .on('mouseout', function(d) {
-                        d3.select(this).style('fill', '#d3d3d3');
-                      })
-                      .on('mouseover', function(d) {
-                        d3.select(this).style('fill', '#fff');
-                      })
-                      .on('click', function(d) {
-                        d3.selectAll('text').remove();
-                        d3.selectAll('rect').remove();
-
-                        if (d.func === centerNode) {
-                          d.func(d3.select('#selected-circle')._groups[0][0]);
-                        } else {
-                          d.func(d3.select('#selected-circle')._groups[0][0].__data__);
-                        }
-                      })
-                      .style('stroke', 'black')
-                      .style('stroke-width', 0.5)
-                      .attr('x', x)
-                      .attr('y', function(d) {
-                        return y + (30 * (d.y));
-                      });
-
-                    menuText = g.selectAll('text').data(items).enter()
-                      .append('text')
-                      .style('cursor', 'default')
-                      .style('pointer-events', 'none')
-                      .attr('x', x + 3)
-                      .attr('y', function(d) {
-                        return y + 20 + (30 * (d.y));
-                      })
-                      .text(function (d) { return d.text; });
-
-            }
-
-            function makeHomeButton() {
-              var home = d3.select('#graph')
-                    .append('span')
-                    .style('margin-top', function() { return (header.offsetHeight - 30) + 'px';})
-                    .attr('class', 'glyphicon glyphicon-home home')
-                    .on('click', centerHome)
-                    .on('mousedown', function() {
-                      d3.select(this).style('color', 'gray');
-                    })
-                    .on('mouseup', function() {
-                      d3.select(this).style('color', 'lightgray');
-                    });
-            }
-
-            // TODO centerHome by ids
-            // centerNode(node._groups[0][ID GOES HERE]);
-            function centerHome() {
-              centerNode(node._groups[0][0]);
-            }
-
-            function centerNode(node) {
-              var x = centerX - node.cx.baseVal.value;
-              var y = centerY - node.cy.baseVal.value;
-              svg.transition()
-                .duration(500)
-                .call(zoom.transform, d3.zoomIdentity.translate(x, y));
-            }
-
-            function viewCompetitors(x) { scope.$parent.vm.viewCompetitors({ selected: x }); }
-            function viewCustomers(x) { scope.$parent.vm.viewCustomers({ selected: x }); }
-            function viewSuppliers(x) { scope.$parent.vm.viewSuppliers({ selected: x }); }
-            function viewDemands(x) { scope.$parent.vm.viewDemands({ selected: x }); }
-            function viewCatalog(x) { scope.$parent.vm.viewCatalog({ selected: x }); }
           });
-
-          // d3.select('.footer').remove();
-          // var headerBox = d3.select('header')._groups[0][0];
-          // var header = getBounds(headerBox);
-          // var sideHeight = getBounds(d3.select('.form-group')._groups[0][0]);
-
-          // var widthBot = 0;
-          // var heightBot = 0;
-          // var width = $window.innerWidth;
-          // // var height = $window.innerHeight - header.offsetHeight;
-          // var height = $window.innerHeight;
-          // var widthTop = width;
-          // var heightTop = height;
-
-          // d3.select('.display').style('height', function() { return (height + 1 - sideHeight.offsetTop - header.offsetHeight) + 'px';});
-          // d3.select('.side-list').style('max-height', function() { return (height - header.offsetHeight - sideHeight.offsetTop - sideHeight.offsetHeight - 80) + 'px'; });
-          // d3.select('.content').style('margin-top', function() { return header.offsetHeight + 'px';});
-
-          // var svg = d3.select('#graph').append('svg')
-          //       // .style('padding', '30px')
-          //       .attr('width', width)
-          //       .attr('height', height - header.offsetHeight - 5);
-
-          // var radius = 25;
-          // var nodes_data = [];
-          // var links_data = [];
-
-          // getGraph().then(function(rootNode) {
-          //   // var nodes = obj;
-          //   // var rootNodeId = obj.rootNode._id;
-          //   // wrapCoordinates(nodes);
-
-          //   // set up the simulation and add forces
-          //   var simulation = d3.forceSimulation()
-          //         .nodes(nodes_data)
-          //         .on('tick', ticked);
-
-          //   var link_force = d3.forceLink(links_data)
-          //         .id(function(d) { return d.enterpriseId; })
-          //         .distance(220)
-          //         .strength(0);
-
-          //   var charge_force = d3.forceManyBody()
-          //         .strength(100);
-
-          //   var center_force = d3.forceCenter(width / 2, height / 2);
-
-          //   simulation
-          //     .force('charge_force', charge_force)
-          //     .force('center_force', center_force)
-          //     .force('links', link_force)
-          //     .force('x', d3.forceX().x(function(d) {
-          //       return d.x;
-          //     }).strength(0.5))
-          //     .force('collision', d3.forceCollide().radius(function() {
-          //       return radius + 10;
-          //     }));
-
-          //   // add encompassing group for the zoom
-          //   var g = svg.append('g')
-          //         .attr('class', 'everything');
-
-          //   var defs = svg.append('defs')
-          //         .selectAll('pattern')
-          //         .data(nodes_data)
-          //         .enter()
-          //         .append('pattern')
-          //         // .attr('id', function (d, i) { return 'image' + i; })
-          //         .attr('x', 0)
-          //         .attr('y', 0)
-          //         .attr('height', radius * 2)
-          //         .attr('width', radius * 2)
-          //         .append('image')
-          //         .attr('x', 0)
-          //         .attr('y', 0)
-          //         .attr('height', radius * 2)
-          //         .attr('width', radius * 2)
-          //         .attr('xlink:href', function (d) { return d.img; });
-
-          //   // build the arrow.
-          //   svg.append('svg:defs').selectAll('marker')
-          //     .data(['end'])      // Different link/path types can be defined here
-          //     .enter().append('svg:marker')    // This section adds in the arrows
-          //     .attr('id', String)
-          //     .attr('viewBox', '0 -5 10 10')
-          //     .attr('refX', 190)
-          //     .attr('refY', 0)
-          //     .attr('markerWidth', 6)
-          //     .attr('markerHeight', 6)
-          //     .attr('orient', 'auto')
-          //     .append('svg:path')
-          //     .attr('d', 'M0,-5L10,0L0,5');
-
-          //   // draw lines for the links
-          //   var link = g.append('g')
-          //         .attr('class', 'link')
-          //         .selectAll('line')
-          //         .data(links_data)
-          //         .enter().append('line')
-          //         .attr('stroke-width', 1)
-          //         .style('stroke', 'black')
-          //         .attr('marker-end', 'url(#end)')
-          //         .attr('x1', function(d) { return d.source.x; })
-          //         .attr('y1', function(d) { return d.source.y; })
-          //         .attr('x2', function(d) { return d.target.x; })
-          //         .attr('y2', function(d) { return d.target.y; });
-
-          //   var menuText = g.append('text');
-          //   var menuItems = g.append('rect');
-          //   var node = '';
-
-          //   makeNodes();
-
-          //   function makeNodes() {
-
-          //   // draw circles for the nodes
-          //   node = g.append('g')
-          //         .attr('class', 'node')
-          //         .selectAll('circle')
-          //         .data(nodes_data)
-          //         .enter()
-          //         .append('circle')
-          //         .attr('cx', function(d) { return d.x; })
-          //         .attr('cy', function(d) { return d.y; })
-          //         .attr('r', radius)
-          //         .style('fill', function(d, i) { return 'url(#image' + i + ')'; })
-          //         .style('stroke', 'black')
-          //         .style('stroke-width', 1)
-          //         .on('dblclick', function(d) {
-
-          //           d3.selectAll('text').remove();
-          //           d3.selectAll('rect').remove();
-          //           centerNode(d3.select(this)._groups[0][0]);
-          //           scope.$parent.vm.chooseCompany({ selected: d3.select(this)._groups[0][0].__data__ });
-          //         })
-          //         .on('click', function(d, i) {
-          //           d3.selectAll('text').remove();
-          //           d3.selectAll('rect').remove();
-
-          //           d3.select('#selected-circle').style('stroke', 'black').style('stroke-width', 1).attr('id', '');
-          //           d3.select(this).transition().duration(300)
-          //             .style('stroke', 'red')
-          //             .style('stroke-width', 5)
-          //             .attr('id', 'selected-circle');
-
-          //           var items = [
-          //             { 'func': centerNode, 'text': 'Center Graph on Company', 'y': 1 },
-          //             { 'func': viewCatalog, 'text': 'View Product/Service Catalog', 'y': 2 },
-          //             { 'func': viewDemands, 'text': 'View Demands', 'y': 3 },
-          //             { 'func': viewSuppliers, 'text': 'View Suppliers', 'y': 4 },
-          //             { 'func': viewCustomers, 'text': 'View Customers', 'y': 5 },
-          //             { 'func': viewCompetitors, 'text': 'View Competitors', 'y': 6 }
-          //           ];
-          //           var menuWidth = 200;
-          //           var itemHeight = 30;
-          //           var x = d3.select(this)._groups[0][0].cx.baseVal.value + 40;
-          //           if (x + menuWidth > width) {
-          //             x = x - 280;
-          //           }
-          //           var y = d3.select(this)._groups[0][0].cy.baseVal.value - 70;
-          //           var menuLen = items.length * itemHeight;
-          //           if (y + menuLen > height) {
-          //             y = y - 30;
-          //           }
-
-          //           menuItems = g.selectAll('rect').data(items).enter()
-          //             .append('rect').attr('class', 'conmenu-items')
-          //             .attr('width', menuWidth).attr('height', itemHeight)
-          //             .style('fill', '#d3d3d3')
-          //             .on('mouseout', function(d) {
-          //               d3.select(this).style('fill', '#d3d3d3');
-          //             })
-          //             .on('mouseover', function(d) {
-          //               d3.select(this).style('fill', '#fff');
-          //             })
-          //             .on('click', function(d) {
-          //               d3.selectAll('text').remove();
-          //               d3.selectAll('rect').remove();
-
-          //               if (d.func === centerNode) {
-          //                 d.func(d3.select('#selected-circle')._groups[0][0]);
-          //               } else {
-          //                 d.func(d3.select('#selected-circle')._groups[0][0].__data__);
-          //               }
-          //             })
-          //             .style('stroke', 'black')
-          //             .style('stroke-width', 0.5)
-          //             .attr('x', x)
-          //             .attr('y', function(d) {
-          //               return y + (30 * (d.y));
-          //             });
-
-          //           menuText = g.selectAll('text').data(items).enter()
-          //             .append('text')
-          //             .style('cursor', 'default')
-          //             .style('pointer-events', 'none')
-          //             .attr('x', x + 3)
-          //             .attr('y', function(d) {
-          //               return y + 20 + (30 * (d.y));
-          //             })
-          //             .text(function (d) { return d.text; });
-          //         });
-          //   }
-
-
-          //   function addNodeToGraph(newNode) {
-          //         node
-          //         .selectAll('circle')
-          //         .data(nodes_data)
-          //         .enter()
-          //         .append('circle')
-          //         .attr('cx', function(d) { return d.x; })
-          //         .attr('cy', function(d) { return d.y; })
-          //         .attr('r', radius)
-          //         .style('fill', function(d, i) { return 'url(#image' + i + ')'; })
-          //         .style('stroke', 'black')
-          //         .style('stroke-width', 1)
-          //         .on('dblclick', function(d) {
-
-          //           d3.selectAll('text').remove();
-          //           d3.selectAll('rect').remove();
-          //           centerNode(d3.select(this)._groups[0][0]);
-          //           scope.$parent.vm.chooseCompany({ selected: d3.select(this)._groups[0][0].__data__ });
-          //         })
-          //         .on('click', function(d, i) {
-          //           d3.selectAll('text').remove();
-          //           d3.selectAll('rect').remove();
-
-          //           d3.select('#selected-circle').style('stroke', 'black').style('stroke-width', 1).attr('id', '');
-          //           d3.select(this).transition().duration(300)
-          //             .style('stroke', 'red')
-          //             .style('stroke-width', 5)
-          //             .attr('id', 'selected-circle');
-
-          //           var items = [
-          //             { 'func': centerNode, 'text': 'Center Graph on Company', 'y': 1 },
-          //             { 'func': viewCatalog, 'text': 'View Product/Service Catalog', 'y': 2 },
-          //             { 'func': viewDemands, 'text': 'View Demands', 'y': 3 },
-          //             { 'func': viewSuppliers, 'text': 'View Suppliers', 'y': 4 },
-          //             { 'func': viewCustomers, 'text': 'View Customers', 'y': 5 },
-          //             { 'func': viewCompetitors, 'text': 'View Competitors', 'y': 6 }
-          //           ];
-          //           var menuWidth = 200;
-          //           var itemHeight = 30;
-          //           var x = d3.select(this)._groups[0][0].cx.baseVal.value + 40;
-          //           if (x + menuWidth > width) {
-          //             x = x - 280;
-          //           }
-          //           var y = d3.select(this)._groups[0][0].cy.baseVal.value - 70;
-          //           var menuLen = items.length * itemHeight;
-          //           if (y + menuLen > height) {
-          //             y = y - 30;
-          //           }
-
-          //           menuItems = g.selectAll('rect').data(items).enter()
-          //             .append('rect').attr('class', 'conmenu-items')
-          //             .attr('width', menuWidth).attr('height', itemHeight)
-          //             .style('fill', '#d3d3d3')
-          //             .on('mouseout', function(d) {
-          //               d3.select(this).style('fill', '#d3d3d3');
-          //             })
-          //             .on('mouseover', function(d) {
-          //               d3.select(this).style('fill', '#fff');
-          //             })
-          //             .on('click', function(d) {
-          //               d3.selectAll('text').remove();
-          //               d3.selectAll('rect').remove();
-
-          //               if (d.func === centerNode) {
-          //                 d.func(d3.select('#selected-circle')._groups[0][0]);
-          //               } else {
-          //                 d.func(d3.select('#selected-circle')._groups[0][0].__data__);
-          //               }
-          //             })
-          //             .style('stroke', 'black')
-          //             .style('stroke-width', 0.5)
-          //             .attr('x', x)
-          //             .attr('y', function(d) {
-          //               return y + (30 * (d.y));
-          //             });
-
-          //           menuText = g.selectAll('text').data(items).enter()
-          //             .append('text')
-          //             .style('cursor', 'default')
-          //             .style('pointer-events', 'none')
-          //             .attr('x', x + 3)
-          //             .attr('y', function(d) {
-          //               return y + 20 + (30 * (d.y));
-          //             })
-          //             .text(function (d) { return d.text; });
-          //         });
-          //   }
-
-          //   makeHomeButton();
-
-          //   var zoom = d3.zoom()
-          //         .scaleExtent([1 / 2, 1.2])
-          //         .on('zoom', zoom_actions);
-
-          //   svg.call(zoom);
-          //   d3.select('svg').on('dblclick.zoom', null);
-
-          //   spiderWeb(rootNode);
-
-          //   /** Functions **/
-
-          //   function drawNode() {
-          //     node = node.data(nodes_data, function(d) { return d.enterpriseId; });
-          //     simulation = simulation.nodes(nodes_data);
-
-          //     // defs = defs.data(nodes_data);
-
-          //     simulation.alpha(0.3).restart();
-          //   }
-
-          //   function spiderWeb(root) {
-          //     root.x = width / 2;
-          //     root.y = height / 2;
-          //     root.img = 'http://www.e-pint.com/epint.jpg';
-
-          //     nodes_data.push(root);
-          //     drawNode();
-
-          //     addLevelsToGraph(2, root);
-          //   }
-
-          //   function drawLink() {
-          //     link = link.data(links_data, function(d) { return d.source.id + '-' + d.target.id; });
-          //     link_force = d3.forceLink(links_data);
-          //   }
-
-          //   function addLevelsToGraph(levels, root) {
-          //     EnterprisesService.getCustomers({'enterpriseId': root.enterpriseId}).then(function (res) {
-          //       var nodes = res.customers;
-          //       for (var i = 0; i < nodes.length; i++) {
-          //         var newNode = nodes[i];
-          //         newNode.x = width / 2 - 200;
-          //         newNode.y = height / 2;
-
-          //         nodes_data.push(newNode);
-          //         drawNode();
-
-          //         // var oldNode = root;
-          //         // links_data.push(
-          //         //   { 'source': oldNode, 'target': newNode }
-          //         // );
-          //         // drawLink();
-          //       }
-          //       console.log(nodes);
-          //     });
-
-          //     EnterprisesService.getSuppliers({'enterpriseId': root.enterpriseId}).then(function (res) {
-          //       var nodes = res.suppliers;
-          //       for (var i = 0; i < nodes.length; i++) {
-          //         var newNode = nodes[i];
-          //         newNode.x = width / 2 + 200;
-          //         newNode.y = height / 2;
-
-          //         nodes_data.push(newNode);
-          //         drawNode();
-          //         // var oldNode = root;
-          //         // links_data.push(
-          //         //   { 'source': newNode, 'target': oldNode }
-          //         // );
-          //         // drawLink();
-          //       }
-          //       console.log(nodes);
-          //     });
-          //   }
-
-          //   function makeHomeButton() {
-          //     var home = d3.select('#graph')
-          //           .append('span')
-          //           .style('margin-top', function() { return (header.offsetHeight - 30) + 'px';})
-          //           .attr('class', 'glyphicon glyphicon-home home')
-          //           .on('click', centerHome)
-          //           .on('mousedown', function() {
-          //             d3.select(this).style('color', 'gray');
-          //           })
-          //           .on('mouseup', function() {
-          //             d3.select(this).style('color', 'lightgray');
-          //           });
-          //   }
-
-          //   function centerHome() {
-          //     centerNode(node._groups[0][nodes.rootNode.index]);
-          //   }
-
-          //   var centerX = width / 2;
-          //   var centerY = height / 2;
-
-          //   function centerNode(node) {
-          //     var x = centerX - node.cx.baseVal.value;
-          //     var y = centerY - node.cy.baseVal.value;
-          //     svg.transition()
-          //       .duration(500)
-          //       .call(zoom.transform, d3.zoomIdentity.translate(x, y));
-          //   }
-
-
-          //   function viewCompetitors(x) {
-          //     scope.$parent.vm.viewCompetitors({ selected: x });
-          //   }
-
-          //   function viewCustomers(x) {
-          //     scope.$parent.vm.viewCustomers({ selected: x });
-          //   }
-
-          //   function viewSuppliers(x) {
-          //     scope.$parent.vm.viewSuppliers({ selected: x });
-          //   }
-
-          //   function viewDemands(x) {
-          //     scope.$parent.vm.viewDemands({ selected: x });
-          //   }
-
-          //   function viewCatalog(x) {
-          //     scope.$parent.vm.viewCatalog({ selected: x });
-          //   }
-
-          //   function ticked() {
-          //     node
-          //       .attr('cx', function(d) { return d.x; })
-          //       .attr('cy', function(d) { return d.y; });
-          //     link
-          //       .attr('x1', function(d) { return d.source.x; })
-          //       .attr('y1', function(d) { return d.source.y; })
-          //       .attr('x2', function(d) { return d.target.x; })
-          //       .attr('y2', function(d) { return d.target.y; });
-          //   }
-
-          //   // Zoom functions
-          //   function zoom_actions() {
-          //     // console.log(d3.event.transform);
-          //     // heightBot
-          //     // heightTop
-          //     // widthBot
-          //     // widthTop
-
-          //     g.attr('transform', d3.event.transform);
-          //   }
-
-          //   function getY(arr, item, prevY) {
-          //     var len = arr.length + 1;
-          //     var pixels = height / len;
-
-          //     prevY = prevY + pixels;
-
-          //     if (prevY + pixels >= height) {
-          //       var y = prevY;
-          //       prevY = 0;
-          //       return y;
-          //     }
-          //     return prevY;
-          //   }
-
-          //   // addNodeAndLink({ enterpriseId: rootNodeId }, { x: 10, y: 20, enterpriseId: '1234' }, 'suppliers');
-          //   // addNodeAndLink({ enterpriseId: rootNodeId }, { x: 10, y: 20, enterpriseId: '1234' }, 'customers');
-
-          //   makeNodes();
-
-          //   function addNodeAndLink(oldNode, newNode, name) {
-          //     var newLink = { 'source': null, 'target': null };
-          //     if (name === 'suppliers') {
-          //       newLink.source = newNode.enterpriseId;
-          //       newLink.target = oldNode.enterpriseId;
-          //     } else if (name === 'customers') {
-          //       newLink.source = oldNode.enterpriseId;
-          //       newLink.target = newNode.enterpriseId;
-          //     } else {
-          //       return;
-          //     }
-
-          //     console.log(nodes_data);
-          //     console.log(links_data);
-          //     nodes_data = nodes_data.concat(newNode);
-          //     links_data = links_data.concat(newLink);
-          //     console.log(nodes_data);
-          //     console.log(links_data);
-
-          //     // makeNodes();
-
-          //     simulation.nodes(nodes_data);
-          //     // simulation.force('link').links(links_data);
-          //     simulation.alpha(0.2).restart();
-          //   }
-
-          //   function wrapCoordinates(nodes) {
-          //     var SUP_X = width / 4;
-          //     var COM_X = width / 4 + width / 4;
-          //     var CUS_X = width / 4 + width / 4 + width / 4;
-          //     var index;
-          //     var y;
-          //     var linkIndex = 0;
-
-          //     for (var item in nodes) {
-          //       if (item === 'customer') {
-          //         y = 0;
-          //         for (index = 0; index < nodes[item].length; index++) {
-          //           nodes[item][index].x = CUS_X;
-          //           y = getY(nodes[item], item, y);
-          //           nodes[item][index].y = y;
-          //           nodes[item][index].img = 'https://cdn4.iconfinder.com/data/icons/seo-and-data/500/magnifier-data-128.png';
-          //           nodes_data.push(nodes[item][index]);
-
-          //           links_data[linkIndex] = { 'source': null, 'target': null };
-          //           links_data[linkIndex].source = rootNodeId;
-          //           links_data[linkIndex].target = nodes[item][index].enterpriseId;
-          //           linkIndex++;
-          //         }
-          //       } else if (item === 'supplier') {
-          //         y = 0;
-          //         for (index = 0; index < nodes[item].length; index++) {
-          //           nodes[item][index].x = SUP_X;
-          //           y = getY(nodes[item], item, y);
-          //           nodes[item][index].y = y;
-          //           nodes[item][index].img = 'https://cdn4.iconfinder.com/data/icons/seo-and-data/500/gear-clock-128.png';
-          //           nodes_data.push(nodes[item][index]);
-
-          //           links_data[linkIndex] = { 'source': null, 'target': null };
-          //           links_data[linkIndex].source = nodes[item][index].enterpriseId;
-          //           links_data[linkIndex].target = rootNodeId;
-          //           linkIndex++;
-          //         }
-          //       } else if (item === 'competitor') {
-          //         y = 0;
-          //         for (index = 0; index < nodes[item].length; index++) {
-          //           nodes[item][index].x = COM_X;
-          //           y = getY(nodes[item], item, y);
-          //           nodes[item][index].y = y;
-          //           nodes[item][index].img = 'https://cdn4.iconfinder.com/data/icons/seo-and-data/500/pencil-gear-128.png';
-          //           nodes_data.push(nodes[item][index]);
-          //         }
-          //       } else if (item === 'rootNode') {
-          //         nodes[item].x = width / 2;
-          //         nodes[item].y = height / 2;
-          //         nodes[item].img = 'http://www.e-pint.com/epint.jpg';
-          //         nodes[item].enterpriseId = nodes[item]._id;
-          //         nodes_data.push(nodes[item]);
-          //       }
-          //     }
-          //     console.log(nodes);
-          //   }
-          // });
         });
 
         function getGraph() {
