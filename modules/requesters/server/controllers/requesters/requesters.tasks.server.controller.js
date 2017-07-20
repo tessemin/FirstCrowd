@@ -154,10 +154,22 @@ exports.biddingActions = {
           var bidId = req.body.bidId,
             foundBid = false,
             bid = 0;
+          if (task.multiplicity <= 0) {
+            return res.status(422).send({
+              message: 'There are too many workers for this task'
+            });
+          }
           for (bid = 0; bid < task.bids.length && bidId; bid++) {
             if (task.bids[bid]._id && task.bids[bid]._id.toString() === bidId.toString()) {
               foundBid = true;
               break;
+            }
+          }
+          for (var job = 0; job < task.jobs.length; job++) {
+            if (jobs[job].worker.workerId.toString() === task.bids[bid].worker.workerId.toString()) {
+              return res.status(422).send({
+                message: 'Worker is already working for this task'
+              });
             }
           }
           if (foundBid) {
