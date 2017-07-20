@@ -15,6 +15,7 @@
     vm.query = '';
     vm.text = [];
     vm.list = [];
+    vm.searchResults = [];
     vm.header = 'Header!';
     vm.head = 'Head';
 
@@ -27,6 +28,7 @@
     vm.viewSuppliers = viewSuppliers;
     vm.viewCustomers = viewCustomers;
     vm.viewCompetitors = viewCompetitors;
+    vm.makeGraphForCompany = makeGraphForCompany;
 
     function close() {
       vm.selected = {};
@@ -34,7 +36,8 @@
 
     function search(query) {
       EnterprisesService.fuzzyQuery({ query: query }).then(function (res) {
-        console.log(res);
+        vm.searchResults = res.searchResults;
+        vm.searchResultsShow = true;
       });
     }
 
@@ -97,5 +100,10 @@
         vm.text[3] = 'Compare your Company with ' + obj.selected.companyName
       );
     }
+    
+    function makeGraphForCompany(_id) {
+      
+    }
+    
   }
 }());
