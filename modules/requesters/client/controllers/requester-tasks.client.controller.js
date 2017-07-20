@@ -90,6 +90,28 @@
       }
     };
 
+    vm.selectedBid = -1;
+    vm.selectBid = function(index) {
+      if (index !== vm.selectedBid) {
+        vm.selectedBid = index;
+      } else {
+        vm.selectedBid = -1;
+      }
+    };
+
+    vm.hireSelectedBidder = function() {
+      RequestersService.acceptBid({
+        taskId: vm.tasks[vm.selectedTask]._id,
+        bidId: vm.tasks[vm.selectedTask].bids[vm.selectedBid]._id
+      })
+        .then(function(response) {
+          Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> Worker hired!' });
+        })
+        .catch(function(response) {
+          Notification.error({ message: response.message, title: '<i class="glyphicon glyphicon-remove"></i> Hire failed! Worker not hired!' });
+        });
+    }
+
     vm.sortTasks = function(property) {
       if (vm.sort === property) {
         vm.sortReversed = !vm.sortReversed;

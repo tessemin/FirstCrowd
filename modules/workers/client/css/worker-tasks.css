@@ -26,16 +26,33 @@
   justify-content: center;
 }
 
-.clickable-looking {
-  color: blue;
-  cursor: pointer;
-  text-decoration: underline;
+.tasks-col {
+  display: flex;
+  flex-direction: column;
 }
 
 .tasks-cell {
   background: inherit;
   flex: 1;
   text-align: center;
+}
+
+.tasks-smaller {
+  flex: 0 1 20%;
+}
+
+.tasks-leftalign {
+  text-align: left;
+}
+
+.bid-selected {
+  background-color: pink;
+}
+
+.clickable-looking {
+  color: blue;
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 .tasks-description {
