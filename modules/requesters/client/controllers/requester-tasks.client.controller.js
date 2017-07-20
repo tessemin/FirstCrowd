@@ -26,7 +26,6 @@
 
     vm.loadData = function(data) {
       if (data) {
-        console.log(data);
         vm.loaded = true;
         var task,
           taskActions,
@@ -70,7 +69,6 @@
           });
         }
       }
-      console.log(vm.tasks);
     };
 
     vm.selectedTask = -1;
@@ -142,23 +140,21 @@
           RequestersService.getBidderInfo({ taskId: vm.tasks[index]._id })
             .then(function(response) {
               for (var i = 0; i < vm.tasks[index].bids.length; ++i) {
-              //  if WORKERTYPE IS INDIVIDUAL
-                for (var j = 0; j < response.individuals.length; ++j) {
-                  if (vm.tasks[index].bids[i].worker.workerid === response.individuals[j]._id) {
-                    vm.tasks[index].bids[i].bidDetails = response.individuals[j]);
-                  }
-                }
-            //  } else {
-                  for (var k = 0; k < response.enterprises.length; ++k) {
-                    if (vm.tasks[index].bids[i].worker.workerid === false) {
-                      vm.tasks[index].bids[i].bidDetails = response.enterprises[j]);
+                if (vm.tasks[index].bids[i].worker.workerType.individual) {
+                  for (var j = 0; j < response.individuals.length; ++j) {
+                    if (vm.tasks[index].bids[i].worker.workerId === response.individuals[j]._id) {
+                      vm.tasks[index].bids[i].bidDetails = response.individuals[j];
+                      console.log(vm.tasks[index].bids[i]);
                     }
                   }
-          //      }
+                } else {
+                  for (var k = 0; k < response.enterprises.length; ++k) {
+                    if (vm.tasks[index].bids[i].worker.workerId === response.enterprises[k]._id) {
+                      vm.tasks[index].bids[i].bidDetails = response.enterprises[k];
+                    }
+                  }
+                }
               }
-              vm.tasks[index].individualBids = response.individuals;
-              vm.tasks[index].enterpriseBids = response.enterprises;
-              console.log(vm.tasks[index]);
             })
             .catch(function(response) {
             });
@@ -216,6 +212,8 @@
       $scope.$broadcast('rzSliderForceRender');
       for (var i = 0; i < vm.tasks.length; ++i) { i; }
     }());
+
+    vm.bidDetailsUrl = 'bidDetails.html';
 
     vm.getSliderOptions = function(id) {
       return {

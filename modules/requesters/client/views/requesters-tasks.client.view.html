@@ -194,9 +194,63 @@
             {{task.bids.length}} Applicants
           </div>
         </div>
+
         <div class="tasks-row" ng-repeat="bid in task.bids track by $index">
-          <button uib-popover="{{bid._id}}" popover-title="{{bid.displayId}}" type="button" class="btn">Worker {{bid.displayId}} Details</button>
+          <button uib-popover-template="vm.bidDetailsUrl" popover-title="{{bid.bidDetails.displayId}}: ${{bid.bid}}" popover-placement="auto bottom" type="button" class="btn">Worker {{bid.bidDetails.displayId}} bid ${{bid.bid}}</button>
         </div>
+        <script type="text/ng-template" id="bidDetails.html">
+          <div>
+            <h6>Experience</h6>
+            <div ng-repeat="experience in bid.bidDetails.jobExperience">
+              <div class="tasks-row">
+                <div class="tasks-cell">
+                  {{experience.jobTitle}}
+                </div>
+                <div class="tasks-cell">
+                  {{experience.employer}}
+                </div>
+                <div class="tasks-cell">
+                  {{experience.description}}
+                </div>
+              </div>
+            </div>
+            <h6>Education</h6>
+            <div ng-repeat="school in bid.bidDetails.schools">
+              <div class="tasks-row" ng-repeat="degree in school.degrees">
+                {{degree.degreeLevel}} in {{degree.name}}
+                <span ng-repeat="concentration in degree.concentration">, concentration in {{concentration}}</span>
+              </div>
+              <div class="tasks-row">
+                <div class="tasks-cell">
+                  {{school.schoolName}}
+                </div>
+              </div>
+            </div>
+            <h6>Certifications</h6>
+            <div ng-repeat="certification in bid.bidDetails.certification">
+              <div class="tasks-row">
+                <div class="tasks-cell">
+                  {{certification.certificationName}}
+                </div>
+                <div class="tasks-cell">
+                  {{certification.institution}}
+                </div>
+                <div class="tasks-cell">
+                  {{certification.description}}
+                </div>
+              </div>
+            </div>
+            <h4>Skills</h4>
+            <div ng-repeat="skill in bid.bidDetails.skills">
+              <div class="tasks-row">
+                <div class="tasks-cell">
+                  {{skill.skill}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </script>
+
         <div class="tasks-row">
           <div class="tasks-description">
             Description: {{task.description}}
