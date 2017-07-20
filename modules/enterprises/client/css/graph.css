@@ -96,3 +96,31 @@ html .competition{
 .see-all {
   padding-top: 10px;
 }
+
+.search-results {
+  cursor: pointer;
+  color: black;
+  padding: 6px 6px 4px 16px;
+  text-decoration: none;
+  display: block;
+  border-bottom-color: lightgray;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+}
+
+.search-results:hover {
+  border-bottom-color: gray;
+}
+
+.search-content {
+  border: 1px solid lightgray;
+}
+
+.search-glyphicon {
+  display: block;
+  cursor: pointer;
+}
+
+.search-dropdown {
+  display: block;
+}

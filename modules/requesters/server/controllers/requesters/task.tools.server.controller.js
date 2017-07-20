@@ -320,23 +320,35 @@ function updateTotalTaskProgress(task, callBack) {
 
 function getNestedProperties(object, propertyNames) {
   if (object) {
-    var returnObjs = {};
+    var returnObjs = {},
+      parts = null,
+      nestedObj = null,
+      property = null;
     for (var prop = 0; prop < propertyNames.length; prop++) {
       if (propertyNames[prop].includes('.')) {
-        var parts = propertyNames[prop].split('.'),
-          nestedObj = returnObjs,
-          property = object || this;
-        for (var i = 0; i < parts.length; i++ ) {
-          if (!nestedObj[parts[i]])
-            nestedObj[parts[i]] = {};
+        parts = propertyNames[prop].split('.');
+        nestedObj = returnObjs;
+        property = object || this;
+        var i = 0,
+          part = null;
+        for (i = 0; i < parts.length; i++ ) {
+          part = parts[i];
+          property = property[part];
+          if (!nestedObj[part] && property)
+            nestedObj[part] = {};
           if (i < parts.length - 1)
-            nestedObj = nestedObj[parts[i]];
-          property = property[[parts[i]]];
+            nestedObj = nestedObj[part];
+          if (!property)
+            break;
         }
-        nestedObj[parts[parts.length - 1]] = property;
+        if (property) {
+          nestedObj[parts[i - 1]] = property;
+        }
       }
       else {
-        returnObjs[propertyNames[prop]] = object[propertyNames[prop]];
+        if (object[propertyNames[prop]]) {
+          returnObjs[propertyNames[prop]] = object[propertyNames[prop]];
+        }
       }
     }
     return returnObjs;

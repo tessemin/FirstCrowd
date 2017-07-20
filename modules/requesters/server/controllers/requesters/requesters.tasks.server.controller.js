@@ -183,6 +183,11 @@ exports.biddingActions = {
               --task.multiplicity;
               if (task.multiplicity <= 0) {
                 task.status = 'taken';
+                task.bids = task.bids.map(function(taskBid) {
+                  if(taskBid.status !== 'accepted')
+                    taskBid.status = 'rejected';
+                  return taskBid;
+                });
               }
               task.bids[bid].status = 'accepted';
               task.jobs.push({
