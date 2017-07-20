@@ -12,10 +12,10 @@
     var vm = this;
     vm.tasks = [];
     vm.loaded = false;
-    
+
     // For activating a task
     var activateTaskId = null;
-    
+
     // Filters
     vm.clearFilters = function() {
       vm.filters = {};
@@ -26,7 +26,6 @@
 
     vm.loadData = function(data) {
       if (data) {
-        console.log(data);
         vm.loaded = true;
         var task,
           taskActions,
@@ -53,12 +52,6 @@
               id: 'suspend',
               bikeshed: 'Suspend Task'
             });
-            if (task.bids.length > 0) {
-              taskActions.push({
-                id: 'getBidderInfo',
-                bikeshed: 'Choose Worker'
-              });
-            }
           }
           vm.tasks.push({
             '_id': task._id,
@@ -76,7 +69,6 @@
           });
         }
       }
-      console.log(vm.tasks);
     };
 
     vm.selectedTask = -1;
@@ -90,6 +82,9 @@
     vm.selectTask = function(index) {
       if (index < vm.tasks.length) {
         vm.selectedTask = index;
+        if (vm.tasks[index].bids.length > 0 && !vm.tasks[index].bids[0].hasOwnProperty('displayid')) {
+          vm.actOnTask(index, 'getBidderInfo');
+        }
       } else {
         vm.selectedTask = -1;
       }
@@ -144,7 +139,22 @@
         case 'getBidderInfo':
           RequestersService.getBidderInfo({ taskId: vm.tasks[index]._id })
             .then(function(response) {
-              console.log(response);
+              for (var i = 0; i < vm.tasks[index].bids.length; ++i) {
+                if (vm.tasks[index].bids[i].worker.workerType.individual) {
+                  for (var j = 0; j < response.individuals.length; ++j) {
+                    if (vm.tasks[index].bids[i].worker.workerId === response.individuals[j]._id) {
+                      vm.tasks[index].bids[i].bidDetails = response.individuals[j];
+                      console.log(vm.tasks[index].bids[i]);
+                    }
+                  }
+                } else {
+                  for (var k = 0; k < response.enterprises.length; ++k) {
+                    if (vm.tasks[index].bids[i].worker.workerId === response.enterprises[k]._id) {
+                      vm.tasks[index].bids[i].bidDetails = response.enterprises[k];
+                    }
+                  }
+                }
+              }
             })
             .catch(function(response) {
             });
@@ -203,6 +213,8 @@
       for (var i = 0; i < vm.tasks.length; ++i) { i; }
     }());
 
+    vm.bidDetailsUrl = 'bidDetails.html';
+
     vm.getSliderOptions = function(id) {
       return {
         'id': id,
@@ -259,6 +271,11 @@
     vm.closePaymentModal = function () {
       $('#reviewPaymentModal').modal('hide');
     };
+
+    vm.bidderPopover = {
+    content: 'Bidder Information',
+    title: 'Bidder Title'
+  };
 
     // TODO: Make this angular compliant
     // paypal payment action
