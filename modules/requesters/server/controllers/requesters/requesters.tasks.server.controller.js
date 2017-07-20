@@ -191,10 +191,11 @@ exports.biddingActions = {
                 });
               });
             });
+          } else {
+            return res.status(422).send({
+              message: 'No bid with that Id found.'
+            });
           }
-          return res.status(422).send({
-            message: 'No bid with that Id found.'
-          });
         } else {
           return res.status(422).send({
             message: 'You are not the owner of this task'
