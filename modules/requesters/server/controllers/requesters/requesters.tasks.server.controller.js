@@ -154,10 +154,22 @@ exports.biddingActions = {
           var bidId = req.body.bidId,
             foundBid = false,
             bid = 0;
+          if (task.multiplicity <= 0) {
+            return res.status(422).send({
+              message: 'There are too many workers for this task'
+            });
+          }
           for (bid = 0; bid < task.bids.length && bidId; bid++) {
             if (task.bids[bid]._id && task.bids[bid]._id.toString() === bidId.toString()) {
               foundBid = true;
               break;
+            }
+          }
+          for (var job = 0; job < task.jobs.length; job++) {
+            if (jobs[job].worker.workerId.toString() === task.bids[bid].worker.workerId.toString()) {
+              return res.status(422).send({
+                message: 'Worker is already working for this task'
+              });
             }
           }
           if (foundBid) {
@@ -169,6 +181,9 @@ exports.biddingActions = {
               workerObj = removeTaskFromWorkerArray(task._id, workerObj);
               workerObj.worker.activeTasks = statusPushTo(task._id, workerObj.worker.activeTasks);
               --task.multiplicity;
+              if (task.multiplicity <= 0) {
+                task.status = 'taken';
+              }
               task.bids[bid].status = 'accepted';
               task.jobs.push({
                 status: 'active',
@@ -191,10 +206,11 @@ exports.biddingActions = {
                 });
               });
             });
+          } else {
+            return res.status(422).send({
+              message: 'No bid with that Id found.'
+            });
           }
-          return res.status(422).send({
-            message: 'No bid with that Id found.'
-          });
         } else {
           return res.status(422).send({
             message: 'You are not the owner of this task'
