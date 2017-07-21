@@ -19,38 +19,19 @@
       link: function(scope, element, attrs) {
         d3().then(function(d3) {
           getGraph().then(function(data) {
-          var data = {
-            type: 'action',
-            name: '1',
-            attributes: [],
-            children: [{
-              type: 'children',
-              name: '2',
-              attributes: [{
-                'source-type-property-value': 'streetlight'
-              }],
-              children: [{
-                type: 'parents',
-                name: '3',
-                attributes: [{
-                  'source-type-property-value': 'cable'
-                }],
-                children: [{
-                  type: 'resource-delete',
-                  name: '4',
-                  attributes: [],
-                  children: []
-                }]
-              }, {
-                type: 'children',
-                name: '5',
-                attributes: [{
-                  'source-type-property-value': 'lantern'
-                }],
-                children: []
-              }]
-            }]
-          };
+
+          var stratify = d3.stratify()
+                .id(function(d) { return d._id; })
+                .parentId(function(d) { return d.parentId; });
+
+            // console.log(rootNode);
+            // var data = {
+            // data: rootNode,
+            // children: []
+          // };
+            // var tmp = {};
+            var root = stratify([data]);
+            // console.log(root);
 
           // ### DATA MODEL END
 
@@ -62,29 +43,28 @@
           // append the svg object to the body of the page
           // appends a 'group' element to 'svg'
           // moves the 'group' element to the top left margin
-          var svg = d3.select('#graph').
-                append('svg').
-                attr('width', width).
-                attr('height', height);
+          var svg = d3.select('#graph')
+                .append('svg')
+                .attr('width', width)
+                .attr('height', height);
 
           var g = d3.select('svg')
                 .append('g');
-            // attr('transform', 'translate(' + width / 2 + ', 0)');
+          // attr('transform', 'translate(' + width / 2 + ', 0)');
 
-          var i = 0, duration = 700, root;
+            var i = 0, duration = 700;
 
           // declares a tree layout and assigns the size
           var treemap = d3.tree().size([height, width]);
 
           // Assigns parent, children, height, depth
-          root = d3.hierarchy(data, function(d) {
-            return d.children;
-          });
-          console.log(root);
-          root.x0 = height / 2;
-          root.y0 = 0;
+            // root = d3.hierarchy(data, function(d) {
+            //   return d.children;
+            // });
+            root.x0 = height / 2;
+            root.y0 = 0;
 
-          update(root);
+            update(root);
 
           var selected = null;
 
@@ -240,38 +220,63 @@
 
 
 
-
-
-
-
-
-            spiderWeb(root, 2);
+            // spiderWeb(root, 2);
 
             function spiderWeb(startNode, levels) {
               console.log(startNode);
-              drawCustomers(startNode, levels, width / 2);
+              drawCustomers(startNode, levels);
               // drawSuppliers(startNode, levels, width / 2);
             }
 
-            function drawCustomers(parentNode, levels, x) {
-              if (levels >= 1) {
-                EnterprisesService.getCustomers({ 'enterpriseId': parentNode._id }).then(function (res) {
-                  var tmpNode = [];
-                  for (var i = 0; i < res.customers.length; i++) {
-                    var newNode = res.customers[i];
-                    // newNode.x = x;
-                    // newNode.y = height / 2;
-                    newNode.img = 'https://cdn4.iconfinder.com/data/icons/seo-and-data/500/magnifier-data-128.png';
-                    newNode.parentId = parentNode._id;
+            function drawCustomers(parentNode, levels) {
+              console.log('PING', parentNode.data.id);
 
-                    tmpNode.push(newNode);
-                    nodes.push(newNode);
-                    // links.push({ source: root, target: newNode });
+              if (levels >= 1) {
+                EnterprisesService.getCustomers({ 'enterpriseId': parentNode.id }).then(function (res) {
+
+                  update(parentNode);
+
+                  for (var i = 0; i < res.customers.length; i++) {
+                  // //creates New OBJECT
+                  var newNodeObj = {
+                    data: res.customers[i],
+                    children: []
+                  };
+                  // //Creates new Node
+                  var newNode = d3.hierarchy(newNodeObj);
+                  newNode.depth = selected.depth + 1;
+                  newNode.height = selected.height - 1;
+                  newNode.parent = selected;
+                  newNode.id = res.customers[i]._id;
+                  newNode.img = 'https://cdn4.iconfinder.com/data/icons/seo-and-data/500/magnifier-data-128.png';
+
+                  if(!parentNode.children){
+                    parentNode.children = [];
+                    parentNode.data.children = [];
                   }
+                  parentNode.children.push(newNode);
+                  parentNode.data.children.push(newNode.data);
+
+                  update(parentNode);
+
+
+                  }
+                  // var tmpNode = [];
+                  // for (var i = 0; i < res.customers.length; i++) {
+                  //   var newNode = res.customers[i];
+                  //   newNode.x = x;
+                  //   newNode.y = height / 2;
+                  //   newNode.img = 'https://cdn4.iconfinder.com/data/icons/seo-and-data/500/magnifier-data-128.png';
+                  //   newNode.parentId = parentNode._id;
+
+                  //   tmpNode.push(newNode);
+                  //   nodes.push(newNode);
+                  //   links.push({ source: root, target: newNode });
+                  // }
                   // restart();
-                  for (var j = 0; j < tmpNode.length; j++) {
-                    drawCustomers(tmpNode[j], levels - 1);
-                  }
+                  // for (var j = 0; j < tmpNode.length; j++) {
+                  //   drawCustomers(tmpNode[j], levels - 1);
+                  // }
                 });
               }
             }
@@ -307,30 +312,134 @@
           }
 
           document.getElementById('add-child').onclick = function() {
-            console.log(selected);
-            //creates New OBJECT
-            var newNodeObj = {
-              type: 'resource-delete',
-              name: new Date().getTime(),
-              attributes: [],
-              children: []
-            };
-            //Creates new Node
-            var newNode = d3.hierarchy(newNodeObj);
-            newNode.depth = selected.depth + 1;
-            newNode.height = selected.height - 1;
-            newNode.parent = selected;
-            newNode.id = Date.now();
 
-            if(!selected.children){
-              selected.children = [];
-              selected.data.children = [];
+            function drawCustomers(parentNode, levels) {
+              console.log('PING', parentNode.data.id);
+
+              if (levels >= 1) {
+                EnterprisesService.getCustomers({ 'enterpriseId': parentNode.id }).then(function (res) {
+
+                  update(parentNode);
+
+                  for (var i = 0; i < res.customers.length; i++) {
+                  // //creates New OBJECT
+                  var newNodeObj = {
+                    data: res.customers[i],
+                    children: []
+                  };
+                  // //Creates new Node
+                  var newNode = d3.hierarchy(newNodeObj);
+                  newNode.depth = selected.depth + 1;
+                  newNode.height = selected.height - 1;
+                  newNode.parent = selected;
+                  newNode.id = res.customers[i]._id;
+                  newNode.img = 'https://cdn4.iconfinder.com/data/icons/seo-and-data/500/magnifier-data-128.png';
+
+                  if(!parentNode.children){
+                    parentNode.children = [];
+                    parentNode.data.children = [];
+                  }
+                  parentNode.children.push(newNode);
+                  parentNode.data.children.push(newNode.data);
+
+                  update(parentNode);
+
+
+                  }
+                  // var tmpNode = [];
+                  // for (var i = 0; i < res.customers.length; i++) {
+                  //   var newNode = res.customers[i];
+                  //   newNode.x = x;
+                  //   newNode.y = height / 2;
+                  //   newNode.img = 'https://cdn4.iconfinder.com/data/icons/seo-and-data/500/magnifier-data-128.png';
+                  //   newNode.parentId = parentNode._id;
+
+                  //   tmpNode.push(newNode);
+                  //   nodes.push(newNode);
+                  //   links.push({ source: root, target: newNode });
+                  // }
+                  // restart();
+                  // for (var j = 0; j < tmpNode.length; j++) {
+                  //   drawCustomers(tmpNode[j], levels - 1);
+                  // }
+                });
+              }
             }
-            selected.children.push(newNode);
-            selected.data.children.push(newNode.data);
 
-            update(selected);
+
+            console.log(selected);
+
+            drawCustomers(selected, 1);
+
+
+                // EnterprisesService.getCustomers({ 'enterpriseId': selected.data._id }).then(function (res) {
+
+                //   update(selected);
+
+                //   for (var i = 0; i < res.customers.length; i++) {
+                //   console.log(selected);
+                //   // //creates New OBJECT
+                //   var newNodeObj = {
+                //     data: res.customers[i],
+                //     children: []
+                //   };
+                //   // //Creates new Node
+                //   var newNode = d3.hierarchy(newNodeObj);
+                //   newNode.depth = selected.depth + 1;
+                //   newNode.height = selected.height - 1;
+                //   newNode.parent = selected;
+                //   newNode.id = res.customers[i]._id;
+                //   newNode.img = 'https://cdn4.iconfinder.com/data/icons/seo-and-data/500/magnifier-data-128.png';
+
+                //   if(!selected.children){
+                //     selected.children = [];
+                //     selected.data.children = [];
+                //   }
+                //   selected.children.push(newNode);
+                //   selected.data.children.push(newNode.data);
+
+                //   update(selected);
+
+
+                //   }
+
+                // });
           };
+
+
+
+
+
+
+
+
+
+
+
+          //   console.log(selected);
+          //   //creates New OBJECT
+          //   var newNodeObj = {
+          //     type: 'resource-delete',
+          //     name: new Date().getTime(),
+          //     attributes: [],
+          //     children: []
+          //   };
+          //   //Creates new Node
+          //   var newNode = d3.hierarchy(newNodeObj);
+          //   newNode.depth = selected.depth + 1;
+          //   newNode.height = selected.height - 1;
+          //   newNode.parent = selected;
+          //   newNode.id = Date.now();
+
+          //   if(!selected.children){
+          //     selected.children = [];
+          //     selected.data.children = [];
+          //   }
+          //   selected.children.push(newNode);
+          //   selected.data.children.push(newNode.data);
+
+          //   update(selected);
+          // };
 
 
 
@@ -614,110 +723,110 @@
 
 
 
-          d3.select('.footer').remove();
-          var header = getBounds(d3.select('header')._groups[0][0]);
-          var sideHeight = getBounds(d3.select('.form-group')._groups[0][0]);
+          // d3.select('.footer').remove();
+          // var header = getBounds(d3.select('header')._groups[0][0]);
+          // var sideHeight = getBounds(d3.select('.form-group')._groups[0][0]);
 
-          var width = $window.innerWidth;
-          var height = $window.innerHeight;
+          // var width = $window.innerWidth;
+          // var height = $window.innerHeight;
 
-          d3.select('.display').style('height', function() { return (height - sideHeight.offsetTop - header.offsetHeight) + 'px';});
-          d3.select('.side-list').style('max-height', function() { return (height - header.offsetHeight - sideHeight.offsetTop - sideHeight.offsetHeight - 80) + 'px'; });
-          d3.select('.content').style('margin-top', function() { return header.offsetHeight + 'px';});
+          // d3.select('.display').style('height', function() { return (height - sideHeight.offsetTop - header.offsetHeight) + 'px';});
+          // d3.select('.side-list').style('max-height', function() { return (height - header.offsetHeight - sideHeight.offsetTop - sideHeight.offsetHeight - 80) + 'px'; });
+          // d3.select('.content').style('margin-top', function() { return header.offsetHeight + 'px';});
 
-          // var svg = d3.select('#graph').append('svg')
-          //       .style('padding', '30px')
-          //       .attr('width', width)
-          //       .attr('height', height - header.offsetHeight - 5);
+          // // var svg = d3.select('#graph').append('svg')
+          // //       .style('padding', '30px')
+          // //       .attr('width', width)
+          // //       .attr('height', height - header.offsetHeight - 5);
 
-          var color = d3.scaleOrdinal(d3.schemeCategory10);
+          // var color = d3.scaleOrdinal(d3.schemeCategory10);
 
-          getGraph().then(function(rootNode) {
-            rootNode.parentId = null;
+          // getGraph().then(function(rootNode) {
+          //   rootNode.parentId = null;
 
-            var stratify = d3.stratify()
-                  .id(function(d) { return d._id; })
-                  .parentId(function(d) { return d.parentId; });
+          //   var stratify = d3.stratify()
+          //         .id(function(d) { return d._id; })
+          //         .parentId(function(d) { return d.parentId; });
 
-            var root = stratify([rootNode]);
+          //   var root = stratify([rootNode]);
 
-            var customerTree = d3.tree().size([width, height]);
+          //   var customerTree = d3.tree().size([width, height]);
 
-            console.log(root);
-            customerTree(root);
+          //   console.log(root);
+          //   customerTree(root);
 
-            // var nodes = customerTree.nodes(root).reverse();
-            // var links = customerTree.links(nodes);
+          //   // var nodes = customerTree.nodes(root).reverse();
+          //   // var links = customerTree.links(nodes);
 
-            console.log(root);
+          //   console.log(root);
 
-            var nodes = root.descendants(),
-                links = root.descendants().slice(1);
+          //   var nodes = root.descendants(),
+          //       links = root.descendants().slice(1);
 
-            nodes.forEach(function(d){ d.y = d.depth * 180; });
-
-
+          //   nodes.forEach(function(d){ d.y = d.depth * 180; });
 
 
 
 
 
 
-            // spiderWeb(root, 2);
-
-            function spiderWeb(startNode, levels) {
-              console.log(startNode);
-              drawCustomers(startNode, levels, width / 2);
-              // drawSuppliers(startNode, levels, width / 2);
-            }
-
-            function drawCustomers(parentNode, levels, x) {
-              if (levels >= 1) {
-                EnterprisesService.getCustomers({ 'enterpriseId': parentNode._id }).then(function (res) {
-                  var tmpNode = [];
-                  for (var i = 0; i < res.customers.length; i++) {
-                    var newNode = res.customers[i];
-                    // newNode.x = x;
-                    // newNode.y = height / 2;
-                    newNode.img = 'https://cdn4.iconfinder.com/data/icons/seo-and-data/500/magnifier-data-128.png';
-                    newNode.parentId = parentNode._id;
-
-                    tmpNode.push(newNode);
-                    nodes.push(newNode);
-                    // links.push({ source: root, target: newNode });
-                  }
-                  // restart();
-                  for (var j = 0; j < tmpNode.length; j++) {
-                    drawCustomers(tmpNode[j], levels - 1);
-                  }
-                });
-              }
-            }
-
-            function drawSuppliers(root, levels, x) {
-              if (levels >= 1) {
-                EnterprisesService.getSuppliers({ 'enterpriseId': root._id }).then(function (res) {
-                  var tmpNode = [];
-                  for (var i = 0; i < res.suppliers.length; i++) {
-                    var newNode = res.suppliers[i];
-                    newNode.x = x - xStep;
-                    newNode.y = height / 2;
-                    newNode.img = 'https://cdn4.iconfinder.com/data/icons/seo-and-data/500/gear-clock-128.png';
-
-                    tmpNode.push(newNode);
-                    nodes.push(newNode);
-                    // links.push({ source: newNode, target: root });
-                  }
-                  // restart();
-                  for (var j = 0; j < tmpNode.length; j++) {
-                    drawSuppliers(tmpNode[j], levels - 1, x - xStep);
-                  }
-                });
-              }
-            }
 
 
-          });
+          //   // spiderWeb(root, 2);
+
+          //   function spiderWeb(startNode, levels) {
+          //     console.log(startNode);
+          //     drawCustomers(startNode, levels, width / 2);
+          //     // drawSuppliers(startNode, levels, width / 2);
+          //   }
+
+          //   function drawCustomers(parentNode, levels, x) {
+          //     if (levels >= 1) {
+          //       EnterprisesService.getCustomers({ 'enterpriseId': parentNode._id }).then(function (res) {
+          //         var tmpNode = [];
+          //         for (var i = 0; i < res.customers.length; i++) {
+          //           var newNode = res.customers[i];
+          //           // newNode.x = x;
+          //           // newNode.y = height / 2;
+          //           newNode.img = 'https://cdn4.iconfinder.com/data/icons/seo-and-data/500/magnifier-data-128.png';
+          //           newNode.parentId = parentNode._id;
+
+          //           tmpNode.push(newNode);
+          //           nodes.push(newNode);
+          //           // links.push({ source: root, target: newNode });
+          //         }
+          //         // restart();
+          //         for (var j = 0; j < tmpNode.length; j++) {
+          //           drawCustomers(tmpNode[j], levels - 1);
+          //         }
+          //       });
+          //     }
+          //   }
+
+          //   function drawSuppliers(root, levels, x) {
+          //     if (levels >= 1) {
+          //       EnterprisesService.getSuppliers({ 'enterpriseId': root._id }).then(function (res) {
+          //         var tmpNode = [];
+          //         for (var i = 0; i < res.suppliers.length; i++) {
+          //           var newNode = res.suppliers[i];
+          //           newNode.x = x - xStep;
+          //           newNode.y = height / 2;
+          //           newNode.img = 'https://cdn4.iconfinder.com/data/icons/seo-and-data/500/gear-clock-128.png';
+
+          //           tmpNode.push(newNode);
+          //           nodes.push(newNode);
+          //           // links.push({ source: newNode, target: root });
+          //         }
+          //         // restart();
+          //         for (var j = 0; j < tmpNode.length; j++) {
+          //           drawSuppliers(tmpNode[j], levels - 1, x - xStep);
+          //         }
+          //       });
+          //     }
+          //   }
+
+
+          // });
         });
 
         function getGraph() {
@@ -726,10 +835,10 @@
           // });
           return EnterprisesService.getEnterprise()
             .then(function(response) {
-              console.log(response);
               var rootNode = {};
               rootNode.companyName = response.profile.companyName;
               rootNode._id = response._id;
+              rootNode.parentId = null;
               rootNode.URL = response.profile.URL;
               return rootNode;
             });
