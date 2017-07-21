@@ -154,7 +154,7 @@
       </div>
     </div>
     <div class="tasks-group" ng-repeat="task in vm.tasks | filter : vm.filters : false | orderBy: vm.sort : vm.sortReversed as results track by $index">
-      <div class="tasks-row" ng-click="$event.originalEvent.dropdown || (vm.toggleTask($index))">
+      <div class="tasks-row" ng-click="$event.originalEvent.dropdown || (vm.toggleTask(vm.tasks.indexOf(task)))">
         <div class="tasks-cell  clickable-looking">
           {{task.name}}
         </div>
@@ -172,7 +172,7 @@
         </div>
         <div class="tasks-cell">
           <div class="dropdown" ng-click="$event.originalEvent.dropdown = true">
-            <button class="btn btn-primary dropdown-toggle" ng-click="vm.selectTask($index)" type="button" data-toggle="dropdown">Actions
+            <button class="btn btn-primary dropdown-toggle" ng-click="vm.selectTask(vm.tasks.indexOf(task))" type="button" data-toggle="dropdown">Actions
             <span class="caret"></span></button>
             <ul class="dropdown-menu actions-dropdown-menu">
               <div ng-repeat="action in task.taskActions">
@@ -182,7 +182,7 @@
           </div>
         </div>
       </div>
-      <div ng-if="vm.selectedTask == $index">
+      <div ng-if="vm.selectedTask == vm.tasks.indexOf(task)">
         <div class="tasks-row">
           <div class="tasks-cell">
             Categories: {{task.category}}
@@ -202,7 +202,7 @@
               Applicants:
             </div>
             <div class="tasks-cell" ng-repeat="bid in task.bids track by $index">
-              <button class="btn" ng-class="{'bid-selected': $index === vm.selectedBid}" ng-click="vm.selectBid($index)">{{ bid.bidDetails.displayId }}: ${{ bid.bid }}
+              <button class="btn" ng-class="{'bid-selected': vm.tasks.indexOf(task) === vm.selectedBid}" ng-click="vm.selectBid(vm.tasks.indexOf(task))">{{ bid.bidDetails.displayId }}: ${{ bid.bid }}
             </div>
           </div>
           <div class="tasks-col tasks-cell">
