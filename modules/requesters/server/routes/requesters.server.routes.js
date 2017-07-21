@@ -49,7 +49,6 @@ module.exports = function(app) {
   app.route('/api/tasks/payment/execute').post(requesters.taskActions.payment.execute);
   
   // Bidding
-  app.route('/api/tasks/bidding/accept').post(requesters.biddingActions.acceptBid);
   app.route('/api/tasks/bidding/reject').post(requesters.biddingActions.rejectBid);
   app.route('/api/tasks/bidding/activate').post(requesters.biddingActions.activateBidableTask);
   app.route('/api/tasks/bidding/bidder/info').post(requesters.biddingActions.bidderInfo);
