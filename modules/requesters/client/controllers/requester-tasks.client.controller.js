@@ -110,7 +110,21 @@
         .catch(function(response) {
           Notification.error({ message: response.message, title: '<i class="glyphicon glyphicon-remove"></i> Hire failed! Worker not hired!' });
         });
-    }
+    };
+
+    vm.rejectSelectedBidder = function() {
+      console.log(vm.tasks[vm.selectedTask].bids[vm.selectedBid]);
+      RequestersService.rejectBid({
+        taskId: vm.tasks[vm.selectedTask]._id,
+        bidId: vm.tasks[vm.selectedTask].bids[vm.selectedBid]._id
+      })
+        .then(function(response) {
+          Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> Worker rejected!' });
+        })
+        .catch(function(response) {
+          Notification.error({ message: response.message, title: '<i class="glyphicon glyphicon-remove"></i> Rejection failed! Worker not rejected!' });
+        });
+    };
 
     vm.sortTasks = function(property) {
       if (vm.sort === property) {
