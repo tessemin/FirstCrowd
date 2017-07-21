@@ -314,7 +314,7 @@
           label: 'pay'
         },
         payment: function() {
-          return paypal.request.post('/api/payment/paypal/create/', { taskId: activateTaskId }).then(function(data) {
+          return paypal.request.post('/api/tasks/payment/create', { taskId: activateTaskId }).then(function(data) {
             // closes the payment review modal
             vm.closePaymentModal();
             executePayTaskId = data.taskId;
@@ -322,7 +322,7 @@
           });
         },
         onAuthorize: function(data) {
-          return paypal.request.post('/api/payment/paypal/execute/', {
+          return paypal.request.post('/api/tasks/payment/execute', {
             paymentID: data.paymentID,
             payerID: data.payerID,
             taskId: executePayTaskId

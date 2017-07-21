@@ -45,11 +45,17 @@ module.exports = function(app) {
   app.route('/api/tasks/getRequesterRatingsForTask').put(requesters.taskActions.getRequesterRatingsForTask);
   app.route('/api/tasks/getTasksWithOptions').post(requesters.taskFindWithOption);
   
+  app.route('/api/tasks/payment/create').post(requesters.taskActions.payment.create);
+  app.route('/api/tasks/payment/execute').post(requesters.taskActions.payment.execute);
+  
   // Bidding
   app.route('/api/tasks/bidding/accept').post(requesters.biddingActions.acceptBid);
   app.route('/api/tasks/bidding/reject').post(requesters.biddingActions.rejectBid);
   app.route('/api/tasks/bidding/activate').post(requesters.biddingActions.activateBidableTask);
   app.route('/api/tasks/bidding/bidder/info').post(requesters.biddingActions.bidderInfo);
+  
+  app.route('/api/tasks/bidding/payment/create').post(requesters.biddingActions.payment.create);
+  app.route('/api/tasks/bidding/payment/execute').post(requesters.biddingActions.payment.execute);
 
   // Finish by binding the Requester middleware
   app.param('requesterId', requesters.requesterByID);
