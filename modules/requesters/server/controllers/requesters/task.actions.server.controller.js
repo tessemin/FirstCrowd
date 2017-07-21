@@ -9,14 +9,23 @@ var path = require('path'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   taskSearch = require(path.resolve('./modules/requesters/server/controllers/requesters/task.search.server.controller')),
   taskTools = require(path.resolve('./modules/requesters/server/controllers/requesters/task.tools.server.controller')),
+  paymentPaypal = require(path.resolve('./modules/core/server/controllers/payment/paypal.server.controller.js')),
   _ = require('lodash');
-  
+
+// imported functions
 var getUserTypeObject = taskTools.getUserTypeObject,
   isRequester = taskTools.isRequester,
   statusPushTo = taskTools.statusPushTo,
+  setStatus = taskTools.setStatus,
   ownsTask = taskTools.ownsTask,
   taskFindOne = taskSearch.taskFindOne;
-  
+
+// imported payment functions
+var createPaypalPayment = paymentPaypal.createPaypalPayment,
+  executePaypalPayment = paymentPaypal.executePaypalPayment;
+
+
+// local variables
 var taskId = null;
   
 exports.taskActions = {
@@ -219,5 +228,94 @@ exports.taskActions = {
       }
       res.json(requesterRatings);
     });
+  },
+  payment: {
+    create: function (req, res) {
+      getUserTypeObject(req, res, function(typeObj) {
+        taskFindOne(req.body.taskId, function(err, task) {
+          if (err)
+          return res.status(422).send(errorHandler.getErrorMessage(err));
+         
+          if (!ownsTask(task, typeObj))
+            return res.status(422).send('You are not the owner for this task.');
+          
+          if (task.payment.paymentInfo.paid === true) {
+            return res.status(422).send('Payment for task already received.');
+          }
+          
+          if (task.payment.bidding.bidable) {
+            return res.status(422).send('This task does not have a static price.');
+          }
+          
+          var items = [{
+              'name': 'Workers',
+              'sku': task._id,
+              'price': task.payment.staticPrice,
+              'currency': 'USD',
+              'quantity': task.multiplicity
+            }];
+          createPaypalPayment(items, task.description, function(err, createdPayment) {
+            if (err)
+              return res.status(422).send(err);
+            else {
+              task.payment.paymentInfo.paymentType = 'paypal';
+              task.payment.paymentInfo.paymentId = createdPayment.id;
+              task.payment.paymentInfo.paymentObject = createdPayment;
+              task.save(function(err, task) {
+                if (err)
+                  res.status(422).send(errorHandler.getErrorMessage(err));
+                return res.status(201).send({ paymentID: createdPayment.id, taskId: task._id });
+              });
+            }
+          });
+        });
+      });
+    },
+    execute: function (req, res) {
+      getUserTypeObject(req, res, function(typeObj) {
+        taskFindOne(req.body.taskId, function(err, task) {
+          if (err)
+            return res.status(422).send(errorHandler.getErrorMessage(err));
+          if (!ownsTask(task, typeObj))
+            return res.status(422).send('You are not the owner for this task.');
+          
+          if (!task.payment.paymentInfo || !task.payment.paymentInfo.paymentId)
+            return res.status(422).send('No payment has been created.');
+          
+          if (task.payment.bidding.bidable) {
+            return res.status(422).send('This task does not have a static price.');
+          }
+          
+          var transactions = [];
+          var total = 0;
+          for (var trans = 0; trans < task.payment.paymentInfo.paymentObject.transactions.length; trans++) {
+            transactions.push({ amount: task.payment.paymentInfo.paymentObject.transactions[trans].amount });
+            total += task.payment.paymentInfo.paymentObject.transactions[trans].amount.total;
+          }
+
+          if (parseFloat(total) !== task.payment.staticPrice * task.multiplicity)
+            return res.status(422).send('Payment object total does not match actual total.');
+          
+          executePaypalPayment(req.body.payerID, req.body.paymentID, transactions, function(err, payment) {
+            task.payment.paymentInfo.paid = true;
+            task.payment.paymentInfo.payerId = req.body.payerID;
+            task.payment.paymentInfo.paymentObject = payment;
+            task.save(function(err, task) {
+              if (err)
+                return res.status(422).send({
+                  message: errorHandler.getErrorMessage(err)
+                });
+              setStatus(task._id, 'open', function (err, correctMsg) {
+                if (err) {
+                  return res.status(422).send(err);
+                } else {
+                  return res.status(200).send(correctMsg);
+                }
+              });
+            });
+          });
+        });
+      });
+    }
   }
 };
