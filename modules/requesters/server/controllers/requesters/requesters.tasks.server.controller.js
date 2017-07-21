@@ -26,9 +26,6 @@ var getUserTypeObject = taskTools.getUserTypeObject,
   taskFindMany = taskSearch.taskFindMany,
   findWorkerByWorkerTaskObject = taskSearch.findWorkerByWorkerTaskObject;
   
-var individualWhiteListFields = ['_id', 'schools', 'jobExperience', 'certification', 'tools', 'specialities', 'skills', 'worker.requesterRatingsPerCategory', 'worker.acceptanceRatesPerCategory', 'worker.acceptanceRate', 'worker.averageCompletionTime', 'worker.preferedCategories'],
-  enterpriseWhiteListFields = ['_id', 'profile.companyName', 'profile.yearEstablished', 'profile.classifications', 'profile.description', 'specialities', 'catalog', 'worker.requesterRatingsPerCategory', 'worker.acceptanceRatesPerCategory', 'worker.acceptanceRate', 'worker.averageCompletionTime', 'worker.preferedCategories'];
-  
 exports.requesterTasks = {
   all: function (req, res) {
     var tasks = getAllTasksForIds(req, res, function(typeObj) {

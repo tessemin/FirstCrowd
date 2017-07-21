@@ -331,7 +331,7 @@ function getNestedProperties(object, propertyNames) {
         property = object || this;
         var i = 0,
           part = null;
-        for (i = 0; i < parts.length; i++ ) {
+        for (i = 0; i < parts.length; i++) {
           part = parts[i];
           property = property[part];
           if (!nestedObj[part] && property)
@@ -344,8 +344,7 @@ function getNestedProperties(object, propertyNames) {
         if (property) {
           nestedObj[parts[i - 1]] = property;
         }
-      }
-      else {
+      } else {
         if (object[propertyNames[prop]]) {
           returnObjs[propertyNames[prop]] = object[propertyNames[prop]];
         }

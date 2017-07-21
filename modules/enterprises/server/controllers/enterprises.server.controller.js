@@ -364,7 +364,7 @@ function findPartnersWhiteFields(enterpriseIds, callBack) {
             break;
           }
         }
-        return getNestedProperties(ent, whitelistedPartnersFields);;
+        return getNestedProperties(ent, whitelistedPartnersFields);
       });
       callBack(null, partners);
     });
@@ -635,7 +635,5 @@ function generateRandomString(length) {
     text += possible.charAt(getRandomNumber(0, possible.length - 1));
   return text;
 }
-
-
 
 exports.getThisEnterprise = getEnterprise;

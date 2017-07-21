@@ -6,7 +6,7 @@
 var path = require('path'),
   paypal = require('paypal-rest-sdk'),
   mongoose = require('mongoose'),
-  taskTools = require(path.resolve('modules/requesters/server/controllers/requesters/task.tools.server.controller')),
+  taskTools = require(path.resolve('./modules/requesters/server/controllers/requesters/task.tools.server.controller')),
   taskSearch = require(path.resolve('./modules/requesters/server/controllers/requesters/task.search.server.controller')),
   errorHandler = require('../errors.server.controller'),
   _ = require('lodash');
@@ -92,7 +92,7 @@ exports.createPaypalPayment = function (items, description, callBack, returnURL,
       callBack(null, createdPayment);
     }
   });
-}
+};
 exports.executePaypalPayment = function (payerID, paymentID, transactions, callBack) {
   var execute_payment_json = {
     'payer_id': payerID,
@@ -105,4 +105,4 @@ exports.executePaypalPayment = function (payerID, paymentID, transactions, callB
       callBack(null, payment);
     }
   });
-}
+};
