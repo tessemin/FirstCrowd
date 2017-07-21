@@ -84,6 +84,14 @@
         method: 'POST',
         url: '/api/tasks/getRequesterRatingsForTask'
       },
+      _acceptPreapproval: {
+        method: 'POST',
+        url: '/api/tasks/preapproval/accept'
+      },
+      _rejectPreapproval: {
+        method: 'POST',
+        url: '/api/tasks/preapproval/reject'
+      },
       // Biding actions
       _rejectBid: {
         method: 'POST',
@@ -155,6 +163,12 @@
       },
       getRequesterRatingsForTask: function (taskId) {
         return this._getRequesterRatingsForTask(taskId).$promise;
+      },
+      acceptPreapproval: function (taskId_bidId) {
+        return this._acceptPreapproval(taskId_bidId).$promise;
+      },
+      rejectPreapproval: function (taskId_bidId) {
+        return this._rejectPreapproval(taskId_bidId).$promise;
       },
       // Biding actions
       rejectBid: function (taskId_bidId) {
