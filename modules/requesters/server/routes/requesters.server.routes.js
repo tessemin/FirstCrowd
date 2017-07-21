@@ -3,8 +3,10 @@
 /**
  * Module dependencies
  */
+var path = require('path');
 var requestersPolicy = require('../policies/requesters.server.policy'),
-  requesters = require('../controllers/requesters.server.controller');
+  requesters = require('../controllers/requesters.server.controller'),
+  taskSearch = require(path.resolve('./modules/requesters/server/controllers/requesters/task.search.server.controller'));
 
 module.exports = function(app) {
   /*
@@ -33,6 +35,8 @@ module.exports = function(app) {
   // REQUESTER INFORMATION
   app.route('/api/requesters/getRequesterData').post(requesters.getRequesterData.all);
   app.route('/api/requesters/getRequesterRatings').post(requesters.getRequesterData.ratings);
+  
+  app.route('/api/requesters/search/myTasks').post(taskSearch.searchTasks.searchMyTasks);
 
   /*
    * TASK TABLE
@@ -58,7 +62,7 @@ module.exports = function(app) {
   
   app.route('/api/tasks/bidding/payment/create').post(requesters.stateActions.payment.bidable.create);
   app.route('/api/tasks/bidding/payment/execute').post(requesters.stateActions.payment.bidable.execute);
-
+  
   // Finish by binding the Requester middleware
   app.param('requesterId', requesters.requesterByID);
 };

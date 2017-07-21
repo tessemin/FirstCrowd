@@ -28,14 +28,20 @@ var getUserTypeObject = taskTools.getUserTypeObject,
   
 exports.requesterTasks = {
   all: function (req, res) {
-    var tasks = getAllTasksForIds(req, res, function(typeObj) {
-      var ids = [].concat(getAllActiveTaskIds(typeObj), getAllRejectedTaskIds(typeObj), getAllCompletedTaskIds(typeObj), getAllSuspendedTaskIds(typeObj));
-      return ids;
-    }, function(tasks) {
+    getAllRequesterTasks(req, res, function (tasks) {
       return res.json({ tasks: tasks });
     });
   }
 };
+
+function getAllRequesterTasks(req, res, callBack) {
+  var tasks = getAllTasksForIds(req, res, function(typeObj) {
+    var ids = [].concat(getAllActiveTaskIds(typeObj), getAllRejectedTaskIds(typeObj), getAllCompletedTaskIds(typeObj), getAllSuspendedTaskIds(typeObj));
+    return ids;
+  }, function(tasks) {
+    callBack(tasks);
+  });
+}
 
 exports.activeTask = {
   all: function (req, res) {
@@ -118,7 +124,8 @@ exports.workerRating = {
   }
 };
 
-
+// a non-safe function for outside use
+// will return secret tasks
 function getAllTasksForIds(req, res, taskIdGetFunction, callBack) {
   getUserTypeObject(req, res, function(typeObj) {
     if (isRequester(req.user)) {
@@ -161,3 +168,4 @@ function getAllRejectedTaskIds(typeObj) {
   return getIdsInArray(typeObj.requester.rejectedTasks);
 }
 
+exports.getAllRequesterTasks = getAllRequesterTasks;

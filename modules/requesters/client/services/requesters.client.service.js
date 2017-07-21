@@ -63,6 +63,10 @@
         method: 'POST',
         url: '/api/requesters/getRequesterRatings'
       },
+      _searchMyTasks: {
+        method: 'POST',
+        url: '/api/requesters/search/myTasks'
+      },
       // TASK ACTIONS
       _createTask: {
         method: 'POST',
@@ -147,6 +151,9 @@
       },
       getRequesterRatings: function () {
         return this._getRequesterRatings().$promise;
+      },
+      searchMyTasks: function (query) {
+        return this._searchMyTasks(query).$promise;
       },
       // TASK ACTIONS
       createTask: function (taskInfo) {

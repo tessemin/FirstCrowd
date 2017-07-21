@@ -73,6 +73,15 @@
       _getTasksWithOptions: {
         method: 'POST',
         url: '/api/getTasksWithOptions'
+      },
+      // search tasks
+      _searchMyTasks: {
+        method: 'POST',
+        url: '/api/workers/tasks/search/myTasks'
+      },
+      _searchOpenTasks: {
+        method: 'POST',
+        url: '/api/workers/tasks/search/openTasks'
       }
     });
 
@@ -128,6 +137,12 @@
       },
       getTasksWithOptions: function (options) {
         return this._getTasksWithOptions(options).$promise;
+      },
+      searchMyTasks: function (query) {
+        return this._searchMyTasks(query).$promise;
+      },
+      searchOpenTasks: function (query) {
+        return this._searchOpenTasks(query).$promise;
       }
     });
 
