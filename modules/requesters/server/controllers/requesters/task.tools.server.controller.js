@@ -9,9 +9,8 @@ var path = require('path'),
   Enterprise = mongoose.model('Enterprise'),
   Individual = mongoose.model('Individual'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
-  individualControler = require(path.resolve('./modules/individuals/server/controllers/individuals.server.controller')),
-  enterpriseControler = require(path.resolve('./modules/enterprises/server/controllers/enterprises.server.controller')),
   taskSearch = require(path.resolve('./modules/requesters/server/controllers/requesters/task.search.server.controller')),
+  taskDepend = require(path.resolve('./modules/requesters/server/controllers/requesters/task.depend.server.controller')),
   _ = require('lodash');
 
 var taskFindOne = taskSearch.taskFindOne,
@@ -56,27 +55,6 @@ function setStatus(taskId, status, callBack) {
     });
 
   });
-}
-
-
-function getUserTypeObject(req, res, callBack) {
-  if (req.user) {
-    if (req.user.individual) {
-      individualControler.getThisIndividual(req, res, callBack);
-    } else if (req.user.enterprise) {
-      enterpriseControler.getThisEnterprise(req, res, callBack);
-    } else {
-      return res.status(422).send({
-        message: 'User has no valid Type'
-      });
-    }
-  } else {
-    return res.status(400).send({
-      message: 'User is not signed in, please sign in.',
-      link: '/',
-      linkMessage: 'Navigate Home'
-    });
-  }
 }
 
 function setStatusRequester(status, taskId, typeObj, res, callBack) {
@@ -162,15 +140,6 @@ function removeFromObjectTasksArray (taskId, array) {
 
 function ownsTask(task, typeObj) {
   return task.requester.requesterId.toString() === typeObj._id.toString();
-}
-
-function getIdsInArray(array) {
-  var idArray = [];
-  for (var i = 0; i < array.length; i++)
-    if (array[i])
-      if (array[i].taskId)
-        idArray.push(array[i].taskId);
-  return idArray;
 }
 
 function getWorkersIds(jobs) {
@@ -277,20 +246,6 @@ function addWorkerTaskWithStatus(status, taskId, typeObj) {
   return typeObj;
 }
 
-function isRequester(user) {
-  if (user.userRole)
-    if (user.userRole.indexOf('requester') > -1)
-      return true;
-  return false;
-}
-
-function isWorker(user) {
-  if (user.userRole)
-    if (user.userRole.indexOf('worker') > -1)
-      return true;
-  return false;
-}
-
 function updateTotalTaskProgress(task, callBack) {
   if (task && task.jobs) {
     var agregateProgress = 0;
@@ -355,18 +310,9 @@ function getNestedProperties(object, propertyNames) {
   return null;
 }
 
-
-exports.getUserTypeObject = getUserTypeObject;
-
 exports.taskWhiteListedFields = taskWhiteListedFields;
 
 exports.ownsTask = ownsTask;
-
-exports.getIdsInArray = getIdsInArray;
-
-exports.isRequester = isRequester;
-
-exports.isWorker = isWorker;
 
 exports.removeTaskFromWorkerArray = removeTaskFromWorkerArray;
 
@@ -377,3 +323,11 @@ exports.statusPushTo = statusPushTo;
 exports.updateTotalTaskProgress = updateTotalTaskProgress;
 
 exports.getNestedProperties = getNestedProperties;
+
+exports.isRequester = taskDepend.isRequester;
+
+exports.isWorker = taskDepend.isWorker;
+
+exports.getIdsInArray = taskDepend.getIdsInArray;
+
+exports.getUserTypeObject = taskDepend.getUserTypeObject;

@@ -13,7 +13,6 @@ var path = require('path'),
 
 // functions for task tools  
 var getUserTypeObject = taskTools.getUserTypeObject,
-  taskId = null,
   taskWhiteListedFields = taskTools.taskWhiteListedFields,
   ownsTask = taskTools.ownsTask,
   getIdsInArray = taskTools.getIdsInArray,
@@ -25,6 +24,8 @@ var getUserTypeObject = taskTools.getUserTypeObject,
   taskFindOne = taskSearch.taskFindOne,
   taskFindMany = taskSearch.taskFindMany,
   findWorkerByWorkerTaskObject = taskSearch.findWorkerByWorkerTaskObject;
+  
+var taskId = null;
   
 exports.requesterTasks = {
   all: function (req, res) {

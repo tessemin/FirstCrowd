@@ -9,16 +9,14 @@ var path = require('path'),
   Enterprise = mongoose.model('Enterprise'),
   Individual = mongoose.model('Individual'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
-  taskTools = require(path.resolve('modules/requesters/server/controllers/requesters/task.tools.server.controller')),
-  requesterTasks = require(path.resolve('./modules/requesters/server/controllers/requesters/requesters.tasks.server.controller')),
+  taskDepend = require(path.resolve('./modules/requesters/server/controllers/requesters/task.depend.server.controller')),
   Fuse = require('fuse.js'),
   _ = require('lodash');
   
-var isRequester = taskTools.isRequester,
-  isWorker = taskTools.isWorker,
-  getIdsInArray = taskTools.getIdsInArray,
-  getUserTypeObject = taskTools.getUserTypeObject,
-  getAllRequesterTasks = requesterTasks.getAllRequesterTasks;
+var isRequester = taskDepend.isRequester,
+  isWorker = taskDepend.isWorker,
+  getIdsInArray = taskDepend.getIdsInArray,
+  getUserTypeObject = taskDepend.getUserTypeObject;
 
 
 function taskFindMany(taskArray, secretAllowed, callBack) {
@@ -180,9 +178,16 @@ exports.searchTasks = {
     getUserTypeObject(req, res, function(typeObj) {
       var query = req.body.query;
       if (isRequester(req.user)) {
-        getAllRequesterTasks(req, res, function (tasks) {
-          var results = searchTasks(tasks, query, ['secret']);
-          res.json({ searchResults: results });
+        var ids = [].concat(getIdsInArray(typeObj.worker.activeTasks), getIdsInArray(typeObj.worker.rejectedTasks), getIdsInArray(typeObj.worker.inactiveTasks), getIdsInArray(typeObj.worker.completedTasks), getIdsInArray(typeObj.worker.recomendedTasks));
+        taskFindMany(ids, true, function(err, tasks) {
+          if (err) {
+            return res.status(422).send({
+              message: errorHandler.getErrorMessage(err)
+            });
+          } else {
+            var results = searchTasks(tasks, query, ['secret']);
+            res.json({ searchResults: results });
+          }
         });
       } else if (isWorker(req.user)) {
         var ids = [].concat(getIdsInArray(typeObj.worker.activeTasks), getIdsInArray(typeObj.worker.rejectedTasks), getIdsInArray(typeObj.worker.inactiveTasks), getIdsInArray(typeObj.worker.completedTasks), getIdsInArray(typeObj.worker.recomendedTasks));
