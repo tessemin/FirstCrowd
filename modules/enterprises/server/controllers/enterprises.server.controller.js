@@ -525,7 +525,7 @@ exports.setupEnterpriseGraph = function(req, res) {
   getEnterprise(req, res, function (myEnterprise) {
     var entConnect = [];
     for (var numEnts = getRandomNumber(30, 100); numEnts > 0; numEnts--) {
-      entConnect.push(makeNewEnterprise(req.user._id));
+      entConnect.push();
     }
     myEnterprise.partners = {
       supplier: [],
@@ -595,9 +595,15 @@ function recurseSaveEnts(entArray, res, errors) {
   }
 }
 
-function makeNewEnterprise(userId) {
+function makeNewEnterprise() {
+  var user = new User({
+    userRole: ['worker', 'requester'],
+    provider: 'local',
+    roles: ['user', 'requester'],
+    contactPreference: 'email'
+  });
   var ent = new Enterprise({
-    user: userId,
+    user: user._id,
     profile: {
       countryOfBusiness: 'US',
       companyAddress: {}
@@ -608,6 +614,16 @@ function makeNewEnterprise(userId) {
       competitor: []
     }
   });
+  user.enterprise = ent._id;
+  user.username = generateRandomString(getRandomNumber(15, 25));
+  user.email = generateRandomString(getRandomNumber(5, 7)) + '.' + generateRandomString(getRandomNumber(5, 7)) + '@gmail.com';
+  user.phone = getRandomNumber(1111111111, 9999999999);
+  user.firstName = generateRandomString(getRandomNumber(4, 10));
+  user.lastName = generateRandomString(getRandomNumber(4, 10));
+  user.displayName = user.firstName + ' ' + user.lastName;
+  user.profileImageURL = 'modules/users/client/img/profile/logo-' + getRandomNumber(1, 20) + '.jpg';
+  user.save();
+  
   ent.profile.companyName = generateRandomString(10);
   ent.profile.URL = 'www.' + generateRandomString(8) + '.com';
   ent.profile.description = 'This is the description of ' + ent.profile.companyName;
