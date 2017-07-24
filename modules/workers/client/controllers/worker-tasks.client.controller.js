@@ -17,9 +17,6 @@
       vm.filters = {};
     };
     vm.clearFilters();
-    WorkersService.updateRecomendedTask({ '_id': 'rocks' })
-      .then(function() {
-      });
 
     vm.taskCategories = [
       {
