@@ -156,6 +156,9 @@
           <div class="tasks-cell" ng-if="task.status === 'open' && task.payment.bidding.bidable">
             ${{task.payment.bidding.startingPrice}} (negotiable)
           </div>
+          <div class="tasks-cell" ng-if="task.status !== 'open' && task.payment.bidding.bidable">
+            $VALUE OF YOUR BID
+          </div>
           <div class="tasks-cell" ng-if="!task.payment.bidding.bidable">
             ${{task.payment.staticPrice}}
           </div>

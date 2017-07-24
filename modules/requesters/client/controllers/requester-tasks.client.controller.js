@@ -82,7 +82,7 @@
     vm.selectTask = function(index) {
       if (index < vm.tasks.length) {
         vm.selectedTask = index;
-        if (vm.tasks[index].bids.length > 0 && !vm.tasks[index].bids[0].hasOwnProperty('displayid')) {
+        if (vm.tasks[index].bids.length > 0 && !vm.tasks[index].bids[0].hasOwnProperty('displayId')) {
           vm.actOnTask(index, 'getBidderInfo');
         }
       } else {
@@ -100,7 +100,8 @@
     };
 
     vm.hireSelectedBidder = function() {
-      RequestersService.acceptBid({
+      initModal(vm.selectedTask);
+      /*RequestersService.acceptBid({
         taskId: vm.tasks[vm.selectedTask]._id,
         bidId: vm.tasks[vm.selectedTask].bids[vm.selectedBid]._id
       })
@@ -109,7 +110,7 @@
         })
         .catch(function(response) {
           Notification.error({ message: response.message, title: '<i class="glyphicon glyphicon-remove"></i> Hire failed! Worker not hired!' });
-        });
+        });*/
     };
 
     vm.rejectSelectedBidder = function() {
@@ -165,6 +166,44 @@
         });
     };
 
+    function initModal(index) {
+      vm.modal = {};
+      // put task info into modal
+      if (vm.tasks[index]) {
+        vm.modal.showContent = true;
+        var task = vm.tasks[index].taskRef;
+        if (task.payment.bidding.bidable) {
+          vm.modal.bidable = true;
+          vm.modal.bidding = {};
+          vm.modal.bidding.maxPricePerWorker = task.payment.bidding.startingPrice;
+          vm.modal.bidding.minPricePerWorker = task.payment.bidding.minPrice;
+          if (task.payment.bidding.timeRange) {
+            vm.modal.bidding.biddingStart = new Date(task.payment.bidding.timeRange.start);
+            vm.modal.bidding.biddingEnd = new Date(task.payment.bidding.timeRange.end);
+          }
+        } else {
+          vm.modal.bidable = false;
+          vm.modal.costPerWorker = task.payment.staticPrice;
+        }
+        activateTaskId = task._id;
+        vm.modal.title = task.title;
+        vm.modal.description = task.description;
+        vm.modal.preapproval = task.preapproval;
+        vm.modal.secret = task.secret;
+        vm.modal.skillsNeeded = task.skillsNeeded.join(', ');
+        vm.modal.category = task.category;
+        vm.modal.multiplicity = task.multiplicity;
+        vm.modal.tax = 0.00;
+        vm.modal.deadline = vm.tasks[index].deadline;
+        vm.modal.dateCreated = vm.tasks[index].postingDate;
+
+        // open modal for payment
+        vm.openPaymentModal();
+      } else {
+        Notification.error({ message: 'Task index does not exist.', title: '<i class="glyphicon glyphicon-remove"></i> Cannot Find Task' });
+      }
+    }
+
     vm.actOnTask = function(index, action) {
       switch (action) {
         case 'delete':
@@ -191,47 +230,14 @@
                   }
                 }
               }
+              console.log(vm.tasks[vm.selectedTask].bids[vm.selectedBid]);
             })
             .catch(function(response) {
             });
           break;
         case 'activate':
           // init modal
-          vm.modal = {};
-          // put task info into modal
-          if (vm.tasks[index]) {
-            vm.modal.showContent = true;
-            var task = vm.tasks[index].taskRef;
-            if (task.payment.bidding.bidable) {
-              vm.modal.bidable = true;
-              vm.modal.bidding = {};
-              vm.modal.bidding.maxPricePerWorker = task.payment.bidding.startingPrice;
-              vm.modal.bidding.minPricePerWorker = task.payment.bidding.minPrice;
-              if (task.payment.bidding.timeRange) {
-                vm.modal.bidding.biddingStart = new Date(task.payment.bidding.timeRange.start);
-                vm.modal.bidding.biddingEnd = new Date(task.payment.bidding.timeRange.end);
-              }
-            } else {
-              vm.modal.bidable = false;
-              vm.modal.costPerWorker = task.payment.staticPrice;
-            }
-            activateTaskId = task._id;
-            vm.modal.title = task.title;
-            vm.modal.description = task.description;
-            vm.modal.preapproval = task.preapproval;
-            vm.modal.secret = task.secret;
-            vm.modal.skillsNeeded = task.skillsNeeded.join(', ');
-            vm.modal.category = task.category;
-            vm.modal.multiplicity = task.multiplicity;
-            vm.modal.tax = 0.00;
-            vm.modal.deadline = vm.tasks[index].deadline;
-            vm.modal.dateCreated = vm.tasks[index].postingDate;
-
-            // open modal for payment
-            vm.openPaymentModal();
-          } else {
-            Notification.error({ message: 'Task index does not exist.', title: '<i class="glyphicon glyphicon-remove"></i> Cannot Find Task' });
-          }
+          initModal(index);
           break;
         default:
           console.log('perform ' + action + ' on task ' + vm.tasks[index]._id);
@@ -308,11 +314,6 @@
       $('#reviewPaymentModal').modal('hide');
     };
 
-    vm.bidderPopover = {
-    content: 'Bidder Information',
-    title: 'Bidder Title'
-  };
-
     // TODO: Make this angular compliant
     // paypal payment action
     (function paypalButtonRender() {
@@ -328,7 +329,14 @@
           label: 'pay'
         },
         payment: function() {
-          return paypal.request.post('/api/tasks/payment/create', { taskId: activateTaskId }).then(function(data) {
+          var paypi = 'api/tasks/' +
+            (vm.selectedBid ? 'bidding/' : '') +
+            'payment/create';
+          var request = { taskId: actvateTaskId };
+          if (vm.selectedBid) {
+            request.bidId = vm.tasks[selectedTask].bids[vm.selectedBid]._id;
+          }
+          return paypal.request.post(paypi, request).then(function(data) {
             // closes the payment review modal
             vm.closePaymentModal();
             executePayTaskId = data.taskId;
@@ -336,14 +344,21 @@
           });
         },
         onAuthorize: function(data) {
-          return paypal.request.post('/api/tasks/payment/execute', {
+          var paypi = 'api/tasks/' +
+            (vm.selectedBid ? 'bidding/' : '') +
+            'payment/execute';
+          return paypal.request.post(paypi, {
             paymentID: data.paymentID,
             payerID: data.payerID,
             taskId: executePayTaskId
           }).then(function(response) {
             // payment completed success
             Notification.success({ message: response, title: '<i class="glyphicon glyphicon-ok"></i> Payment Accepted!' });
-            vm.tasks[getIndexFromTaskId(activateTaskId)].status = 'open';
+            if (vm.selectedBid) {
+              // approve worker for task
+            } else {
+              vm.tasks[getIndexFromTaskId(activateTaskId)].status = 'open';
+            }
             activateTaskId = null;
           });
         },
@@ -353,6 +368,6 @@
           activateTaskId = null;
         }
       }, '#paypal-button');
-    }())
+    }());
   }
 }());
