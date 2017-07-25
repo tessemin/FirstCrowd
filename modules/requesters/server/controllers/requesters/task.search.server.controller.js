@@ -178,7 +178,7 @@ exports.searchTasks = {
     getUserTypeObject(req, res, function(typeObj) {
       var query = req.body.query;
       if (isRequester(req.user)) {
-        var ids = [].concat(getIdsInArray(typeObj.worker.activeTasks), getIdsInArray(typeObj.worker.rejectedTasks), getIdsInArray(typeObj.worker.inactiveTasks), getIdsInArray(typeObj.worker.completedTasks), getIdsInArray(typeObj.worker.recomendedTasks));
+        var ids = [].concat(getIdsInArray(typeObj.requester.activeTasks), getIdsInArray(typeObj.requester.suspendedTasks), getIdsInArray(typeObj.requester.completedTasks), getIdsInArray(typeObj.requester.rejectedTasks));
         taskFindMany(ids, true, function(err, tasks) {
           if (err) {
             return res.status(422).send({
