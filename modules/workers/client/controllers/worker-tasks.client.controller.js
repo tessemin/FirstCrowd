@@ -12,6 +12,20 @@
     var vm = this;
     vm.tasks = [];
     vm.loaded = false;
+
+    // Sort
+    vm.sort = 'name';
+    vm.sortReversed = false;
+    vm.sortTasks = function(property) {
+      if (vm.sort === property) {
+        vm.sortReversed = !vm.sortReversed;
+      } else {
+        vm.sort = property;
+        vm.sortReversed = false;
+      }
+      vm.selectTask(-1);
+    };
+
     // Filters
     vm.clearFilters = function() {
       vm.filters = {};
@@ -92,9 +106,7 @@
         for (var i = 0; i < data.tasks.length; ++i) {
           task = data.tasks[i];
           postDate = new Date(task.dateCreated);
-          postDate = postDate.toDateString();
           dueDate = new Date(task.deadline);
-          dueDate = dueDate.toDateString();
           var taskActions = [];
           switch (vm.taskCategory.id) {
             case 'active':
@@ -327,9 +339,9 @@
       }
     };
     vm.uploadFiles = function (files) {
-      
+
     }
-    
+
     vm.selectedTask = -1;
     vm.selectTask = function(index) {
       if (index === vm.selectedTask) {
@@ -344,6 +356,6 @@
       $scope.$broadcast('rzSliderForceRender');
     }
     refreshProgressSliders();
-    
+
   }
 }());
