@@ -260,22 +260,36 @@ exports.stateActions = {
         getUserTypeObject(req, res, function(typeObj) {
           taskFindOne(req.body.taskId, function(err, task) {
             if (err)
-              return res.status(422).send(errorHandler.getErrorMessage(err));
+              return res.status(422).send({
+                message: errorHandler.getErrorMessage(err)
+              });
+            if (!task)
+              return res.status(422).send({
+                message: 'No task found.'
+              });
             if (!ownsTask(task, typeObj))
-              return res.status(422).send('You are not the owner for this task.');
+              return res.status(422).send({
+                message: 'You are not the owner for this task.'
+              });
 
             if (!task.payment.paymentInfo || !task.payment.paymentInfo.paymentId)
-              return res.status(422).send('No payment has been created.');
+              return res.status(422).send({
+                message: 'No payment has been created.'
+              });
 
             if (task.payment.bidding.bidable) {
-              return res.status(422).send('This task does not have a static price.');
+              return res.status(422).send({
+                message: 'This task does not have a static price.'
+              });
             }
 
             var bidId = req.body.bidId,
               foundBid = false,
               bid = 0;
             if (task.multiplicity <= 0) {
-              return res.status(422).send('There are too many workers for this task.');
+              return res.status(422).send({
+                message: 'There are too many workers for this task.'
+              });
             }
 
             for (bid = 0; bid < task.bids.length && bidId; bid++) {
@@ -285,21 +299,33 @@ exports.stateActions = {
               }
             }
             if (!foundBid)
-              return res.status(422).send('No bid Id found.');
+              return res.status(422).send({
+                message: 'No bid Id found.'
+              });
 
             setWorkerOnBidableTask(task, task.bids[bid].worker, function (err, task) {
-              task.multiplicity--;
+              if (err) {
+                return res.status(422).send({
+                  message: err
+                });
+              }
               task.save(function(err, task) {
                 if (err)
-                  return res.status(422).send(errorHandler.getErrorMessage(err));
+                  return res.status(422).send({
+                    message: errorHandler.getErrorMessage(err)
+                  });
                 var status = 'open';
                 if (task.multiplicity <= 0)
                   status = 'taken';
                 setStatus(task._id, status, function (err, correctMsg) {
                   if (err) {
-                    return res.status(422).send(err);
+                    return res.status(422).send({
+                      message: err
+                    });
                   } else {
-                    return res.status(200).send(correctMsg);
+                    return res.status(200).send({
+                      message: 'Worker Accepted!'
+                    });
                   }
                 });
               });
@@ -382,12 +408,17 @@ function setWorkerOnBidableTask(task, workerBidObj, callBack) {
         return taskBid;
       });
     }
+    var found = false;
     var bidIndex = 0;
-    for (bidIndex = 0; bidIndex < task.bids.length; bidIndex++)
-      if (task.bids[bidIndex].worker.workerId.toString() === workerBidObj.workerId.toString())
+    while (bidIndex < task.bids.length && !found) {
+      if (task.bids[bidIndex].worker.workerId.toString() === workerBidObj.workerId.toString()) {
+        found = true;
         break;
-    if (bidIndex === 0) {
-      callBack('No bid found.');
+      }
+      bidIndex++;
+    }
+    if (!found) {
+      return callBack('No bid found.');
     }
     task.bids[bidIndex].status = 'accepted';
     task.jobs.push({
@@ -397,8 +428,8 @@ function setWorkerOnBidableTask(task, workerBidObj, callBack) {
     });
     workerObj.save(function (err, workerObj) {
       if (err)
-        callBack(errorHandler.getErrorMessage(err));
-      callBack(null, task);
+        return callBack(errorHandler.getErrorMessage(err));
+      return callBack(null, task);
     });
   });
 }
