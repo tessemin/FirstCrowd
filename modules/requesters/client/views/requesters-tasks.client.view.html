@@ -256,7 +256,7 @@
                 </div>
               </div>
               <button class="btn" ng-click="vm.rejectSelectedBidder()">Reject this worker</button>
-              <button class="btn btn-primary" ng-click="vm.hireSelectedBidder()">Hire this worker</button>
+              <button class="btn btn-primary" ng-click="vm.hireSelectedWorker()">Hire this worker</button>
             </div>
           </div>
         </div>
@@ -328,19 +328,19 @@
             </span>
             <span class="summary-row">
               <span class="summary-label">Cost per worker: </span>
-              <span class="summary-element">{{vm.modal.costPerWorker | number: 2}}</span><br>
+              <span class="summary-element">&#36;{{vm.modal.costPerWorker | number: 2}}</span><br>
             </span>
             <span class="summary-row">
               <span class="summary-label">Tax: </span>
-              <span class="summary-element">{{vm.modal.tax | number: 2}}</span><br>
+              <span class="summary-element">&#36;{{vm.modal.tax | number: 2}}</span><br>
             </span>
             <span class="summary-row">
               <span class="summary-label">Total Cost: </span>
-              <span class="summary-element">{{vm.modal.costPerWorker * vm.modal.multiplicity + (vm.modal.costPerWorker * vm.modal.multiplicity * vm.modal.tax) | number: 2}}</span>
+              <span class="summary-element">&#36;{{vm.modal.costPerWorker * vm.modal.multiplicity + (vm.modal.costPerWorker * vm.modal.multiplicity * vm.modal.tax) | number: 2}}</span>
             </span>
           </p>
         </div>
-        <div ng-show="vm.modal.bidable">
+        <div ng-show="vm.modal.bidable && vm.selectedBid === -1">
           <p>
             <span class="summary-row">
               <span class="summary-label">Number of possible workers: </span>
@@ -375,16 +375,36 @@
             </span>
           </p>
         </div>
+        <div ng-show="vm.modal.bidable && vm.selectedBid !== -1">
+          <p>
+            <span class="summary-row">
+              <span class="summary-label">Worker id: </span>
+              <span class="summary-element">{{ vm.tasks[vm.selectedTask].bids[vm.selectedBid].bidDetails.displayId }}</span><br>
+            </span>
+            <span class="summary-row">
+              <span class="summary-label">Worker's payment: </span>
+              <span class="summary-element">&#36;{{ vm.tasks[vm.selectedTask].bids[vm.selectedBid].bid | number: 2}}</span><br>
+            </span>
+            <span class="summary-row">
+              <span class="summary-label">Tax: </span>
+              <span class="summary-element">&#36;{{vm.modal.tax | number: 2}}</span><br>
+            </span>
+            <span class="summary-row">
+              <span class="summary-label">Total Cost: </span>
+              <span class="summary-element">&#36;{{ vm.tasks[vm.selectedTask].bids[vm.selectedBid].bid + vm.modal.tax | number: 2}}</span>
+            </span>
+          </p>
+        </div>
       </div>
       <div class="modal-footer">
         <div class="container-fluid">
           <div class="row">
             <div class="col-md-5"></div>
             <div class="col-md-3">
-              <div ng-hide="vm.modal.bidable">
+              <div ng-hide="vm.modal.bidable && vm.selectedBid === -1">
                 <div id="paypal-button"></div>
               </div>
-              <button ng-show="vm.modal.bidable" ng-click="vm.activateBidableTask()" type="button" class="btn btn-primary" style="width: 120%;">Activate</button>
+              <button ng-show="vm.modal.bidable && vm.selectedBid === -1" ng-click="vm.activateBidableTask()" type="button" class="btn btn-primary" style="width: 120%;">Activate</button>
             </div>
             <div class="col-md-3">
               <div class="container-fluid row">

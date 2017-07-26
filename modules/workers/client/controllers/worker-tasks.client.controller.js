@@ -15,7 +15,7 @@
     // Filters
     vm.clearFilters = function() {
       vm.filters = {};
-    };
+    }
     vm.clearFilters();
 
     vm.taskCategories = [
@@ -245,6 +245,16 @@
         console.log(action.id);
         switch (action.id) {
           case 'apply':
+            WorkersService.takeTask({
+              taskId: vm.tasks[index]._id
+            })
+              .then(function(response) {
+                Notification.success({ message: response.messsage, title: '<i class="glyphicon glyphicon-ok"></i> Application submitted!' });
+              })
+              .catch(function(response) {
+                console.log(response);
+                Notification.error({ message: response.message, title: '<i class="glyphicon glyphicon-remove"></i> Error! Application not submitted!' });
+              });
             break;
           case 'bid':
             console.log('bid $' + vm.tasks[index].payment.bidding.myBid + ' task ' + vm.tasks[index]._id);

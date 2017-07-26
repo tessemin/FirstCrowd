@@ -185,6 +185,9 @@
           <div class="tasks-cell" ng-if="task.status === 'open' && task.payment.bidding.bidable">
             ${{task.payment.bidding.startingPrice}} (negotiable)
           </div>
+          <div class="tasks-cell" ng-if="task.status !== 'open' && task.payment.bidding.bidable">
+            $VALUE OF YOUR BID
+          </div>
           <div class="tasks-cell" ng-if="!task.payment.bidding.bidable">
             ${{task.payment.staticPrice}}
           </div>
@@ -205,9 +208,9 @@
                 <div class="dropdown">
                   <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Actions
                   <span class="caret"></span></button>
-                  <ul class="dropdown-menu">
+                  <ul class="dropdown-menu actions-dropdown-menu">
                     <div ng-repeat="action in task.taskActions">
-                      <li><button class="dropdown-button-item" ng-click="vm.actOnTask(vm.tasks.indexOf(task), action)">{{action.bikeshed}}</button></li>
+                      <li class="dropdown-button-item actions-dropdown-button-item" ng-click="vm.actOnTask(vm.tasks.indexOf(task), action)">{{action.bikeshed}}</button></li>
                     </div>
                   </ul>
                 </div>
