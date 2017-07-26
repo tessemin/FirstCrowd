@@ -237,25 +237,11 @@
             // functions
             //
             function getThreeLevels(data) {
-              return new Promise(function(resolve, reject) {
-                getCustomers(data._id).then(function (res) {
-                  data.children = res.customers;
-
-                  data.children.forEach(child => getCustomers(child._id).then(function(obj) {
-                    return child.children = obj.customers;
-                    // console.log(data.children[i]);
-                  })
-                                       );
-
-                  // for(var i = 0; i < data.children.length; i++) {
-                  //   console.log(data.children[i]);
-                  //   data.children[i].children.forEach(child => getCustomers(child._id).then(function(obj) {
-                  //     return child.children = obj.customers;
-                  //     // console.log(data.children[i]);
-                  //   })
-                  //                                    );
-                  // }
-                  resolve(data);
+              var data = data;
+              getCustomers(data._id).then(function (res) {
+                data.children = res.customers;
+                data.children.forEach(function (child) {
+                  getThreeLevels(child)
                 });
               });
             }
