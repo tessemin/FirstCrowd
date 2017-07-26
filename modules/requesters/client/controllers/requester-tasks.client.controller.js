@@ -65,6 +65,7 @@
             'progress': task.totalProgress,
             'taskActions': taskActions,
             'taskRef': task,
+            'bidable': task.payment.bidding.bidable,
             'bids': task.bids
           });
         }
@@ -80,7 +81,7 @@
       }
     };
     vm.selectTask = function(index) {
-      if (index < vm.tasks.length) {
+      if (index < vm.tasks.length && index > 0) {
         vm.selectedTask = index;
         if (vm.tasks[index].bids.length > 0 && !vm.tasks[index].bids[0].hasOwnProperty('displayId')) {
           vm.actOnTask(index, 'getBidderInfo');
@@ -99,18 +100,25 @@
       }
     };
 
-    vm.hireSelectedBidder = function() {
-      initModal(vm.selectedTask);
-      /*RequestersService.acceptBid({
-        taskId: vm.tasks[vm.selectedTask]._id,
-        bidId: vm.tasks[vm.selectedTask].bids[vm.selectedBid]._id
-      })
+    vm.hireSelectedWorker = function() {
+      // Bidable tasks need to be paid on hire
+      if (vm.tasks[vm.selectedTask].bidable) {
+        initPaymentModal(vm.selectedTask);
+      // Fixed-price tasks
+      } else {
+        var request = {
+          taskId: vm.tasks[vm.selectedTask]._id,
+          bidId: vm.tasks[vm.selectedTask].bids[vm.selectedBid]._id
+        };
+        console.log(request);
+        RequestersService.acceptPreapproval(request)
         .then(function(response) {
           Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> Worker hired!' });
         })
         .catch(function(response) {
-          Notification.error({ message: response.message, title: '<i class="glyphicon glyphicon-remove"></i> Hire failed! Worker not hired!' });
-        });*/
+          Notification.error({ message: response.message, title: '<i class="glyphicon glyphicon-remove"></i> Hiring failed! Worker not hired!' });
+        });
+      }
     };
 
     vm.rejectSelectedBidder = function() {
@@ -166,7 +174,7 @@
         });
     };
 
-    function initModal(index) {
+    function initPaymentModal(index) {
       vm.modal = {};
       // put task info into modal
       if (vm.tasks[index]) {
@@ -198,6 +206,7 @@
         vm.modal.dateCreated = vm.tasks[index].postingDate;
 
         // open modal for payment
+        console.log(activateTaskId);
         vm.openPaymentModal();
       } else {
         Notification.error({ message: 'Task index does not exist.', title: '<i class="glyphicon glyphicon-remove"></i> Cannot Find Task' });
@@ -219,7 +228,6 @@
                   for (var j = 0; j < response.individuals.length; ++j) {
                     if (vm.tasks[index].bids[i].worker.workerId === response.individuals[j]._id) {
                       vm.tasks[index].bids[i].bidDetails = response.individuals[j];
-                      console.log(vm.tasks[index].bids[i]);
                     }
                   }
                 } else {
@@ -230,14 +238,13 @@
                   }
                 }
               }
-              console.log(vm.tasks[vm.selectedTask].bids[vm.selectedBid]);
             })
             .catch(function(response) {
             });
           break;
         case 'activate':
           // init modal
-          initModal(index);
+          initPaymentModal(index);
           break;
         default:
           console.log('perform ' + action + ' on task ' + vm.tasks[index]._id);
@@ -329,14 +336,18 @@
           label: 'pay'
         },
         payment: function() {
-          var paypi = 'api/tasks/' +
-            (vm.selectedBid ? 'bidding/' : '') +
+          var paypi = '/api/tasks/' +
+            (vm.selectedBid !== -1 ? 'bidding/' : '') +
             'payment/create';
-          var request = { taskId: actvateTaskId };
-          if (vm.selectedBid) {
-            request.bidId = vm.tasks[selectedTask].bids[vm.selectedBid]._id;
+          var request = { taskId: activateTaskId };
+          if (vm.selectedBid !== -1) {
+            console.log('bid ' + vm.selectedBid)
+            request.bidId = vm.tasks[vm.selectedTask].bids[vm.selectedBid]._id;
           }
+          console.log('ppoint1');
+          console.log(request.taskId);
           return paypal.request.post(paypi, request).then(function(data) {
+            console.log('ppoint2');
             // closes the payment review modal
             vm.closePaymentModal();
             executePayTaskId = data.taskId;
@@ -344,8 +355,9 @@
           });
         },
         onAuthorize: function(data) {
-          var paypi = 'api/tasks/' +
-            (vm.selectedBid ? 'bidding/' : '') +
+          console.log(data);
+          var paypi = '/api/tasks/' +
+            (vm.selectedBid !== -1 ? 'bidding/' : '') +
             'payment/execute';
           return paypal.request.post(paypi, {
             paymentID: data.paymentID,

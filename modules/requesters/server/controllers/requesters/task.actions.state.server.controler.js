@@ -11,7 +11,7 @@ var path = require('path'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   paymentPaypal = require(path.resolve('./modules/core/server/controllers/payment/paypal.server.controller.js')),
   _ = require('lodash');
-  
+
 var getUserTypeObject = taskTools.getUserTypeObject,
   ownsTask = taskTools.ownsTask,
   setStatus = taskTools.setStatus,
@@ -19,11 +19,11 @@ var getUserTypeObject = taskTools.getUserTypeObject,
   removeTaskFromWorkerArray = taskTools.removeTaskFromWorkerArray,
   findWorkerByWorkerTaskObject = taskSearch.findWorkerByWorkerTaskObject,
   taskFindOne = taskSearch.taskFindOne;
-  
+
 // imported payment functions
 var createPaypalPayment = paymentPaypal.createPaypalPayment,
   executePaypalPayment = paymentPaypal.executePaypalPayment;
-  
+
 exports.stateActions = {
   payment: {
     bidable: {
@@ -32,20 +32,20 @@ exports.stateActions = {
           taskFindOne(req.body.taskId, function(err, task) {
             if (err)
               return res.status(422).send(errorHandler.getErrorMessage(err));
-           
+
             if (!ownsTask(task, typeObj))
               return res.status(422).send('You are not the owner for this task.');
-            
+
             if (!task.payment.bidding.bidable)
               return res.status(422).send('This is not a bidable task.');
-            
+
             var bidId = req.body.bidId,
               foundBid = false,
               bid = 0;
             if (task.multiplicity <= 0) {
               return res.status(422).send('There are too many workers for this task.');
             }
-            
+
             for (bid = 0; bid < task.bids.length && bidId; bid++) {
               if (task.bids[bid]._id && task.bids[bid]._id.toString() === bidId.toString()) {
                 foundBid = true;
@@ -54,13 +54,13 @@ exports.stateActions = {
             }
             if (!foundBid)
               return res.status(422).send('No bid Id found.');
-            
+
             for (var job = 0; job < task.jobs.length; job++) {
               if (task.jobs[job].worker.workerId.toString() === task.bids[bid].worker.workerId.toString()) {
                 return res.status(422).send('Worker is already working for this task');
               }
             }
-            
+
             var items = [{
               'name': 'Worker',
               'sku': bidId,
@@ -90,24 +90,24 @@ exports.stateActions = {
           taskFindOne(req.body.taskId, function(err, task) {
             if (err)
               return res.status(422).send(errorHandler.getErrorMessage(err));
-            
+
             if (!ownsTask(task, typeObj))
               return res.status(422).send('You are not the owner for this task.');
-            
+
             if (!task.payment.paymentInfo || !task.payment.paymentInfo.paymentId)
               return res.status(422).send('No payment has been created.');
-            
+
             if (!task.payment.bidding.bidable)
               return res.status(422).send('This is not a bidable task.');
-            
+
             var bidId = req.body.bidId,
               foundBid = false,
               bid = 0;
-              
+
             if (task.multiplicity <= 0) {
               return res.status(422).send('There are too many workers for this task.');
             }
-            
+
             for (bid = 0; bid < task.bids.length && bidId; bid++) {
               if (task.bids[bid]._id && task.bids[bid]._id.toString() === bidId.toString()) {
                 foundBid = true;
@@ -116,14 +116,14 @@ exports.stateActions = {
             }
             if (!foundBid)
               return res.status(422).send('No bid Id found.');
-            
+
             for (var job = 0; job < task.jobs.length; job++) {
               if (task.jobs[job].worker.workerId.toString() === task.bids[bid].worker.workerId.toString()) {
                 return res.status(422).send('Worker is already working for this task');
               }
             }
-            
-            
+
+
             var transactions = [];
             var total = 0;
             for (var trans = 0; trans < task.payment.paymentInfo.paymentObject.transactions.length; trans++) {
@@ -133,7 +133,7 @@ exports.stateActions = {
 
             if (parseFloat(total) !== task.payment.staticPrice * task.multiplicity)
               return res.status(422).send('Payment object total does not match actual total.');
-            
+
             executePaypalPayment(req.body.payerID, req.body.paymentID, transactions, function(err, payment) {
               if (err)
                 return res.status(422).send(errorHandler.getErrorMessage(err));
@@ -165,22 +165,24 @@ exports.stateActions = {
       }
     },
     create: function (req, res) {
+      console.log(req.body);
       getUserTypeObject(req, res, function(typeObj) {
         taskFindOne(req.body.taskId, function(err, task) {
+
           if (err)
             return res.status(422).send(errorHandler.getErrorMessage(err));
-         
+
           if (!ownsTask(task, typeObj))
             return res.status(422).send('You are not the owner for this task.');
-          
+
           if (task.payment.paymentInfo.paid === true) {
             return res.status(422).send('Payment for task already received.');
           }
-          
+
           if (task.payment.bidding.bidable) {
             return res.status(422).send('This task does not have a static price.');
           }
-          
+
           var items = [{
             'name': 'Workers',
             'sku': task._id,
@@ -212,14 +214,14 @@ exports.stateActions = {
             return res.status(422).send(errorHandler.getErrorMessage(err));
           if (!ownsTask(task, typeObj))
             return res.status(422).send('You are not the owner for this task.');
-          
+
           if (!task.payment.paymentInfo || !task.payment.paymentInfo.paymentId)
             return res.status(422).send('No payment has been created.');
-          
+
           if (task.payment.bidding.bidable) {
             return res.status(422).send('This task does not have a static price.');
           }
-          
+
           var transactions = [];
           var total = 0;
           for (var trans = 0; trans < task.payment.paymentInfo.paymentObject.transactions.length; trans++) {
@@ -229,7 +231,7 @@ exports.stateActions = {
 
           if (parseFloat(total) !== task.payment.staticPrice * task.multiplicity)
             return res.status(422).send('Payment object total does not match actual total.');
-          
+
           executePaypalPayment(req.body.payerID, req.body.paymentID, transactions, function(err, payment) {
             task.payment.paymentInfo.paid = true;
             task.payment.paymentInfo.payerId = req.body.payerID;
@@ -261,21 +263,21 @@ exports.stateActions = {
               return res.status(422).send(errorHandler.getErrorMessage(err));
             if (!ownsTask(task, typeObj))
               return res.status(422).send('You are not the owner for this task.');
-            
+
             if (!task.payment.paymentInfo || !task.payment.paymentInfo.paymentId)
               return res.status(422).send('No payment has been created.');
-            
+
             if (task.payment.bidding.bidable) {
               return res.status(422).send('This task does not have a static price.');
             }
-            
+
             var bidId = req.body.bidId,
               foundBid = false,
               bid = 0;
             if (task.multiplicity <= 0) {
               return res.status(422).send('There are too many workers for this task.');
             }
-            
+
             for (bid = 0; bid < task.bids.length && bidId; bid++) {
               if (task.bids[bid]._id && task.bids[bid]._id.toString() === bidId.toString()) {
                 foundBid = true;
@@ -284,7 +286,7 @@ exports.stateActions = {
             }
             if (!foundBid)
               return res.status(422).send('No bid Id found.');
-            
+
             setWorkerOnBidableTask(task, task.bids[bid].worker, function (err, task) {
               task.multiplicity--;
               task.save(function(err, task) {
@@ -368,7 +370,7 @@ function setWorkerOnBidableTask(task, workerBidObj, callBack) {
   findWorkerByWorkerTaskObject(workerBidObj, function (err, workerObj) {
     if (err)
       callBack(errorHandler.getErrorMessage(err));
-    
+
     workerObj = removeTaskFromWorkerArray(task._id, workerObj);
     workerObj.worker.activeTasks = statusPushTo(task._id, workerObj.worker.activeTasks);
     --task.multiplicity;
