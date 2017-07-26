@@ -2,9 +2,14 @@
   <make-graph></make-graph>
 
   <div class="toggle-side form-group col-xs-3"  ng-show="!vm.selected.companyName">
-    <div class="inner-addon right-addon">
-      <i class="glyphicon glyphicon-search" ng-click="vm.search(vm.query)"></i>
-      <input class="form-control" type="text" ng-model="vm.query" placeholder="Search">
+    <div class="inner-addon right-addon search-dropdown" ng-mouseenter="vm.searchResultsShow = true" ng-mouseleave="vm.searchResultsShow = false">
+      <form ng-submit="vm.search(vm.query)" >
+        <i class="glyphicon glyphicon-search search-glyphicon" ng-click="vm.search(vm.query)"></i>
+        <input class="form-control search-input" type="text" ng-model="vm.query" placeholder="Search">
+      </form>
+      <div class="search-content", ng-if="vm.searchResultsShow">
+        <div ng-repeat="searchResult in vm.searchResults" class="search-results" ng-click="vm.makeGraphForCompany(searchResult._id)">{{searchResult.profile.companyName}}</div>
+      </div>
     </div>
   </div>
   <div ng-show="vm.selected.companyName">

@@ -63,6 +63,10 @@
         method: 'POST',
         url: '/api/requesters/getRequesterRatings'
       },
+      _searchMyTasks: {
+        method: 'POST',
+        url: '/api/requesters/search/myTasks'
+      },
       // TASK ACTIONS
       _createTask: {
         method: 'POST',
@@ -84,11 +88,15 @@
         method: 'POST',
         url: '/api/tasks/getRequesterRatingsForTask'
       },
-      // Biding actions
-      _acceptBid: {
+      _acceptPreapproval: {
         method: 'POST',
-        url: '/api/tasks/bidding/accept'
+        url: '/api/tasks/preapproval/accept'
       },
+      _rejectPreapproval: {
+        method: 'POST',
+        url: '/api/tasks/preapproval/reject'
+      },
+      // Biding actions
       _rejectBid: {
         method: 'POST',
         url: '/api/tasks/bidding/reject'
@@ -144,6 +152,9 @@
       getRequesterRatings: function () {
         return this._getRequesterRatings().$promise;
       },
+      searchMyTasks: function (query) {
+        return this._searchMyTasks(query).$promise;
+      },
       // TASK ACTIONS
       createTask: function (taskInfo) {
         return this._createTask(taskInfo).$promise;
@@ -160,12 +171,15 @@
       getRequesterRatingsForTask: function (taskId) {
         return this._getRequesterRatingsForTask(taskId).$promise;
       },
+      acceptPreapproval: function (taskId_bidId) {
+        return this._acceptPreapproval(taskId_bidId).$promise;
+      },
+      rejectPreapproval: function (taskId_bidId) {
+        return this._rejectPreapproval(taskId_bidId).$promise;
+      },
       // Biding actions
       rejectBid: function (taskId_bidId) {
         return this._rejectBid(taskId_bidId).$promise;
-      },
-      acceptBid: function (taskId_bidId) {
-        return this._acceptBid(taskId_bidId).$promise;
       },
       activateBidable: function (taskId) {
         return this._activateBidable(taskId).$promise;

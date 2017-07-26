@@ -3,8 +3,10 @@
 /**
  * Module dependencies
  */
+var path = require('path');
 var workersPolicy = require('../policies/workers.server.policy'),
-  workers = require('../controllers/workers.server.controller');
+  workers = require('../controllers/workers.server.controller'), 
+  taskSearch = require(path.resolve('./modules/requesters/server/controllers/requesters/task.search.server.controller'));
 
 
 module.exports = function(app) {
@@ -14,19 +16,15 @@ module.exports = function(app) {
   app.route('/api/workers/activeTask/all').post(workers.activeTask.all);
 
   // REJECTED TASKS
-  app.route('/api/workers/rejectedTask/').put(workers.rejectedTask.update);
   app.route('/api/workers/rejectedTask/all').post(workers.rejectedTask.all); // .all(workersPolicy.isAllowed)
 
   // COMPLETED TASKS
-  app.route('/api/workers/completedTask/').put(workers.completedTask.update);
   app.route('/api/workers/completedTask/all').post(workers.completedTask.all);
 
   // INACTIVE TASKS
-  app.route('/api/workers/inactiveTask/').put(workers.inactiveTask.update);
   app.route('/api/workers/inactiveTask/all').post(workers.inactiveTask.all);
 
   // RECOMENDED TASKS
-  app.route('/api/workers/recomendedTask/').put(workers.recomendedTask.update);
   app.route('/api/workers/recomendedTask/all').post(workers.recomendedTask.all);
 
   // WORKER ACTIONS
@@ -38,6 +36,10 @@ module.exports = function(app) {
   app.route('/api/getTasksWithOptions').post(workers.getTasksWithOptions);
 
   app.route('/api/task/getYourWorker').post(workers.getWorkerForTask);
+  
+  // search tasks
+  app.route('/api/workers/tasks/search/myTasks').post(taskSearch.searchTasks.searchMyTasks);
+  app.route('/api/workers/tasks/search/openTasks').post(taskSearch.searchTasks.searchOpenTasks);
 
   // Finish by binding the Worker middleware
   app.param('taskId', workers.taskByID);

@@ -6,17 +6,26 @@
 var path = require('path'),
   mongoose = require('mongoose'),
   Task = mongoose.model('Task'),
+  Enterprise = mongoose.model('Enterprise'),
+  Individual = mongoose.model('Individual'),
+  User = mongoose.model('User'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   taskSearch = require(path.resolve('./modules/requesters/server/controllers/requesters/task.search.server.controller')),
   taskTools = require(path.resolve('./modules/requesters/server/controllers/requesters/task.tools.server.controller')),
   _ = require('lodash');
-  
+
+// imported functions
 var getUserTypeObject = taskTools.getUserTypeObject,
   isRequester = taskTools.isRequester,
-  statusPushTo = taskTools.statusPushTo,
   ownsTask = taskTools.ownsTask,
+  statusPushTo = taskTools.statusPushTo,
+  getNestedProperties = taskTools.getNestedProperties,
   taskFindOne = taskSearch.taskFindOne;
-  
+
+var individualWhiteListFields = ['_id', 'schools', 'jobExperience', 'certification', 'tools', 'specialities', 'skills', 'worker.requesterRatingsPerCategory', 'worker.acceptanceRatesPerCategory', 'worker.acceptanceRate', 'worker.averageCompletionTime', 'worker.preferedCategories'],
+  enterpriseWhiteListFields = ['_id', 'profile.companyName', 'profile.yearEstablished', 'profile.classifications', 'profile.description', 'specialities', 'catalog', 'worker.requesterRatingsPerCategory', 'worker.acceptanceRatesPerCategory', 'worker.acceptanceRate', 'worker.averageCompletionTime', 'worker.preferedCategories'];
+
+// local variables
 var taskId = null;
   
 exports.taskActions = {
@@ -221,3 +230,95 @@ exports.taskActions = {
     });
   }
 };
+
+exports.biddingActions = {
+  bidderInfo: function (req, res) {
+    getUserTypeObject(req, res, function(typeObj) {
+      taskFindOne(req.body.taskId, function (err, task) {
+        if (err) {
+          return res.status(422).send({
+            message: err
+          });
+        }
+        if (ownsTask(task, typeObj)) {
+          var indBiddersIds = [],
+            entBiddersIds = [];
+          for (var bid = 0; bid < task.bids.length; bid++) {
+            if (task.bids[bid].worker.workerType.enterprise && !task.bids[bid].worker.workerType.individual) {
+              entBiddersIds.push(task.bids[bid].worker.workerId);
+            } else if (task.bids[bid].worker.workerType.individual && !task.bids[bid].worker.workerType.enterprise) {
+              indBiddersIds.push(task.bids[bid].worker.workerId);
+            } else {
+              indBiddersIds.push(task.bids[bid].worker.workerId);
+              entBiddersIds.push(task.bids[bid].worker.workerId);
+            }
+          }
+          getMongoIndividuals(indBiddersIds, function (err, individuals) {
+            if (err)
+              return res.status(422).send({
+                message: err
+              });
+            getMongoEnterprises(entBiddersIds, function (err, enterprises) {
+              if (err)
+                return res.status(422).send({
+                  message: err
+                });
+              var safeInds = individuals.map(function(ind) {
+                ind = getNestedProperties(ind, individualWhiteListFields);
+                ind.displayId = hashTypeObjId(ind._id);
+                return ind;
+              });
+              var safeEnts = enterprises.map(function(ent) {
+                ent = getNestedProperties(ent, enterpriseWhiteListFields);
+                ent.displayId = hashTypeObjId(ent._id);
+                return ent;
+              });
+              res.json({ individuals: safeInds, enterprises: safeEnts });
+            });
+          });
+        } else {
+          return res.status(422).send({
+            message: 'You are not the owner of this task'
+          });
+        }
+      });
+    });
+  }
+};
+
+function getMongoIndividuals(indIds, callBack) {
+  if (indIds.length > 0)
+    Individual.find({ '_id': { $in: indIds } }, function(err, inds) {
+      if (err)
+        callBack(errorHandler.getErrorMessage(err));
+      if (inds)
+        return callBack(null, inds);
+      return callBack(null, []);
+    });
+  else
+    return callBack(null, []);
+}
+
+function getMongoEnterprises(entIds, callBack) {
+  if (entIds.length > 0)
+    Enterprise.find({ '_id': { $in: entIds } }, function(err, ents) {
+      if (err)
+        callBack(errorHandler.getErrorMessage(err));
+      if (ents)
+        return callBack(null, ents);
+      return callBack(null, []);
+    });
+  else
+    return callBack(null, []);
+}
+
+function hashTypeObjId(id) {
+  id = id.toString();
+  var returnVal = null;
+  for (var i = 1; i <= id.length; i++) {
+    returnVal += id.codePointAt(i - 1) * i;
+  }
+  if (returnVal)
+    return returnVal.toString(16);
+  return null;
+}

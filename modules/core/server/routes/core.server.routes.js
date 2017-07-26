@@ -8,9 +8,6 @@ module.exports = function (app) {
 
   // Define error pages
   app.route('/server-error').get(core.renderServerError);
-
-  app.route('/api/payment/paypal/create/').post(payment.paypal.create);
-  app.route('/api/payment/paypal/execute/').post(payment.paypal.execute);
   
   // Return a 404 for all undefined api, module or lib routes
   app.route('/:url(api|modules|lib)/*').get(core.renderNotFound);

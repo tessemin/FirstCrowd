@@ -12,7 +12,7 @@ var path = require('path'),
   coreController = require(path.resolve('./modules/core/server/controllers/core.server.controller')),
   taskTools = require(path.resolve('modules/requesters/server/controllers/requesters/task.tools.server.controller')),
   _ = require('lodash'),
-  fuse = require('fuse.js'),
+  Fuse = require('fuse.js'),
   validator = require('validator'),
   superEnterprise = null;
   
@@ -364,7 +364,7 @@ function findPartnersWhiteFields(enterpriseIds, callBack) {
             break;
           }
         }
-        return getNestedProperties(ent, whitelistedPartnersFields);;
+        return getNestedProperties(ent, whitelistedPartnersFields);
       });
       callBack(null, partners);
     });
@@ -430,27 +430,57 @@ exports.getDemands = function(req, res) {
 };
 
 exports.fuzzyEntepriseQuery = function(req, res) {
-  Enterprise.find({}, function (err, ents) {
-    if (err) {
-      return res.status(422).send({
-        message: errorHandler.getErrorMessage(err)
+  var query = req.body.query;
+  if (query)
+    Enterprise.find({}, function (err, ents) {
+      if (err) {
+        return res.status(422).send({
+          message: errorHandler.getErrorMessage(err)
+        });
+      }
+      var options = {
+        shouldSort: true,
+        threshold: 0.15,
+        location: 0,
+        distance: 100,
+        maxPatternLength: 32,
+        minMatchCharLength: 1,
+        keys: [
+          'profile.companyName',
+          'profile.companyAddress.country',
+          'profile.companyAddress.displayAddress',
+          'profile.classifications.name',
+          'catalog.products',
+          'catalog.services'
+        ]
+      };
+      var results = [];
+      if (query.match('[0-9]+')) { // it is a number check classification codes
+        query = parseFloat(query);
+        ents.forEach(function(ent) {
+          for (var classify = 0; classify < ent.profile.classifications.length; classify++) {
+            var classifyCode = parseFloat(ent.profile.classifications[classify].code),
+              thresholdCode = classifyCode * parseFloat(options.threshold);
+            if ((classifyCode + thresholdCode) >= query && query >= (classifyCode - thresholdCode)) {
+              results.push(ent);
+              break;
+            }
+          }
+        });
+      } else { // this is a letter query
+        ents = ents.map(function(ent) {
+          var newEnt = JSON.parse(JSON.stringify(ent));
+          newEnt.profile.companyAddress.displayAddress = newEnt.profile.companyAddress.streetAddress + ' ' + newEnt.profile.companyAddress.city + ' ' + newEnt.profile.companyAddress.state + ' ' + newEnt.profile.companyAddress.zipCode + ' ' + newEnt.profile.companyAddress.country;
+          return newEnt;
+        });
+        var fuse = new Fuse(ents, options);
+        results = fuse.search(req.body.query);
+      }
+      results = results.map(function(ent) {
+        return getNestedProperties(ent, whitelistedPartnersFields);
       });
-    }
-    var options = {
-      shouldSort: true,
-      threshold: 0.6,
-      location: 0,
-      distance: 100,
-      maxPatternLength: 32,
-      minMatchCharLength: 1,
-      keys: [
-        'profile.companyName'
-      ]
-    };
-    var fuse = new Fuse(ents, options);
-    var result = fuse.search(req.body.query);
-    res.json({ result: result });
-  });
+      res.json({ searchResults: results });
+    });
 };
 
 /**
@@ -605,7 +635,5 @@ function generateRandomString(length) {
     text += possible.charAt(getRandomNumber(0, possible.length - 1));
   return text;
 }
-
-
 
 exports.getThisEnterprise = getEnterprise;

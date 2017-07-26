@@ -3,8 +3,10 @@
 /**
  * Module dependencies
  */
+var path = require('path');
 var requestersPolicy = require('../policies/requesters.server.policy'),
-  requesters = require('../controllers/requesters.server.controller');
+  requesters = require('../controllers/requesters.server.controller'),
+  taskSearch = require(path.resolve('./modules/requesters/server/controllers/requesters/task.search.server.controller'));
 
 module.exports = function(app) {
   /*
@@ -33,6 +35,8 @@ module.exports = function(app) {
   // REQUESTER INFORMATION
   app.route('/api/requesters/getRequesterData').post(requesters.getRequesterData.all);
   app.route('/api/requesters/getRequesterRatings').post(requesters.getRequesterData.ratings);
+  
+  app.route('/api/requesters/search/myTasks').post(taskSearch.searchTasks.searchMyTasks);
 
   /*
    * TASK TABLE
@@ -45,12 +49,20 @@ module.exports = function(app) {
   app.route('/api/tasks/getRequesterRatingsForTask').put(requesters.taskActions.getRequesterRatingsForTask);
   app.route('/api/tasks/getTasksWithOptions').post(requesters.taskFindWithOption);
   
+  app.route('/api/tasks/payment/create').post(requesters.stateActions.payment.create);
+  app.route('/api/tasks/payment/execute').post(requesters.stateActions.payment.execute);
+  
+  app.route('/api/tasks/preapproval/accept').post(requesters.stateActions.workerPick.preapproval.accept);
+  app.route('/api/tasks/preapproval/reject').post(requesters.stateActions.workerPick.rejectBid);
+  
   // Bidding
-  app.route('/api/tasks/bidding/accept').post(requesters.biddingActions.acceptBid);
-  app.route('/api/tasks/bidding/reject').post(requesters.biddingActions.rejectBid);
-  app.route('/api/tasks/bidding/activate').post(requesters.biddingActions.activateBidableTask);
+  app.route('/api/tasks/bidding/reject').post(requesters.stateActions.workerPick.rejectBid);
+  app.route('/api/tasks/bidding/activate').post(requesters.stateActions.activateBidableTask);
   app.route('/api/tasks/bidding/bidder/info').post(requesters.biddingActions.bidderInfo);
-
+  
+  app.route('/api/tasks/bidding/payment/create').post(requesters.stateActions.payment.bidable.create);
+  app.route('/api/tasks/bidding/payment/execute').post(requesters.stateActions.payment.bidable.execute);
+  
   // Finish by binding the Requester middleware
   app.param('requesterId', requesters.requesterByID);
 };
