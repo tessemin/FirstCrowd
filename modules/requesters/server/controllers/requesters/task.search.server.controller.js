@@ -157,126 +157,157 @@ exports.searchTasks = {
   searchOpenTasks: function (req, res) {
     getUserTypeObject(req, res, function(typeObj) {
       var query = req.body.query;
-      if (query) {
-        taskFindWithOption({ status: 'open', secret: false },
-          [{ 'jobs': { $not: { $elemMatch: { 'worker.workerId': typeObj._id } } } },
-          { 'requester.requesterId': { $ne: typeObj._id } }],
-        function (err, tasks) {
-          if (err) {
+      query.secret = false;
+      searchTasks(query, [{ 'jobs': { $not: { $elemMatch: { 'worker.workerId': typeObj._id } } } },
+        { 'requester.requesterId': { $ne: typeObj._id } }],
+        function(err, results) {
+          if (err)
             return res.status(422).send({
-              message: errorHandler.getErrorMessage(err)
+              message: err
             });
-          } else {
-            var results = searchTasks(tasks, query);
-            res.json({ searchResults: results });
-          }
-        });
-      }
+          res.json({ results: results });
+      });
     });
   },
   searchMyTasks: function (req, res) {
     getUserTypeObject(req, res, function(typeObj) {
       var query = req.body.query;
+      var ids = [];
       if (isRequester(req.user)) {
-        var ids = [].concat(getIdsInArray(typeObj.requester.activeTasks), getIdsInArray(typeObj.requester.suspendedTasks), getIdsInArray(typeObj.requester.completedTasks), getIdsInArray(typeObj.requester.rejectedTasks));
-        taskFindMany(ids, true, function(err, tasks) {
-          if (err) {
-            return res.status(422).send({
-              message: errorHandler.getErrorMessage(err)
-            });
-          } else {
-            var results = searchTasks(tasks, query, ['secret']);
-            res.json({ searchResults: results });
-          }
-        });
+        ids = [].concat(getIdsInArray(typeObj.requester.activeTasks), getIdsInArray(typeObj.requester.suspendedTasks), getIdsInArray(typeObj.requester.completedTasks), getIdsInArray(typeObj.requester.rejectedTasks));
       } else if (isWorker(req.user)) {
-        var ids = [].concat(getIdsInArray(typeObj.worker.activeTasks), getIdsInArray(typeObj.worker.rejectedTasks), getIdsInArray(typeObj.worker.inactiveTasks), getIdsInArray(typeObj.worker.completedTasks), getIdsInArray(typeObj.worker.recomendedTasks));
-        taskFindMany(ids, true, function(err, tasks) {
-          if (err) {
-            return res.status(422).send({
-              message: errorHandler.getErrorMessage(err)
-            });
-          } else {
-            var results = searchTasks(tasks, query, ['secret']);
-            res.json({ searchResults: results });
-          }
-        });
+        ids = [].concat(getIdsInArray(typeObj.worker.activeTasks), getIdsInArray(typeObj.worker.rejectedTasks), getIdsInArray(typeObj.worker.inactiveTasks), getIdsInArray(typeObj.worker.completedTasks), getIdsInArray(typeObj.worker.recomendedTasks));
       } else {
         return res.status(422).send({
           message: 'Please sign in as either a worker or requester.'
         });
       }
+      query.secret = true;
+      query.taskIds = ids;
+      searchTasks(query, null, function(err, results) {
+        if (err)
+          return res.status(422).send({
+            message: err
+          });
+        res.json({ results: results });
+      });
     });
   }
 };
 
-function searchTasks(tasks, query, optionalKeys) {
-  var options = {
+function searchTasks(query, extraTerms, callBack) {
+  var mongoOptions = [];
+  var FuseOptions = {
     shouldSort: true,
     threshold: 0.15,
     location: 0,
     distance: 100,
     maxPatternLength: 32,
     minMatchCharLength: 1,
-    keys: [
-      'title',
-      'description',
-      'category',
-      'skillsNeeded',
-      'payment.staticPrice',
-      'deadline',
-      'secondarySearch'
-    ]
+    keys: []
   };
-  if (optionalKeys)
-    options.keys = options.keys.concat(optionalKeys);
+  // fuse options
+  if (query.title)
+    FuseOptions.keys.push('title');
+  if (query.description)
+    FuseOptions.keys.push('description');
+  if (query.skills)
+    FuseOptions.keys.push('skillsNeeded');
+  if (query.category)
+    FuseOptions.keys.push('category');
   
-  var results = [];
-  if (query.match('[0-9]+')) { // it is a number check classification codes
-    query = parseFloat(query);
-    tasks.forEach(function(task) {
-      if (task.payment.bidding.bidable) {
-        var startBid = parseFloat(task.payment.bidding.startingPrice),
-          thresholdStart = startBid * parseFloat(options.threshold);
-        var minBid = parseFloat(task.payment.bidding.minPrice),
-          thresholdMin = minBid * parseFloat(options.threshold);
-        if (((startBid + thresholdStart) >= query && query >= (startBid - thresholdStart)) || ((minBid + thresholdMin) >= query && query >= (minBid - thresholdMin))) {
-          results.push(task);
-        }
+  if (query.bidding && query.bidding.bidable)
+    mongoOptions.push({ payment: { bidding: { bidable: { $eq: true } } } });
+  // bidding price options
+  if (query.payment && query.payment.bidding && query.payment.bidding.bidable && query.payment.bidding) {
+    if (query.payment.bidding.startingPrice) {
+      if (query.payment.bidding.startingPrice.equals) {
+        mongoOptions.push({ payment: { bidding: { startingPrice: { $eq: query.payment.bidding.startingPrice.equals } } } });
       } else {
-        var staticBid = parseFloat(task.payment.staticPrice),
-          thresholdStatic = staticBid * parseFloat(options.threshold);
-        if ((staticBid + thresholdStatic) >= query && query >= (staticBid - thresholdStatic)) {
-          results.push(task);
-        }
+        if (query.payment.bidding.startingPrice.max)
+          mongoOptions.push({ payment: { bidding: { startingPrice: { $lte: query.payment.bidding.startingPrice.max } } } });
+        if (query.payment.bidding.startingPrice.min)
+          mongoOptions.push({ payment: { bidding: { startingPrice: { $gte: query.payment.bidding.startingPrice.min } } } });
       }
-    });
-  } else { // this is a letter query
-    tasks = tasks.map(function(task) {
-      task = JSON.parse(JSON.stringify(task));
-      task.secondarySearch = [];
-      if (task.preapproval) {
-        task.secondarySearch.push('preapproval');
-        task.secondarySearch.push('approval');
+    }
+    if (query.payment.bidding.minPrice) {
+      if (query.payment.bidding.minPrice.equals) {
+        mongoOptions.push({ payment: { bidding: { minPrice: { $eq: query.payment.bidding.minPrice.equals } } } });
+      } else {
+        if (query.payment.bidding.minPrice.max)
+          mongoOptions.push({ payment: { bidding: { minPrice: { $lte: query.payment.bidding.minPrice.max } } } });
+        if (query.payment.bidding.minPrice.min)
+          mongoOptions.push({ payment: { bidding: { minPrice: { $gte: query.payment.bidding.minPrice.min } } } });
       }
-      if (task.deadline) {
-        task.secondarySearch.push(Date(task.deadline).toISOString().slice(0, 10).replace(/-/g, '/'));
-        task.secondarySearch.push(Date(task.deadline).toISOString().slice(0, 10).replace(/-/g, ' '));
-        task.secondarySearch.push(Date(task.deadline).toISOString().slice(0, 10));
-      }
-      if (task.payment.bidding.bidable) {
-        task.secondarySearch.push('bidding');
-        task.secondarySearch.push('bids');
-        task.secondarySearch.push('biddable');
-      }
-      if (task.secret && options.keys.indexOf('secret') > -1)
-        task.secondarySearch.push('secret');
-      return task;
-    });
-    var fuse = new Fuse(tasks, options);
-    results = fuse.search(query);
+    }
   }
-  return results;
+  else if (query.payment && query.payment.staticPrice) { // regular price options
+    if (query.payment.staticPrice.equals) {
+      mongoOptions.push({ payment: { staticPrice: { $eq: query.payment.staticPrice.equals } } });
+    } else {
+      if (query.payment.staticPrice.max)
+        mongoOptions.push({ payment: { staticPrice: { $lte: query.payment.staticPrice.max } } });
+      if (query.payment.staticPrice.min)
+        mongoOptions.push({ payment: { staticPrice: { $gte: query.payment.staticPrice.min } } });
+    }
+  }
+  // bidding date range
+  if (query.payment && query.payment.bidding && query.payment.bidding.bidable && query.payment.bidding.timeRange) {
+    if (query.payment.bidding.timeRange.start) {
+      if (query.payment.bidding.timeRange.start.equals) {
+        mongoOptions.push({ payment: { bidding: { timeRange: { start: { $eq: query.payment.bidding.timeRange.start.equals } } } } });
+      } else {
+        if (query.payment.bidding.timeRange.start.max)
+          mongoOptions.push({ payment: { bidding: { timeRange: { start: { $lte: query.payment.bidding.timeRange.start.max } } } } });
+        if (query.payment.bidding.timeRange.start.min)
+          mongoOptions.push({ payment: { bidding: { timeRange: { start: { $gte: query.payment.bidding.timeRange.start.min } } } } });
+      }
+    }
+    if (query.payment.bidding.timeRange.end) {
+      if (query.payment.bidding.timeRange.end.equals) {
+        mongoOptions.push({ payment: { bidding: { timeRange: { end: { $eq: query.payment.bidding.timeRange.end.equals } } } } });
+      } else {
+        if (query.payment.bidding.timeRange.end.max)
+          mongoOptions.push({ payment: { bidding: { timeRange: { end: { $lte: query.payment.bidding.timeRange.end.max } } } } });
+        if (query.payment.bidding.timeRange.end.min)
+          mongoOptions.push({ payment: { bidding: { timeRange: { end: { $gte: query.payment.bidding.timeRange.end.min } } } } });
+      }
+    }
+  }
+  // deadline
+  if (query.deadline) {
+    if (query.deadline.equals)
+      mongoOptions.push({ deadline: { $eq: query.deadline.equals } });
+    else {
+      if (query.deadline.max)
+        mongoOptions.push({ deadline: { $lte: query.deadline.max } });
+      if (query.deadline.min)
+        mongoOptions.push({ deadline: { $gte: query.deadline.min } });
+    }
+  }
+  if (query.secret) {
+    mongoOptions.push({ secret: { $eq: true } });
+  }
+  
+  // searches for specific ids
+  if (query.taskIds)
+    mongoOptions.push({ '_id': { $in: query.taskIds } });
+  
+  if (extraTerms)
+    if (Array.isArray(extraTerms))
+      mongoOptions = mongoOptions.concat(extraTerms);
+    else
+      mongoOptions.push(extraTerms);
+  
+  taskFindWithOption(mongoOptions, {}, function (err, tasks) {
+    if (err)
+      return callBack(errorHandler.getErrorMessage(err));
+    if (query.searchTerm) {
+      var fuse = new Fuse(tasks, FuseOptions);
+      tasks = fuse.search(query.searchTerm);
+    }
+    callBack(null, tasks);
+  });
 }
 
 exports.taskFindMany = taskFindMany;
