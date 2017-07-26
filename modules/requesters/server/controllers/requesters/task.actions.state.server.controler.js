@@ -122,8 +122,7 @@ exports.stateActions = {
                 return res.status(422).send('Worker is already working for this task');
               }
             }
-
-
+            
             var transactions = [];
             var total = 0;
             for (var trans = 0; trans < task.payment.paymentInfo.paymentObject.transactions.length; trans++) {
@@ -131,7 +130,7 @@ exports.stateActions = {
               total += task.payment.paymentInfo.paymentObject.transactions[trans].amount.total;
             }
 
-            if (parseFloat(total) !== task.payment.staticPrice * task.multiplicity)
+            if (parseFloat(total) !== task.bids[bid].bid)
               return res.status(422).send('Payment object total does not match actual total.');
 
             executePaypalPayment(req.body.payerID, req.body.paymentID, transactions, function(err, payment) {
@@ -143,14 +142,10 @@ exports.stateActions = {
                 task.payment.paymentInfo.paid = true;
                 task.payment.paymentInfo.payerId = req.body.payerID;
                 task.payment.paymentInfo.paymentObject = payment;
-                task.multiplicity--;
                 task.save(function(err, task) {
                   if (err)
                     return res.status(422).send(errorHandler.getErrorMessage(err));
-                  var status = 'open';
-                  if (task.multiplicity <= 0)
-                    status = 'taken';
-                  setStatus(task._id, status, function (err, correctMsg) {
+                  setStatus(task._id, task.status, function (err, correctMsg) {
                     if (err) {
                       return res.status(422).send(err);
                     } else {
@@ -314,10 +309,7 @@ exports.stateActions = {
                   return res.status(422).send({
                     message: errorHandler.getErrorMessage(err)
                   });
-                var status = 'open';
-                if (task.multiplicity <= 0)
-                  status = 'taken';
-                setStatus(task._id, status, function (err, correctMsg) {
+                setStatus(task._id, task.status, function (err, correctMsg) {
                   if (err) {
                     return res.status(422).send({
                       message: err
