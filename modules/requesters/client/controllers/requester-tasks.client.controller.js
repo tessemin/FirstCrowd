@@ -328,6 +328,7 @@
     (function paypalButtonRender() {
       activateTaskId = null;
       var executePayTaskId = null;
+      var payTaskBidId = null;
       paypal.Button.render({
         env: 'sandbox', // Or 'sandbox'
         commit: true, // Show a 'Pay Now' button
@@ -353,6 +354,7 @@
             // closes the payment review modal
             vm.closePaymentModal();
             executePayTaskId = data.taskId;
+            payTaskBidId = data.bidId;
             return data.paymentID;
           });
         },
@@ -365,7 +367,7 @@
             paymentID: data.paymentID,
             payerID: data.payerID,
             taskId: executePayTaskId,
-            bidId: vm.tasks[vm.selectedTask].bids[vm.selectedBid]._id
+            bidId: payTaskBidId
           }).then(function(response) {
             // payment completed success
             Notification.success({ message: response, title: '<i class="glyphicon glyphicon-ok"></i> Payment Accepted!' });
