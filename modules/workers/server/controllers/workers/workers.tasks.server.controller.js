@@ -9,7 +9,8 @@ var path = require('path'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   taskTools = require(path.resolve('modules/requesters/server/controllers/requesters/task.tools.server.controller')),
   taskSearch = require(path.resolve('./modules/requesters/server/controllers/requesters/task.search.server.controller')),
-  _ = require('lodash');
+  _ = require('lodash'),
+  fs = require('fs');
 
 var jobWhitelistedFields = ['progress'],
   taskId = null,
@@ -299,6 +300,113 @@ exports.getTasksWithOptions = function(req, res) {
         return res.json({ tasks: tasks });
       });
   });
+};
+
+function writeFilesToPath(file, path, callBack, next) {
+  console.log(file)
+  fs.readFile(file.path, function (err, data) {
+    if (err) {
+      console.log(err)
+      return callBack(err);
+    }
+    // set the correct path for the file not the temporary one from the API:
+    file.name = file.name.replace(/ /g, '_');
+    file.path = path + file.name;
+
+    // copy the data from the req.files.file.path and paste it to file.path
+    fs.mkdir(file.path, function (err) {
+      fs.writeFile(file.path, data, function (err) {
+        if (err) {
+          console.log(err)
+          return callBack(err);
+        }
+        console.log('\n');
+        console.log(file.name);
+        console.log('\n');
+        if (next)
+          return next(path, callBack, next);
+        else
+          return callBack();
+      });
+    });
+  });
+}
+
+// for file upload
+exports.prototype = {
+  submitToTask: function(req, res) {
+    getUserTypeObject(req, res, function(typeObj) {
+      taskId = req.body.taskId;
+      taskFindOne(taskId, function(err, task) {
+        if (err) {
+          return res.status(422).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        }
+        if (!task) {
+          return res.status(422).send({
+            message: 'No task with that Id found.'
+          });
+        }
+        var jobIndex = 0,
+          jobFound = false;
+        while (jobIndex < task.jobs.length && !jobFound) {
+          if (task.jobs[jobIndex].worker.workerId.toString() === typeObj._id.toString())
+            jobFound = true;
+          jobIndex++;
+        }
+        if (!jobFound) {
+          return res.status(422).send({
+            message: 'You are not a worker for this task.'
+          });
+        }
+        if (!(task.jobs[jobIndex].status === 'active' || task.jobs[jobIndex].status === 'submitted'))
+          return res.status(422).send({
+            message: 'Task is not active.'
+          });
+        task.jobs[jobIndex].status = 'submitted';
+        
+        // do the actual file submission
+        var files = req.files.file;
+        var fileIndex = 0;
+        var filePath = '/taskSubmissions/taskId_' + taskId.toString() + '/workerId_' + typeObj._id.toString() + '/';
+        writeFilesToPath(files[0], filePath, function (err) {
+          if (err) {
+            return res.status(422).send({
+              message: 'Error writing files to proper path.'
+            });
+          } else {
+            console.log('success')
+            task.save(function (err, task) {
+              if (err) {
+                return res.status(422).send({
+                  message: errorHandler.getErrorMessage(err)
+                });
+              }
+              console.log(JSON.stringify(task.jobs[jobIndex], null, 2));
+              return res.status(200).send({
+                message: 'Submission Successful!'
+              });
+            });
+          }
+        }, function(filePath, callBack, next) {
+          fileIndex++;
+          if (fileIndex < files.length - 1) {
+            console.log('here1')
+            writeFilesToPath(files[fileIndex], filePath, callBack, next);
+          } else if (fileIndex < files.length) {
+            console.log('here2')
+            writeFilesToPath(files[fileIndex], filePath, callBack);
+          } else {
+            console.log('here3')
+            return res.status(422).send({
+              message: 'Error writing files to proper path.'
+            });
+          }
+        });
+      });
+    }); 
+  }
 };
 
 function removeExtraWorkers(tasks, workerId) {

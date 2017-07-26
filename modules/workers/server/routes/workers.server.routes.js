@@ -8,6 +8,9 @@ var workersPolicy = require('../policies/workers.server.policy'),
   workers = require('../controllers/workers.server.controller'), 
   taskSearch = require(path.resolve('./modules/requesters/server/controllers/requesters/task.search.server.controller'));
 
+// Requires multiparty 
+var multiparty = require('connect-multiparty'),
+  multipartyMiddleware = multiparty();
 
 module.exports = function(app) {
 
@@ -28,8 +31,10 @@ module.exports = function(app) {
   app.route('/api/workers/recomendedTask/all').post(workers.recomendedTask.all);
 
   // WORKER ACTIONS
-  app.route('/api/workers/takeTask/').post(workers.takeTask);
-
+  app.route('/api/workers/task/take').post(workers.takeTask);
+  // submit a task file
+  app.post('/api/workers/task/submit', multipartyMiddleware, workers.prototype.submitToTask);
+  
   // TASKS NATIVE API
   app.route('/api/getAllTasks/open').post(workers.getAllOpenTasks);
   app.route('/api/getOneTask').post(workers.getOneTask);

@@ -1,3 +1,32 @@
+<!-- submission Modal -->
+<div id="submissionModal" class="modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form ng-submit="vm.submissionConfirmed(vm.submittedFiles)">
+        <div class="modal-header">
+          <h5 class="modal-title">Submission</h5>
+        </div>
+        <div class="modal-body">
+           <button class="btn btn-primary" ngf-select multiple ng-model="vm.submittedFiles" name="file" ngf-accept="'*'" ngf-max-size="20MB" ngf-min-height="100" ngf-resize="{width: 100, height: 100}">Select</button>
+          <br>
+          <br>Files:
+          <ul>
+            <li ng-repeat="f in vm.submittedFiles" style="font:smaller">
+              {{f.name}}
+            </li>
+          </ul>
+          <span class="submissionProgress" ng-show="vm.submissionProgress >= 0">
+            <div style="width:{{vm.submissionProgress}}%" ng-bind="vm.submissionProgress + '%'"></div>
+          </span>
+        </div>
+        <div class="modal-footer">
+          <input type="submit" id="submit" value="Submit" class="btn btn-primary" >
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="vm.closeSubmissionModal()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div> <!-- end submission modal -->
 <section class="row">
   <nav class="col-md-2">
     <h3>Refine by:</h3>

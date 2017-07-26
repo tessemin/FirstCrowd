@@ -6,9 +6,9 @@
     .module('workers')
     .controller('WorkerTasksController', WorkerTasksController);
 
-  WorkerTasksController.$inject = ['$scope', '$state', 'WorkersService', 'Notification'];
+  WorkerTasksController.$inject = ['$scope', '$state', 'WorkersService', 'Notification', 'Upload', '$timeout'];
 
-  function WorkerTasksController ($scope, $state, WorkersService, Notification) {
+  function WorkerTasksController ($scope, $state, WorkersService, Notification, Upload, $timeout) {
     var vm = this;
     vm.tasks = [];
     vm.loaded = false;
@@ -95,6 +95,15 @@
           postDate = postDate.toDateString();
           dueDate = new Date(task.deadline);
           dueDate = dueDate.toDateString();
+          var taskActions = [];
+          switch (vm.taskCategory.id) {
+            case 'active':
+              taskActions.push({
+                id: 'submit',
+                bikeshed: 'Submit Completed Work'
+              });
+              break;
+          }
           var clientTask = {
             '_id': task._id,
             'name': task.title,
@@ -104,6 +113,7 @@
             'postingDate': postDate,
             'deadline': dueDate,
             'status': task.status,
+            'taskActions': taskActions,
             'payment': {
               'bidding': {
                 'bidable': task.payment.bidding.bidable,
@@ -263,13 +273,53 @@
                 Notification.error({ message: response.message, title: '<i class="glyphicon glyphicon-remove"></i> Error! Task not taken!' });
               });
             break;
+          case 'submit':
+            vm.submission = {};
+            vm.openSubmissionModal = function () {
+              $('#submissionModal').modal();
+            };
+            vm.closeSubmissionModal = function () {
+              $('#submissionModal').modal('hide');
+            };
+            vm.submissionConfirmed = function(files) {
+              var task = vm.tasks[vm.selectedTask];
+              console.log(task)
+              console.log(files)
+              if (files && files.length) {
+                Upload.upload({
+                  url: '/api/workers/task/submit',
+                  method: 'POST',
+                  file: files,
+                  data: {
+                    taskId: task._id
+                  }
+                }).then(function (response) {
+                  $timeout(function () {
+                    vm.closeSubmissionModal();
+                    Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> Submitted!' });
+                  });
+                }, function (response) {
+                  if (response.status > 0) {
+                    vm.closeSubmissionModal();
+                    Notification.error({ message: response.message, title: '<i class="glyphicon glyphicon-remove"></i> Error! Error Submitting!' });
+                  }
+                }, function (evt) {
+                  vm.submissionProgress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+                });
+              }
+            };
+            vm.openSubmissionModal();
+            break;
           default:
             break;
         }
         console.log('perform ' + action.id + ' on task ' + index);
       }
     };
-
+    vm.uploadFiles = function (files) {
+      
+    }
+    
     vm.selectedTask = -1;
     vm.selectTask = function(index) {
       if (index === vm.selectedTask) {
@@ -284,5 +334,6 @@
       $scope.$broadcast('rzSliderForceRender');
     }
     refreshProgressSliders();
+    
   }
 }());

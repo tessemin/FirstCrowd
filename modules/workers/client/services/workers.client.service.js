@@ -55,7 +55,11 @@
       // Worker Actions
       _takeTask: {
         method: 'POST',
-        url: '/api/workers/takeTask/'
+        url: '/api/workers/task/take'
+      },
+      _submitToTask: {
+        method: 'POST',
+        url: '/api/workers/task/submit'
       },
       // General Task Functions
       _getAllOpenTasks: {
@@ -124,6 +128,9 @@
       // Worker Actions
       takeTask: function (taskId_bid) {
         return this._takeTask(taskId_bid).$promise;
+      },
+      submitToTask: function (taskId_submission) {
+        return this._submitToTask(taskId_submission).$promise;
       },
       // all tasks
       getAllOpenTasks: function () {

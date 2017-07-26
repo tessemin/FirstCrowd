@@ -147,3 +147,14 @@
 .popover {
   max-width: none;
 }
+
+.submissionProgress {
+    display: inline-block;
+    width: 50%;
+    border: 1px groove #CCC;
+}
+.submissionProgress div {
+    font-size: 10px;
+    background: #009CDE;
+    width: 0;
+}
