@@ -343,11 +343,11 @@
             'payment/create';
           var request = { taskId: activateTaskId };
           if (vm.selectedBid !== -1) {
-            console.log('bid ' + vm.selectedBid)
             request.bidId = vm.tasks[vm.selectedTask].bids[vm.selectedBid]._id;
+            console.log('bid ' + vm.selectedBid + ' id ' + request.bidId);
           }
           console.log('ppoint1');
-          console.log(request.taskId);
+          console.log('taskId ' + request.taskId);
           return paypal.request.post(paypi, request).then(function(data) {
             console.log('ppoint2');
             // closes the payment review modal
@@ -364,7 +364,8 @@
           return paypal.request.post(paypi, {
             paymentID: data.paymentID,
             payerID: data.payerID,
-            taskId: executePayTaskId
+            taskId: executePayTaskId,
+            bidId: vm.tasks[vm.selectedTask].bids[vm.selectedBid]._id
           }).then(function(response) {
             // payment completed success
             Notification.success({ message: response, title: '<i class="glyphicon glyphicon-ok"></i> Payment Accepted!' });
