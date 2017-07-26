@@ -79,6 +79,8 @@
       } else {
         vm.selectedTask = -1;
       }
+      // Previously selected bid is invalidated
+      vm.selectedBid = -1;
     };
     vm.selectTask = function(index) {
       if (index < vm.tasks.length && index > 0) {
