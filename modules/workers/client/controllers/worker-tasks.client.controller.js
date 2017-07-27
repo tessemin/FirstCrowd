@@ -161,9 +161,9 @@
         for (var i = 0; i < data.tasks.length; ++i) {
           task = data.tasks[i];
           postDate = new Date(task.dateCreated);
-          postDate = postDate.toDateString();
+          postDate = postDate;
           dueDate = new Date(task.deadline);
-          dueDate = dueDate.toDateString();
+          dueDate = dueDate;
           taskActions = [];
           if (workerIsEligible(task)) {
             if (task.payment.bidding.bidable) {

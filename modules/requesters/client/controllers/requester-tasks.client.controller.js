@@ -66,7 +66,8 @@
             'taskActions': taskActions,
             'taskRef': task,
             'bidable': task.payment.bidding.bidable,
-            'bids': task.bids
+            'bids': task.bids,
+            'multiplicity': task.multiplicity
           });
         }
       }
@@ -344,7 +345,8 @@
             'payment/create';
           var request = { taskId: activateTaskId };
           if (vm.selectedBid !== -1) {
-            request.bidId = vm.tasks[vm.selectedTask].bids[vm.selectedBid]._id;
+            payTaskBidId = data.bidId;
+            request.bidId = payTaskBidId;
             console.log('bid ' + vm.selectedBid + ' id ' + request.bidId);
           }
           console.log('ppoint1');
@@ -354,7 +356,6 @@
             // closes the payment review modal
             vm.closePaymentModal();
             executePayTaskId = data.taskId;
-            payTaskBidId = data.bidId;
             return data.paymentID;
           });
         },
@@ -373,6 +374,11 @@
             Notification.success({ message: response, title: '<i class="glyphicon glyphicon-ok"></i> Payment Accepted!' });
             if (vm.selectedBid) {
               // approve worker for task
+              var task = vm.tasks[getIndexFromTaskId(activateTaskId)];
+              task.multiplicity -= 1;
+              if(task.multiplicity === 0) {
+                task.status = 'taken';
+              }
             } else {
               vm.tasks[getIndexFromTaskId(activateTaskId)].status = 'open';
             }
