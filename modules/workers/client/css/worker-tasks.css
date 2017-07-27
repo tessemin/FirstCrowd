@@ -50,9 +50,16 @@
 }
 
 .clickable-looking {
-  color: blue;
+  color: #4562e7;
   cursor: pointer;
+}
+
+.clickable-looking:hover {
   text-decoration: underline;
+}
+
+a {
+  color: #4562e7;
 }
 
 .tasks-description {
@@ -148,13 +155,38 @@
   max-width: none;
 }
 
+.selectedFiles {
+  padding-left: 10%
+}
+
+.modalContent-left {
+  padding-right: 1px;
+}
+.modalContent-right {
+  padding-left: 1px;
+}
+
+.submissionModal .modal-body {
+  overflow-x: hidden;
+   width: 100%;
+}
+
+.submissionModal a {
+  cursor: pointer
+}
+
+.keyHeader {
+  margin-bottom: 0; 
+  font-size: 110%;
+}
+
 .submissionProgress {
-    display: inline-block;
-    width: 50%;
-    border: 1px groove #CCC;
+  display: inline-block;
+  width: 100%;
+  border: 1px groove #CCC;
 }
 .submissionProgress div {
-    font-size: 10px;
-    background: #009CDE;
-    width: 0;
+  font-size: 12px;
+  background: #009CDE;
+  width: 0;
 }
