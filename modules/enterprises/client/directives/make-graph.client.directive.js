@@ -32,12 +32,12 @@
               var width = $window.innerWidth;
               var height = $window.innerHeight;
 
-              d3.select('.display').style('height', function() { return (height - sideHeight.offsetTop - header.offsetHeight) + 'px';});
+              d3.select('.display').style('height', function() { return (height - sideHeight.offsetTop - header.offsetHeight) + 'px'; });
               d3.select('.side-list').style('max-height', function() { return (height - header.offsetHeight - sideHeight.offsetTop - sideHeight.offsetHeight - 80) + 'px'; });
-              d3.select('.content').style('margin-top', function() { return header.offsetHeight + 'px';});
+              d3.select('.content').style('margin-top', function() { return header.offsetHeight + 'px'; });
 
               var svg = d3.select('#graph').append('svg')
-                    .style('padding', '30px')
+              // .style('padding', '30px')
                     .attr('width', width)
                     .attr('height', height - header.offsetHeight - 5);
 
@@ -56,15 +56,14 @@
               };
 
               var root = d3.hierarchy(data, function(d) { return d.children; });
-              console.log(root);
 
               // Set the dimensions and margins of the diagram
-              var margin = {top: 20, right: 90, bottom: 30, left: 90};
+              var margin = { top: 20, right: 90, bottom: 30, left: 90 };
 
               var g = svg
                     .append('g');
-                    // .attr('transform', 'translate('
-                    //       + margin.left + ',' + margin.top + ')');
+              // .attr('transform', 'translate('
+              //       + margin.left + ',' + margin.top + ')');
 
               var zoomListener = d3.zoom()
                     .scaleExtent([1 / 2, 1.2])
@@ -73,16 +72,15 @@
               svg.call(zoomListener);
               d3.select('svg').on('dblclick.zoom', null);
 
-              var i = 0,
-                  duration = 750;
+              var i = 0;
+              var duration = 750;
 
               // declares a tree layout and assigns the size
               // var treemap = d3.tree().size([height, width]);
               var treemap = d3.tree()
-                    // .size([height - 100, width])
                     .nodeSize([10, 10])
                     .separation(function(a, b) {
-                      return a.parent == b.parent ? 8 : 3;
+                      return a.parent === b.parent ? 8 : 3;
                     });
 
 
@@ -96,6 +94,27 @@
               update(root);
 
               makeLineArrow();
+
+              centerHome();
+
+              makeHomeButton();
+
+              //
+              // functions
+              //
+              function makeHomeButton() {
+                var home = d3.select('#graph')
+                      .append('span')
+                      .style('margin-top', function() { return (header.offsetHeight - 30) + 'px'; })
+                      .attr('class', 'glyphicon glyphicon-home home')
+                      .on('click', centerHome)
+                      .on('mousedown', function() {
+                        d3.select(this).style('color', 'gray');
+                      })
+                      .on('mouseup', function() {
+                        d3.select(this).style('color', 'lightgray');
+                      });
+              }
 
               function makeLineArrow() {
                 // build the arrow.
@@ -115,7 +134,7 @@
 
               // Collapse the node and all it's children
               function collapse(d) {
-                if(d.children) {
+                if (d.children) {
                   d._children = d.children;
                   d._children.forEach(collapse);
                   d.children = null;
@@ -123,17 +142,15 @@
               }
 
               function update(source) {
-                // console.log(source);
-
                 // Assigns the x and y position for the nodes
                 var treeData = treemap(root);
 
                 // Compute the new tree layout.
-                var nodes = treeData.descendants(),
-                    links = treeData.descendants().slice(1);
+                var nodes = treeData.descendants();
+                var links = treeData.descendants().slice(1);
 
                 // Normalize for fixed-depth.
-                nodes.forEach(function(d){ d.y = d.depth * 180; });
+                nodes.forEach(function(d) { d.y = d.depth * 180; });
 
 
                 var defs = svg.append('defs')
@@ -157,7 +174,7 @@
 
                 // Update the nodes...
                 var node = g.selectAll('.node')
-                      .data(nodes, function(d) {return d.id || (d.id = ++i); });
+                      .data(nodes, function(d) { return d.id || (d.id = ++i); });
 
                 // Enter any new modes at the parent's previous position.
                 var nodeEnter = node.enter().append('g')
@@ -242,9 +259,9 @@
                 // Enter any new links at the parent's previous position.
                 var linkEnter = link.enter().insert('path', 'g')
                       .attr('class', 'link')
-                // .attr('marker-end', 'url(#end)')
-                      .attr('d', function(d){
-                        var o = {x: source.x0, y: source.y0};
+                      .attr('marker-end', 'url(#end)')
+                      .attr('d', function(d) {
+                        var o = { x: source.x0, y: source.y0 };
                         return diagonal(o, o);
                       });
 
@@ -254,69 +271,69 @@
                 // Transition back to the parent element position
                 linkUpdate.transition()
                   .duration(duration)
-                  .attr('d', function(d){ return diagonal(d, d.parent); });
+                  .attr('d', function(d) { return diagonal(d, d.parent); });
 
                 // Remove any exiting links
                 var linkExit = link.exit().transition()
                       .duration(duration)
                       .attr('d', function(d) {
-                        var o = {x: source.x, y: source.y};
+                        var o = { x: source.x, y: source.y };
                         return diagonal(o, o);
                       })
                       .remove();
 
                 // Store the old positions for transition.
-                nodes.forEach(function(d){
+                nodes.forEach(function(d) {
                   d.x0 = d.x;
                   d.y0 = d.y;
                 });
+              }
+              // Creates a curved (diagonal) path from parent to the child nodes
+              function diagonal(s, d) {
 
-                // Creates a curved (diagonal) path from parent to the child nodes
-                function diagonal(s, d) {
+                var path = `M ${ s.y } ${ s.x }
+            C ${ (s.y + d.y) / 2 } ${ s.x },
+              ${ (s.y + d.y) / 2 } ${ d.x },
+              ${ d.y } ${ d.x }`;
 
-                  var path = `M ${s.y} ${s.x}
-            C ${(s.y + d.y) / 2} ${s.x},
-              ${(s.y + d.y) / 2} ${d.x},
-              ${d.y} ${d.x}`;
+                return path;
+              }
 
-                  return path;
+              function centerNode(source) {
+                var t = d3.zoomTransform(svg.node());
+                var x = -source.y0;
+                var y = -source.x0;
+                x = x * t.k + width / 2;
+                y = y * t.k + height / 2;
+                d3.select('svg')
+                  .transition()
+                  .duration(duration)
+                  .call(zoomListener.transform, d3.zoomIdentity.translate(x, y).scale(t.k));
+              }
+
+              // Toggle children on click.
+              function click(d) {
+                centerNode(d);
+                if (d.children) {
+                  d._children = d.children;
+                  d.children = null;
+                } else {
+                  d.children = d._children;
+                  d._children = null;
                 }
-
-                function centerNode(source) {
-                  var t = d3.zoomTransform(svg.node());
-                  var x = -source.y0;
-                  var y = -source.x0;
-                  x = x * t.k + width / 2;
-                  y = y * t.k + height / 2;
-                  d3.select('svg').transition().duration(duration).call( zoomListener.transform, d3.zoomIdentity.translate(x,y).scale(t.k) );
-                }
-
-                // Toggle children on click.
-                function click(d) {
-                  console.log(d3.select(this));
-                  var t = d3.zoomTransform(svg.node());
-                  console.log('t', t);
-                  centerNode(d);
-                  if (d.children) {
-                    d._children = d.children;
-                    d.children = null;
-                  } else {
-                    d.children = d._children;
-                    d._children = null;
-                  }
-                  update(d);
-                }
+                update(d);
               }
 
               function centerHome() {
-                // centerNode(node._groups[0][nodes.rootNode.index]);
+                centerNode(root);
               }
 
-             function zoom() {
+              function zoom() {
                 g.attr('transform', d3.event.transform);
               }
 
             });
+
             //
             // functions
             //
@@ -326,7 +343,8 @@
                   data.children = res.customers;
 
                   data.children.forEach(child => getCustomers(child._id).then(function(obj) {
-                    return child.children = obj.customers;
+                    child.children = obj.customers;
+                    return child;
                     // console.log(data.children[i]);
                   })
                                        );
@@ -336,7 +354,7 @@
                   //   data.children[i].children.forEach(child => getCustomers(child._id).then(function(obj) {
                   //     return child.children = obj.customers;
                   //     // console.log(data.children[i]);
-                  //   })
+                  //  })
                   //                                    );
                   // }
                   resolve(data);
@@ -371,7 +389,7 @@
             }
 
             function drawCustomers(parentNode, levels) {
-              return new Promise ((resolve, reject) => {
+              return new Promise((resolve, reject) => {
                 console.log(levels);
                 if (levels >= 1) {
                   EnterprisesService.getCustomers({ 'enterpriseId': parentNode._id }).then(function (res) {
@@ -395,27 +413,27 @@
             }
 
 
-            function drawSuppliers(root, levels, x) {
-              if (levels >= 1) {
-                EnterprisesService.getSuppliers({ 'enterpriseId': root._id }).then(function (res) {
-                  var tmpNode = [];
-                  for (var i = 0; i < res.suppliers.length; i++) {
-                    var newNode = res.suppliers[i];
-                    newNode.x = x - xStep;
-                    newNode.y = height / 2;
-                    newNode.img = 'https://cdn4.iconfinder.com/data/icons/seo-and-data/500/gear-clock-128.png';
+            // function drawSuppliers(root, levels, x) {
+            //   if (levels >= 1) {
+            //     EnterprisesService.getSuppliers({ 'enterpriseId': root._id }).then(function (res) {
+            //       var tmpNode = [];
+            //       for (var i = 0; i < res.suppliers.length; i++) {
+            //         var newNode = res.suppliers[i];
+            //         newNode.x = x - xStep;
+            //         newNode.y = height / 2;
+            //         newNode.img = 'https://cdn4.iconfinder.com/data/icons/seo-and-data/500/gear-clock-128.png';
 
-                    tmpNode.push(newNode);
-                    nodes.push(newNode);
-                    // links.push({ source: newNode, target: root });
-                  }
-                  // restart();
-                  for (var j = 0; j < tmpNode.length; j++) {
-                    drawSuppliers(tmpNode[j], levels - 1, x - xStep);
-                  }
-                });
-              }
-            }
+            //         tmpNode.push(newNode);
+            //         nodes.push(newNode);
+            //         // links.push({ source: newNode, target: root });
+            //        }
+            //       // restart();
+            //       for (var j = 0; j < tmpNode.length; j++) {
+            //         drawSuppliers(tmpNode[j], levels - 1, x - xStep);
+            //        }
+            //      });
+            //    }
+            //  }
 
           });
         });
@@ -423,7 +441,7 @@
         function getGraph() {
           // EnterprisesService.setupGraph().then(function (res) {
           //   console.log(res);
-          // });
+          //  });
           return EnterprisesService.getEnterprise()
             .then(function(response) {
               var rootNode = {};
