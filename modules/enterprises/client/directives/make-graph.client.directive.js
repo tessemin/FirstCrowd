@@ -22,58 +22,231 @@
         var g_width = 1000;
         var radius = 20;
         d3().then(function(d3) {
-          getGraph().then(function(data) {
-            var rootNode = data;
-            getThreeLevels(data).then(function(data) {
-              d3.select('.footer').remove();
-              var header = getBounds(d3.select('header')._groups[0][0]);
-              var sideHeight = getBounds(d3.select('.form-group')._groups[0][0]);
+          console.log(scope);
+          // if ($scope)
+          getGraph().then(function(enterpriseData) {
+            d3.select('.footer').remove();
+            var header = getBounds(d3.select('header')._groups[0][0]);
+            var sideHeight = getBounds(d3.select('.form-group')._groups[0][0]);
 
-              var width = $window.innerWidth;
-              var height = $window.innerHeight;
+            var width = $window.innerWidth;
+            var height = $window.innerHeight;
 
-              d3.select('.display').style('height', function() { return (height - sideHeight.offsetTop - header.offsetHeight) + 'px'; });
-              d3.select('.side-list').style('max-height', function() { return (height - header.offsetHeight - sideHeight.offsetTop - sideHeight.offsetHeight - 80) + 'px'; });
-              d3.select('.content').style('margin-top', function() { return header.offsetHeight + 'px'; });
+            d3.select('.display').style('height', function() {
+              return (height - sideHeight.offsetTop - header.offsetHeight) + 'px';
+            });
+            d3.select('.side-list').style('max-height', function() {
+              return (height - header.offsetHeight - sideHeight.offsetTop - sideHeight.offsetHeight - 80) + 'px';
+            });
+            d3.select('.content').style('margin-top', function() {
+              return header.offsetHeight + 'px';
+            });
 
-              var svg = d3.select('#graph').append('svg')
-              // .style('padding', '30px')
-                    .attr('width', width)
-                    .attr('height', height - header.offsetHeight - 5);
+            var svg = d3.select('#graph').append('svg')
+                  .attr('width', width)
+                  .attr('height', height - header.offsetHeight - 5);
 
-              var treeData = {
-                'name': 'Top Level',
-                'children': [
-                  {
-                    'name': 'Level 2: A',
-                    'children': [
-                      { 'name': 'Son of A' },
-                      { 'name': 'Daughter of A' }
-                    ]
-                  },
-                  { 'name': 'Level 2: B' }
-                ]
-              };
+            var g = svg.append('g');
+            var i = 0;
+            var duration = 750;
 
-              var root = d3.hierarchy(data, function(d) { return d.children; });
+            getThreeCustLevels(enterpriseData).then(function(data) {
+              getThreeSuppLevels(enterpriseData).then(function(data2) {
 
-              // Set the dimensions and margins of the diagram
-              var margin = { top: 20, right: 90, bottom: 30, left: 90 };
+                // declares a tree layout and assigns the size
+                // var treemap = d3.tree().size([height, width]);
+                var treemap2 = d3.tree()
+                      .nodeSize([10, 10])
+                      .separation(function(a, b) {
+                        return a.parent === b.parent ? 8 : 3;
+                      });
 
-              var g = svg
-                    .append('g');
-              // .attr('transform', 'translate('
-              //       + margin.left + ',' + margin.top + ')');
+                var root2 = d3.hierarchy(data2, function(d) { return d.children; });
+                console.log(root2);
+                // Assigns parent, children, height, depth
+                root2.x0 = height / 2;
+                root2.y0 = 0;
 
-              var zoomListener = d3.zoom()
-                    .scaleExtent([1 / 2, 1.2])
-                    .on('zoom', zoom);
+                updateSupp(root2);
+                // makeLineArrow();
+                centerHome();
+                makeHomeButton();
 
-              svg.call(zoomListener);
-              d3.select('svg').on('dblclick.zoom', null);
 
-              var i = 0;
-              var duration = 750;
+                function updateSupp(source) {
+                  // Assigns the x and y position for the nodes
+                  var treeData = treemap2(root2);
+
+                  // Compute the new tree layout.
+                  var nodes = treeData.descendants();
+                  var links = treeData.descendants().slice(1);
+
+                  // Normalize for fixed-depth.
+                  nodes.forEach(function(d) { d.y = -d.depth * 180; });
+
+
+                  var defs = svg.append('defs')
+                        .selectAll('pattern')
+                        .data(nodes)
+                        .enter()
+                        .append('pattern')
+                        .attr('id', function (d, i) { return 'image' + i; })
+                        .attr('x', 0)
+                        .attr('y', 0)
+                        .attr('height', radius * 2)
+                        .attr('width', radius * 2)
+                        .append('image')
+                        .attr('x', 0)
+                        .attr('y', 0)
+                        .attr('height', radius * 2)
+                        .attr('width', radius * 2)
+                        .attr('xlink:href', function (d) { return d.data.img; });
+
+                  // ****************** Nodes section ***************************
+
+                  // Update the nodes...
+                  var node = g.selectAll('.node')
+                        .data(nodes, function(d) { return d.id || (d.id = ++i); });
+
+                  // Enter any new modes at the parent's previous position.
+                  var nodeEnter = node.enter().append('g')
+                        .attr('class', 'node')
+                        .attr('transform', function(d) {
+                          return 'translate(' + source.y0 + ',' + source.x0 + ')';
+                        })
+                        .on('click', clickSupp);
+
+                  // Add Circle for the nodes
+                  nodeEnter.append('circle')
+                    .attr('class', 'node')
+                    .transition()
+                    .duration(duration)
+                    .attr('r', 1e-6)
+                    .style('fill', function(d, i) { return 'url(#image' + i + ')'; });
+                  // .style('fill', function(d) {
+                  //   return d._children ? 'lightsteelblue' : 'red';
+                  // });
+
+                  // Add labels for the nodes
+                  nodeEnter.append('text')
+                    .style('pointer-events', 'none')
+                  // .attr('dy', '.35em')
+                    .attr('x', function(d) {
+                      return d.children || d._children ? -13 : 13;
+                    })
+                    .attr('y', function(d) {
+                      return d.children || d._children ? -13 : 13;
+                    })
+                    .attr('text-anchor', function(d) {
+                      return d.children || d._children ? 'end' : 'start';
+                    })
+                    .text(function(d) { return d.data.companyName; });
+
+                  // UPDATE
+                  var nodeUpdate = nodeEnter.merge(node);
+
+                  // Transition to the proper position for the node
+                  nodeUpdate.transition()
+                    .duration(duration)
+                    .attr('transform', function(d) {
+                      return 'translate(' + d.y + ',' + d.x + ')';
+                    });
+
+                  // Update the node attributes and style
+                  nodeUpdate.select('circle.node')
+                    .transition()
+                    .duration(duration)
+                    .attr('r', radius)
+                    .style('fill', function(d, i) { return 'url(#image' + i + ')'; })
+                  // .style('fill', function(d) {
+                  //   return d._children ? 'lightsteelblue' : 'red';
+                  // })
+                    .attr('cursor', 'pointer');
+
+                  defs.data(nodes);
+
+                  // Remove any exiting nodes
+                  var nodeExit = node.exit();
+                  // .attr('transform', function(d) {
+                  //   return 'translate(' + source.y + ',' + source.x + ')';
+                  // })
+                  // .remove();
+
+                  // On exit reduce the node circles size to 0
+                  nodeExit.select('circle')
+                    .transition()
+                    .duration(duration)
+                    .attr('r', 1e-6);
+
+                  // On exit reduce the opacity of text labels
+                  nodeExit.select('text')
+                    .style('fill-opacity', 1e-6);
+
+                  // ****************** links section ***************************
+                  // link = link.enter().append('line').attr('marker-end', 'url(#end)').merge(link);
+                  // Update the links...
+                  var link = g.selectAll('path.link')
+                        .data(links, function(d) { return d.id; });
+
+                  // Enter any new links at the parent's previous position.
+                  var linkEnter = link.enter().insert('path', 'g')
+                        .attr('class', 'link')
+                        .attr('marker-end', 'url(#end)')
+                        .attr('d', function(d) {
+                          var o = { x: source.x0, y: source.y0 };
+                          return diagonalS(o, o);
+                        });
+
+                  // UPDATE
+                  var linkUpdate = linkEnter.merge(link);
+
+                  // Transition back to the parent element position
+                  linkUpdate.transition()
+                    .duration(duration)
+                    .attr('d', function(d) { return diagonalS(d, d.parent); });
+
+                  // Remove any exiting links
+                  var linkExit = link.exit().transition()
+                        .duration(duration)
+                        .attr('d', function(d) {
+                          var o = { x: source.x, y: source.y };
+                          return diagonalS(o, o);
+                        })
+                        .remove();
+
+                  // Store the old positions for transition.
+                  nodes.forEach(function(d) {
+                    d.x0 = d.x;
+                    d.y0 = d.y;
+                  });
+                }
+
+                // Toggle children on click.
+                function clickSupp(d) {
+                  console.log('supp');
+                  centerNode(d);
+                  if (d.children) {
+                    d._children = d.children;
+                    d.children = null;
+                  } else {
+                    d.children = d._children;
+                    d._children = null;
+                  }
+                  updateSupp(d);
+                }
+
+
+                function diagonalS(s, d) {
+
+                  var path = `M ${ s.y } ${ s.x }
+            C ${ (s.y + d.y) / 2 } ${ s.x },
+              ${ (s.y + d.y) / 2 } ${ d.x },
+              ${ d.y } ${ d.x }`;
+
+                  return path;
+                }
+              });
+
 
               // declares a tree layout and assigns the size
               // var treemap = d3.tree().size([height, width]);
@@ -82,21 +255,43 @@
                     .separation(function(a, b) {
                       return a.parent === b.parent ? 8 : 3;
                     });
+              // var treeData = {
+              //   'name': 'Top Level',
+              //   'children': [
+              //     {
+              //       'name': 'Level 2: A',
+              //       'children': [
+              //         { 'name': 'Son of A' },
+              //         { 'name': 'Daughter of A' }
+              //       ]
+              //     },
+              //     { 'name': 'Level 2: B' }
+              //   ]
+              // };
 
+              var zoomListener = d3.zoom()
+                    .scaleExtent([1 / 2, 1.5])
+                    .on('zoom', zoom);
+
+              svg.call(zoomListener);
+              d3.select('svg').on('dblclick.zoom', null);
+
+              var root = d3.hierarchy(data, function(d) { return d.children; });
 
               // Assigns parent, children, height, depth
               root.x0 = height / 2;
               root.y0 = 0;
 
+
+
+
+
               // Collapse after the second level
-              root.children.forEach(collapse);
+              // root.children.forEach(collapse);
 
-              update(root);
-
-              makeLineArrow();
-
+              updateCust(root);
+              // makeLineArrow();
               centerHome();
-
               makeHomeButton();
 
               //
@@ -141,7 +336,7 @@
                 }
               }
 
-              function update(source) {
+              function updateCust(source) {
                 // Assigns the x and y position for the nodes
                 var treeData = treemap(root);
 
@@ -182,7 +377,7 @@
                       .attr('transform', function(d) {
                         return 'translate(' + source.y0 + ',' + source.x0 + ')';
                       })
-                      .on('click', click);
+                      .on('click', clickCust);
 
                 // Add Circle for the nodes
                 nodeEnter.append('circle')
@@ -312,7 +507,8 @@
               }
 
               // Toggle children on click.
-              function click(d) {
+              function clickCust(d) {
+                console.log('cust');
                 centerNode(d);
                 if (d.children) {
                   d._children = d.children;
@@ -321,7 +517,7 @@
                   d.children = d._children;
                   d._children = null;
                 }
-                update(d);
+                updateCust(d);
               }
 
               function centerHome() {
@@ -337,7 +533,32 @@
             //
             // functions
             //
-            function getThreeLevels(data) {
+            function getThreeSuppLevels(data) {
+              return new Promise(function(resolve, reject) {
+                getSuppliers(data._id).then(function (res) {
+                  data.children = res.suppliers;
+
+                  data.children.forEach(child => getSuppliers(child._id).then(function(obj) {
+                    child.children = obj.suppliers;
+                    return child;
+                    // console.log(data.children[i]);
+                  })
+                                       );
+
+                  // for(var i = 0; i < data.children.length; i++) {
+                  //   console.log(data.children[i]);
+                  //   data.children[i].children.forEach(child => getCustomers(child._id).then(function(obj) {
+                  //     return child.children = obj.customers;
+                  //     // console.log(data.children[i]);
+                  //  })
+                  //                                    );
+                  // }
+                  resolve(data);
+                });
+              });
+            }
+
+            function getThreeCustLevels(data) {
               return new Promise(function(resolve, reject) {
                 getCustomers(data._id).then(function (res) {
                   data.children = res.customers;
@@ -360,6 +581,10 @@
                   resolve(data);
                 });
               });
+            }
+
+            function getSuppliers(id) {
+              return EnterprisesService.getSuppliers({ 'enterpriseId': id });
             }
 
             function getCustomers(id) {
