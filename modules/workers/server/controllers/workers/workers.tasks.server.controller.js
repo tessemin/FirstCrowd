@@ -10,7 +10,8 @@ var path = require('path'),
   taskTools = require(path.resolve('modules/requesters/server/controllers/requesters/task.tools.server.controller')),
   taskSearch = require(path.resolve('./modules/requesters/server/controllers/requesters/task.search.server.controller')),
   _ = require('lodash'),
-  fs = require('fs');
+  fs = require('fs'),
+  mkdirp = require('mkdirp');
 
 var jobWhitelistedFields = ['progress'],
   taskId = null,
@@ -302,41 +303,78 @@ exports.getTasksWithOptions = function(req, res) {
   });
 };
 
-function writeFilesToPath(file, path, callBack, next) {
-  console.log(file)
+function makeDirectory(dir, callBack) {
+  console.log(dir)
+  if (!fs.existsSync(dir)){
+    mkdirp(dir, function (err) {
+      if (err)
+        return callBack(err);
+      else
+        return callBack();
+    });
+  } else {
+    return callBack();
+  }
+}
+
+function writeFilesToPath(file, dirPath, callBack, next) {
   fs.readFile(file.path, function (err, data) {
     if (err) {
-      console.log(err)
       return callBack(err);
     }
+    var oldPath = file.path;
     // set the correct path for the file not the temporary one from the API:
     file.name = file.name.replace(/ /g, '_');
-    file.path = path + file.name;
-
+    var dir = path.resolve('.' + dirPath) ;
+    file.path = path.resolve(dir + '/' + file.name);
     // copy the data from the req.files.file.path and paste it to file.path
-    fs.mkdir(file.path, function (err) {
-      fs.writeFile(file.path, data, function (err) {
-        if (err) {
-          console.log(err)
-          return callBack(err);
-        }
-        console.log('\n');
-        console.log(file.name);
-        console.log('\n');
-        if (next)
-          return next(path, callBack, next);
-        else
-          return callBack();
+    makeDirectory(dir, function (err) {
+      if (err) return callBack(err);
+      fs.access(dir, fs.constants.R_OK | fs.constants.W_OK, (err) => {
+        if (err) return callBack(err);
+        fs.writeFile(file.path, data, function (err) {
+          if (err) return callBack(err);
+          fs.unlink(oldPath, function (err) {
+            if (err) return callBack(err);
+            
+            if (next)
+              return next(dirPath, callBack, next);
+            else
+              return callBack();
+          });
+        });
       });
     });
+
   });
 }
 
+function getDirectories (srcpath) {
+  return fs.readdirSync(srcpath)
+    .filter(file => fs.lstatSync(path.join(srcpath, file)).isDirectory())
+}
+
+function isWorkerForTask(jobs, Id) {
+  var jobIndex = 0,
+    jobFound = false;
+  while (jobIndex < jobs.length) {
+    if (jobs[jobIndex].worker.workerId.toString() === Id.toString()) {
+      jobFound = true;
+      break;
+    }
+    jobIndex++;
+  }
+  if (!jobFound) {
+    return -1;
+  }
+  return jobIndex;
+}
+
 // for file upload
-exports.prototype = {
-  submitToTask: function(req, res) {
+exports.taskFiles = {
+  submitTaskFiles: function(req, res) {
     getUserTypeObject(req, res, function(typeObj) {
-      taskId = req.body.taskId;
+      var taskId = req.body.taskId;
       taskFindOne(taskId, function(err, task) {
         if (err) {
           return res.status(422).send({
@@ -348,19 +386,13 @@ exports.prototype = {
             message: 'No task with that Id found.'
           });
         }
-        var jobIndex = 0,
-          jobFound = false;
-        while (jobIndex < task.jobs.length && !jobFound) {
-          if (task.jobs[jobIndex].worker.workerId.toString() === typeObj._id.toString())
-            jobFound = true;
-          jobIndex++;
-        }
-        if (!jobFound) {
+        var jobIndex = isWorkerForTask(task.jobs, typeObj._id)
+        if (jobIndex < 0) {
           return res.status(422).send({
             message: 'You are not a worker for this task.'
           });
         }
-        if (!(task.jobs[jobIndex].status === 'active' || task.jobs[jobIndex].status === 'submitted'))
+        if (!((task.jobs[jobIndex].status === 'active' || task.jobs[jobIndex].status === 'submitted') && (task.status === 'open' || task.status === 'taken')))
           return res.status(422).send({
             message: 'Task is not active.'
           });
@@ -369,43 +401,123 @@ exports.prototype = {
         // do the actual file submission
         var files = req.files.file;
         var fileIndex = 0;
-        var filePath = '/taskSubmissions/taskId_' + taskId.toString() + '/workerId_' + typeObj._id.toString() + '/';
-        writeFilesToPath(files[0], filePath, function (err) {
+        var stringInMinutes = parseInt((((new Date()).getTime())/1000*60), 10).toString();
+        var filePath = '/resources/taskSubmissions/taskId_' + taskId.toString() + '/workerId_' + typeObj._id.toString() + '/' + stringInMinutes + '/';
+        writeFilesToPath(files[0], filePath, function (err) { // callBack function
           if (err) {
             return res.status(422).send({
               message: 'Error writing files to proper path.'
             });
           } else {
-            console.log('success')
             task.save(function (err, task) {
               if (err) {
                 return res.status(422).send({
                   message: errorHandler.getErrorMessage(err)
                 });
               }
-              console.log(JSON.stringify(task.jobs[jobIndex], null, 2));
               return res.status(200).send({
                 message: 'Submission Successful!'
               });
             });
           }
-        }, function(filePath, callBack, next) {
+        }, function(filePath, callBack, next) { // next function
           fileIndex++;
-          if (fileIndex < files.length - 1) {
-            console.log('here1')
+          if (fileIndex < files.length) {
+            console.log(files[fileIndex]);
             writeFilesToPath(files[fileIndex], filePath, callBack, next);
-          } else if (fileIndex < files.length) {
-            console.log('here2')
-            writeFilesToPath(files[fileIndex], filePath, callBack);
           } else {
-            console.log('here3')
-            return res.status(422).send({
-              message: 'Error writing files to proper path.'
-            });
+            callBack();
           }
         });
       });
     }); 
+  },
+  getDownloadables: function (req, res) {
+    getUserTypeObject(req, res, function(typeObj) {
+      var taskId = req.body.taskId;
+      taskFindOne(taskId, function(err, task) {
+        if (err) {
+          return res.status(422).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        }
+        if (!task) {
+          return res.status(422).send({
+            message: 'No task with that Id found.'
+          });
+        }
+        var jobIndex = isWorkerForTask(task.jobs, typeObj._id)
+        if (jobIndex < 0) {
+          return res.status(422).send({
+            message: 'You are not a worker for this task.'
+          });
+        }
+        var taskWorkerDir = path.resolve('./resources/taskSubmissions/taskId_' + task._id.toString() + '/workerId_' + typeObj._id.toString() + '/');
+        console.log(taskWorkerDir);
+        if (!fs.existsSync(taskWorkerDir)){
+          return res.status(200).send({
+            files: null
+          });
+        } else {
+          var files = {};
+          var subDir = getDirectories(taskWorkerDir);
+          subDir.forEach(function (sub) {
+            var subDir = path.resolve(taskWorkerDir + '/' + sub);
+            if (fs.existsSync(subDir)) {
+              files[sub] = [];
+              var timeStampFiles = fs.readdirSync(subDir);
+              timeStampFiles.forEach(function(file) {
+                files[sub].push({
+                  'name': file,
+                  'timeStamp': sub
+                });
+              });
+            }
+          });
+          return res.status(200).send({
+            files: files
+          });
+        }
+      });
+    });
+  },
+  downloadTaskFile: function(req, res) {
+    getUserTypeObject(req, res, function(typeObj) {
+      var taskId = req.body.taskId;
+      taskFindOne(taskId, function(err, task) {
+        if (err) {
+          return res.status(422).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        }
+        if (!task) {
+          return res.status(422).send({
+            message: 'No task with that Id found.'
+          });
+        }
+        var jobIndex = isWorkerForTask(task.jobs, typeObj._id)
+        if (jobIndex < 0) {
+          return res.status(422).send({
+            message: 'You are not a worker for this task.'
+          });
+        }
+        var file = {};
+        var filename = file.name = req.body.fileName;
+        var filePath = file.path = path.resolve('./resources/taskSubmissions/taskId_' + task._id.toString() + '/workerId_' + typeObj._id.toString() + '/' + req.body.timeStamp + '/' + filename);
+        if (!fs.existsSync(filePath)) {
+          return res.status(422).send({
+            message: 'That file directory is wrong.'
+          });
+        }
+        var stat = fs.statSync(filePath);
+        var fileToSend = fs.readFileSync(filePath);
+        res.set('Content-Type', '*');
+        res.set('Content-Length', stat.size);
+        res.set('Content-Disposition', filename);
+        res.send(fileToSend);
+      });
+    });
+
   }
 };
 

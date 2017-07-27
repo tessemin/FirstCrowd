@@ -25,41 +25,45 @@
           getGraph().then(function(data) {
             var rootNode = data;
             getThreeLevels(data).then(function(data) {
+              d3.select('.footer').remove();
+              var header = getBounds(d3.select('header')._groups[0][0]);
+              var sideHeight = getBounds(d3.select('.form-group')._groups[0][0]);
 
-              var treeData =
-                    {
-                      'name': 'Top Level',
-                      'children': [
-                        {
-                          'name': 'Level 2: A',
-                          'children': [
-                            { 'name': 'Son of A' },
-                            { 'name': 'Daughter of A' }
-                          ]
-                        },
-                        { 'name': 'Level 2: B' }
-                      ]
-                    };
+              var width = $window.innerWidth;
+              var height = $window.innerHeight;
 
-              var root = d3.hierarchy(treeData, function(d) { return d.children; });
-              console.log(root);
+              d3.select('.display').style('height', function() { return (height - sideHeight.offsetTop - header.offsetHeight) + 'px'; });
+              d3.select('.side-list').style('max-height', function() { return (height - header.offsetHeight - sideHeight.offsetTop - sideHeight.offsetHeight - 80) + 'px'; });
+              d3.select('.content').style('margin-top', function() { return header.offsetHeight + 'px'; });
 
+              var svg = d3.select('#graph').append('svg')
+              // .style('padding', '30px')
+                    .attr('width', width)
+                    .attr('height', height - header.offsetHeight - 5);
+
+              var treeData = {
+                'name': 'Top Level',
+                'children': [
+                  {
+                    'name': 'Level 2: A',
+                    'children': [
+                      { 'name': 'Son of A' },
+                      { 'name': 'Daughter of A' }
+                    ]
+                  },
+                  { 'name': 'Level 2: B' }
+                ]
+              };
+
+              var root = d3.hierarchy(data, function(d) { return d.children; });
 
               // Set the dimensions and margins of the diagram
-              var margin = {top: 20, right: 90, bottom: 30, left: 90},
-                  width = 960 - margin.left - margin.right,
-                  height = 500 - margin.top - margin.bottom;
+              var margin = { top: 20, right: 90, bottom: 30, left: 90 };
 
-              // append the svg object to the body of the page
-              // appends a 'group' element to 'svg'
-              // moves the 'group' element to the top left margin
-              var svg = d3.select('#graph').append('svg')
-                    .attr('width', width + margin.right + margin.left)
-                    .attr('height', height + margin.top + margin.bottom);
               var g = svg
-                    .append('g')
-                    .attr('transform', 'translate('
-                          + margin.left + ',' + margin.top + ')');
+                    .append('g');
+              // .attr('transform', 'translate('
+              //       + margin.left + ',' + margin.top + ')');
 
               var zoomListener = d3.zoom()
                     .scaleExtent([1 / 2, 1.2])
@@ -68,16 +72,15 @@
               svg.call(zoomListener);
               d3.select('svg').on('dblclick.zoom', null);
 
-              var i = 0,
-                  duration = 750;
+              var i = 0;
+              var duration = 750;
 
               // declares a tree layout and assigns the size
               // var treemap = d3.tree().size([height, width]);
               var treemap = d3.tree()
-                    .size([height, width])
-              // .nodeSize([10, 10])
+                    .nodeSize([10, 10])
                     .separation(function(a, b) {
-                      return a.parent == b.parent ? 3 : 1.7;
+                      return a.parent === b.parent ? 8 : 3;
                     });
 
 
@@ -90,35 +93,88 @@
 
               update(root);
 
+              makeLineArrow();
+
+              centerHome();
+
+              makeHomeButton();
+
+              //
+              // functions
+              //
+              function makeHomeButton() {
+                var home = d3.select('#graph')
+                      .append('span')
+                      .style('margin-top', function() { return (header.offsetHeight - 30) + 'px'; })
+                      .attr('class', 'glyphicon glyphicon-home home')
+                      .on('click', centerHome)
+                      .on('mousedown', function() {
+                        d3.select(this).style('color', 'gray');
+                      })
+                      .on('mouseup', function() {
+                        d3.select(this).style('color', 'lightgray');
+                      });
+              }
+
+              function makeLineArrow() {
+                // build the arrow.
+                svg.append('svg:defs').selectAll('marker')
+                  .data(['end'])      // Different link/path types can be defined here
+                  .enter().append('svg:marker')    // This section adds in the arrows
+                  .attr('id', String)
+                  .attr('viewBox', '0 -5 10 10')
+                  .attr('refX', 150)
+                  .attr('refY', 0)
+                  .attr('markerWidth', 8)
+                  .attr('markerHeight', 8)
+                  .attr('orient', 'auto')
+                  .append('svg:path')
+                  .attr('d', 'M0,-5L10,0L0,5');
+              }
 
               // Collapse the node and all it's children
               function collapse(d) {
-                if(d.children) {
+                if (d.children) {
                   d._children = d.children;
                   d._children.forEach(collapse);
                   d.children = null;
                 }
               }
-              function update(source) {
-                console.log(source);
 
+              function update(source) {
                 // Assigns the x and y position for the nodes
                 var treeData = treemap(root);
 
-                console.log(treeData.descendants());
-
                 // Compute the new tree layout.
-                var nodes = treeData.descendants(),
-                    links = treeData.descendants().slice(1);
+                var nodes = treeData.descendants();
+                var links = treeData.descendants().slice(1);
 
                 // Normalize for fixed-depth.
-                nodes.forEach(function(d){ d.y = d.depth * 180; });
+                nodes.forEach(function(d) { d.y = d.depth * 180; });
+
+
+                var defs = svg.append('defs')
+                      .selectAll('pattern')
+                      .data(nodes)
+                      .enter()
+                      .append('pattern')
+                      .attr('id', function (d, i) { return 'image' + i; })
+                      .attr('x', 0)
+                      .attr('y', 0)
+                      .attr('height', radius * 2)
+                      .attr('width', radius * 2)
+                      .append('image')
+                      .attr('x', 0)
+                      .attr('y', 0)
+                      .attr('height', radius * 2)
+                      .attr('width', radius * 2)
+                      .attr('xlink:href', function (d) { return d.data.img; });
 
                 // ****************** Nodes section ***************************
 
                 // Update the nodes...
                 var node = g.selectAll('.node')
-                      .data(nodes, function(d) {return d.id || (d.id = ++i); });
+                      .data(nodes, function(d) { return d.id || (d.id = ++i); });
 
                 // Enter any new modes at the parent's previous position.
                 var nodeEnter = node.enter().append('g')
@@ -134,14 +190,15 @@
                   .transition()
                   .duration(duration)
                   .attr('r', 1e-6)
-                  .style('fill', function(d) {
-                    return d._children ? 'lightsteelblue' : 'red';
-                  });
+                  .style('fill', function(d, i) { return 'url(#image' + i + ')'; });
+                // .style('fill', function(d) {
+                //   return d._children ? 'lightsteelblue' : 'red';
+                // });
 
                 // Add labels for the nodes
                 nodeEnter.append('text')
                   .style('pointer-events', 'none')
-                  // .attr('dy', '.35em')
+                // .attr('dy', '.35em')
                   .attr('x', function(d) {
                     return d.children || d._children ? -13 : 13;
                   })
@@ -151,7 +208,7 @@
                   .attr('text-anchor', function(d) {
                     return d.children || d._children ? 'end' : 'start';
                   })
-                  .text(function(d) { return d.data.name; });
+                  .text(function(d) { return d.data.companyName; });
 
                 // UPDATE
                 var nodeUpdate = nodeEnter.merge(node);
@@ -168,17 +225,20 @@
                   .transition()
                   .duration(duration)
                   .attr('r', radius)
-                  .style('fill', function(d) {
-                    return d._children ? 'lightsteelblue' : 'red';
-                  })
+                  .style('fill', function(d, i) { return 'url(#image' + i + ')'; })
+                // .style('fill', function(d) {
+                //   return d._children ? 'lightsteelblue' : 'red';
+                // })
                   .attr('cursor', 'pointer');
+
+                defs.data(nodes);
 
                 // Remove any exiting nodes
                 var nodeExit = node.exit();
-                      // .attr('transform', function(d) {
-                      //   return 'translate(' + source.y + ',' + source.x + ')';
-                      // })
-                      // .remove();
+                // .attr('transform', function(d) {
+                //   return 'translate(' + source.y + ',' + source.x + ')';
+                // })
+                // .remove();
 
                 // On exit reduce the node circles size to 0
                 nodeExit.select('circle')
@@ -191,7 +251,7 @@
                   .style('fill-opacity', 1e-6);
 
                 // ****************** links section ***************************
-
+                // link = link.enter().append('line').attr('marker-end', 'url(#end)').merge(link);
                 // Update the links...
                 var link = g.selectAll('path.link')
                       .data(links, function(d) { return d.id; });
@@ -199,8 +259,9 @@
                 // Enter any new links at the parent's previous position.
                 var linkEnter = link.enter().insert('path', 'g')
                       .attr('class', 'link')
-                      .attr('d', function(d){
-                        var o = {x: source.x0, y: source.y0};
+                      .attr('marker-end', 'url(#end)')
+                      .attr('d', function(d) {
+                        var o = { x: source.x0, y: source.y0 };
                         return diagonal(o, o);
                       });
 
@@ -210,45 +271,61 @@
                 // Transition back to the parent element position
                 linkUpdate.transition()
                   .duration(duration)
-                  .attr('d', function(d){ return diagonal(d, d.parent); });
+                  .attr('d', function(d) { return diagonal(d, d.parent); });
 
                 // Remove any exiting links
                 var linkExit = link.exit().transition()
                       .duration(duration)
                       .attr('d', function(d) {
-                        var o = {x: source.x, y: source.y};
+                        var o = { x: source.x, y: source.y };
                         return diagonal(o, o);
                       })
                       .remove();
 
                 // Store the old positions for transition.
-                nodes.forEach(function(d){
+                nodes.forEach(function(d) {
                   d.x0 = d.x;
                   d.y0 = d.y;
                 });
+              }
+              // Creates a curved (diagonal) path from parent to the child nodes
+              function diagonal(s, d) {
 
-                // Creates a curved (diagonal) path from parent to the child nodes
-                function diagonal(s, d) {
+                var path = `M ${ s.y } ${ s.x }
+            C ${ (s.y + d.y) / 2 } ${ s.x },
+              ${ (s.y + d.y) / 2 } ${ d.x },
+              ${ d.y } ${ d.x }`;
 
-                  var path = `M ${s.y} ${s.x}
-            C ${(s.y + d.y) / 2} ${s.x},
-              ${(s.y + d.y) / 2} ${d.x},
-              ${d.y} ${d.x}`;
+                return path;
+              }
 
-                  return path;
+              function centerNode(source) {
+                var t = d3.zoomTransform(svg.node());
+                var x = -source.y0;
+                var y = -source.x0;
+                x = x * t.k + width / 2;
+                y = y * t.k + height / 2;
+                d3.select('svg')
+                  .transition()
+                  .duration(duration)
+                  .call(zoomListener.transform, d3.zoomIdentity.translate(x, y).scale(t.k));
+              }
+
+              // Toggle children on click.
+              function click(d) {
+                centerNode(d);
+                if (d.children) {
+                  d._children = d.children;
+                  d.children = null;
+                } else {
+                  d.children = d._children;
+                  d._children = null;
                 }
+                update(d);
+              }
 
-                // Toggle children on click.
-                function click(d) {
-                  if (d.children) {
-                    d._children = d.children;
-                    d.children = null;
-                  } else {
-                    d.children = d._children;
-                    d._children = null;
-                  }
-                  update(d);
-                }
+              function centerHome() {
+                centerNode(root);
               }
 
               function zoom() {
@@ -256,6 +333,7 @@
               }
 
             });
+
             //
             // functions
             //
@@ -265,7 +343,8 @@
                   data.children = res.customers;
 
                   data.children.forEach(child => getCustomers(child._id).then(function(obj) {
-                    return child.children = obj.customers;
+                    child.children = obj.customers;
+                    return child;
                     // console.log(data.children[i]);
                   })
                                        );
@@ -275,7 +354,7 @@
                   //   data.children[i].children.forEach(child => getCustomers(child._id).then(function(obj) {
                   //     return child.children = obj.customers;
                   //     // console.log(data.children[i]);
-                  //   })
+                  //  })
                   //                                    );
                   // }
                   resolve(data);
@@ -310,7 +389,7 @@
             }
 
             function drawCustomers(parentNode, levels) {
-              return new Promise ((resolve, reject) => {
+              return new Promise((resolve, reject) => {
                 console.log(levels);
                 if (levels >= 1) {
                   EnterprisesService.getCustomers({ 'enterpriseId': parentNode._id }).then(function (res) {
@@ -334,27 +413,27 @@
             }
 
 
-            function drawSuppliers(root, levels, x) {
-              if (levels >= 1) {
-                EnterprisesService.getSuppliers({ 'enterpriseId': root._id }).then(function (res) {
-                  var tmpNode = [];
-                  for (var i = 0; i < res.suppliers.length; i++) {
-                    var newNode = res.suppliers[i];
-                    newNode.x = x - xStep;
-                    newNode.y = height / 2;
-                    newNode.img = 'https://cdn4.iconfinder.com/data/icons/seo-and-data/500/gear-clock-128.png';
+            // function drawSuppliers(root, levels, x) {
+            //   if (levels >= 1) {
+            //     EnterprisesService.getSuppliers({ 'enterpriseId': root._id }).then(function (res) {
+            //       var tmpNode = [];
+            //       for (var i = 0; i < res.suppliers.length; i++) {
+            //         var newNode = res.suppliers[i];
+            //         newNode.x = x - xStep;
+            //         newNode.y = height / 2;
+            //         newNode.img = 'https://cdn4.iconfinder.com/data/icons/seo-and-data/500/gear-clock-128.png';
 
-                    tmpNode.push(newNode);
-                    nodes.push(newNode);
-                    // links.push({ source: newNode, target: root });
-                  }
-                  // restart();
-                  for (var j = 0; j < tmpNode.length; j++) {
-                    drawSuppliers(tmpNode[j], levels - 1, x - xStep);
-                  }
-                });
-              }
-            }
+            //         tmpNode.push(newNode);
+            //         nodes.push(newNode);
+            //         // links.push({ source: newNode, target: root });
+            //        }
+            //       // restart();
+            //       for (var j = 0; j < tmpNode.length; j++) {
+            //         drawSuppliers(tmpNode[j], levels - 1, x - xStep);
+            //        }
+            //      });
+            //    }
+            //  }
 
           });
         });
@@ -362,7 +441,7 @@
         function getGraph() {
           // EnterprisesService.setupGraph().then(function (res) {
           //   console.log(res);
-          // });
+          //  });
           return EnterprisesService.getEnterprise()
             .then(function(response) {
               var rootNode = {};

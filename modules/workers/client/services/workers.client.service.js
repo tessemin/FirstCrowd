@@ -61,6 +61,10 @@
         method: 'POST',
         url: '/api/workers/task/submit'
       },
+      _getDownloadableTaskFiles: {
+        method: 'POST',
+        url: '/api/workers/task/file/getDownloadables'
+      },
       // General Task Functions
       _getAllOpenTasks: {
         method: 'POST',
@@ -131,6 +135,9 @@
       },
       submitToTask: function (taskId_submission) {
         return this._submitToTask(taskId_submission).$promise;
+      },
+      getDownloadableTaskFiles: function (taskId) {
+        return this._getDownloadableTaskFiles(taskId).$promise;
       },
       // all tasks
       getAllOpenTasks: function () {

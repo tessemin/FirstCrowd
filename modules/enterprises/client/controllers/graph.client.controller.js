@@ -46,17 +46,17 @@
     }
 
     function viewCatalog(obj) {
-      EnterprisesService.getServices({enterpriseId: obj.selected.enterpriseId}).then(function(res) {
+      EnterprisesService.getServices({ enterpriseId: obj.selected.enterpriseId }).then(function(res) {
         console.log(res);
         // vm.list = res.
       });
-      EnterprisesService.getProducts({enterpriseId: obj.selected.enterpriseId}).then(function(res) {
+      EnterprisesService.getProducts({ enterpriseId: obj.selected.enterpriseId }).then(function(res) {
         console.log(res);
         // vm.list = res.
       });
     }
     function viewDemands(obj) {
-      EnterprisesService.getDemands({enterpriseId: obj.selected.enterpriseId}).then(function(res) {
+      EnterprisesService.getDemands({ enterpriseId: obj.selected.enterpriseId }).then(function(res) {
         console.log(res);
         vm.list = res.demands;
       });
@@ -66,7 +66,7 @@
       vm.sidebar = true;
       vm.head = 'Suppliers';
       vm.header = 'Suppliers for ';
-      EnterprisesService.getSuppliers({enterpriseId: obj.selected.enterpriseId}).then(function(res) {
+      EnterprisesService.getSuppliers({ enterpriseId: obj.selected.enterpriseId }).then(function(res) {
         vm.list = res.suppliers;
       });
     }
@@ -75,7 +75,7 @@
       vm.sidebar = true;
       vm.head = 'Customers';
       vm.header = 'Customers for ';
-      EnterprisesService.getCustomers({enterpriseId: obj.selected.enterpriseId}).then(function(res) {
+      EnterprisesService.getCustomers({ enterpriseId: obj.selected.enterpriseId }).then(function(res) {
         vm.list = res.customers;
       });
     }
@@ -84,7 +84,7 @@
       vm.sidebar = true;
       vm.head = 'Competitors';
       vm.header = 'Competitors for ';
-      EnterprisesService.getCompetitors({enterpriseId: obj.selected.enterpriseId}).then(function(res) {
+      EnterprisesService.getCompetitors({ enterpriseId: obj.selected.enterpriseId }).then(function(res) {
         vm.list = res.competitors;
         console.log(vm.list);
       });
@@ -100,10 +100,10 @@
         vm.text[3] = 'Compare your Company with ' + obj.selected.companyName
       );
     }
-    
+
     function makeGraphForCompany(_id) {
-      
+
     }
-    
+
   }
 }());

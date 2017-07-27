@@ -6,9 +6,9 @@
     .module('workers')
     .controller('WorkerTasksController', WorkerTasksController);
 
-  WorkerTasksController.$inject = ['$scope', '$state', 'WorkersService', 'Notification', 'Upload', '$timeout'];
+  WorkerTasksController.$inject = ['$scope', '$state', 'WorkersService', 'Notification', 'Upload', '$timeout', '$http'];
 
-  function WorkerTasksController ($scope, $state, WorkersService, Notification, Upload, $timeout) {
+  function WorkerTasksController ($scope, $state, WorkersService, Notification, Upload, $timeout, $http) {
     var vm = this;
     vm.tasks = [];
     vm.loaded = false;
@@ -296,20 +296,59 @@
               });
             break;
           case 'submit':
-            vm.submission = {};
+            vm.submittedFiles = null;
+            vm.submissionProgress = 0;
+            vm.previouslySubmittedFiles = [];
             vm.openSubmissionModal = function () {
               $('#submissionModal').modal();
             };
             vm.closeSubmissionModal = function () {
               $('#submissionModal').modal('hide');
             };
+            vm.previousSubmissionDownload = function previousSubmissionDownload(file) {
+              if (Array.isArray(file)) {
+                file.forEach (function (fil) {
+                  vm.previousSubmissionDownload(fil);
+                });
+                return null;
+              }
+              $http({
+                  url: '/api/workers/task/file/download',
+                  method: "POST",
+                  data: {
+                    fileName: file.name,
+                    timeStamp: file.timeStamp,
+                    taskId: vm.tasks[vm.selectedTask]._id
+                  },
+                  responseType: 'blob'
+              }).success(function (data, status, headers, config) {
+                var blob = new Blob([data], { type: data.type });
+                var fileName = headers('content-disposition');
+                // this uses file-saver.js in public/lib
+                saveAs(blob, fileName);
+              }).error(function (data, status, headers, config) {
+                console.log('Unable to download the file')
+              }); 
+            }
+            function previousSubmissionDownload() {
+              WorkersService.getDownloadableTaskFiles({
+                taskId: vm.tasks[vm.selectedTask]._id
+              })
+              .then(function(response) {
+                if (response.files) {
+                  vm.previouslySubmittedFilesKeys = Object.keys(response.files);
+                  vm.previouslySubmittedFiles = response.files;
+                }
+              })
+              .catch(function(response) {
+                Notification.error({ message: '\n', title: '<i class="glyphicon glyphicon-remove"></i> Error getting previous submissions!' });
+              });
+            }
             vm.submissionConfirmed = function(files) {
               var task = vm.tasks[vm.selectedTask];
-              console.log(task)
-              console.log(files)
               if (files && files.length) {
                 Upload.upload({
-                  url: '/api/workers/task/submit',
+                  url: '/api/workers/task/file/submit',
                   method: 'POST',
                   file: files,
                   data: {
@@ -318,18 +357,20 @@
                 }).then(function (response) {
                   $timeout(function () {
                     vm.closeSubmissionModal();
-                    Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> Submitted!' });
+                    Notification.success({ message: response.data.message, title: '<i class="glyphicon glyphicon-ok"></i> Submitted!' });
                   });
                 }, function (response) {
+                  console.log(response)
                   if (response.status > 0) {
                     vm.closeSubmissionModal();
-                    Notification.error({ message: response.message, title: '<i class="glyphicon glyphicon-remove"></i> Error! Error Submitting!' });
+                    Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Error! Error Submitting!' });
                   }
                 }, function (evt) {
-                  vm.submissionProgress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+                  vm.submissionProgress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total, 10));
                 });
               }
             };
+            previousSubmissionDownload();
             vm.openSubmissionModal();
             break;
           default:
@@ -338,10 +379,12 @@
         console.log('perform ' + action.id + ' on task ' + index);
       }
     };
-    vm.uploadFiles = function (files) {
-
-    }
-
+    
+    vm.minutesToReadable = function(minutes) {
+      var date = new Date(minutes*1000/60);
+      return date.toDateString() + ' at ' + date.getHours() + ':' + (date.getMinutes() <= 9 ? '0' : '') + date.getMinutes();
+    };
+    
     vm.selectedTask = -1;
     vm.selectTask = function(index) {
       if (index === vm.selectedTask) {
