@@ -33,7 +33,9 @@ module.exports = function(app) {
   // WORKER ACTIONS
   app.route('/api/workers/task/take').post(workers.takeTask);
   // submit a task file
-  app.post('/api/workers/task/submit', multipartyMiddleware, workers.prototype.submitToTask);
+  app.post('/api/workers/task/file/submit', multipartyMiddleware, workers.taskFiles.submitTaskFiles);
+  app.post('/api/workers/task/file/getDownloadables', workers.taskFiles.getDownloadables);
+  app.post('/api/workers/task/file/download', workers.taskFiles.downloadTaskFile);
   
   // TASKS NATIVE API
   app.route('/api/getAllTasks/open').post(workers.getAllOpenTasks);
