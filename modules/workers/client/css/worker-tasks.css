@@ -60,6 +60,7 @@
 
 a {
   color: #4562e7;
+  cursor: pointer;
 }
 
 .tasks-description {
@@ -159,20 +160,13 @@ a {
   padding-left: 10%
 }
 
-.modalContent-left {
-  padding-right: 1px;
-}
-.modalContent-right {
-  padding-left: 1px;
-}
-
 .submissionModal .modal-body {
   overflow-x: hidden;
    width: 100%;
 }
 
-.submissionModal a {
-  cursor: pointer
+.submissionModal textarea {
+  resize: none;
 }
 
 .keyHeader {
