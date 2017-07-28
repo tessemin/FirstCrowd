@@ -8,30 +8,38 @@
         </div>
         <div class="modal-body row">
           <div class="col-md-6 modalContent-left">
-            <button class="btn btn-primary" ngf-select multiple ng-model="vm.submittedFiles" name="file" ngf-accept="'*'" ngf-max-size="2GB" ngf-min-height="100" ngf-resize="{width: 100, height: 100}">Select</button>
+            <button class="btn btn-primary" ngf-select multiple ng-model="vm.submittedFiles" name="file" ngf-accept="'*'" ngf-max-size="2GB" ngf-min-height="100" ngf-resize="{width: 100, height: 100}">Select Files</button>
             <br>
-            <br>Files:
-            <ul class="selectedFiles">
-              <li ng-repeat="f in vm.submittedFiles" style="font:smaller">
-                <span class="selectedFile">{{f.name}}</span>
-              </li>
-            </ul>
-            <span class="submissionProgress" ng-show="vm.submissionProgress >= 0">
-              <div style="width:{{vm.submissionProgress}}%" ng-bind="vm.submissionProgress + '%'"></div>
-            </span>
+            <div ng-if="vm.submittedFiles && vm.submittedFiles.length > 0">
+              <br>Files:
+              <ul class="selectedFiles">
+                <li ng-repeat="f in vm.submittedFiles" style="font:smaller">
+                  <span class="selectedFile">{{f.name}}</span> <span class="glyphicon glyphicon-remove  clickable-looking" ng-click="vm.submittedFiles.splice(vm.submittedFiles.indexOf(f), 1)"></span>
+                </li>
+              </ul>
+              <span class="submissionProgress" ng-show="vm.submissionProgress >= 0">
+                <div style="width:{{vm.submissionProgress}}%" ng-bind="vm.submissionProgress + '%'"></div>
+              </span>
+            </div>
             <br><br>Message:
-            <textarea class="form-control" rows="5" id="comment" ng-model="vm.submissionMessage"></textarea>
+            <textarea class="form-control noResize" rows="5" id="comment" ng-model="vm.submissionMessage" placeholder="Submission message"></textarea>
           </div>
-          <div class="col-md-5 modalContent-right">
+          <div class="col-md-6 modalContent-right">
             <h4>Previously Submitted:</h4>
             <ul>
-              <li ng-repeat="key in vm.previouslySubmittedFilesKeys" style="font:smaller">
-                <h5 class="keyHeader clickable-looking" ng-click="vm.previousSubmissionDownload(vm.previouslySubmittedFiles[key])">{{vm.minutesToReadable(key)}}</h5>
-                <div ng-repeat="file in vm.previouslySubmittedFiles[key]">
-                  <a ng-click="vm.previousSubmissionDownload(file)">{{file.name}}</a>
+              <li ng-repeat="prev in vm.previouslySubmittedFiles" style="font:smaller">
+                <h5 class="keyHeader">{{vm.minutesToReadable(prev.timeStamp)}}</h5>
+                <textarea ng-if="prev.messages.worker" class="form-control resizeVertical" rows="3">{{prev.messages.worker}}</textarea>
+                <div ng-if="prev.files && prev.files.length > 0">
+                  Attachments:
+                  <span ng-repeat="file in prev.files">
+                    <a ng-click="vm.previousSubmissionDownload(file)">{{file.name}}</a><span class="fontBold" ng-if="prev.files.length > 1">,</span>
+                  </span>
+                  <a ng-click="vm.previousSubmissionDownload(prev.files)" ng-if="prev.files.length > 1" class="glyphicon glyphicon-download-alt clickable-looking">-All</a>
                 </div>
               </li>
             </ul>
+            <a ui-sref="workers.messages">See all submissions and messages</a>
           </div>
         </div>
         <div class="modal-footer">

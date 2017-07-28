@@ -14,5 +14,6 @@ module.exports = _.extend(
   require('./requesters/requesters.profile.server.controller'),
   require('./requesters/task.search.server.controller'),
   require('./requesters/task.actions.crud.server.controller'),
-  require('./requesters/task.actions.state.server.controler')
+  require('./requesters/task.actions.state.server.controler'),
+  require('./requesters/requester.tasks.file.server.controller')
 );
