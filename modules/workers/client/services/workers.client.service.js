@@ -69,6 +69,10 @@
         method: 'POST',
         url: '/api/workers/task/file/sendMessage'
       },
+      _markCompleted: {
+        method: 'POST',
+        url: '/api/workers/task/markCompleted'
+      },
       // General Task Functions
       _getAllOpenTasks: {
         method: 'POST',
@@ -145,6 +149,9 @@
       },
       sendMessage: function (taskId) {
         return this._sendMessage(taskId).$promise;
+      },
+      markCompleted: function (taskId) {
+        return this._markCompleted(taskId).$promise;
       },
       // all tasks
       getAllOpenTasks: function () {

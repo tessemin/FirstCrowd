@@ -165,13 +165,21 @@ a {
    width: 100%;
 }
 
-.submissionModal textarea {
+.noResize {
   resize: none;
+}
+
+.resizeVertical {
+  resize: vertical;
 }
 
 .keyHeader {
   margin-bottom: 0; 
   font-size: 110%;
+}
+
+.fontBold {
+  font-weight: bold;
 }
 
 .submissionProgress {
