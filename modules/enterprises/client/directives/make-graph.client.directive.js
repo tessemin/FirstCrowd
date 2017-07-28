@@ -57,72 +57,6 @@
             group.attr('transform', d3.event.transform);
           }
 
-          // var data = {
-          //   'name': 'Root',
-          //   'children': [{
-          //     'name': 'Branch 1'
-          //   }, {
-          //     'name': 'Branch 2',
-          //     'children': [{
-          //       'name': 'Branch 2.1'
-          //     }, {
-          //       'name': 'Branch 2.2',
-          //       'children': [{
-          //         'name': 'Branch 2.2.1'
-          //       }, {
-          //         'name': 'Branch 2.2.2'
-          //       }]
-          //     }]
-          //   }, {
-          //     'name': 'Branch 3'
-          //   }, {
-          //     'name': 'Branch 4',
-          //     'children': [{
-          //       'name': 'Branch 4.1'
-          //     }, {
-          //       'name': 'Branch 4.2'
-          //     }]
-          //   }, {
-          //     'name': 'Branch 5'
-          //   },
-
-
-          //                {
-          //                  'name': 'Branch 6'
-          //                }, {
-          //                  'name': 'Branch 7',
-          //                  'children': [{
-          //                    'name': 'Branch 7.1'
-          //                  }, {
-          //                    'name': 'Branch 7.2',
-          //                    'children': [{
-          //                      'name': 'Branch 7.2.1'
-          //                    }, {
-          //                      'name': 'Branch 7.2.2'
-          //                    }]
-          //                  }]
-          //                }, {
-          //                  'name': 'Branch 8'
-          //                }, {
-          //                  'name': 'Branch 10'
-          //                }
-          //               ]
-          // };
-
-          // var split_index = Math.round(data.children.length / 2);
-
-          // // Left data
-          // var data1 = {
-          //   'name': data.name,
-          //   'children': JSON.parse(JSON.stringify(data.children.slice(0, split_index)))
-          // };
-
-          // // Right data
-          // var data2 = {
-          //   'name': data.name,
-          //   'children': JSON.parse(JSON.stringify(data.children.slice(split_index)))
-          // };
-
           getGraph().then(function(rootNode) {
             getThreeCustLevels(rootNode).then(function(data1) {
               getThreeSuppLevels(rootNode).then(function(data2) {
@@ -157,30 +91,35 @@
                   // Remember the tree is rotated
                   // so the height is used as the width
                   // and the width as the height
-                  //               .nodeSize([10, 10])
-                  //               .separation(function(a, b) {
-                  //                 return a.parent === b.parent ? 8 : 3;
-                  //               });
+                                .nodeSize([radius / 1.5, radius * 10])
+                                .separation(function(a, b) {
+                                  return a.parent === b.parent ? 8 : 3;
+                                });
 
-                        .size([height, SWITCH_CONST * (width - 150) / 2]);
+                        // .size([height, SWITCH_CONST * (width - 150) / 2]);
 
-                  tree(root)
+                  tree(root);
 
                   var nodes = root.descendants();
                   var links = root.links();
                   // Set both root nodes to be dead center vertically
-                  nodes[0].x = height / 2
+                  // nodes[0].x = height / 2;
+                  // nodes[0].y = width / 2;
 
+                  console.log(nodes);
 
 
                   var link = g.selectAll('.link')
                         .data(links)
-                        .enter()
+                        .enter();
 
                   link.append('path')
                     .attr('class', 'link')
                     .attr('d', function(d) {
-                      return 'M' + d.target.y + ',' + d.target.x + 'C' + (d.target.y + d.source.y) / 2.5 + ',' + d.target.x + ' ' + (d.target.y + d.source.y) / 2 + ',' + d.source.x + ' ' + d.source.y + ',' + d.source.x;
+                      return 'M' + (SWITCH_CONST * d.target.y) + ',' + d.target.x +
+                        'C' + (SWITCH_CONST * (d.target.y + d.source.y) / 2.5) + ',' + d.target.x +
+                        ' ' + (SWITCH_CONST * (d.target.y + d.source.y) / 2) + ',' + d.source.x +
+                        ' ' + (SWITCH_CONST * d.source.y) + ',' + d.source.x;
                     });
 
 
@@ -201,7 +140,6 @@
                         .attr('width', radius * 2)
                         .attr('xlink:href', function (d) { return d.data.img; });
 
-
                   // Create nodes
                   var node = g.selectAll('.node')
                         .data(nodes)
@@ -211,21 +149,20 @@
                           return 'node' + (d.children ? ' node--internal' : ' node--leaf');
                         })
                         .attr('transform', function(d) {
-                          return 'translate(' + d.y + ',' + d.x + ')';
-                        })
+                          return 'translate(' + (SWITCH_CONST * d.y) + ',' + d.x + ')';
+                        });
 
                   node.append('circle')
                     .style('fill', function(d, i) { return 'url(#image' + i + ')'; })
                     .attr('r', radius);
 
-                  node.append('text')
-                    .attr('dy', 3)
-                    .style('text-anchor', 'middle')
-                    .text(function(d) {
-                      return d.data.name
-                    });
+                  // node.append('text')
+                  //   .attr('dy', 3)
+                  //   .style('text-anchor', 'middle')
+                  //   .text(function(d) {
+                  //     return d.data.name;
+                  //   });
                 }
-
               });
             });
           });
