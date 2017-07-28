@@ -327,7 +327,7 @@
                 // this uses file-saver.js in public/lib
                 saveAs(blob, fileName);
               }).error(function (data, status, headers, config) {
-                console.log('Unable to download the file')
+                Notification.error({ message: 'Unable to download the file', title: '<i class="glyphicon glyphicon-remove"></i> Download Error!' });
               }); 
             }
             function previousSubmissionDownload() {
@@ -360,14 +360,30 @@
                     Notification.success({ message: response.data.message, title: '<i class="glyphicon glyphicon-ok"></i> Submitted!' });
                   });
                 }, function (response) {
-                  console.log(response)
                   if (response.status > 0) {
                     vm.closeSubmissionModal();
-                    Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Error! Error Submitting!' });
+                    Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Error Submitting!' });
                   }
                 }, function (evt) {
                   vm.submissionProgress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total, 10));
                 });
+              } else {
+                vm.closeSubmissionModal();
+              }
+              if (vm.submissionMessage) {
+                $http({
+                  url: '/api/workers/task/file/sendMessage',
+                  method: "POST",
+                  data: {
+                    taskId: vm.tasks[vm.selectedTask]._id,
+                    message: vm.submissionMessage
+                  },
+                }).success(function (response) {
+                  Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> Submitted!' });
+                }).error(function (response) {
+                  
+                  Notification.error({ message: response.message, title: '<i class="glyphicon glyphicon-remove"></i> Message Error!' });
+                }); 
               }
             };
             previousSubmissionDownload();
