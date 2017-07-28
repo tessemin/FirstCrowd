@@ -58,6 +58,8 @@
           }
 
           getGraph().then(function(rootNode) {
+            centerHome();
+            makeHomeButton();
             getThreeCustLevels(rootNode).then(function(data1) {
               getThreeSuppLevels(rootNode).then(function(data2) {
 
@@ -103,11 +105,10 @@
                   var nodes = root.descendants();
                   var links = root.links();
                   // Set both root nodes to be dead center vertically
-                  // nodes[0].x = height / 2;
-                  // nodes[0].y = width / 2;
 
-                  console.log(nodes);
-
+                  nodes.forEach(function(node) {
+                    node.y = node.y * SWITCH_CONST;
+                  });
 
                   var link = g.selectAll('.link')
                         .data(links)
@@ -116,10 +117,10 @@
                   link.append('path')
                     .attr('class', 'link')
                     .attr('d', function(d) {
-                      return 'M' + (SWITCH_CONST * d.target.y) + ',' + d.target.x +
-                        'C' + (SWITCH_CONST * (d.target.y + d.source.y) / 2.5) + ',' + d.target.x +
-                        ' ' + (SWITCH_CONST * (d.target.y + d.source.y) / 2) + ',' + d.source.x +
-                        ' ' + (SWITCH_CONST * d.source.y) + ',' + d.source.x;
+                      return 'M' + d.target.y + ',' + d.target.x +
+                        'C' + (d.target.y + d.source.y) / 2.5 + ',' + d.target.x +
+                        ' ' + (d.target.y + d.source.y) / 2 + ',' + d.source.x +
+                        ' ' + d.source.y + ',' + d.source.x;
                     });
 
 
@@ -149,11 +150,12 @@
                           return 'node' + (d.children ? ' node--internal' : ' node--leaf');
                         })
                         .attr('transform', function(d) {
-                          return 'translate(' + (SWITCH_CONST * d.y) + ',' + d.x + ')';
+                          return 'translate(' + d.y + ',' + d.x + ')';
                         });
 
                   node.append('circle')
                     .style('fill', function(d, i) { return 'url(#image' + i + ')'; })
+                    .on('click', centerNode)
                     .attr('r', radius);
 
                   // node.append('text')
@@ -165,8 +167,45 @@
                 }
               });
             });
-          });
 
+            //
+            // functions!
+            //
+                function makeHomeButton() {
+                  var home = d3.select('#graph')
+                        .append('span')
+                        .style('margin-top', function() { return (header.offsetHeight - 30) + 'px'; })
+                        .attr('class', 'glyphicon glyphicon-home home')
+                        .on('click', centerHome)
+                        .on('mousedown', function() {
+                          d3.select(this).style('color', 'gray');
+                        })
+                        .on('mouseup', function() {
+                          d3.select(this).style('color', 'lightgray');
+                        });
+                }
+
+            function centerNode(source) {
+              var t = d3.zoomTransform(group.node());
+              var x = -source.y;
+              var y = -source.x;
+              x = x * t.k + width / 2;
+              y = y * t.k + height / 2;
+              d3.selectAll('svg')
+                .transition()
+                .duration(duration)
+                .call(zoomListener.transform, d3.zoomIdentity.translate(x, y).scale(t.k));
+            }
+
+
+
+
+            function centerHome() {
+              rootNode.x = 0;
+              rootNode.y = 0;
+              centerNode(rootNode);
+            }
+          });
 
 
           //   // if ($scope)
