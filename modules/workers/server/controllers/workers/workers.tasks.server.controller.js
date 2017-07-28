@@ -247,7 +247,7 @@ exports.getAllOpenTasks = function (req, res) {
           });
         }
         if (tasks)
-          tasks = removeExtraWorkers(tasks, 'This is not an ID');
+          tasks = removeExtraWorkers(tasks, typeObj._id);
         return res.json({ tasks: tasks });
       });
   });
@@ -303,21 +303,31 @@ exports.getTasksWithOptions = function(req, res) {
   });
 };
 
-function removeExtraWorkers(tasks, workerId) {
-  if (tasks) {
-    var job = null;
-    if (Array.isArray(tasks)) { // multiple tasks
-      for (var task = 0; task < tasks.length; task++)
-        if (tasks[task].jobs)
-          for (job = 0; job < tasks[task].jobs.length; job++)
-            if (tasks[task].jobs[job].worker.workerId.toString() !== workerId.toString())
-              tasks[task].jobs.splice(job, 1);
+function removeExtraWorkers(task, workerId) {
+  if (task) {
+    console.log(task)
+    if (Array.isArray(task)) { // multiple tasks
+      task = task.map(function(task) {
+        return removeExtraWorkers(task, workerId)
+      });
     } else { // single task
-      if (tasks.jobs)
-        for (job = 0; job < tasks.jobs.length; job++)
-          if (tasks.jobs[job].worker.workerId.toString() !== workerId.toString())
-            tasks.jobs.splice(job, 1);
+      var stringWorkerId = workerId.toString();
+      if (task.jobs)
+        for (var job = 0; job < task.jobs.length; job++)
+          if (task.jobs[job].worker.workerId.toString() === stringWorkerId) {
+            task.jobs = [task.jobs[job]];
+            break;
+          }
+      if (task.payment && task.payment.bidding && task.payment.bidding.bidable && task.bids && task.bids.length > 0) {
+        for (var bid = 0; bid < task.bids.length; bid++) {
+          if (task.bids[bid].worker.workerId.toString() === stringWorkerId) {
+            task.bids = [task.bids[bid]];
+            break;
+          }
+        }
+      }
     }
+    console.log(task)
   }
-  return tasks;
+  return task;
 }
