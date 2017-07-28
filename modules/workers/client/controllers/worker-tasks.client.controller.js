@@ -299,6 +299,7 @@
             vm.submittedFiles = null;
             vm.submissionProgress = 0;
             vm.previouslySubmittedFiles = [];
+            vm.submissionMessage = '';
             vm.openSubmissionModal = function () {
               $('#submissionModal').modal();
             };
@@ -329,15 +330,29 @@
               }).error(function (data, status, headers, config) {
                 Notification.error({ message: 'Unable to download the file', title: '<i class="glyphicon glyphicon-remove"></i> Download Error!' });
               }); 
-            }
-            function previousSubmissionDownload() {
+            };
+            function previousSubmissionDownloadables() {
               WorkersService.getDownloadableTaskFiles({
                 taskId: vm.tasks[vm.selectedTask]._id
               })
               .then(function(response) {
-                if (response.files) {
-                  vm.previouslySubmittedFilesKeys = Object.keys(response.files);
-                  vm.previouslySubmittedFiles = response.files;
+                if (response.down) {
+                  var totalFiles = 0;
+                  var totalSubmissions = 0;
+                  vm.previouslySubmittedFiles = [];
+                  response.down.forEach(function(res) {
+                    if (res.files && res.files.length > 0) {
+                      totalFiles += res.files.length;
+                      totalSubmissions++;
+                      if (totalFiles < 15 && totalSubmissions < 5)
+                        vm.previouslySubmittedFiles = vm.previouslySubmittedFiles.concat(res);
+                    }
+                  });
+                  vm.previouslySubmittedFiles = vm.previouslySubmittedFiles.map(function(prev) {
+                    if (prev.messages && prev.messages.worker)
+                      prev.messages.worker = prev.messages.worker.replace(/###\d+###/, '').trim();
+                    return prev;
+                  });
                 }
               })
               .catch(function(response) {
@@ -352,7 +367,8 @@
                   method: 'POST',
                   file: files,
                   data: {
-                    taskId: task._id
+                    taskId: task._id,
+                    message: vm.submissionMessage
                   }
                 }).then(function (response) {
                   $timeout(function () {
@@ -367,10 +383,8 @@
                 }, function (evt) {
                   vm.submissionProgress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total, 10));
                 });
-              } else {
-                vm.closeSubmissionModal();
               }
-              if (vm.submissionMessage) {
+              /* if (vm.submissionMessage) {
                 $http({
                   url: '/api/workers/task/file/sendMessage',
                   method: "POST",
@@ -384,9 +398,9 @@
                   
                   Notification.error({ message: response.message, title: '<i class="glyphicon glyphicon-remove"></i> Message Error!' });
                 }); 
-              }
+              } */
             };
-            previousSubmissionDownload();
+            previousSubmissionDownloadables();
             vm.openSubmissionModal();
             break;
           default:

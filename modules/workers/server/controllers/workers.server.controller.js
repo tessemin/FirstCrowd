@@ -11,5 +11,6 @@ var _ = require('lodash'),
  */
 module.exports = _.extend(
   require('./workers/workers.tasks.server.controller'),
-  require('./workers/workers.status.server.controller')
+  require('./workers/workers.status.server.controller'),
+  require('./workers/workers.file.server.controller')
 );
