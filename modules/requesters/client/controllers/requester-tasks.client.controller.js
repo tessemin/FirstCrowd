@@ -66,7 +66,8 @@
             'taskActions': taskActions,
             'taskRef': task,
             'bidable': task.payment.bidding.bidable,
-            'bids': task.bids
+            'bids': task.bids,
+            'multiplicity': task.multiplicity
           });
         }
       }
@@ -328,6 +329,7 @@
     (function paypalButtonRender() {
       activateTaskId = null;
       var executePayTaskId = null;
+      var payTaskBidId = null;
       paypal.Button.render({
         env: 'sandbox', // Or 'sandbox'
         commit: true, // Show a 'Pay Now' button
@@ -343,7 +345,8 @@
             'payment/create';
           var request = { taskId: activateTaskId };
           if (vm.selectedBid !== -1) {
-            request.bidId = vm.tasks[vm.selectedTask].bids[vm.selectedBid]._id;
+            payTaskBidId = data.bidId;
+            request.bidId = payTaskBidId;
             console.log('bid ' + vm.selectedBid + ' id ' + request.bidId);
           }
           console.log('ppoint1');
@@ -365,12 +368,17 @@
             paymentID: data.paymentID,
             payerID: data.payerID,
             taskId: executePayTaskId,
-            bidId: vm.tasks[vm.selectedTask].bids[vm.selectedBid]._id
+            bidId: payTaskBidId
           }).then(function(response) {
             // payment completed success
             Notification.success({ message: response, title: '<i class="glyphicon glyphicon-ok"></i> Payment Accepted!' });
             if (vm.selectedBid) {
               // approve worker for task
+              var task = vm.tasks[getIndexFromTaskId(activateTaskId)];
+              task.multiplicity -= 1;
+              if(task.multiplicity === 0) {
+                task.status = 'taken';
+              }
             } else {
               vm.tasks[getIndexFromTaskId(activateTaskId)].status = 'open';
             }
