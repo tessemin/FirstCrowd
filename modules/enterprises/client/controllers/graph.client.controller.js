@@ -46,17 +46,17 @@
     }
 
     function viewCatalog(obj) {
-      EnterprisesService.getServices({ enterpriseId: obj.selected.enterpriseId }).then(function(res) {
+      EnterprisesService.getServices({ enterpriseId: obj.selected._id}).then(function(res) {
         console.log(res);
         // vm.list = res.
       });
-      EnterprisesService.getProducts({ enterpriseId: obj.selected.enterpriseId }).then(function(res) {
+      EnterprisesService.getProducts({ enterpriseId: obj.selected._id }).then(function(res) {
         console.log(res);
         // vm.list = res.
       });
     }
     function viewDemands(obj) {
-      EnterprisesService.getDemands({ enterpriseId: obj.selected.enterpriseId }).then(function(res) {
+      EnterprisesService.getDemands({ enterpriseId: obj.selected._id }).then(function(res) {
         console.log(res);
         vm.list = res.demands;
       });
@@ -66,17 +66,20 @@
       vm.sidebar = true;
       vm.head = 'Suppliers';
       vm.header = 'Suppliers for ';
-      EnterprisesService.getSuppliers({ enterpriseId: obj.selected.enterpriseId }).then(function(res) {
+      EnterprisesService.getSuppliers({ enterpriseId: obj.selected._id }).then(function(res) {
         vm.list = res.suppliers;
+        console.log(vm.list);
       });
+      console.log(obj.selected);
     }
     function viewCustomers(obj) {
       vm.selected = obj.selected;
       vm.sidebar = true;
       vm.head = 'Customers';
       vm.header = 'Customers for ';
-      EnterprisesService.getCustomers({ enterpriseId: obj.selected.enterpriseId }).then(function(res) {
+      EnterprisesService.getCustomers({ enterpriseId: obj.selected._id }).then(function(res) {
         vm.list = res.customers;
+        console.log(vm.list);
       });
     }
     function viewCompetitors(obj) {
@@ -84,7 +87,7 @@
       vm.sidebar = true;
       vm.head = 'Competitors';
       vm.header = 'Competitors for ';
-      EnterprisesService.getCompetitors({ enterpriseId: obj.selected.enterpriseId }).then(function(res) {
+      EnterprisesService.getCompetitors({ enterpriseId: obj.selected._id }).then(function(res) {
         vm.list = res.competitors;
         console.log(vm.list);
       });
