@@ -235,6 +235,7 @@
               bid: vm.tasks[index].payment.bidding.myBid
             })
               .then(function(response) {
+                vm.tasks[index].payment.bidding.bids.push({ bid: vm.tasks[index].payment.bidding.myBid });
                 Notification.success({ message: response.messsage, title: '<i class="glyphicon glyphicon-ok"></i> Bid submitted!' });
               })
               .catch(function(response) {
