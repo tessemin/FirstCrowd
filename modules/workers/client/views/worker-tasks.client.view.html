@@ -205,11 +205,11 @@
           <div class="tasks-cell" ng-if="vm.taskCategory.id === 'active'" ng-click="$event.stopPropagation()">
             <rzslider class="worker-slider" rz-slider-model="task.progress" rz-slider-options="vm.getSliderOptions(vm.tasks.indexOf(task))"></rzslider>
           </div>
-          <div class="tasks-cell" ng-if="task.status === 'open' && task.payment.bidding.bidable">
+          <div class="tasks-cell" ng-if="task.payment.bidding.bidable && task.payment.bidding.bids.length === 0">
             ${{task.payment.bidding.startingPrice}} (negotiable)
           </div>
-          <div class="tasks-cell" ng-if="task.status !== 'open' && task.payment.bidding.bidable">
-            $VALUE OF YOUR BID
+          <div class="tasks-cell" ng-if="task.payment.bidding.bidable && task.payment.bidding.bids.length === 1">
+            ${{task.payment.bidding.bids[0].bid}} <span ng-if="task.status === 'open'">(your bid)</span>
           </div>
           <div class="tasks-cell" ng-if="!task.payment.bidding.bidable">
             ${{task.payment.staticPrice}}
