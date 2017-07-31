@@ -18,14 +18,38 @@
         url: '/tasks',
         templateUrl: '/modules/workers/client/views/worker-tasks.client.view.html',
         controller: 'WorkerTasksController',
-        controllerAs: 'vm'
+        controllerAs: 'vm',
+        resolve: {
+          workerResolve: newWorker
+        },
+        data: {
+          roles: ['user', 'admin'],
+          pageTitle: 'Workers Tasks'
+        }
+      })
+      .state('workers.messages', {
+        url: '/messages',
+        templateUrl: '/modules/workers/client/views/messages-worker.client.view.html',
+        controller: 'WorkersController',
+        controllerAs: 'vm',
+        resolve: {
+          workerResolve: newWorker
+        },
+        data: {
+          roles: ['user', 'admin'],
+          pageTitle: 'Workers Messages'
+        }
       })
       .state('workers.list', {
-        url: '',
+        url: '/list',
         templateUrl: '/modules/workers/client/views/list-workers.client.view.html',
         controller: 'WorkersListController',
         controllerAs: 'vm',
+        resolve: {
+          workerResolve: newWorker
+        },
         data: {
+          roles: ['user', 'admin'],
           pageTitle: 'Workers List'
         }
       })
@@ -43,12 +67,12 @@
         }
       })
       .state('workers.edit', {
-        url: '/:workerId/edit',
+        url: '/edit',
         templateUrl: '/modules/workers/client/views/form-worker.client.view.html',
         controller: 'WorkersController',
         controllerAs: 'vm',
         resolve: {
-          workerResolve: getWorker
+          workerResolve: newWorker
         },
         data: {
           roles: ['user', 'admin'],
@@ -61,9 +85,10 @@
         controller: 'WorkersController',
         controllerAs: 'vm',
         resolve: {
-          workerResolve: getWorker
+          workerResolve: newWorker
         },
         data: {
+          roles: ['user', 'admin'],
           pageTitle: 'Worker {{ workerResolve.name }}'
         }
       });
