@@ -349,8 +349,8 @@
                     }
                   });
                   vm.previouslySubmittedFiles = vm.previouslySubmittedFiles.map(function(prev) {
-                    if (prev.messages && prev.messages.worker)
-                      prev.messages.worker = prev.messages.worker.replace(/###\d+###/, '').trim();
+                    if (prev.messages && prev.messages.submission)
+                      prev.messages.submission = prev.messages.submission.replace('###', '').trim();
                     return prev;
                   });
                 }

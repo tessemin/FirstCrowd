@@ -29,7 +29,7 @@
             <ul>
               <li ng-repeat="prev in vm.previouslySubmittedFiles" style="font:smaller">
                 <h5 class="keyHeader">{{vm.minutesToReadable(prev.timeStamp)}}</h5>
-                <textarea ng-if="prev.messages.worker" class="form-control resizeVertical" rows="3">{{prev.messages.worker}}</textarea>
+                <textarea ng-if="prev.messages.submission" class="form-control resizeVertical" rows="3">{{prev.messages.submission}}</textarea>
                 <div ng-if="prev.files && prev.files.length > 0">
                   Attachments:
                   <span ng-repeat="file in prev.files">
@@ -39,7 +39,7 @@
                 </div>
               </li>
             </ul>
-            <a ui-sref="workers.messages">See all submissions and messages</a>
+            <a ui-sref="workers.messages" ng-click="vm.closeSubmissionModal()">See all submissions and messages</a>
           </div>
         </div>
         <div class="modal-footer">

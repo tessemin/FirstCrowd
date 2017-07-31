@@ -21,35 +21,46 @@ var getDirectories = taskFile.getDirectories,
   getUserTypeObject = taskTools.getUserTypeObject,
   taskFindOne = taskSearch.taskFindOne;
 
-function getWorkerMessagePath(taskId, typeId, timeInMin, callBack) {
+function getWorkerMsgFileName() {
+  return 'workerMessages.txt'
+}
+
+function getRequesterMsgFileName() {
+  return 'requesterMessages.txt';
+}
+
+function getSubmissionMsgFileName() {
+  return 'submissionMessages.txt';
+}
+
+function getFilePath(taskId, workerId, timeInMin, callBack) {
   if (!timeInMin)
     timeInMin = getTimeInMinutes();
-  var dir = path.resolve('./resources/taskSubmissions/taskId_' + taskId.toString() + '/workerId_' + typeId.toString() + '/' + timeInMin + '/messages')
-  var filePath = path.resolve(dir + '/workerMessages.txt');
+  var dir = './resources/taskSubmissions';
+  if (taskId) {
+    dir += '/taskId_' + taskId.toString();
+    if (workerId) {
+      dir += '/workerId_' + workerId.toString();
+      if (timeInMin > 0)
+        dir += '/' + timeInMin;
+    }
+  }
+  dir = path.resolve(dir);
   makeDirectory(dir, function (err) {
     if (err)
       return callBack(err)
-    return callBack(null, filePath)
+    return callBack(null, dir)
   });
 }
 
-function getWorkerMessageInTaskPath() {
-  return '/messages/workerMessages.txt';
-}
-
-function getRequesterMessageInTaskPath() {
-  return '/messages/requesterMessages.txt';
-}
-
-function getRequesterMessagePath(taskId, workerId, timeInMin, callBack) {
+function getMessagePath(taskId, workerId, timeInMin, callBack) {
   if (!timeInMin)
     timeInMin = getTimeInMinutes();
-  var dir = path.resolve('./resources/taskSubmissions/taskId_' + taskId.toString() + '/workerId_' + workerId.toString() + '/' + timeInMin + '/messages')
-  var filePath = path.resolve(dir + '/requesterMessages.txt');
+  var dir = path.resolve('./resources/taskSubmissions/taskId_' + taskId.toString() + '/workerId_' + workerId.toString() + '/' + timeInMin + '/messages');
   makeDirectory(dir, function (err) {
     if (err)
       return callBack(err)
-    return callBack(null, filePath)
+    return callBack(null, dir)
   });
 }
 
@@ -68,15 +79,41 @@ function getFilesInTask(taskDir, forEach, callBack) {
             timeStamp: sub
           })
       });
-      var workerMessagePath = path.resolve(subDir + '/' + getWorkerMessageInTaskPath())
-      var workerMessage = '';
-      if (fs.existsSync(workerMessagePath))
-        workerMessage = fs.readFileSync(workerMessagePath, 'utf8');
-      var requesterMessagePath = path.resolve(subDir + '/' + getRequesterMessageInTaskPath())
-      var requesterMessage = '';
-      if (fs.existsSync(requesterMessagePath))
-        requesterMessage = fs.readFileSync(requesterMessagePath, 'utf8');
-      forEach(sub, files, { requester: requesterMessage, worker: workerMessage });
+      var messagePath = path.resolve(subDir + '/messages/' + getRequesterMsgFileName());
+      if (fs.existsSync(submissionMessagePath))
+        var requesterMessage = fs.readFileSync(messagePath, 'utf8');
+      messagePath = path.resolve(subDir + '/messages/' + getWorkerMsgFileName());
+      if (fs.existsSync(submissionMessagePath))
+        var workerMessage = fs.readFileSync(messagePath, 'utf8');
+      messagePath = path.resolve(subDir + '/messages/' + getSubmissionMsgFileName());
+      if (fs.existsSync(submissionMessagePath))
+        var submissionMessage = fs.readFileSync(messagePath, 'utf8');
+      forEach(sub, files, { submission: submissionMessage, worker: workerMessage, requester: requesterMessage });
+    }
+  });
+  callBack();
+}
+
+function getFilesInTask(taskDir, forEach, callBack) {
+  var subDir = getDirectories(taskDir);
+  subDir.reverse();
+  subDir.forEach(function (sub) {
+    var subDir = path.resolve(taskDir + '/' + sub);
+    if (fs.existsSync(subDir)) {
+      var timeStampFiles = fs.readdirSync(subDir);
+      var files = [];
+      timeStampFiles.forEach(function(file) {
+        if (!fs.lstatSync(path.resolve(subDir + '/' + file)).isDirectory())
+          files.push({
+            name: file,
+            timeStamp: sub
+          })
+      });
+      var submissionMessagePath = path.resolve(subDir + '/messages/' + getSubmissionMsgFileName())
+      var submissionMessage = '';
+      if (fs.existsSync(submissionMessagePath))
+        submissionMessage = fs.readFileSync(submissionMessagePath, 'utf8');
+      forEach(sub, files, { submission: submissionMessage});
     }
   });
   callBack();
@@ -157,75 +194,72 @@ exports.taskFiles = {
       
       // do the actual file submission
       var files = req.files.file;
+      console.log(files)
       var fileIndex = 0;
       var stringInMinutes = getTimeInMinutes();
-      var filePath = '/resources/taskSubmissions/taskId_' + task._id.toString() + '/workerId_' + typeObj._id.toString() + '/' + stringInMinutes + '/';
-      writeFilesToPath(files[fileIndex], filePath, function (err) { // callBack function
-        if (err)
-          return res.status(422).send({
-            message: 'Error writing files to proper path.'
-          });
-        if (req.body.message) {
-          sendWorkerMessage(req.body.message, task._id, typeObj._id, stringInMinutes, function (err) {
-            if (err) {
-              console.log(err)
-              return res.status(422).send({
-                message: 'Files submitted, error sending message.'
+      getFilePath(task._id, typeObj._id, stringInMinutes, function (err, filePath) {
+        writeFilesToPath(files[fileIndex], filePath, function (err) {
+          if (err)
+            return res.status(422).send({
+              message: 'Error writing files to proper path.'
+            });
+          if (req.body.message && req.body.message.length > 0) {
+            sendSubmissionMessage(req.body.message, task._id, typeObj._id, stringInMinutes, function (err) {
+              if (err) {
+                return res.status(422).send({
+                  message: 'Files submitted, error sending message.'
+                });
+              }
+              return res.status(200).send({
+                message: 'Submission Successful!'
               });
-            }
+            });
+          } else {
             return res.status(200).send({
               message: 'Submission Successful!'
             });
-          });
-        } else {
-          return res.status(200).send({
-            message: 'Submission Successful!'
-          });
-        }
-      }, function(filePath, callBack, next) { // next function
-        fileIndex++;
-        if (fileIndex < files.length) {
-          writeFilesToPath(files[fileIndex], filePath, callBack, next);
-        } else {
-          callBack();
-        }
+          }
+        }, function(filePath, callBack, next) { // next function
+          fileIndex++;
+          if (fileIndex < files.length) {
+            writeFilesToPath(files[fileIndex], filePath, callBack, next);
+          } else {
+            callBack();
+          }
+        });
       });
     });
   },
   getDownloadables: function (req, res) {
     setUpFileExchange(req, res, function(typeObj, task, jobIndex) {
-      var taskWorkerDir = path.resolve('./resources/taskSubmissions/taskId_' + task._id.toString() + '/workerId_' + typeObj._id.toString() + '/');
-      if (!fs.existsSync(taskWorkerDir)){
-        return res.status(200).send({
-          files: []
-        });
-      } else {
+      getFilePath(task._id, typeObj._id, -1, function (err, taskWorkerDir) {
         var files = [];
         getFilesInTask(taskWorkerDir, function(sub, fils, messages) {
           files.push({ files: fils, messages: messages, timeStamp: sub });
         }, function () {
-          console.log(files)
           return res.status(200).send({ down: files });
         });
-      }
+      });
     });
   },
   downloadTaskFile: function(req, res) {
     setUpFileExchange(req, res, function(typeObj, task, jobIndex) {
       var file = {};
       var filename = file.name = req.body.fileName;
-      var filePath = file.path = path.resolve('./resources/taskSubmissions/taskId_' + task._id.toString() + '/workerId_' + typeObj._id.toString() + '/' + req.body.timeStamp + '/' + filename);
-      if (!fs.existsSync(filePath)) {
-        return res.status(422).send({
-          message: 'That file directory is wrong.'
-        });
-      }
-      var stat = fs.statSync(filePath);
-      var fileToSend = fs.readFileSync(filePath);
-      res.set('Content-Type', '*');
-      res.set('Content-Length', stat.size);
-      res.set('Content-Disposition', filename);
-      res.send(fileToSend);
+      getFilePath(task._id, typeObj._id, req.body.timeStamp, function (err, filePath) {
+        filePath = file.path = path.resolve(filePath + '/' + filename);
+        if (!fs.existsSync(filePath)) {
+          return res.status(422).send({
+            message: 'That file doesn\'t exist.'
+          });
+        }
+        var stat = fs.statSync(filePath);
+        var fileToSend = fs.readFileSync(filePath);
+        res.set('Content-Type', '*');
+        res.set('Content-Length', stat.size);
+        res.set('Content-Disposition', filename);
+        res.send(fileToSend);
+      });
     });
   },
   sendMessage: function(req, res) {
@@ -265,15 +299,24 @@ exports.taskFiles = {
   }
 };
 
-function sendWorkerMessage(sendMessage, taskId, typeId, timeInMin, callBack) {
-  if (sendMessage) {
+function sendWorkerMessage(message, taskId, workerId, timeInMin, callBack) {
+  return sendMessage(message, taskId, workerId, timeInMin, getWorkerMsgFileName(), callBack);
+}
+
+function sendSubmissionMessage(message, taskId, workerId, timeInMin, callBack) {
+  return sendMessage(message, taskId, workerId, timeInMin, getSubmissionMsgFileName(), callBack);
+}
+
+function sendMessage(message, taskId, workerId, timeInMin, fileName, callBack) {
+  if (message) {
     if (!timeInMin)
       timeInMin = getTimeInMinutes();
-    var message = '\n###' + timeInMin + '###\n' + sendMessage + '\n';
-    getWorkerMessagePath(taskId, typeId, timeInMin, function (err, workerPath) {
+    message = message + '\n###\n';
+    getMessagePath(taskId, workerId, timeInMin, function (err, msgPath) {
       if (err)
         return callBack(err)
-      fs.appendFile(workerPath, message, function (err) {
+      msgPath = path.resolve(msgPath + '/' + fileName);
+      fs.appendFile(msgPath, message, function (err) {
         if (err) 
           return callBack(err)
         return callBack();

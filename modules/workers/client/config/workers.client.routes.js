@@ -30,7 +30,7 @@
       .state('workers.messages', {
         url: '/messages',
         templateUrl: '/modules/workers/client/views/messages-worker.client.view.html',
-        controller: 'WorkersController',
+        controller: 'WorkersMessagesController',
         controllerAs: 'vm',
         resolve: {
           workerResolve: newWorker

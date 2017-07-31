@@ -1,1 +1,59 @@
-<p>hiiii</p>
+<section class="container worker-messages row">
+  <div class="col-md-3 message-sidebar">
+    <div class="tab-surround">
+      <div class="row tab">
+        <div class="col-md-4 tab-col">
+          <button class="tablinks" ng-click="vm.sidebar.getTasks('active')">Active</button>
+        </div>
+        <div class="col-md-6 tab-col">
+          <button class="tablinks" ng-click="vm.sidebar.getTasks('uncompleted')">Uncompleted</button>
+        </div>
+      </div>
+      <div class="row tab">
+        <div class="col-md-6 tab-col">
+          <button class="tablinks" ng-click="vm.sidebar.getTasks('completed')">Completed</button>
+        </div>
+        <div class="col-md-4 tab-col">
+          <button class="tablinks" ng-click="vm.sidebar.getTasks('available')">Available</button>
+        </div>
+      </div>
+      <div class="row tab">
+        <div class="col-md-4 tab-col">
+          <button class="tablinks" ng-click="vm.sidebar.getTasks('recomended')">Recomended</button>
+        </div>
+        <div class="col-md-6 tab-col">
+          <button class="tablinks" ng-click="vm.sidebar.getTasks('recent')">Recent</button>
+        </div>
+      </div>
+    </div>
+    <div class="tasks container-fluid">
+      <div class="row">
+        <div class="col-md-12 sidebar-displayTasks">
+          <div class="sidebar-name" ng-click="vm.loadMessages(task)" ng-repeat="task in vm.sidebar.tasks">{{task.title}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-9 messageView container-fluid">
+    <div class="row">
+      <span class="messages-title col-md-12" ng-if="vm.messageView.task.title">Messages For {{vm.messageView.task.title}}:</span>
+      <span class="messages-title col-md-12" ng-if="!vm.messageView.task.title">No Task Selected</span>
+    </div>
+    <div class="row tab">
+      <div class="col-md-2 tab-col">
+        <button class="tablinks" ng-click="vm.sidebar.sortTasks('all')">All</button>
+      </div>
+      <div class="col-md-2 tab-col">
+        <button class="tablinks" ng-click="vm.sidebar.sortTasks('messages')">Messages</button>
+      </div>
+      <div class="col-md-2 tab-col">
+        <button class="tablinks" ng-click="vm.sidebar.sortTasks('submissions')">Submissions</button>
+      </div>
+    </div>
+    <div class="messageView-messages" ng-repeat="messages in vm.messageView.messages">
+      <div class="message">
+        <div ng-if="messages.files">
+      </div>
+    </div>
+  </div>
+</section>

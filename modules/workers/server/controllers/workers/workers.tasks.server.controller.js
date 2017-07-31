@@ -84,7 +84,7 @@ exports.activeTask = {
     getUserTypeObject(req, res, function(typeObj) {
       if (typeObj.worker) {
         
-        taskFindMany(getIdsInArray(typeObj.worker.activeTasks), false, function(err, tasks) {
+        taskFindMany(getIdsInArray(typeObj.worker.activeTasks), true, function(err, tasks) {
           if (err) {
             return res.status(422).send({
               message: errorHandler.getErrorMessage(err)
@@ -112,7 +112,8 @@ exports.rejectedTask = {
   all: function (req, res) {
     getUserTypeObject(req, res, function(typeObj) {
       if (typeObj.worker) {
-        taskFindMany(getIdsInArray(typeObj.worker.rejectedTasks), function(err, tasks) {
+        console.log(getIdsInArray(typeObj.worker.rejectedTasks));
+        taskFindMany(getIdsInArray(typeObj.worker.rejectedTasks), true, function(err, tasks) {
           if (err) {
             return res.status(422).send({
               message: errorHandler.getErrorMessage(err)
@@ -140,7 +141,7 @@ exports.completedTask = {
   all: function (req, res) {
     getUserTypeObject(req, res, function(typeObj) {
       if (typeObj.worker) {
-        taskFindMany(getIdsInArray(typeObj.worker.completedTasks), false, function(err, tasks) {
+        taskFindMany(getIdsInArray(typeObj.worker.completedTasks), true, function(err, tasks) {
           if (err) {
             return res.status(422).send({
               message: errorHandler.getErrorMessage(err)
@@ -168,7 +169,7 @@ exports.inactiveTask = {
   all: function (req, res) {
     getUserTypeObject(req, res, function(typeObj) {
       if (typeObj.worker) {
-        taskFindMany(getIdsInArray(typeObj.worker.inactiveTasks), false, function(err, tasks) {
+        taskFindMany(getIdsInArray(typeObj.worker.inactiveTasks), true, function(err, tasks) {
           if (err) {
             return res.status(422).send({
               message: errorHandler.getErrorMessage(err)
@@ -305,10 +306,9 @@ exports.getTasksWithOptions = function(req, res) {
 
 function removeExtraWorkers(task, workerId) {
   if (task) {
-    console.log(task)
     if (Array.isArray(task)) { // multiple tasks
       task = task.map(function(task) {
-        return removeExtraWorkers(task, workerId)
+        return removeExtraWorkers(task, workerId);
       });
     } else { // single task
       var stringWorkerId = workerId.toString();
@@ -327,7 +327,6 @@ function removeExtraWorkers(task, workerId) {
         }
       }
     }
-    console.log(task)
   }
   return task;
 }

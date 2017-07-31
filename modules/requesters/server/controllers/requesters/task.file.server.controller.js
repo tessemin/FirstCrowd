@@ -31,12 +31,12 @@ function writeFilesToPath(file, dirPath, callBack, next) {
     var oldPath = file.path;
     // set the correct path for the file not the temporary one from the API:
     file.name = file.name.replace(/ /g, '_');
-    var dir = path.resolve('.' + dirPath) ;
-    file.path = path.resolve(dir + '/' + file.name);
+    dirPath = path.resolve(dirPath);
+    file.path = path.resolve(dirPath + '/' + file.name);
     // copy the data from the req.files.file.path and paste it to file.path
-    makeDirectory(dir, function (err) {
+    makeDirectory(dirPath, function (err) {
       if (err) return callBack(err);
-      fs.access(dir, fs.constants.R_OK | fs.constants.W_OK, (err) => {
+      fs.access(dirPath, fs.constants.R_OK | fs.constants.W_OK, (err) => {
         if (err) return callBack(err);
         fs.writeFile(file.path, data, function (err) {
           if (err) return callBack(err);

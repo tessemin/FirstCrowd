@@ -20,6 +20,8 @@ var isRequester = taskDepend.isRequester,
 
 
 function taskFindMany(taskArray, secretAllowed, callBack) {
+  if (!taskArray || taskArray.length <= 0)
+    callBack(null, []);
   if (secretAllowed)
     Task.find({ '_id': { $in: taskArray } }, callBack);
   else
