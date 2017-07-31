@@ -155,8 +155,84 @@
 
                   node.append('circle')
                     .style('fill', function(d, i) { return 'url(#image' + i + ')'; })
-                    .on('click', centerNode)
-                    .attr('r', radius);
+                    .attr('r', radius)
+                    // .on('click', centerNode)
+ .on('dblclick', function(d) {
+
+                    d3.selectAll('text').remove();
+                    d3.selectAll('rect').remove();
+                    centerNode(d3.select(this)._groups[0][0]);
+                    scope.$parent.vm.chooseCompany({ selected: d3.select(this)._groups[0][0].__data__ });
+                  })
+                  .on('click', function(d, i) {
+                    d3.selectAll('text').remove();
+                    d3.selectAll('rect').remove();
+
+                    d3.select('#selected-circle').style('stroke', 'black').style('stroke-width', 1).attr('id', '');
+                    d3.select(this).transition().duration(300)
+                      .style('stroke', 'red')
+                      .style('stroke-width', 5)
+                      .attr('id', 'selected-circle');
+
+                    var items = [
+                      { 'func': centerNode, 'text': 'Center Graph on Company', 'y': 1 },
+                      { 'func': viewCatalog, 'text': 'View Product/Service Catalog', 'y': 2 },
+                      { 'func': viewDemands, 'text': 'View Demands', 'y': 3 },
+                      { 'func': viewSuppliers, 'text': 'View Suppliers', 'y': 4 },
+                      { 'func': viewCustomers, 'text': 'View Customers', 'y': 5 },
+                      { 'func': viewCompetitors, 'text': 'View Competitors', 'y': 6 }
+                    ];
+                    var menuWidth = 200;
+                    var itemHeight = 30;
+                    var coords = getElementCoords(d3.select(this)._groups[0][0],  d3.select(this)._groups[0][0].__data__);
+                    console.log(coords);
+                    var x = coords.x;
+                    // if (x + menuWidth > width) {
+                    //   x = x - 280;
+                    // }
+                    var y = coords.y;
+                    var menuLen = items.length * itemHeight;
+                    // if (y + menuLen > height) {
+                    //   y = y - 30;
+                    // }
+
+                    var menuItems = g.selectAll('rect').data(items).enter()
+                      .append('rect').attr('class', 'conmenu-items')
+                      .attr('width', menuWidth).attr('height', itemHeight)
+                      .style('fill', '#d3d3d3')
+                      .on('mouseout', function(d) {
+                        d3.select(this).style('fill', '#d3d3d3');
+                      })
+                      .on('mouseover', function(d) {
+                        d3.select(this).style('fill', '#fff');
+                      })
+                      .on('click', function(d) {
+                        d3.selectAll('text').remove();
+                        d3.selectAll('rect').remove();
+
+                        if (d.func === centerNode) {
+                          d.func(d3.select('#selected-circle')._groups[0][0]);
+                        } else {
+                          d.func(d3.select('#selected-circle')._groups[0][0].__data__);
+                        }
+                      })
+                      .style('stroke', 'black')
+                      .style('stroke-width', 0.5)
+                      .attr('x', x)
+                      .attr('y', function(d) {
+                        return y + (30 * (d.y));
+                      });
+
+                    var menuText = g.selectAll('text').data(items).enter()
+                      .append('text')
+                      .style('cursor', 'default')
+                      .style('pointer-events', 'none')
+                      .attr('x', x + 3)
+                      .attr('y', function(d) {
+                        return y + 20 + (30 * (d.y));
+                      })
+                      .text(function (d) { return d.text; });
+                  });
 
                   // node.append('text')
                   //   .attr('dy', 3)
@@ -171,19 +247,27 @@
             //
             // functions!
             //
-                function makeHomeButton() {
-                  var home = d3.select('#graph')
-                        .append('span')
-                        .style('margin-top', function() { return (header.offsetHeight - 30) + 'px'; })
-                        .attr('class', 'glyphicon glyphicon-home home')
-                        .on('click', centerHome)
-                        .on('mousedown', function() {
-                          d3.select(this).style('color', 'gray');
-                        })
-                        .on('mouseup', function() {
-                          d3.select(this).style('color', 'lightgray');
-                        });
-                }
+            function getElementCoords(element, coords) {
+              var ctm = element.getCTM(),
+                  x = ctm.e + coords.x * ctm.a + coords.y * ctm.c,
+                  y = ctm.f + coords.x * ctm.b + coords.y * ctm.d;
+              console.log(ctm);
+              return { x: x, y: y };
+            };
+
+            function makeHomeButton() {
+              var home = d3.select('#graph')
+                .append('span')
+                .style('margin-top', function() { return (header.offsetHeight - 30) + 'px'; })
+                .attr('class', 'glyphicon glyphicon-home home')
+                .on('click', centerHome)
+                .on('mousedown', function() {
+                  d3.select(this).style('color', 'gray');
+                })
+                .on('mouseup', function() {
+                  d3.select(this).style('color', 'lightgray');
+                });
+            }
 
             function centerNode(source) {
               var t = d3.zoomTransform(group.node());
@@ -197,14 +281,32 @@
                 .call(zoomListener.transform, d3.zoomIdentity.translate(x, y).scale(t.k));
             }
 
-
-
-
             function centerHome() {
               rootNode.x = 0;
               rootNode.y = 0;
               centerNode(rootNode);
             }
+
+            function viewCompetitors(x) {
+              scope.$parent.vm.viewCompetitors({ selected: x });
+            }
+
+            function viewCustomers(x) {
+              scope.$parent.vm.viewCustomers({ selected: x });
+            }
+
+            function viewSuppliers(x) {
+              scope.$parent.vm.viewSuppliers({ selected: x });
+            }
+
+            function viewDemands(x) {
+              scope.$parent.vm.viewDemands({ selected: x });
+            }
+
+            function viewCatalog(x) {
+              scope.$parent.vm.viewCatalog({ selected: x });
+            }
+
           });
 
 
