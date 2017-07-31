@@ -197,13 +197,13 @@
           .then(function(data) {
             vm.loadData(data);
           });
-//      } else if (vm.taskCategory.id === 'uncompleted') {
-//        WorkersService.getUncompletedTasks()
-//          .then(function(data) {
-//            vm.loadData(data);
-//          });
+     } else if (vm.taskCategory.id === 'uncompleted') {
+       WorkersService.getRejectedTasks()
+         .then(function(data) {
+           vm.loadData(data);
+         });
       } else {
-        Notification.error({ message: 'That task category isn\'t handled yet.', title: 'Work in progress!' });
+        Notification.error({ message: 'Unrecognized task category.', title: 'Error!' });
         WorkersService.getActiveTasks()
           .then(function(data) {
             vm.loadData(data);
