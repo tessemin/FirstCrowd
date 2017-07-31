@@ -380,7 +380,7 @@
     vm.selectTask = function(index) {
       if (index === vm.selectedTask) {
         vm.selectedTask = -1;
-      } else if (index < vm.tasks.length) {
+      } else if (index < vm.tasks.length && index >= 0) {
         vm.selectedTask = index;
       }
     };

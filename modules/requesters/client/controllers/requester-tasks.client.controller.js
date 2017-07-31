@@ -84,7 +84,7 @@
       vm.selectedBid = -1;
     };
     vm.selectTask = function(index) {
-      if (index < vm.tasks.length && index > 0) {
+      if (index < vm.tasks.length && index >= 0) {
         vm.selectedTask = index;
         if (vm.tasks[index].bids.length > 0 && !vm.tasks[index].bids[0].hasOwnProperty('displayId')) {
           vm.actOnTask(index, 'getBidderInfo');
