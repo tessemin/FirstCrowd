@@ -177,10 +177,38 @@
       vm.tasks = [];
       vm.loaded = false;
       vm.selectedTask = -1;
-      WorkersService.getActiveTasks()
-        .then(function(data) {
-          vm.loadData(data);
-        });
+      if(vm.taskCategory.id === 'active') {
+        WorkersService.getActiveTasks()
+          .then(function(data) {
+            vm.loadData(data);
+          });
+      } else if (vm.taskCategory.id === 'open') {
+        WorkersService.getAllOpenTasks()
+          .then(function(data) {
+            vm.loadData(data);
+          });
+      } else if (vm.taskCategory.id === 'recommended') {
+        WorkersService.getRecomendedTasks()
+          .then(function(data) {
+            vm.loadData(data);
+          });
+      } else if (vm.taskCategory.id === 'completed') {
+        WorkersService.getCompletedTasks()
+          .then(function(data) {
+            vm.loadData(data);
+          });
+//      } else if (vm.taskCategory.id === 'uncompleted') {
+//        WorkersService.getUncompletedTasks()
+//          .then(function(data) {
+//            vm.loadData(data);
+//          });
+      } else {
+        Notification.error({ message: 'That task category isn\'t handled yet.', title: 'Work in progress!' });
+        WorkersService.getActiveTasks()
+          .then(function(data) {
+            vm.loadData(data);
+          });
+      }
     };
     vm.changeTaskCategory();
 
