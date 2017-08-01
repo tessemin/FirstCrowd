@@ -1,14 +1,19 @@
-#graph {
+.graph {
   background-color: #0066ba;
 }
 .node {
-  /* stroke: #fff; */
   stroke-width: 1.5px;
 }
 
-.link {
+.link-left {
   fill: none;
-  stroke: gray;
+  stroke: white;
+  stroke-width: 1px;
+}
+
+.link-right {
+  fill: none;
+  stroke: white;
   stroke-width: 1px;
 }
 
@@ -89,7 +94,7 @@ html .competition{
 }
 
 .spacer {
-    background:black;
+    background: black;
     background: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 150, from(#000), to(#fff));
     border:none;
     color:white;
@@ -102,14 +107,14 @@ html .competition{
 }
 
 .search-results {
-  cursor: pointer;
-  color: black;
-  padding: 6px 6px 4px 16px;
-  text-decoration: none;
-  display: block;
   border-bottom-color: lightgray;
   border-bottom-style: solid;
   border-bottom-width: 1px;
+  color: black;
+  cursor: pointer;
+  display: block;
+  padding: 6px 6px 4px 16px;
+  text-decoration: none;
 }
 
 .search-results:hover {
@@ -121,8 +126,8 @@ html .competition{
 }
 
 .search-glyphicon {
-  display: block;
   cursor: pointer;
+  display: block;
 }
 
 .search-dropdown {
