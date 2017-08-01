@@ -229,7 +229,7 @@
             <div class="tasks-cell">
               <div>
                 <div class="dropdown">
-                  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Actions
+                  <button class="btn btn-primary dropdown-toggle" type="button" ng-disabled="task.taskActions.length === 0" data-toggle="dropdown">Actions
                   <span class="caret"></span></button>
                   <ul class="dropdown-menu actions-dropdown-menu">
                     <div ng-repeat="action in task.taskActions">
