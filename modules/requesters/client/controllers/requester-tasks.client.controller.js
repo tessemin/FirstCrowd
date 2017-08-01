@@ -24,36 +24,41 @@
     vm.sort = 'name';
     vm.sortReversed = false;
 
+
+    function recalculateTaskActions(task) {
+      task.taskActions = [];
+      // If no one has ever worked on the task, allow deletion
+      if (task.status === 'inactive' || (task.status === 'open' && task.jobs.length === 0)) {
+        task.taskActions.push({
+          id: 'delete',
+          bikeshed: 'Delete Task'
+        });
+      }
+      if (task.status === 'inactive') {
+        task.taskActions.push({
+          id: 'activate',
+          bikeshed: 'Activate Task'
+        });
+      }
+      if (task.status === 'open') {
+        task.taskActions.push({
+          id: 'suspend',
+          bikeshed: 'Suspend Task'
+        });
+      }
+    }
+
     vm.loadData = function(data) {
       if (data) {
         vm.loaded = true;
         var task,
+          clientTask,
           taskActions,
           postDate,
           dueDate;
         for (var i = 0; i < data.tasks.length; ++i) {
           task = data.tasks[i];
-          taskActions = [];
-          // If no one has ever worked on the task, allow deletion
-          if (task.status === 'inactive' || (task.status === 'open' && task.jobs.length === 0)) {
-            taskActions.push({
-              id: 'delete',
-              bikeshed: 'Delete Task'
-            });
-          }
-          if (task.status === 'inactive') {
-            taskActions.push({
-              id: 'activate',
-              bikeshed: 'Activate Task'
-            });
-          }
-          if (task.status === 'open') {
-            taskActions.push({
-              id: 'suspend',
-              bikeshed: 'Suspend Task'
-            });
-          }
-          vm.tasks.push({
+          clientTask = {
             '_id': task._id,
             'name': task.title,
             'category': task.category,
@@ -67,8 +72,11 @@
             'taskRef': task,
             'bidable': task.payment.bidding.bidable,
             'bids': task.bids,
+            'jobs': task.jobs,
             'multiplicity': task.multiplicity
-          });
+          };
+          recalculateTaskActions(clientTask);
+          vm.tasks.push(clientTask);
         }
       }
     };
@@ -117,6 +125,12 @@
         RequestersService.acceptPreapproval(request)
         .then(function(response) {
           Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> Worker hired!' });
+          var task = vm.tasks[getIndexFromTaskId(request.taskId)];
+          task.multiplicity -= 1;
+          if(task.multiplicity <= 0) {
+            task.status = 'taken';
+          }
+          recalculateTaskActions(task);
         })
         .catch(function(response) {
           Notification.error({ message: response.message, title: '<i class="glyphicon glyphicon-remove"></i> Hiring failed! Worker not hired!' });
@@ -297,10 +311,11 @@
       vm.closePaymentModal();
       RequestersService.activateBidable({ taskId: activateTaskId })
         .then(function(response) {
-          var index = getIndexFromTaskId(response.taskId);
-          vm.tasks[index].status = 'open';
+          var task = vm.tasks[getIndexFromTaskId(response.taskId)];
+          task.status = 'open';
           Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> Task activated!' });
           activateTaskId = null;
+          recalculateTaskActions(task);
         })
         .catch(function(response) {
           Notification.error({ message: response.message, title: '<i class="glyphicon glyphicon-remove"></i> Activation failed! Task not activated!' });
@@ -372,16 +387,17 @@
           }).then(function(response) {
             // payment completed success
             Notification.success({ message: response, title: '<i class="glyphicon glyphicon-ok"></i> Payment Accepted!' });
+            var task = vm.tasks[getIndexFromTaskId(activateTaskId)];
             if (payTaskBidId !== null) {
               // approve worker for task
-              var task = vm.tasks[getIndexFromTaskId(activateTaskId)];
               task.multiplicity -= 1;
               if(task.multiplicity === 0) {
                 task.status = 'taken';
               }
             } else {
-              vm.tasks[getIndexFromTaskId(activateTaskId)].status = 'open';
+              task.status = 'open';
             }
+            recalculateTaskActions(task);
             activateTaskId = null;
           });
         },
