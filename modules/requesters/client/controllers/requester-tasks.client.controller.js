@@ -345,7 +345,7 @@
             'payment/create';
           var request = { taskId: activateTaskId };
           if (vm.selectedBid !== -1) {
-            payTaskBidId = data.bidId;
+            payTaskBidId = vm.tasks[vm.selectedTask].bids[vm.selectedBid]._id;
             request.bidId = payTaskBidId;
             console.log('bid ' + vm.selectedBid + ' id ' + request.bidId);
           }
@@ -362,7 +362,7 @@
         onAuthorize: function(data) {
           console.log(data);
           var paypi = '/api/tasks/' +
-            (vm.selectedBid !== -1 ? 'bidding/' : '') +
+            (payTaskBidId !== null ? 'bidding/' : '') +
             'payment/execute';
           return paypal.request.post(paypi, {
             paymentID: data.paymentID,
@@ -372,7 +372,7 @@
           }).then(function(response) {
             // payment completed success
             Notification.success({ message: response, title: '<i class="glyphicon glyphicon-ok"></i> Payment Accepted!' });
-            if (vm.selectedBid) {
+            if (payTaskBidId !== null) {
               // approve worker for task
               var task = vm.tasks[getIndexFromTaskId(activateTaskId)];
               task.multiplicity -= 1;
