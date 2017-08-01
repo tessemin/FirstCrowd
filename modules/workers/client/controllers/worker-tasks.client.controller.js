@@ -147,6 +147,7 @@
             'postingDate': postDate,
             'deadline': dueDate,
             'status': task.status,
+            'preapproval': task.preapproval,
             'payment': {
               'bidding': {
                 'bidable': task.payment.bidding.bidable,
