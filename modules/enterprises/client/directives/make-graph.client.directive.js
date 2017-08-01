@@ -53,8 +53,10 @@
           svg.call(zoomListener);
           d3.select('svg').on('dblclick.zoom', null);
 
+          var transform;
           function zoom() {
-            group.attr('transform', d3.event.transform);
+            transform = d3.event.transform;
+            group.attr('transform', transform);
           }
 
           getGraph().then(function(rootNode) {
@@ -67,10 +69,12 @@
                 // Create d3 hierarchies
                 var right = d3.hierarchy(data1);
                 var left = d3.hierarchy(data2);
+                var count = 0;
 
                 // Render both trees
                 drawTree(right, 'right');
                 drawTree(left, 'left');
+
 
                 // draw single tree
                 function drawTree(root, pos) {
@@ -83,22 +87,18 @@
                   var width = +svg.attr('width'),
                       height = +svg.attr('height');
 
-                  // Shift the entire tree by half it's width
-                  // g = svg.append('g').attr('transform', 'translate(' + width / 2 + ',0)');
                   var g = d3.select('.everything').append('g');
 
                   // Create new default tree layout
                   var tree = d3.tree()
+                    .nodeSize([radius / 1.5, radius * 10])
+                    .separation(function(a, b) {
+                      return a.parent === b.parent ? 8 : 3;
+                    });
                   // Set the size
                   // Remember the tree is rotated
                   // so the height is used as the width
                   // and the width as the height
-                                .nodeSize([radius / 1.5, radius * 10])
-                                .separation(function(a, b) {
-                                  return a.parent === b.parent ? 8 : 3;
-                                });
-
-                        // .size([height, SWITCH_CONST * (width - 150) / 2]);
 
                   tree(root);
 
@@ -107,7 +107,7 @@
                   // Set both root nodes to be dead center vertically
 
                   nodes.forEach(function(node) {
-                    node.y = node.y * SWITCH_CONST;
+                    if (node.y != 0) node.y = node.y * SWITCH_CONST;
                   });
 
                   var link = g.selectAll('.link')
@@ -123,12 +123,13 @@
                         ' ' + d.source.y + ',' + d.source.x;
                     });
 
+                  var tmp = count;
                   var defs = svg.append('defs')
                         .selectAll('pattern')
                         .data(nodes)
                         .enter()
                         .append('pattern')
-                        .attr('id', function (d, i) { return 'image' + i; })
+                        .attr('id', function () { return 'image' + count++; })
                         .attr('x', 0)
                         .attr('y', 0)
                         .attr('height', radius * 2)
@@ -139,6 +140,8 @@
                         .attr('height', radius * 2)
                         .attr('width', radius * 2)
                         .attr('xlink:href', function (d) { return d.data.img; });
+
+                  console.log(count, tmp);
 
                   // Create nodes
                   var node = g.selectAll('.node')
@@ -152,21 +155,26 @@
                           return 'translate(' + d.y + ',' + d.x + ')';
                         });
 
-                  node.append('circle')
-                    .style('fill', function(d, i) { return 'url(#image' + i + ')'; })
-                    .attr('r', radius)
-                    // .on('click', centerNode)
+                  node
+                    .append('circle')
+                    .style('fill', function(d, i) { return 'url(#image' + (i + tmp) + ')'; })
+                    .attr('id', function(d, i) { return 'node' + (i + tmp); })
+                    .attr('node-num', function(d, i) { return (i + tmp); })
+                    .attr('r', radius);
+
+                  node
                     .on('dblclick', function(d) {
                       d3.selectAll('text').remove();
                       d3.selectAll('rect').remove();
                       centerNode(d3.select(this)._groups[0][0].__data__);
                       scope.$parent.vm.chooseCompany({ selected: d3.select(this)._groups[0][0].__data__ });
-                    })
+                    });
+                  node
                     .on('click', function(d, i) {
                       d3.selectAll('text').remove();
                       d3.selectAll('rect').remove();
 
-                      d3.select('#selected-circle').style('stroke', 'black').style('stroke-width', 1).attr('id', '');
+                      d3.select('#selected-circle').style('stroke', 'black').style('stroke-width', 1).attr('id', function(d, i) { return 'node' + i; });
                       d3.select(this).transition().duration(300)
                         .style('stroke', 'red')
                         .style('stroke-width', 5)
@@ -183,16 +191,11 @@
 
                       var menuWidth = 200;
                       var itemHeight = 30;
-                      var coords = getElementCoords(d3.select(this)._groups[0][0],  d3.select(this)._groups[0][0].__data__);
+                      var coords = getScreenCoords(d3.select(this)._groups[0][0].__data__.x, d3.select(this)._groups[0][0].__data__.y, transform);
+
                       var x = coords.x;
-                      // if (x + menuWidth > width) {
-                      //   x = x - 280;
-                      // }
                       var y = coords.y;
                       var menuLen = items.length * itemHeight;
-                      // if (y + menuLen > height) {
-                      //   y = y - 30;
-                      // }
 
                       var menuItems = g.selectAll('rect').data(items).enter()
                             .append('rect').attr('class', 'conmenu-items')
@@ -233,10 +236,10 @@
                     });
 
                   // node.append('text')
-                  //   .attr('dy', 3)
+                  //   .attr('dy', 30)
                   //   .style('text-anchor', 'middle')
                   //   .text(function(d) {
-                  //     return d.data.name;
+                  //     return d.data.companyName;
                   //   });
                 }
               });
@@ -245,12 +248,11 @@
             //
             // functions!
             //
-            function getElementCoords(element, coords) {
-              var ctm = element.getCTM(),
-                  x = ctm.e + coords.y * ctm.a + coords.x * ctm.c,
-                  y = ctm.f + coords.y * ctm.b + coords.x * ctm.d;
-              return { x: x, y: y };
-            };
+            function getScreenCoords(x, y, transform) {
+              var xn = x - 50;
+              var yn = y + 25;
+              return { x: yn, y: xn };
+            }
 
             function makeHomeButton() {
               var home = d3.select('#graph')
