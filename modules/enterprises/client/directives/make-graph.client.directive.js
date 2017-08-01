@@ -19,10 +19,11 @@
       link: function(scope, element, attrs) {
         var levels = 2;
         var radius = 20;
+
         d3().then(function(d3) {
-          d3.select('.footer').remove();
           var header = getBounds(d3.select('header')._groups[0][0]);
           var sideHeight = getBounds(d3.select('.form-group')._groups[0][0]);
+          var footer = getBounds(d3.select('footer')._groups[0][0]);
 
           var width = $window.innerWidth;
           var height = $window.innerHeight;
@@ -37,9 +38,11 @@
             return header.offsetHeight + 'px';
           });
 
-          var svg = d3.select('#graph').append('svg')
+
+          var svg = d3.select('#graph')
+                .append('svg')
                 .attr('width', width)
-                .attr('height', height - header.offsetHeight - 5);
+                .attr('height', height - header.offsetHeight - footer.offsetHeight - 20);
 
           var i = 0;
           var duration = 750;
@@ -53,10 +56,8 @@
           svg.call(zoomListener);
           d3.select('svg').on('dblclick.zoom', null);
 
-          var transform;
           function zoom() {
-            transform = d3.event.transform;
-            group.attr('transform', transform);
+            group.attr('transform', d3.event.transform);
           }
 
           getGraph().then(function(rootNode) {
@@ -141,8 +142,6 @@
                         .attr('width', radius * 2)
                         .attr('xlink:href', function (d) { return d.data.img; });
 
-                  console.log(count, tmp);
-
                   // Create nodes
                   var node = g.selectAll('.node')
                         .data(nodes)
@@ -159,7 +158,7 @@
                     .append('circle')
                     .style('fill', function(d, i) { return 'url(#image' + (i + tmp) + ')'; })
                     .attr('id', function(d, i) { return 'node' + (i + tmp); })
-                    .attr('node-num', function(d, i) { return (i + tmp); })
+                    // .attr('node-num', function(d, i) { return (i + tmp); })
                     .attr('r', radius);
 
                   node
@@ -167,12 +166,12 @@
                       d3.selectAll('text').remove();
                       d3.selectAll('rect').remove();
                       centerNode(d3.select(this)._groups[0][0].__data__);
-                      scope.$parent.vm.chooseCompany({ selected: d3.select(this)._groups[0][0].__data__ });
-                    });
-                  node
+                      scope.$parent.vm.chooseCompany({ selected: d3.select(this)._groups[0][0].__data__.data });
+                    })
                     .on('click', function(d, i) {
                       d3.selectAll('text').remove();
                       d3.selectAll('rect').remove();
+                      centerNode(d3.select(this)._groups[0][0].__data__);
 
                       d3.select('#selected-circle').style('stroke', 'black').style('stroke-width', 1).attr('id', function(d, i) { return 'node' + i; });
                       d3.select(this).transition().duration(300)
@@ -181,21 +180,24 @@
                         .attr('id', 'selected-circle');
 
                       var items = [
-                        { 'func': centerNode, 'text': 'Center Graph on Company', 'y': 1 },
-                        { 'func': viewCatalog, 'text': 'View Product/Service Catalog', 'y': 2 },
-                        { 'func': viewDemands, 'text': 'View Demands', 'y': 3 },
-                        { 'func': viewSuppliers, 'text': 'View Suppliers', 'y': 4 },
-                        { 'func': viewCustomers, 'text': 'View Customers', 'y': 5 },
-                        { 'func': viewCompetitors, 'text': 'View Competitors', 'y': 6 }
+                        { 'func': centerNode, 'text': 'See this Company\'s Graph', 'y': 1 },
+                        { 'func': viewCatalog, 'text': 'See Product & Service Catalog', 'y': 2 },
+                        { 'func': viewDemands, 'text': 'See Demands', 'y': 3 },
+                        { 'func': viewSuppliers, 'text': 'See Suppliers', 'y': 4 },
+                        { 'func': viewCustomers, 'text': 'See Customers', 'y': 5 },
+                        { 'func': viewCompetitors, 'text': 'See Competitors', 'y': 6 }
                       ];
 
                       var menuWidth = 200;
                       var itemHeight = 30;
-                      var coords = getScreenCoords(d3.select(this)._groups[0][0].__data__.x, d3.select(this)._groups[0][0].__data__.y, transform);
+                      var menuHeight = itemHeight * items.length;
+                      var coords = getScreenCoords(d3.select(this)._groups[0][0].__data__.x,
+                                                   d3.select(this)._groups[0][0].__data__.y,
+                                                   menuHeight,
+                                                   menuWidth);
 
                       var x = coords.x;
                       var y = coords.y;
-                      var menuLen = items.length * itemHeight;
 
                       var menuItems = g.selectAll('rect').data(items).enter()
                             .append('rect').attr('class', 'conmenu-items')
@@ -248,10 +250,10 @@
             //
             // functions!
             //
-            function getScreenCoords(x, y, transform) {
-              var xn = x - 50;
-              var yn = y + 25;
-              return { x: yn, y: xn };
+            function getScreenCoords(x, y, menuHeight, menuWidth) {
+              var xn = y + 30;
+              var yn = x - 50;
+              return { x: xn, y: yn };
             }
 
             function makeHomeButton() {
@@ -345,9 +347,9 @@
           }
 
           function getGraph() {
-            // EnterprisesService.setupGraph().then(function (res) {
-            //   console.log(res);
-            // });
+            EnterprisesService.setupGraph().then(function (res) {
+              console.log(res);
+            });
             return EnterprisesService.getEnterprise()
               .then(function(response) {
                 var rootNode = {};

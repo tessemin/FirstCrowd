@@ -1,3 +1,6 @@
+#graph {
+  background-color: #0066ba;
+}
 .node {
   /* stroke: #fff; */
   stroke-width: 1.5px;
