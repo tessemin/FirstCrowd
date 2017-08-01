@@ -84,6 +84,7 @@
     }
     function viewCompetitors(obj) {
       vm.selected = obj.selected;
+      console.log(obj.selected);
       vm.sidebar = true;
       vm.head = 'Competitors';
       vm.header = 'Competitors for ';
@@ -94,6 +95,7 @@
     }
 
     function chooseCompany(obj) {
+      console.log(obj);
       $scope.$apply(
         vm.sidebar = true,
         vm.selected = obj.selected,
@@ -104,7 +106,7 @@
       );
     }
 
-    function makeGraphForCompany(_id) {
+    function makeGraphForCompany(id) {
 
     }
 
