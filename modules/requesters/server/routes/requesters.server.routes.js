@@ -31,6 +31,11 @@ module.exports = function(app) {
   app.route('/api/requesters/workerRating/makeRating').put(requesters.workerRating.makeRating);
   app.route('/api/requesters/workerRating/all').post(requesters.workerRating.all);
   app.route('/api/requesters/workerRating/delete').post(requesters.workerRating.delete);
+  
+  // file
+  app.post('/api/requesters/task/file/download', requesters.taskFiles.downloadTaskFile);
+  app.post('/api/requesters/task/file/sendMessage', requesters.taskFiles.sendMessage);
+  app.post('/api/requesters/task/getDownloadables').post(requesters.taskFiles.getDownloadables);
 
   // REQUESTER INFORMATION
   app.route('/api/requesters/getRequesterData').post(requesters.getRequesterData.all);
