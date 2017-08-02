@@ -46,7 +46,7 @@
     }
 
     function viewCatalog(obj) {
-      EnterprisesService.getServices({ enterpriseId: obj.selected._id}).then(function(res) {
+      EnterprisesService.getServices({ enterpriseId: obj.selected._id }).then(function(res) {
         console.log(res);
         // vm.list = res.
       });

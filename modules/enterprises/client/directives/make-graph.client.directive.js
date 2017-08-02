@@ -39,7 +39,7 @@
           });
 
 
-          var svg = d3.select('#graph')
+          var svg = d3.select('.graph')
                 .append('svg')
                 .attr('width', width)
                 .attr('height', height - header.offsetHeight - footer.offsetHeight - 20);
@@ -66,7 +66,6 @@
             getThreeCustLevels(rootNode).then(function(data1) {
               getThreeSuppLevels(rootNode).then(function(data2) {
 
-
                 // Create d3 hierarchies
                 var right = d3.hierarchy(data1);
                 var left = d3.hierarchy(data2);
@@ -86,7 +85,7 @@
                   }
 
                   var width = +svg.attr('width'),
-                      height = +svg.attr('height');
+                    height = +svg.attr('height');
 
                   var g = d3.select('.everything').append('g');
 
@@ -108,15 +107,15 @@
                   // Set both root nodes to be dead center vertically
 
                   nodes.forEach(function(node) {
-                    if (node.y != 0) node.y = node.y * SWITCH_CONST;
+                    if (node.y !== 0) node.y = node.y * SWITCH_CONST;
                   });
 
-                  var link = g.selectAll('.link')
+                  var link = g.selectAll('.link-' + pos)
                         .data(links)
                         .enter();
 
                   link.append('path')
-                    .attr('class', 'link')
+                    .attr('class', 'link-' + pos)
                     .attr('d', function(d) {
                       return 'M' + d.target.y + ',' + d.target.x +
                         'C' + (d.target.y + d.source.y) / 2.5 + ',' + d.target.x +
@@ -143,12 +142,12 @@
                         .attr('xlink:href', function (d) { return d.data.img; });
 
                   // Create nodes
-                  var node = g.selectAll('.node')
+                  var node = g.selectAll('.node-' + pos)
                         .data(nodes)
                         .enter()
                         .append('g')
                         .attr('class', function(d) {
-                          return 'node' + (d.children ? ' node--internal' : ' node--leaf');
+                          return 'node-' + pos + (d.children ? ' node--internal' : ' node--leaf');
                         })
                         .attr('transform', function(d) {
                           return 'translate(' + d.y + ',' + d.x + ')';
@@ -158,20 +157,22 @@
                     .append('circle')
                     .style('fill', function(d, i) { return 'url(#image' + (i + tmp) + ')'; })
                     .attr('id', function(d, i) { return 'node' + (i + tmp); })
-                    // .attr('node-num', function(d, i) { return (i + tmp); })
+                    .attr('node-num', function(d, i) { return (i + tmp); })
                     .attr('r', radius);
 
                   node
-                    .on('dblclick', function(d) {
-                      d3.selectAll('text').remove();
-                      d3.selectAll('rect').remove();
-                      centerNode(d3.select(this)._groups[0][0].__data__);
-                      scope.$parent.vm.chooseCompany({ selected: d3.select(this)._groups[0][0].__data__.data });
-                    })
+                    // .on('dblclick', function(d) {
+                    //   d3.selectAll('text').remove();
+                    //   d3.selectAll('rect').remove();
+                    //   centerNode(d3.select(this)._groups[0][0].__data__);
+                    //   scope.$parent.vm.chooseCompany({ selected: d3.select(this)._groups[0][0].__data__.data });
+                    // })
                     .on('click', function(d, i) {
+                      console.log(d);
                       d3.selectAll('text').remove();
                       d3.selectAll('rect').remove();
                       centerNode(d3.select(this)._groups[0][0].__data__);
+
 
                       d3.select('#selected-circle').style('stroke', 'black').style('stroke-width', 1).attr('id', function(d, i) { return 'node' + i; });
                       d3.select(this).transition().duration(300)
@@ -180,7 +181,7 @@
                         .attr('id', 'selected-circle');
 
                       var items = [
-                        { 'func': centerNode, 'text': 'See this Company\'s Graph', 'y': 1 },
+                        { 'func': removeGraph, 'text': 'See this Company\'s Graph', 'y': 1 },
                         { 'func': viewCatalog, 'text': 'See Product & Service Catalog', 'y': 2 },
                         { 'func': viewDemands, 'text': 'See Demands', 'y': 3 },
                         { 'func': viewSuppliers, 'text': 'See Suppliers', 'y': 4 },
@@ -257,8 +258,9 @@
             }
 
             function makeHomeButton() {
-              var home = d3.select('#graph')
+              var home = d3.select('.graph')
                 .append('span')
+                .attr('id', 'home-button')
                 .style('margin-top', function() { return (header.offsetHeight - 30) + 'px'; })
                 .attr('class', 'glyphicon glyphicon-home home')
                 .on('click', centerHome)
@@ -347,9 +349,9 @@
           }
 
           function getGraph() {
-            EnterprisesService.setupGraph().then(function (res) {
-              console.log(res);
-            });
+            // EnterprisesService.setupGraph().then(function (res) {
+            //   console.log(res);
+            // });
             return EnterprisesService.getEnterprise()
               .then(function(response) {
                 var rootNode = {};
@@ -369,6 +371,11 @@
               offsetTop: htmlElement.offsetTop,
               offsetWidth: htmlElement.offsetWidth
             };
+          }
+
+          function removeGraph() {
+            d3.select('svg').remove();
+            d3.select('#home-button').remove();
           }
         });
 
