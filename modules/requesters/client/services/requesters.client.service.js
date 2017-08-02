@@ -108,6 +108,15 @@
       _getBidderInfo: {
         method: 'POST',
         url: '/api/tasks/bidding/bidder/info'
+      },
+      // Files
+      _getDownloadableTaskFiles: {
+        method: 'POST',
+        url: '/api/workers/task/file/getDownloadables'
+      },
+      _sendMessage: {
+        method: 'POST',
+        url: '/api/workers/task/file/sendMessage'
       }
     });
 
@@ -186,7 +195,14 @@
       },
       getBidderInfo: function (taskId) {
         return this._getBidderInfo(taskId).$promise;
-      }
+      },
+      // file
+      getDownloadableTaskFiles: function (taskId) {
+        return this._getDownloadableTaskFiles(taskId).$promise;
+      },
+      sendMessage: function (taskId_message) {
+        return this._sendMessage(taskId_message).$promise;
+      },
     });
 
     return Requesters;
