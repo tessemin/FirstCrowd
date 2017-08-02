@@ -17,6 +17,18 @@
         select: '&'
       },
       link: function(scope, element, attrs) {
+        // Array.prototype.unique = function() {
+        //   var a = this.concat();
+        //   for(var i=0; i<a.length; ++i) {
+        //     for(var j=i+1; j<a.length; ++j) {
+        //       if(a[i] === a[j])
+        //         a.splice(j--, 1);
+        //     }
+        //   }
+
+        //   return a;
+        // };
+
         var levels = 2;
         var radius = 20;
 
@@ -61,12 +73,13 @@
           }
 
           getGraph().then(function(rootNode) {
+            getGraphSuppliers(rootNode);
+
             centerHome();
             makeHomeButton();
             getThreeCustLevels(rootNode).then(function(data1) {
               getThreeSuppLevels(rootNode).then(function(data2) {
 
-                getGraphSuppliers(rootNode);
                 // Create d3 hierarchies
                 var right = d3.hierarchy(data1);
                 var left = d3.hierarchy(data2);
@@ -313,24 +326,55 @@
           });
 
           function getGraphSuppliers(obj) {
+
             var data = obj;
-            getAllLeafNodes(data);
+            treeThing(data, 5);
+            // getAllLeafNodes(data);
           }
 
-          function getAllLeafNodes(data) {
-            var leafNodes = [];
-            if (data.hasOwnProperty('children')) {
-              for (var i = 0; i < data.children.length; i++) {
-                leafNodes = leafNodes.concat(getAllLeafNodes(data.children[i]));
-              }
+          function treeThing(data, level) {
+            console.log(data, level);
+            if (level <= 0) {
+              return data;
+            }
 
-              // for (i = 0; i < leafNodes.length; i++) {
-              //   leafNodes = leafNodes.concat(getAllLeafNodes(leafNodes[i]));
-              // }
-              console.log(leafNodes);
-              // return [];
-            } else {
-              leafNodes.push(data);
+            if (data.hasOwnProperty('children')) {
+              if (data.children.length > 0) {
+                data.children.forEach(function(child) {
+
+                });
+              }
+              else {
+                return 2;
+              }
+            }
+            else {
+              data.children = [];
+              getSuppliers(data._id).then(function (res) {
+                data.children = res.suppliers;
+                console.log(data.children);
+                // data.children treeThing(data);
+              });
+            }
+          }
+
+          function getAllLeafNodes(array) {
+            console.log(array);
+            for (var index = 0; index < array.length; index++) {
+              var data = array[index];
+              var leafNodes = [];
+              if (data.hasOwnProperty('children')) {
+                leafNodes = leafNodes.concat(getAllLeafNodes(data.children));
+                // leafNodes = leafNodes.unique();
+
+                // for (i = 0; i < leafNodes.length; i++) {
+                //   leafNodes = leafNodes.concat(getAllLeafNodes(leafNodes[i]));
+                // }
+                console.log(leafNodes);
+                // return [];
+              } else {
+                leafNodes.push(data);
+              }
             }
             return leafNodes;
           }
