@@ -1,0 +1,251 @@
+.worker-messages {
+  background-color: white;
+  position: absolute;
+  top: 51px;
+  bottom: 38px;
+  width: 101.5%;
+}
+
+div.message-sidebar {
+  background-color: #6495ed;
+  padding: 0;
+  height: 100%;
+}
+
+div.sidebar-name {
+  cursor: pointer;
+}
+
+span.searchMessages {
+  display: inline-block;
+  padding-top: 3px;
+  width: 100%;
+  text-align: center
+}
+
+div.sidebar-name i{
+  float: right;
+}
+
+div.tab-surround {
+  padding: 10px;
+  border: none;
+  width: 100%;
+  height: 100%;
+}
+
+div.row.tab {
+  width: 100%;
+  border: none;
+  margin: 0;
+}
+
+.tab-col {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+/* Style the buttons inside the tab */
+.tablinks {
+  width: 100%;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid DarkGray;
+  border-right: 1px solid DarkGray;
+  background-color: #f1f1f1;
+  margin: 0;
+  cursor: pointer;
+  padding: 6px 10px 6px 10px;
+  transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+div.tab .tablinks:hover {
+  background-color: #ddd;
+}
+
+.connected-tablinks {
+  border-bottom: none;
+  border-top: 1px solid DarkGray;
+}
+
+.connected-tablinks.activeSortTab {
+  background-color: white;
+  border-top: 2px solid grey;
+}
+
+button.connected-tablinks.activeSortTab:hover {
+  background-color: white;
+}
+
+/* Create an active/current tablink class */
+div.tab .tablinks.active {
+  background-color: #ccc;
+}
+
+.messages-title {
+  text-align: center;
+  margin: 0 auto 10px auto;
+  display: inline-block;
+  font-size: 120%;
+  font-weight: bold;
+}
+
+div.sidebar-displayTasks {
+  position: absolute;
+  top: 135px;
+  bottom: 2px;
+  width: 93%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  background-color: white;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 5px;
+}
+
+.searchTasks {
+  margin-top: 5px;
+  width: 100%;
+}
+
+div.messageView {
+  height: 100%;
+  width: 75%;
+}
+
+div.messageView-messages {
+  position: absolute;
+  display: block;
+  top: 0;
+  bottom: 50px;
+  width: 100%;
+  margin: 0 10px 10px 10px;
+  margin-right: 0;
+  padding: 5px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.indicateMore {
+  display: block;
+  width: 100%;
+  height: 10px;
+  cursor: pointer;
+  background: white; /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient(white, WhiteSmoke ); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(white, WhiteSmoke ); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(white, WhiteSmoke ); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(white, WhiteSmoke ); /* Standard syntax */
+}
+
+.collapseButton {
+  display: inline-block;
+  width: 95%;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.greyText {
+  color: grey;
+}
+
+hr {
+  margin: 0;
+  margin-bottom: 5px;
+  padding: 0;
+}
+
+.expandMessage[aria-expanded=true] .glyphicon-chevron-down {
+  display: none;
+}
+
+.expandMessage[aria-expanded=false] .glyphicon-chevron-up {
+  display: none;
+}
+
+i.expandMessageGlyph {
+  display: inline-block;
+  margin: 10px;
+  margin-top: 0;
+  cursor: pointer;
+}
+
+.message-body {
+  margin-bottom: 10px;
+  background-color: WhiteSmoke;
+  border: 1px solid gray;
+  border-top: none;
+}
+
+div.sendMessage {
+  position: relative;
+  top: -webkit-calc(100% - 70px);
+  top: calc(100% - 70px);
+  bottom: 46px;
+  width: 100%;
+  display: block;
+  margin: 13px;
+  -webkit-transition: top .5s; /* Safari */
+  transition: top .5s;
+}
+
+div.sendMessage.expandSend {
+  height: 25%;
+  top: -webkit-calc(72% - 45px);
+  top: calc(72% - 45px);
+  -webkit-transition: height 0.5s linear 1s; /* Safari */
+  transition: height 0.5s linear 1s;
+}
+
+div.sendMessage .messageBackDrop {
+  display: block;
+  background-color: white;
+  width: 98%;
+  height: 100%;
+  margin: 0;
+}
+
+div.sendMessage .message {
+  width: 98%;
+  padding: 5px;
+  resize: none;
+  border-color: LightGrey;
+}
+
+div.sendMessage .message {
+  height: 100%;
+}
+
+div.sendButtons {
+  display: block;
+  opacity: 0;
+  max-height: 0;
+  margin-left: -webkit-calc(100% - 150px);
+  margin-left: calc(100% - 150px);
+  -webkit-transition: max-height 0.5s ease-in-out, opacity 0.2s linear; /* Safari */
+  transition: max-height 0.5s ease-in-out, opacity 0.2s linear;
+}
+
+div.sendButtons.expandSendButtons {
+  display: block;
+  opacity: 1;
+  max-height: inital;
+  -webkit-transition: max-height 0.5s ease-in-out, opacity 0.5s linear 0.2s; /* Safari */
+  transition: max-height 0.5s ease-in-out, opacity 0.5s linear 0.2s;
+}
+
+div.sendButtons .btn{
+  display: inline;
+  text-align: left
+}
+
+span.closeSpan {
+  display: block;
+  position: relative;
+  top: -18px;
+  left: -8px;
+}

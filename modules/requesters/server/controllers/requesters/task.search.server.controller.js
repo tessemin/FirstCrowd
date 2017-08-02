@@ -21,7 +21,7 @@ var isRequester = taskDepend.isRequester,
 
 function taskFindMany(taskArray, secretAllowed, callBack) {
   if (!taskArray || taskArray.length <= 0)
-    callBack(null, []);
+    return callBack(null, []);
   if (secretAllowed)
     Task.find({ '_id': { $in: taskArray } }, callBack);
   else
@@ -59,6 +59,17 @@ function findJobByWorker(task, worker) {
       if (task.jobs[i] && task.jobs[i].worker && task.jobs[i].worker.workerId)
         if (task.jobs[i].worker.workerId.toString() === worker._id.toString()) {
           return task.jobs[i];
+        }
+    }
+  return false;
+}
+
+function findBidByWorker(task, worker) {
+  if (task && task.bids && worker)
+    for (var i = 0; i < task.bids.length; i++) {
+      if (task.bids[i] && task.bids[i].worker && task.bids[i].worker.workerId)
+        if (task.bids[i].worker.workerId.toString() === worker._id.toString()) {
+          return task.bids[i];
         }
     }
   return false;
@@ -318,5 +329,6 @@ exports.findTaskWorker = findTaskWorker;
 exports.taskFindWithOption = taskFindWithOption;
 exports.findTaskWorker = findTaskWorker;
 exports.findJobByWorker = findJobByWorker;
+exports.findBidByWorker = findBidByWorker;
 exports.findRequesterByTask = findRequesterByTask;
 exports.findWorkerByWorkerTaskObject = findWorkerByWorkerTaskObject;

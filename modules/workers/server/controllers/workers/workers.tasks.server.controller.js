@@ -92,7 +92,7 @@ exports.activeTask = {
           }
           if (tasks)
             tasks = removeExtraWorkers(tasks, typeObj._id);
-          res.json({ tasks: tasks });
+          return res.json({ tasks: tasks });
         });
       } else {
         return res.status(400).send({
@@ -112,7 +112,6 @@ exports.rejectedTask = {
   all: function (req, res) {
     getUserTypeObject(req, res, function(typeObj) {
       if (typeObj.worker) {
-        console.log(getIdsInArray(typeObj.worker.rejectedTasks));
         taskFindMany(getIdsInArray(typeObj.worker.rejectedTasks), true, function(err, tasks) {
           if (err) {
             return res.status(422).send({
@@ -121,7 +120,7 @@ exports.rejectedTask = {
           }
           if (tasks)
             tasks = removeExtraWorkers(tasks, typeObj._id);
-          res.json({ tasks: tasks });
+          return res.json({ tasks: tasks });
         });
       } else {
         return res.status(400).send({
@@ -149,7 +148,7 @@ exports.completedTask = {
           }
           if (tasks)
             tasks = removeExtraWorkers(tasks, typeObj._id);
-          res.json({ tasks: tasks });
+          return res.json({ tasks: tasks });
         });
       } else {
         return res.status(400).send({

@@ -147,8 +147,8 @@
       getDownloadableTaskFiles: function (taskId) {
         return this._getDownloadableTaskFiles(taskId).$promise;
       },
-      sendMessage: function (taskId) {
-        return this._sendMessage(taskId).$promise;
+      sendMessage: function (taskId_message) {
+        return this._sendMessage(taskId_message).$promise;
       },
       markCompleted: function (taskId) {
         return this._markCompleted(taskId).$promise;
