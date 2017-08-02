@@ -66,6 +66,7 @@
             getThreeCustLevels(rootNode).then(function(data1) {
               getThreeSuppLevels(rootNode).then(function(data2) {
 
+                getGraphSuppliers(rootNode);
                 // Create d3 hierarchies
                 var right = d3.hierarchy(data1);
                 var left = d3.hierarchy(data2);
@@ -309,8 +310,30 @@
             function viewCatalog(x) {
               scope.$parent.vm.viewCatalog({ selected: x });
             }
-
           });
+
+          function getGraphSuppliers(obj) {
+            var data = obj;
+            getAllLeafNodes(data);
+          }
+
+          function getAllLeafNodes(data) {
+            var leafNodes = [];
+            if (data.hasOwnProperty('children')) {
+              for (var i = 0; i < data.children.length; i++) {
+                leafNodes = leafNodes.concat(getAllLeafNodes(data.children[i]));
+              }
+
+              // for (i = 0; i < leafNodes.length; i++) {
+              //   leafNodes = leafNodes.concat(getAllLeafNodes(leafNodes[i]));
+              // }
+              console.log(leafNodes);
+              // return [];
+            } else {
+              leafNodes.push(data);
+            }
+            return leafNodes;
+          }
 
           function getThreeSuppLevels(data) {
             return new Promise(function(resolve, reject) {
@@ -374,7 +397,7 @@
           }
 
           function removeGraph() {
-            d3.select('svg').remove();
+            d3.select('.everything').remove();
             d3.select('#home-button').remove();
           }
         });
