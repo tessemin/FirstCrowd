@@ -17,18 +17,6 @@
         select: '&'
       },
       link: function(scope, element, attrs) {
-        // Array.prototype.unique = function() {
-        //   var a = this.concat();
-        //   for(var i=0; i<a.length; ++i) {
-        //     for(var j=i+1; j<a.length; ++j) {
-        //       if(a[i] === a[j])
-        //         a.splice(j--, 1);
-        //     }
-        //   }
-
-        //   return a;
-        // };
-
         var levels = 2;
         var radius = 20;
 
@@ -73,194 +61,198 @@
           }
 
           getGraph().then(function(rootNode) {
-            getGraphSuppliers(rootNode);
+            var graphPromises = [];
+            var root1 = $.extend( {}, rootNode);
+            var root2 = $.extend( {}, rootNode);
+
+            graphPromises.push(getGraphCustomers(root1));
+            graphPromises.push(getGraphSuppliers(root2));
+
+            Promise.all(graphPromises).then(function(res) {
 
             centerHome();
             makeHomeButton();
-            // getThreeCustLevels(rootNode).then(function(data1) {
-            //   getThreeSuppLevels(rootNode).then(function(data2) {
 
-            //     // Create d3 hierarchies
-            //     var right = d3.hierarchy(data1);
-            //     var left = d3.hierarchy(data2);
-            //     var count = 0;
+                // Create d3 hierarchies
+                var right = d3.hierarchy(res[0]);
+                var left = d3.hierarchy(res[1]);
+                var count = 0;
 
-            //     // Render both trees
-            //     drawTree(right, 'right');
-            //     drawTree(left, 'left');
+                // Render both trees
+                drawTree(right, 'right');
+                drawTree(left, 'left');
 
 
-            //     // draw single tree
-            //     function drawTree(root, pos) {
+                // draw single tree
+                function drawTree(root, pos) {
 
-            //       var SWITCH_CONST = 1;
-            //       if (pos === 'left') {
-            //         SWITCH_CONST = -1;
-            //       }
+                  var SWITCH_CONST = 1;
+                  if (pos === 'left') {
+                    SWITCH_CONST = -1;
+                  }
 
-            //       var width = +svg.attr('width'),
-            //         height = +svg.attr('height');
+                  var width = +svg.attr('width'),
+                    height = +svg.attr('height');
 
-            //       var g = d3.select('.everything').append('g');
+                  var g = d3.select('.everything').append('g');
 
-            //       // Create new default tree layout
-            //       var tree = d3.tree()
-            //         .nodeSize([radius / 1.5, radius * 10])
-            //         .separation(function(a, b) {
-            //           return a.parent === b.parent ? 8 : 3;
-            //         });
-            //       // Set the size
-            //       // Remember the tree is rotated
-            //       // so the height is used as the width
-            //       // and the width as the height
+                  // Create new default tree layout
+                  var tree = d3.tree()
+                    .nodeSize([radius / 1.5, radius * 10])
+                    .separation(function(a, b) {
+                      return a.parent === b.parent ? 3 : 3;
+                    });
+                  // Set the size
+                  // Remember the tree is rotated
+                  // so the height is used as the width
+                  // and the width as the height
 
-            //       tree(root);
+                  tree(root);
 
-            //       var nodes = root.descendants();
-            //       var links = root.links();
-            //       // Set both root nodes to be dead center vertically
+                  var nodes = root.descendants();
+                  var links = root.links();
+                  // Set both root nodes to be dead center vertically
 
-            //       nodes.forEach(function(node) {
-            //         if (node.y !== 0) node.y = node.y * SWITCH_CONST;
-            //       });
+                  nodes.forEach(function(node) {
+                    if (node.y !== 0) node.y = node.y * SWITCH_CONST;
+                  });
 
-            //       var link = g.selectAll('.link-' + pos)
-            //             .data(links)
-            //             .enter();
+                  var link = g.selectAll('.link-' + pos)
+                        .data(links)
+                        .enter();
 
-            //       link.append('path')
-            //         .attr('class', 'link-' + pos)
-            //         .attr('d', function(d) {
-            //           return 'M' + d.target.y + ',' + d.target.x +
-            //             'C' + (d.target.y + d.source.y) / 2.5 + ',' + d.target.x +
-            //             ' ' + (d.target.y + d.source.y) / 2 + ',' + d.source.x +
-            //             ' ' + d.source.y + ',' + d.source.x;
-            //         });
+                  link.append('path')
+                    .attr('class', 'link-' + pos)
+                    .attr('d', function(d) {
+                      return 'M' + d.target.y + ',' + d.target.x +
+                        'C' + (d.target.y + d.source.y) / 2.5 + ',' + d.target.x +
+                        ' ' + (d.target.y + d.source.y) / 2 + ',' + d.source.x +
+                        ' ' + d.source.y + ',' + d.source.x;
+                    });
 
-            //       var tmp = count;
-            //       var defs = svg.append('defs')
-            //             .selectAll('pattern')
-            //             .data(nodes)
-            //             .enter()
-            //             .append('pattern')
-            //             .attr('id', function () { return 'image' + count++; })
-            //             .attr('x', 0)
-            //             .attr('y', 0)
-            //             .attr('height', radius * 2)
-            //             .attr('width', radius * 2)
-            //             .append('image')
-            //             .attr('x', 0)
-            //             .attr('y', 0)
-            //             .attr('height', radius * 2)
-            //             .attr('width', radius * 2)
-            //             .attr('xlink:href', function (d) { return d.data.img; });
+                  var tmp = count;
+                  var defs = svg.append('defs')
+                        .selectAll('pattern')
+                        .data(nodes)
+                        .enter()
+                        .append('pattern')
+                        .attr('id', function () { return 'image' + count++; })
+                        .attr('x', 0)
+                        .attr('y', 0)
+                        .attr('height', radius * 2)
+                        .attr('width', radius * 2)
+                        .append('image')
+                        .attr('x', 0)
+                        .attr('y', 0)
+                        .attr('height', radius * 2)
+                        .attr('width', radius * 2)
+                        .attr('xlink:href', function (d) { return d.data.img; });
 
-            //       // Create nodes
-            //       var node = g.selectAll('.node-' + pos)
-            //             .data(nodes)
-            //             .enter()
-            //             .append('g')
-            //             .attr('class', function(d) {
-            //               return 'node-' + pos + (d.children ? ' node--internal' : ' node--leaf');
-            //             })
-            //             .attr('transform', function(d) {
-            //               return 'translate(' + d.y + ',' + d.x + ')';
-            //             });
+                  // Create nodes
+                  var node = g.selectAll('.node-' + pos)
+                        .data(nodes)
+                        .enter()
+                        .append('g')
+                        .attr('class', function(d) {
+                          return 'node-' + pos + (d.children ? ' node--internal' : ' node--leaf');
+                        })
+                        .attr('transform', function(d) {
+                          return 'translate(' + d.y + ',' + d.x + ')';
+                        });
 
-            //       node
-            //         .append('circle')
-            //         .style('fill', function(d, i) { return 'url(#image' + (i + tmp) + ')'; })
-            //         .attr('id', function(d, i) { return 'node' + (i + tmp); })
-            //         .attr('node-num', function(d, i) { return (i + tmp); })
-            //         .attr('r', radius);
+                  node
+                    .append('circle')
+                    .style('fill', function(d, i) { return 'url(#image' + (i + tmp) + ')'; })
+                    .attr('id', function(d, i) { return 'node' + (i + tmp); })
+                    .attr('node-num', function(d, i) { return (i + tmp); })
+                    .attr('r', radius);
 
-            //       node
-            //         // .on('dblclick', function(d) {
-            //         //   d3.selectAll('text').remove();
-            //         //   d3.selectAll('rect').remove();
-            //         //   centerNode(d3.select(this)._groups[0][0].__data__);
-            //         //   scope.$parent.vm.chooseCompany({ selected: d3.select(this)._groups[0][0].__data__.data });
-            //         // })
-            //         .on('click', function(d, i) {
-            //           console.log(d);
-            //           d3.selectAll('text').remove();
-            //           d3.selectAll('rect').remove();
-            //           centerNode(d3.select(this)._groups[0][0].__data__);
+                  node
+                    // .on('dblclick', function(d) {
+                    //   d3.selectAll('text').remove();
+                    //   d3.selectAll('rect').remove();
+                    //   centerNode(d3.select(this)._groups[0][0].__data__);
+                    //   scope.$parent.vm.chooseCompany({ selected: d3.select(this)._groups[0][0].__data__.data });
+                    // })
+                    .on('click', function(d, i) {
+                      console.log(d);
+                      d3.selectAll('text').remove();
+                      d3.selectAll('rect').remove();
+                      centerNode(d3.select(this)._groups[0][0].__data__);
 
 
-            //           d3.select('#selected-circle').style('stroke', 'black').style('stroke-width', 1).attr('id', function(d, i) { return 'node' + i; });
-            //           d3.select(this).transition().duration(300)
-            //             .style('stroke', 'red')
-            //             .style('stroke-width', 5)
-            //             .attr('id', 'selected-circle');
+                      d3.select('#selected-circle').style('stroke', 'black').style('stroke-width', 1).attr('id', function(d, i) { return 'node' + i; });
+                      d3.select(this).transition().duration(300)
+                        .style('stroke', 'red')
+                        .style('stroke-width', 5)
+                        .attr('id', 'selected-circle');
 
-            //           var items = [
-            //             { 'func': removeGraph, 'text': 'See this Company\'s Graph', 'y': 1 },
-            //             { 'func': viewCatalog, 'text': 'See Product & Service Catalog', 'y': 2 },
-            //             { 'func': viewDemands, 'text': 'See Demands', 'y': 3 },
-            //             { 'func': viewSuppliers, 'text': 'See Suppliers', 'y': 4 },
-            //             { 'func': viewCustomers, 'text': 'See Customers', 'y': 5 },
-            //             { 'func': viewCompetitors, 'text': 'See Competitors', 'y': 6 }
-            //           ];
+                      var items = [
+                        { 'func': removeGraph, 'text': 'See this Company\'s Graph', 'y': 1 },
+                        { 'func': viewCatalog, 'text': 'See Product & Service Catalog', 'y': 2 },
+                        { 'func': viewDemands, 'text': 'See Demands', 'y': 3 },
+                        { 'func': viewSuppliers, 'text': 'See Suppliers', 'y': 4 },
+                        { 'func': viewCustomers, 'text': 'See Customers', 'y': 5 },
+                        { 'func': viewCompetitors, 'text': 'See Competitors', 'y': 6 }
+                      ];
 
-            //           var menuWidth = 200;
-            //           var itemHeight = 30;
-            //           var menuHeight = itemHeight * items.length;
-            //           var coords = getScreenCoords(d3.select(this)._groups[0][0].__data__.x,
-            //                                        d3.select(this)._groups[0][0].__data__.y,
-            //                                        menuHeight,
-            //                                        menuWidth);
+                      var menuWidth = 200;
+                      var itemHeight = 30;
+                      var menuHeight = itemHeight * items.length;
+                      var coords = getScreenCoords(d3.select(this)._groups[0][0].__data__.x,
+                                                   d3.select(this)._groups[0][0].__data__.y,
+                                                   menuHeight,
+                                                   menuWidth);
 
-            //           var x = coords.x;
-            //           var y = coords.y;
+                      var x = coords.x;
+                      var y = coords.y;
 
-            //           var menuItems = g.selectAll('rect').data(items).enter()
-            //                 .append('rect').attr('class', 'conmenu-items')
-            //                 .attr('width', menuWidth).attr('height', itemHeight)
-            //                 .style('fill', '#d3d3d3')
-            //                 .on('mouseout', function(d) {
-            //                   d3.select(this).style('fill', '#d3d3d3');
-            //                 })
-            //                 .on('mouseover', function(d) {
-            //                   d3.select(this).style('fill', '#fff');
-            //                 })
-            //                 .on('click', function(d) {
-            //                   d3.selectAll('text').remove();
-            //                   d3.selectAll('rect').remove();
+                      var menuItems = g.selectAll('rect').data(items).enter()
+                            .append('rect').attr('class', 'conmenu-items')
+                            .attr('width', menuWidth).attr('height', itemHeight)
+                            .style('fill', '#d3d3d3')
+                            .on('mouseout', function(d) {
+                              d3.select(this).style('fill', '#d3d3d3');
+                            })
+                            .on('mouseover', function(d) {
+                              d3.select(this).style('fill', '#fff');
+                            })
+                            .on('click', function(d) {
+                              d3.selectAll('text').remove();
+                              d3.selectAll('rect').remove();
 
-            //                   if (d.func === centerNode) {
-            //                     d.func(d3.select('#selected-circle')._groups[0][0].__data__);
-            //                   } else {
-            //                     d.func(d3.select('#selected-circle')._groups[0][0].__data__.data);
-            //                   }
-            //                 })
-            //                 .style('stroke', 'black')
-            //                 .style('stroke-width', 0.5)
-            //                 .attr('x', x)
-            //                 .attr('y', function(d) {
-            //                   return y + (30 * (d.y));
-            //                 });
+                              if (d.func === centerNode) {
+                                d.func(d3.select('#selected-circle')._groups[0][0].__data__);
+                              } else {
+                                d.func(d3.select('#selected-circle')._groups[0][0].__data__.data);
+                              }
+                            })
+                            .style('stroke', 'black')
+                            .style('stroke-width', 0.5)
+                            .attr('x', x)
+                            .attr('y', function(d) {
+                              return y + (30 * (d.y));
+                            });
 
-            //           var menuText = g.selectAll('text').data(items).enter()
-            //                 .append('text')
-            //                 .style('cursor', 'default')
-            //                 .style('pointer-events', 'none')
-            //                 .attr('x', x + 3)
-            //                 .attr('y', function(d) {
-            //                   return y + 20 + (30 * (d.y));
-            //                 })
-            //                 .text(function (d) { return d.text; });
-            //         });
+                      var menuText = g.selectAll('text').data(items).enter()
+                            .append('text')
+                            .style('cursor', 'default')
+                            .style('pointer-events', 'none')
+                            .attr('x', x + 3)
+                            .attr('y', function(d) {
+                              return y + 20 + (30 * (d.y));
+                            })
+                            .text(function (d) { return d.text; });
+                    });
 
-            //       // node.append('text')
-            //       //   .attr('dy', 30)
-            //       //   .style('text-anchor', 'middle')
-            //       //   .text(function(d) {
-            //       //     return d.data.companyName;
-            //       //   });
-            //     }
-            //   });
-            // });
+                  // node.append('text')
+                  //   .attr('dy', 30)
+                  //   .style('text-anchor', 'middle')
+                  //   .text(function(d) {
+                  //     return d.data.companyName;
+                  //   });
+                }
+            });
 
             //
             // functions!
@@ -325,55 +317,61 @@
             }
           });
 
-          function getGraphSuppliers(obj) {
+          function getGraphCustomers(obj) {
+            return new Promise(function(resolve, reject) {
+              var data = obj;
+              // recurseTree (nodeObj, number of levels to get, group)
+              // group can either be suppliers or customers
 
-            var data = obj;
-
-            // treeThing (nodeObj, number of levels to get, group)
-            // group can either be suppliers or customers
-            treeThing(data, 5, 'suppliers').then(function(res) {
-              console.log('returned from tree', res);
+              getChildren(data._id, 'customers').then(function(childArray) {
+                data.children = childArray;
+                resolve(recurseTree(data, 3, 'customers'));
+              });
             });
-            // getAllLeafNodes(data);
           }
 
-          function treeThing(data, level, group) {
+          function getGraphSuppliers(obj) {
             return new Promise(function(resolve, reject) {
+              var data = obj;
+              // recurseTree (nodeObj, number of levels to get, group)
+              // group can either be suppliers or customers
 
-              if (level <= 0) {
-                console.log('bottom');
+              getChildren(data._id, 'suppliers').then(function(childArray) {
+                data.children = childArray;
+                resolve(recurseTree(data, 3, 'suppliers'));
+              });
+            });
+          }
+
+          // TODO add rejctions
+          function recurseTree(data, level, group) {
+            return new Promise(function(resolve, reject) {
+              if (level <= 1) {
                 resolve(data);
-              }
+              } else {
+                if (data.hasOwnProperty('children')) {
+                  var childPromises = [];
+                  data.children.forEach(function(child) {
+                    child.children = [];
+                    childPromises.push(getChildren(child._id, group));
+                  });
 
-              // if there's a child array with children in it
-              if (data.hasOwnProperty('children')) {
-                if (data.children.length > 0) {
-                  // recurse for every child and load their children
+                  Promise.all(childPromises).then(function(children) {
+                    var recursePromises = [];
+                    for (var i = 0; i < data.children.length; i++) {
+                      data.children[i].children = children[i];
+                      recursePromises.push(recurseTree(data.children[i], level - 1, group));
+                    }
 
-                  // var promises = [];
-                  // data.children.forEach(function(child) {
-                  //   promises.push(treeThing(child, level, group));
-                  // });
-                  // Promise.all(promises).then(function(res) {
-                  //   console.log(res);
-                  // });
-                  resolve(data);
+                    Promise.all(recursePromises).then(function() {
+                      resolve(data);
+                    });
+                  });
                 }
               }
-              else {
-                // this has no children, it should load children
-
-                var children = getChildren(data._id, group);
-
-                children.then(function(res) {
-                  data.children = res;
-
-                  // recurse
-                  resolve(treeThing(data, level - 1, group));
-                });
-              }
             });
           }
+
 
           function getChildren(id, word) {
             return new Promise(function(resolve, reject) {
@@ -386,61 +384,12 @@
                   resolve(res[word]);
                 });
               } else {
-                reject([]);
+                reject();
               }
             });
           }
 
-          function getAllLeafNodes(array) {
-            console.log(array);
-            for (var index = 0; index < array.length; index++) {
-              var data = array[index];
-              var leafNodes = [];
-              if (data.hasOwnProperty('children')) {
-                leafNodes = leafNodes.concat(getAllLeafNodes(data.children));
-                // leafNodes = leafNodes.unique();
-
-                // for (i = 0; i < leafNodes.length; i++) {
-                //   leafNodes = leafNodes.concat(getAllLeafNodes(leafNodes[i]));
-                // }
-                console.log(leafNodes);
-                // return [];
-              } else {
-                leafNodes.push(data);
-              }
-            }
-            return leafNodes;
-          }
-
-          function getThreeSuppLevels(data) {
-            return new Promise(function(resolve, reject) {
-              getSuppliers(data._id).then(function (res) {
-                data.children = res.suppliers;
-
-                data.children.forEach(child => getSuppliers(child._id).then(function(obj) {
-                  child.children = obj.suppliers;
-                  return child;
-                }));
-                resolve(data);
-              });
-            });
-          }
-
-          function getThreeCustLevels(data) {
-            return new Promise(function(resolve, reject) {
-              getCustomers(data._id).then(function (res) {
-                data.children = res.customers;
-
-                data.children.forEach(child => getCustomers(child._id).then(function(obj) {
-                  child.children = obj.customers;
-                  return child;
-                }));
-                resolve(data);
-              });
-            });
-          }
-
-          function getSuppliers(id) {
+         function getSuppliers(id) {
             return EnterprisesService.getSuppliers({ 'enterpriseId': id });
           }
 
