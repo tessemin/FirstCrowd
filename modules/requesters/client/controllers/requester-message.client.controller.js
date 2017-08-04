@@ -2,12 +2,12 @@
   'use strict';
 
   angular
-    .module('workers')
-    .controller('WorkersMessagesController', WorkersMessagesController);
+    .module('requesters')
+    .controller('RequestersMessagesController', RequestersMessagesController);
 
-  WorkersMessagesController.$inject = ['WorkersService', 'Notification', '$http'];
+  RequestersMessagesController.$inject = ['RequestersService', 'Notification', '$http'];
 
-  function WorkersMessagesController(WorkersService, Notification, $http) {
+  function RequestersMessagesController(RequestersService, Notification, $http) {
     var vm = this;
     vm.showSubmissions = true;
     vm.showMessages = true;
@@ -19,6 +19,7 @@
     function getTaskError(err) {
       Notification.error({ message: err, title: '<i class="glyphicon glyphicon-remove"></i> Error getting tasks!' });
     }
+
     function loadSidebarTasks(tasks) {
       vm.sidebar.tasks = tasks;
     }
@@ -36,10 +37,6 @@
           vm.activeTaskType = 'All';
           getAllTasks(function(tasks) { loadSidebarTasks(response.tasks); });
           break;
-        case 'recomended':
-          vm.activeTaskType = 'Recomended';
-          getRecomendedTasks(function(tasks) { return loadSidebarTasks(tasks) });
-          break;
         case 'completed':
           vm.activeTaskType = 'Completed';
           getCompletedTasks(function(tasks) { return loadSidebarTasks(tasks) });
@@ -51,12 +48,8 @@
         case 'recent':
           vm.activeTaskType = 'Recent';
           getRecentMessages();
-          console.log('\nouties\n')
-          console.log(vm);
-          console.log(vm.messageView.messages);
           break;
       }
-      console.log(vm);
     };
 
     function loadIncrementalSidebarTasks(tasks) {
@@ -65,9 +58,8 @@
       }
     }
 
-    function getAllTasks(callBack) {
+    function getAllTasks() {
       getActiveTasks(function(tasks) { return loadIncrementalSidebarTasks(tasks) });
-      getRecomendedTasks(function(tasks) { return loadIncrementalSidebarTasks(tasks) });
       getCompletedTasks(function(tasks) { return loadIncrementalSidebarTasks(tasks) });
       getRejectedTasks(function(tasks) { return loadIncrementalSidebarTasks(tasks) });
     }
@@ -79,7 +71,6 @@
       vm.messageView.task = {};
       vm.messageView.task.title = vm.activeTaskType;
       getActiveTasks(function(tasks) { return loadRecent(tasks) });
-      getRecomendedTasks(function(tasks) { return loadRecent(tasks) });
       getCompletedTasks(function(tasks) { return loadRecent(tasks) });
       getRejectedTasks(function(tasks) { return loadRecent(tasks) });
       function loadRecent(tasks) {
@@ -111,24 +102,19 @@
     }
 
     function getActiveTasks(callBack) {
-      WorkersService.getActiveTasks()
-        .then(function(res) { callBack(res.tasks) })
-        .catch(function(res) { getTaskError(res.message); callBack(); });
-    }
-
-    function getRecomendedTasks(callBack) {
-      WorkersService.getRecomendedTasks()
+      RequestersService.getActiveTasks()
         .then(function(res) { callBack(res.tasks) })
         .catch(function(res) { getTaskError(res.message); callBack(); });
     }
 
     function getCompletedTasks(callBack) {
-      WorkersService.getCompletedTasks()
+      RequestersService.getCompletedTasks()
         .then(function(res) { callBack(res.tasks) })
         .catch(function(res) { getTaskError(res.message); callBack(); });
     }
+
     function getRejectedTasks(callBack) {
-      WorkersService.getRejectedTasks()
+      RequestersService.getRejectedTasks()
         .then(function(res) { callBack(res.tasks) })
         .catch(function(res) { getTaskError(res.message); callBack(); });
     }
@@ -166,7 +152,7 @@
     };
 
     async function asyncGetTaskFiles(task, callBack) {
-      await WorkersService.getDownloadableTaskFiles({
+      await RequestersService.getDownloadableTaskFiles({
         taskId: task._id
       })
       .then(function(response) {
@@ -203,7 +189,7 @@
         return null;
       }
       $http({
-          url: '/api/workers/task/file/download',
+          url: '/api/requesters/task/file/download',
           method: "POST",
           data: {
             fileName: file.name,
@@ -239,7 +225,6 @@
           vm.showMessages = false;
           break;
         case 'all':
-          // all is default
         default:
           vm.sortTabs.all = true;
           vm.showSubmissions = true;
@@ -258,7 +243,7 @@
 
     vm.sendMessage.send = function() {
       async function sendMessage(task) {
-        WorkersService.sendMessage({
+        RequestersService.sendMessage({
           taskId: task._id,
           message: vm.sendMessage.message
         })
@@ -285,5 +270,6 @@
       vm.sendMessage.expanded = false;
       vm.sendMessage.message = '';
     };
+
   }
 }());

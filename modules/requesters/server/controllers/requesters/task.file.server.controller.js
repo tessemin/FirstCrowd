@@ -9,7 +9,7 @@ var path = require('path'),
   _ = require('lodash'),
   fs = require('fs'),
   mkdirp = require('mkdirp');
-  
+
 function makeDirectory(dir, callBack) {
   if (!fs.existsSync(dir)){
     mkdirp(dir, function (err) {
@@ -42,7 +42,7 @@ function writeFilesToPath(file, dirPath, callBack, next) {
           if (err) return callBack(err);
           fs.unlink(oldPath, function (err) {
             if (err) return callBack(err);
-            
+
             if (next)
               return next(dirPath, callBack, next);
             else
@@ -172,10 +172,10 @@ function sendMessage(message, taskId, workerId, timeInMin, fileName, callBack) {
       var msgDir = path.resolve(msgPath + '/messages/');
       msgPath = path.resolve(msgDir + '/' + fileName);
       makeDirectory(msgDir, function(err) {
-        if (err) 
+        if (err)
           return callBack(err)
         fs.appendFile(msgPath, message, function (err) {
-          if (err) 
+          if (err)
             return callBack(err)
           return callBack(null, message, timeInMin);
         });
