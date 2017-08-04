@@ -75,21 +75,23 @@
       getRejectedTasks(function(tasks) { return loadRecent(tasks) });
       function loadRecent(tasks) {
         tasks.forEach(function(task) {
-          asyncGetTaskFiles(task, function(task, messages) {
-            var recentTimeStamp = getRecentDefTime();
-            var recentMsges = [];
-            for (var msg = 0; msg < messages.length; msg++) {
-              if (messages[msg].timeStamp > recentTimeStamp) {
-                messages[msg].task = task
-                recentMsges.push(messages[msg]);
-              } else {
-                break;
+          task.jobs.forEach(function(job) {
+            asyncGetTaskFiles(task, job.worker.workerId, function(task, messages) {
+              var recentTimeStamp = getRecentDefTime();
+              var recentMsges = [];
+              for (var msg = 0; msg < messages.length; msg++) {
+                if (messages[msg].timeStamp > recentTimeStamp) {
+                  messages[msg].task = task
+                  recentMsges.push(messages[msg]);
+                } else {
+                  break;
+                }
               }
-            }
-            if (recentMsges.length > 0) {
-              vm.sidebar.tasks.push(task);
-              loadAndSortMessages(recentMsges);
-            }
+              if (recentMsges.length > 0) {
+                vm.sidebar.tasks.push(task);
+                loadAndSortMessages(recentMsges);
+              }
+            });
           });
         });
       }
@@ -128,10 +130,12 @@
       vm.messageView = {};
       vm.messageView.task = task;
       vm.messageView.taskMessage = task;
-      asyncGetTaskFiles(task, function(task, messages) {
-        vm.messageView.messages = messages.map(function(msg) {
-          msg.task = task;
-          return msg;
+      task.jobs.forEach(function(job) {
+        asyncGetTaskFiles(task, job.worker.workerId, function(task, messages) {
+          vm.messageView.messages = messages.map(function(msg) {
+            msg.task = task;
+            return msg;
+          });
         });
       });
     };
@@ -142,18 +146,21 @@
       vm.messageView.task = {};
       vm.messageView.task.title = vm.activeTaskType;
       tasks.forEach(function(task) {
-        asyncGetTaskFiles(task, function(task, messages) {
-          loadAndSortMessages(messages.map(function(msg) {
-              msg.task = task
-              return msg;
-            }));
+        task.jobs.forEach(function(job) {
+          asyncGetTaskFiles(task, job.worker.workerId, function(task, messages) {
+            loadAndSortMessages(messages.map(function(msg) {
+                msg.task = task
+                return msg;
+              }));
+          });
         });
       });
     };
 
-    async function asyncGetTaskFiles(task, callBack) {
+    async function asyncGetTaskFiles(task, workerId, callBack) {
       await RequestersService.getDownloadableTaskFiles({
-        taskId: task._id
+        taskId: task._id,
+        workerId: workerId
       })
       .then(function(response) {
         if (response.down) {
