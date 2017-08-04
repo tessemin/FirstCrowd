@@ -42,8 +42,14 @@ function setUpRequesterFileExchange(req, res, callBack) {
           message: 'You don\'t own this task.'
         });
       }
+      
+      if (!req.body.workerId) {
+        return res.status(422).send({
+          message: 'No worker id provided.'
+        });
+      }
 
-      if(!findJobByWorker(task, {_id: req.body.workerId}) && !findBidByWorker(task, {_id: req.body.workerId})) {
+      if(!findJobByWorker(task, { _id: req.body.workerId }) && !findBidByWorker(task, { _id: req.body.workerId })) {
         return res.status(422).send({
           message: 'That id is not a worker for this task'
         });
