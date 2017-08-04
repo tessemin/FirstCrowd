@@ -60,6 +60,13 @@
             group.attr('transform', d3.event.transform);
           }
 
+
+          d3.select('.graph').append('div').attr('class', 'loader').html('Loading...')
+            .style('top', function() {
+              return -1 * height / 2 + 'px';
+            });
+
+
           getGraph().then(function(rootNode) {
             var graphPromises = [];
             var root1 = $.extend( {}, rootNode);
@@ -70,188 +77,192 @@
 
             Promise.all(graphPromises).then(function(res) {
 
-            centerHome();
-            makeHomeButton();
+              d3.select('.loader').remove();
 
-                // Create d3 hierarchies
-                var right = d3.hierarchy(res[0]);
-                var left = d3.hierarchy(res[1]);
-                var count = 0;
+              centerHome();
+              makeHomeButton();
 
-                // Render both trees
-                drawTree(right, 'right');
-                drawTree(left, 'left');
+              // Create d3 hierarchies
+              var right = d3.hierarchy(res[0]);
+              var left = d3.hierarchy(res[1]);
+              var count = 0;
+
+              // Render both trees
+              drawTree(right, 'right');
+              drawTree(left, 'left');
 
 
-                // draw single tree
-                function drawTree(root, pos) {
+              // draw single tree
+              function drawTree(root, pos) {
 
-                  var SWITCH_CONST = 1;
-                  if (pos === 'left') {
-                    SWITCH_CONST = -1;
-                  }
+                var SWITCH_CONST = 1;
+                if (pos === 'left') {
+                  SWITCH_CONST = -1;
+                }
 
-                  var width = +svg.attr('width'),
+                var width = +svg.attr('width'),
                     height = +svg.attr('height');
 
-                  var g = d3.select('.everything').append('g');
+                var g = d3.select('.everything').append('g');
 
-                  // Create new default tree layout
-                  var tree = d3.tree()
-                    .nodeSize([radius / 1.5, radius * 10])
-                    .separation(function(a, b) {
-                      return a.parent === b.parent ? 3 : 3;
-                    });
-                  // Set the size
-                  // Remember the tree is rotated
-                  // so the height is used as the width
-                  // and the width as the height
+                // Create new default tree layout
+                var tree = d3.tree()
+                      .nodeSize([radius / 1.5, radius * 10])
+                      .separation(function(a, b) {
+                        return 4;
+                        // return a.parent === b.parent ? 3 : 3;
+                      });
+                // Set the size
+                // Remember the tree is rotated
+                // so the height is used as the width
+                // and the width as the height
 
-                  tree(root);
+                tree(root);
 
-                  var nodes = root.descendants();
-                  var links = root.links();
-                  // Set both root nodes to be dead center vertically
+                var nodes = root.descendants();
+                var links = root.links();
+                // Set both root nodes to be dead center vertically
 
-                  nodes.forEach(function(node) {
-                    if (node.y !== 0) node.y = node.y * SWITCH_CONST;
+                nodes.forEach(function(node) {
+                  // node.x = node.x * 2;
+                  if (node.y !== 0) node.y = node.y * SWITCH_CONST * 1.5;
+                });
+
+                var link = g.selectAll('.link-' + pos)
+                      .data(links)
+                      .enter();
+
+                link.append('path')
+                  .attr('class', 'link-' + pos)
+                  .attr('d', function(d) {
+                    return 'M' + d.target.y + ',' + d.target.x +
+                      'C' + (d.target.y + d.source.y) / 2.5 + ',' + d.target.x +
+                      ' ' + (d.target.y + d.source.y) / 2 + ',' + d.source.x +
+                      ' ' + d.source.y + ',' + d.source.x;
                   });
 
-                  var link = g.selectAll('.link-' + pos)
-                        .data(links)
-                        .enter();
+                var tmp = count;
+                var defs = svg.append('defs')
+                      .selectAll('pattern')
+                      .data(nodes)
+                      .enter()
+                      .append('pattern')
+                      .attr('id', function () { return 'image' + count++; })
+                      .attr('x', 0)
+                      .attr('y', 0)
+                      .attr('height', radius * 2)
+                      .attr('width', radius * 2)
+                      .append('image')
+                      .attr('x', 0)
+                      .attr('y', 0)
+                      .attr('height', radius * 2)
+                      .attr('width', radius * 2)
+                      .attr('xlink:href', function (d) { return d.data.img; });
 
-                  link.append('path')
-                    .attr('class', 'link-' + pos)
-                    .attr('d', function(d) {
-                      return 'M' + d.target.y + ',' + d.target.x +
-                        'C' + (d.target.y + d.source.y) / 2.5 + ',' + d.target.x +
-                        ' ' + (d.target.y + d.source.y) / 2 + ',' + d.source.x +
-                        ' ' + d.source.y + ',' + d.source.x;
-                    });
+                // Create nodes
+                var node = g.selectAll('.node-' + pos)
+                      .data(nodes)
+                      .enter()
+                      .append('g')
+                      .attr('class', function(d) {
+                        return 'node-' + pos + (d.children ? ' node--internal' : ' node--leaf');
+                      })
+                      .attr('transform', function(d) {
+                        return 'translate(' + d.y + ',' + d.x + ')';
+                      });
 
-                  var tmp = count;
-                  var defs = svg.append('defs')
-                        .selectAll('pattern')
-                        .data(nodes)
-                        .enter()
-                        .append('pattern')
-                        .attr('id', function () { return 'image' + count++; })
-                        .attr('x', 0)
-                        .attr('y', 0)
-                        .attr('height', radius * 2)
-                        .attr('width', radius * 2)
-                        .append('image')
-                        .attr('x', 0)
-                        .attr('y', 0)
-                        .attr('height', radius * 2)
-                        .attr('width', radius * 2)
-                        .attr('xlink:href', function (d) { return d.data.img; });
+                node
+                  .append('circle')
+                  .style('fill', function(d, i) { return 'url(#image' + (i + tmp) + ')'; })
+                  .attr('id', function(d, i) { return 'node' + (i + tmp); })
+                  .attr('node-num', function(d, i) { return (i + tmp); })
+                  .attr('r', radius);
 
-                  // Create nodes
-                  var node = g.selectAll('.node-' + pos)
-                        .data(nodes)
-                        .enter()
-                        .append('g')
-                        .attr('class', function(d) {
-                          return 'node-' + pos + (d.children ? ' node--internal' : ' node--leaf');
-                        })
-                        .attr('transform', function(d) {
-                          return 'translate(' + d.y + ',' + d.x + ')';
-                        });
-
-                  node
-                    .append('circle')
-                    .style('fill', function(d, i) { return 'url(#image' + (i + tmp) + ')'; })
-                    .attr('id', function(d, i) { return 'node' + (i + tmp); })
-                    .attr('node-num', function(d, i) { return (i + tmp); })
-                    .attr('r', radius);
-
-                  node
-                    // .on('dblclick', function(d) {
-                    //   d3.selectAll('text').remove();
-                    //   d3.selectAll('rect').remove();
-                    //   centerNode(d3.select(this)._groups[0][0].__data__);
-                    //   scope.$parent.vm.chooseCompany({ selected: d3.select(this)._groups[0][0].__data__.data });
-                    // })
-                    .on('click', function(d, i) {
-                      console.log(d);
-                      d3.selectAll('text').remove();
-                      d3.selectAll('rect').remove();
-                      centerNode(d3.select(this)._groups[0][0].__data__);
+                node
+                // .on('dblclick', function(d) {
+                //   d3.selectAll('text').remove();
+                //   d3.selectAll('rect').remove();
+                //   centerNode(d3.select(this)._groups[0][0].__data__);
+                //   scope.$parent.vm.chooseCompany({ selected: d3.select(this)._groups[0][0].__data__.data });
+                // })
+                  .on('click', function(d, i) {
+                    console.log(d);
+                    d3.selectAll('text').remove();
+                    d3.selectAll('rect').remove();
+                    centerNode(d3.select(this)._groups[0][0].__data__);
 
 
-                      d3.select('#selected-circle').style('stroke', 'black').style('stroke-width', 1).attr('id', function(d, i) { return 'node' + i; });
-                      d3.select(this).transition().duration(300)
-                        .style('stroke', 'red')
-                        .style('stroke-width', 5)
-                        .attr('id', 'selected-circle');
+                    d3.select('#selected-circle').style('stroke', 'black').style('stroke-width', 1).attr('id', function(d, i) { return 'node' + i; });
+                    d3.select(this).transition().duration(300)
+                      .style('stroke', 'red')
+                      .style('stroke-width', 5)
+                      .attr('id', 'selected-circle');
 
-                      var items = [
-                        { 'func': removeGraph, 'text': 'See this Company\'s Graph', 'y': 1 },
-                        { 'func': viewCatalog, 'text': 'See Product & Service Catalog', 'y': 2 },
-                        { 'func': viewDemands, 'text': 'See Demands', 'y': 3 },
-                        { 'func': viewSuppliers, 'text': 'See Suppliers', 'y': 4 },
-                        { 'func': viewCustomers, 'text': 'See Customers', 'y': 5 },
-                        { 'func': viewCompetitors, 'text': 'See Competitors', 'y': 6 }
-                      ];
+                    var items = [
+                      { 'func': removeGraph, 'text': 'See this Company\'s Graph', 'y': 1 },
+                      { 'func': viewCatalog, 'text': 'See Product & Service Catalog', 'y': 2 },
+                      { 'func': viewDemands, 'text': 'See Demands', 'y': 3 },
+                      { 'func': viewSuppliers, 'text': 'See Suppliers', 'y': 4 },
+                      { 'func': viewCustomers, 'text': 'See Customers', 'y': 5 },
+                      { 'func': viewCompetitors, 'text': 'See Competitors', 'y': 6 }
+                    ];
 
-                      var menuWidth = 200;
-                      var itemHeight = 30;
-                      var menuHeight = itemHeight * items.length;
-                      var coords = getScreenCoords(d3.select(this)._groups[0][0].__data__.x,
-                                                   d3.select(this)._groups[0][0].__data__.y,
-                                                   menuHeight,
-                                                   menuWidth);
+                    var menuWidth = 200;
+                    var itemHeight = 30;
+                    var menuHeight = itemHeight * items.length;
+                    var coords = getScreenCoords(d3.select(this)._groups[0][0].__data__.x,
+                                                 d3.select(this)._groups[0][0].__data__.y,
+                                                 menuHeight,
+                                                 menuWidth);
 
-                      var x = coords.x;
-                      var y = coords.y;
+                    var x = coords.x;
+                    var y = coords.y;
 
-                      var menuItems = g.selectAll('rect').data(items).enter()
-                            .append('rect').attr('class', 'conmenu-items')
-                            .attr('width', menuWidth).attr('height', itemHeight)
-                            .style('fill', '#d3d3d3')
-                            .on('mouseout', function(d) {
-                              d3.select(this).style('fill', '#d3d3d3');
-                            })
-                            .on('mouseover', function(d) {
-                              d3.select(this).style('fill', '#fff');
-                            })
-                            .on('click', function(d) {
-                              d3.selectAll('text').remove();
-                              d3.selectAll('rect').remove();
+                    var menuItems = g.selectAll('rect').data(items).enter()
+                          .append('rect').attr('class', 'conmenu-items')
+                          .attr('width', menuWidth).attr('height', itemHeight)
+                          .style('fill', '#d3d3d3')
+                          .on('mouseout', function(d) {
+                            d3.select(this).style('fill', '#d3d3d3');
+                          })
+                          .on('mouseover', function(d) {
+                            d3.select(this).style('fill', '#fff');
+                          })
+                          .on('click', function(d) {
+                            d3.selectAll('text').remove();
+                            d3.selectAll('rect').remove();
 
-                              if (d.func === centerNode) {
-                                d.func(d3.select('#selected-circle')._groups[0][0].__data__);
-                              } else {
-                                d.func(d3.select('#selected-circle')._groups[0][0].__data__.data);
-                              }
-                            })
-                            .style('stroke', 'black')
-                            .style('stroke-width', 0.5)
-                            .attr('x', x)
-                            .attr('y', function(d) {
-                              return y + (30 * (d.y));
-                            });
+                            if (d.func === centerNode) {
+                              d.func(d3.select('#selected-circle')._groups[0][0].__data__);
+                            } else {
+                              d.func(d3.select('#selected-circle')._groups[0][0].__data__.data);
+                            }
+                          })
+                          .style('stroke', 'black')
+                          .style('stroke-width', 0.5)
+                          .attr('x', x)
+                          .attr('y', function(d) {
+                            return y + (30 * (d.y));
+                          });
 
-                      var menuText = g.selectAll('text').data(items).enter()
-                            .append('text')
-                            .style('cursor', 'default')
-                            .style('pointer-events', 'none')
-                            .attr('x', x + 3)
-                            .attr('y', function(d) {
-                              return y + 20 + (30 * (d.y));
-                            })
-                            .text(function (d) { return d.text; });
-                    });
+                    var menuText = g.selectAll('text').data(items).enter()
+                          .append('text')
+                          .style('cursor', 'default')
+                          .style('pointer-events', 'none')
+                          .attr('x', x + 3)
+                          .attr('y', function(d) {
+                            return y + 20 + (30 * (d.y));
+                          })
+                          .text(function (d) { return d.text; });
+                  });
 
-                  // node.append('text')
-                  //   .attr('dy', 30)
-                  //   .style('text-anchor', 'middle')
-                  //   .text(function(d) {
-                  //     return d.data.companyName;
-                  //   });
-                }
+                // node.append('text')
+                //   .attr('dy', 30)
+                //   .style('text-anchor', 'middle')
+                //   .text(function(d) {
+                //     return d.data.companyName;
+                //   });
+              }
             });
 
             //
@@ -265,17 +276,17 @@
 
             function makeHomeButton() {
               var home = d3.select('.graph')
-                .append('span')
-                .attr('id', 'home-button')
-                .style('margin-top', function() { return (header.offsetHeight - 30) + 'px'; })
-                .attr('class', 'glyphicon glyphicon-home home')
-                .on('click', centerHome)
-                .on('mousedown', function() {
-                  d3.select(this).style('color', 'gray');
-                })
-                .on('mouseup', function() {
-                  d3.select(this).style('color', 'lightgray');
-                });
+                    .append('span')
+                    .attr('id', 'home-button')
+                    .style('margin-top', function() { return (header.offsetHeight - 30) + 'px'; })
+                    .attr('class', 'glyphicon glyphicon-home home')
+                    .on('click', centerHome)
+                    .on('mousedown', function() {
+                      d3.select(this).style('color', 'gray');
+                    })
+                    .on('mouseup', function() {
+                      d3.select(this).style('color', 'lightgray');
+                    });
             }
 
             function centerNode(source) {
@@ -389,7 +400,7 @@
             });
           }
 
-         function getSuppliers(id) {
+          function getSuppliers(id) {
             return EnterprisesService.getSuppliers({ 'enterpriseId': id });
           }
 
