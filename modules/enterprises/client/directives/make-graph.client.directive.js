@@ -17,18 +17,6 @@
         select: '&'
       },
       link: function(scope, element, attrs) {
-        // Array.prototype.unique = function() {
-        //   var a = this.concat();
-        //   for(var i=0; i<a.length; ++i) {
-        //     for(var j=i+1; j<a.length; ++j) {
-        //       if(a[i] === a[j])
-        //         a.splice(j--, 1);
-        //     }
-        //   }
-
-        //   return a;
-        // };
-
         var levels = 2;
         var radius = 20;
 
@@ -73,16 +61,21 @@
           }
 
           getGraph().then(function(rootNode) {
-            getGraphSuppliers(rootNode);
+            var graphPromises = [];
+            var root1 = $.extend( {}, rootNode);
+            var root2 = $.extend( {}, rootNode);
+
+            graphPromises.push(getGraphCustomers(root1));
+            graphPromises.push(getGraphSuppliers(root2));
+
+            Promise.all(graphPromises).then(function(res) {
 
             centerHome();
             makeHomeButton();
-            getThreeCustLevels(rootNode).then(function(data1) {
-              getThreeSuppLevels(rootNode).then(function(data2) {
 
                 // Create d3 hierarchies
-                var right = d3.hierarchy(data1);
-                var left = d3.hierarchy(data2);
+                var right = d3.hierarchy(res[0]);
+                var left = d3.hierarchy(res[1]);
                 var count = 0;
 
                 // Render both trees
@@ -107,7 +100,7 @@
                   var tree = d3.tree()
                     .nodeSize([radius / 1.5, radius * 10])
                     .separation(function(a, b) {
-                      return a.parent === b.parent ? 8 : 3;
+                      return a.parent === b.parent ? 3 : 3;
                     });
                   // Set the size
                   // Remember the tree is rotated
@@ -259,7 +252,6 @@
                   //     return d.data.companyName;
                   //   });
                 }
-              });
             });
 
             //
@@ -325,89 +317,79 @@
             }
           });
 
+          function getGraphCustomers(obj) {
+            return new Promise(function(resolve, reject) {
+              var data = obj;
+              // recurseTree (nodeObj, number of levels to get, group)
+              // group can either be suppliers or customers
+
+              getChildren(data._id, 'customers').then(function(childArray) {
+                data.children = childArray;
+                resolve(recurseTree(data, 3, 'customers'));
+              });
+            });
+          }
+
           function getGraphSuppliers(obj) {
+            return new Promise(function(resolve, reject) {
+              var data = obj;
+              // recurseTree (nodeObj, number of levels to get, group)
+              // group can either be suppliers or customers
 
-            var data = obj;
-            treeThing(data, 5);
-            // getAllLeafNodes(data);
-          }
-
-          function treeThing(data, level) {
-            console.log(data, level);
-            if (level <= 0) {
-              return data;
-            }
-
-            if (data.hasOwnProperty('children')) {
-              if (data.children.length > 0) {
-                data.children.forEach(function(child) {
-
-                });
-              }
-              else {
-                return 2;
-              }
-            }
-            else {
-              data.children = [];
-              getSuppliers(data._id).then(function (res) {
-                data.children = res.suppliers;
-                console.log(data.children);
-                // data.children treeThing(data);
+              getChildren(data._id, 'suppliers').then(function(childArray) {
+                data.children = childArray;
+                resolve(recurseTree(data, 3, 'suppliers'));
               });
-            }
+            });
           }
 
-          function getAllLeafNodes(array) {
-            console.log(array);
-            for (var index = 0; index < array.length; index++) {
-              var data = array[index];
-              var leafNodes = [];
-              if (data.hasOwnProperty('children')) {
-                leafNodes = leafNodes.concat(getAllLeafNodes(data.children));
-                // leafNodes = leafNodes.unique();
-
-                // for (i = 0; i < leafNodes.length; i++) {
-                //   leafNodes = leafNodes.concat(getAllLeafNodes(leafNodes[i]));
-                // }
-                console.log(leafNodes);
-                // return [];
+          // TODO add rejctions
+          function recurseTree(data, level, group) {
+            return new Promise(function(resolve, reject) {
+              if (level <= 1) {
+                resolve(data);
               } else {
-                leafNodes.push(data);
+                if (data.hasOwnProperty('children')) {
+                  var childPromises = [];
+                  data.children.forEach(function(child) {
+                    child.children = [];
+                    childPromises.push(getChildren(child._id, group));
+                  });
+
+                  Promise.all(childPromises).then(function(children) {
+                    var recursePromises = [];
+                    for (var i = 0; i < data.children.length; i++) {
+                      data.children[i].children = children[i];
+                      recursePromises.push(recurseTree(data.children[i], level - 1, group));
+                    }
+
+                    Promise.all(recursePromises).then(function() {
+                      resolve(data);
+                    });
+                  });
+                }
               }
-            }
-            return leafNodes;
-          }
-
-          function getThreeSuppLevels(data) {
-            return new Promise(function(resolve, reject) {
-              getSuppliers(data._id).then(function (res) {
-                data.children = res.suppliers;
-
-                data.children.forEach(child => getSuppliers(child._id).then(function(obj) {
-                  child.children = obj.suppliers;
-                  return child;
-                }));
-                resolve(data);
-              });
             });
           }
 
-          function getThreeCustLevels(data) {
-            return new Promise(function(resolve, reject) {
-              getCustomers(data._id).then(function (res) {
-                data.children = res.customers;
 
-                data.children.forEach(child => getCustomers(child._id).then(function(obj) {
-                  child.children = obj.customers;
-                  return child;
-                }));
-                resolve(data);
-              });
+          function getChildren(id, word) {
+            return new Promise(function(resolve, reject) {
+              if (word === 'suppliers') {
+                getSuppliers(id).then(function(res) {
+                  resolve(res[word]);
+                });
+              } else if (word === 'customers') {
+                getCustomers(id).then(function(res) {
+                  resolve(res[word]);
+                });
+              } else {
+                reject();
+              }
             });
           }
 
-          function getSuppliers(id) {
+         function getSuppliers(id) {
             return EnterprisesService.getSuppliers({ 'enterpriseId': id });
           }
 
