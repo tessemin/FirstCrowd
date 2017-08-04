@@ -12,7 +12,7 @@ var path = require('path'),
   taskFile = require(path.resolve('./modules/requesters/server/controllers/requesters/task.file.server.controller')),
   _ = require('lodash'),
   fs = require('fs');
-  
+
 var getRequesterMsgFileName = taskFile.getRequesterMsgFileName,
   getDownloadables = taskFile.getDownloadables,
   getDownloadFile = taskFile.getDownloadFile,
@@ -22,7 +22,7 @@ var getRequesterMsgFileName = taskFile.getRequesterMsgFileName,
   taskFindOne = taskSearch.taskFindOne,
   findJobByWorker = taskSearch.findJobByWorker,
   findBidByWorker = taskSearch.findBidByWorker;
-  
+
 function setUpRequesterFileExchange(req, res, callBack) {
   getUserTypeObject(req, res, function(typeObj) {
     var taskId = req.body.taskId;
@@ -37,12 +37,13 @@ function setUpRequesterFileExchange(req, res, callBack) {
           message: 'No task with that Id found.'
         });
       }
+      console.trace();
       if (ownsTask(task, typeObj)) {
         return res.status(422).send({
           message: 'You don\'t not own this task.'
         });
       }
-      
+
       if(!findJobByWorker(task, {_id: req.body.workerId}) && !findBidByWorker(task, {_id: req.body.workerId})) {
         return res.status(422).send({
           message: 'That id is not a worker for this task'
@@ -59,7 +60,7 @@ function sendRequesterMessage(message, taskId, workerId, timeInMin, callBack) {
     callBack(null, { files: [], messages: { requester: msg }, timeStamp: timeStamp });
   });
 }
-  
+
 // for file upload
 exports.taskFiles = {
   getDownloadables: function (req, res) {
@@ -98,4 +99,3 @@ exports.taskFiles = {
     });
   }
 };
-  

@@ -91,6 +91,7 @@
           WorkersService.updateActiveTask(update)
             .then(function(data) {
               console.log(data);
+              Notification.success({ message: 'Progress: ' + vm.tasks[sliderId].progress + '%', title: '<i class="glyphicon glyphicon-ok"></i>' + data.message });
             });
         }
       };

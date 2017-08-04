@@ -26,6 +26,16 @@
         controller: 'RequesterNewTaskController',
         controllerAs: 'vm'
       })
+      .state('requesters.messages', {
+        url: '/messages',
+        templateUrl: '/modules/requesters/client/views/messages-requester.client.view.html',
+        controller: 'RequestersMessagesController',
+        controllerAs: 'vm',
+        data: {
+          roles: ['user', 'admin'],
+          pageTitle: 'Requester Messages'
+        }
+      })
       .state('requesters.list', {
         url: '',
         templateUrl: '/modules/requesters/client/views/list-requesters.client.view.html',

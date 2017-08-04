@@ -266,9 +266,9 @@ function updateTotalTaskProgress(task, callBack) {
       else
         callBack(task.totalProgress);
     });
-    
+
   } else {
-    callBack(false); 
+    callBack(false);
   }
 }
 

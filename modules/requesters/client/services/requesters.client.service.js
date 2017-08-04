@@ -112,11 +112,11 @@
       // Files
       _getDownloadableTaskFiles: {
         method: 'POST',
-        url: '/api/workers/task/file/getDownloadables'
+        url: '/api/requesters/task/file/getDownloadables'
       },
       _sendMessage: {
         method: 'POST',
-        url: '/api/workers/task/file/sendMessage'
+        url: '/api/requesters/task/file/sendMessage'
       }
     });
 
