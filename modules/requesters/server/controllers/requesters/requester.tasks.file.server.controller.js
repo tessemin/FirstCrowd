@@ -37,10 +37,9 @@ function setUpRequesterFileExchange(req, res, callBack) {
           message: 'No task with that Id found.'
         });
       }
-      console.trace();
-      if (ownsTask(task, typeObj)) {
+      if (!ownsTask(task, typeObj)) {
         return res.status(422).send({
-          message: 'You don\'t not own this task.'
+          message: 'You don\'t own this task.'
         });
       }
 
