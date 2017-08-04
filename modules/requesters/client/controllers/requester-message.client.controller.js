@@ -134,6 +134,7 @@
         asyncGetTaskFiles(task, job.worker.workerId, function(task, messages) {
           vm.messageView.messages = messages.map(function(msg) {
             msg.task = task;
+            msg.workerId = job.worker.workerId;
             return msg;
           });
         });
@@ -150,6 +151,7 @@
           asyncGetTaskFiles(task, job.worker.workerId, function(task, messages) {
             loadAndSortMessages(messages.map(function(msg) {
                 msg.task = task
+                msg.workerId = job.worker.workerId;
                 return msg;
               }));
           });
@@ -250,19 +252,22 @@
 
     vm.sendMessage.send = function() {
       async function sendMessage(task) {
-        RequestersService.sendMessage({
-          taskId: task._id,
-          message: vm.sendMessage.message
-        })
-        .then(function(res) {
-          vm.closeSendMessage();
-          if (vm.messageView.task === task) {
-            vm.messageView.messages.unshift(res.data);
-          }
-          Notification.success({ message: res.message, title: '<i class="glyphicon glyphicon-remove"></i> Message Sent!' });
-        })
-        .catch(function(res) {
-          Notification.error({ message: res.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Message Error!' });
+        task.jobs.forEach(function(job) {
+          RequestersService.sendMessage({
+            taskId: task._id,
+            message: vm.sendMessage.message,
+            workerId: job.worker.workerId
+          })
+          .then(function(res) {
+            vm.closeSendMessage();
+            if (vm.messageView.task === task) {
+              vm.messageView.messages.unshift(res.data);
+            }
+            Notification.success({ message: res.message, title: '<i class="glyphicon glyphicon-remove"></i> Message Sent!' });
+          })
+          .catch(function(res) {
+            Notification.error({ message: res.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Message Error!' });
+          });
         });
       }
       sendMessage(vm.messageView.taskMessage);
