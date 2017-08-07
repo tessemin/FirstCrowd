@@ -19,6 +19,8 @@
       link: function(scope, element, attrs) {
         var levels = 2;
         var radius = 20;
+        var supplierCol = 0;
+        var customerCol = 0;
 
         d3().then(function(d3) {
           var header = getBounds(d3.select('header')._groups[0][0]);
@@ -29,28 +31,31 @@
           var height = $window.innerHeight;
 
           d3.select('.display').style('height', function() {
-            return (height - sideHeight.offsetTop - header.offsetHeight) + 'px';
+            return (height - sideHeight.offsetTop - header.offsetHeight - footer.offsetHeight) + 'px';
           });
           d3.select('.side-list').style('max-height', function() {
-            return (height - header.offsetHeight - sideHeight.offsetTop - sideHeight.offsetHeight - 80) + 'px';
+            // return 50 + 'px';
+            return (height - header.offsetHeight
+                    - sideHeight.offsetTop
+                    - sideHeight.offsetHeight
+                    - footer.offsetHeight - 90) + 'px';
           });
           d3.select('.content').style('margin-top', function() {
             return header.offsetHeight + 'px';
           });
 
-
           var svg = d3.select('.graph')
                 .append('svg')
                 .attr('width', width)
-                .attr('height', height - header.offsetHeight - footer.offsetHeight - 20);
+                .attr('height', height - header.offsetHeight - footer.offsetHeight - 5);
 
-          var i = 0;
-          var duration = 750;
+          // var i = 0;
+          var duration = 1250;
 
           var group = svg.append('g').attr('class', 'everything');
 
           var zoomListener = d3.zoom()
-                .scaleExtent([1 / 2, 1.5])
+                .scaleExtent([1 / 2, 1])
                 .on('zoom', zoom);
 
           svg.call(zoomListener);
@@ -58,14 +63,23 @@
 
           function zoom() {
             group.attr('transform', d3.event.transform);
+            // if ((d3.event.transform.x + width / 2) / d3.event.transform.k <= -750) {
+            //   console.log('right');
+            //   console.log(d3.event.transform);
+            // } else if ((d3.event.transform.x + width / 2) / d3.event.transform.k >= 1250) {
+            //   console.log(d3.event.transform);
+            //   console.log('left');
+            // } else {
+            //   console.log('fooie');
+            // }
           }
 
-
-          d3.select('.graph').append('div').attr('class', 'loader').html('Loading...')
+          d3.select('.graph').append('div').attr('class', 'loader').html('')
             .style('top', function() {
               return -1 * height / 2 + 'px';
             });
 
+          group.style('opacity', 0);
 
           getGraph().then(function(rootNode) {
             var graphPromises = [];
@@ -77,8 +91,9 @@
 
             Promise.all(graphPromises).then(function(res) {
 
-              d3.select('.loader').remove();
+              d3.select('.loader').transition().duration(duration / 2).style('opacity', 0).remove();
 
+              group.transition().duration(duration * 2).style('opacity', 1);
               centerHome();
               makeHomeButton();
 
@@ -86,6 +101,14 @@
               var right = d3.hierarchy(res[0]);
               var left = d3.hierarchy(res[1]);
               var count = 0;
+
+              bottomChildren(right);
+              bottomChildren(left);
+
+              function bottomChildren(tree) {
+                // console.log(tree);
+                // console.log(tree.height);
+              }
 
               // Render both trees
               drawTree(right, 'right');
@@ -109,8 +132,7 @@
                 var tree = d3.tree()
                       .nodeSize([radius / 1.5, radius * 10])
                       .separation(function(a, b) {
-                        return 4;
-                        // return a.parent === b.parent ? 3 : 3;
+                        return a.parent === b.parent ? 4 : 5;
                       });
                 // Set the size
                 // Remember the tree is rotated
@@ -125,7 +147,7 @@
 
                 nodes.forEach(function(node) {
                   // node.x = node.x * 2;
-                  if (node.y !== 0) node.y = node.y * SWITCH_CONST * 1.5;
+                  if (node.y !== 0) node.y = node.y * SWITCH_CONST * 2;
                 });
 
                 var link = g.selectAll('.link-' + pos)
@@ -178,19 +200,20 @@
                   .attr('node-num', function(d, i) { return (i + tmp); })
                   .attr('r', radius);
 
-                node
+                // node
                 // .on('dblclick', function(d) {
                 //   d3.selectAll('text').remove();
                 //   d3.selectAll('rect').remove();
                 //   centerNode(d3.select(this)._groups[0][0].__data__);
                 //   scope.$parent.vm.chooseCompany({ selected: d3.select(this)._groups[0][0].__data__.data });
                 // })
+
+                node
                   .on('click', function(d, i) {
                     console.log(d);
                     d3.selectAll('text').remove();
                     d3.selectAll('rect').remove();
                     centerNode(d3.select(this)._groups[0][0].__data__);
-
 
                     d3.select('#selected-circle').style('stroke', 'black').style('stroke-width', 1).attr('id', function(d, i) { return 'node' + i; });
                     d3.select(this).transition().duration(300)
