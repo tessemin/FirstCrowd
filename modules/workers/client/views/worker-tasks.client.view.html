@@ -202,8 +202,8 @@
           <div class="tasks-cell">
             {{task.status}}
           </div>
-          <div class="tasks-cell" ng-if="vm.taskCategory.id === 'active'" ng-click="$event.stopPropagation()" ng-disabled="task.jobs[0].status !== 'active'">
-            <rzslider class="worker-slider" rz-slider-model="task.progress" rz-slider-options="vm.getSliderOptions(vm.tasks.indexOf(task))" ng-disabled="task.jobs[0].status !== 'active'"></rzslider>
+          <div class="tasks-cell" ng-if="vm.taskCategory.id === 'active'" ng-click="$event.stopPropagation()">
+            <rzslider class="worker-slider" ng-class="{ 'disable-slider': task.jobs[0].status !== 'active' }" rz-slider-model="task.progress" rz-slider-options="vm.concatObjects([vm.getSliderOptions(vm.tasks.indexOf(task)), (task.jobs[0].status !== 'active' ? { disabled: true } : {})])"></rzslider>
           </div>
           <div class="tasks-cell" ng-if="task.payment.bidding.bidable && task.payment.bidding.bids.length === 0">
             ${{task.payment.bidding.startingPrice}} (negotiable)

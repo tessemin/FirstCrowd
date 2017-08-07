@@ -384,7 +384,13 @@
       var date = new Date(minutes*1000/60);
       return date.toDateString() + ' at ' + date.getHours() + ':' + (date.getMinutes() <= 9 ? '0' : '') + date.getMinutes();
     };
-
+    
+    vm.concatObjects = function(objArray) {
+      var endObj = {};
+      objArray.forEach(function (obj) {  endObj = Object.assign(endObj, obj); });
+      return endObj;
+    }
+    
     // This function is necessary to initially render the progress sliders
     function refreshProgressSliders() {
       $scope.$broadcast('rzSliderForceRender');

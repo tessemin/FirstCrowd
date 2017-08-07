@@ -186,6 +186,20 @@ function sendMessage(message, taskId, workerId, timeInMin, fileName, callBack) {
   }
 }
 
+
+function sendSubmissionMessage(message, taskId, workerId, timeInMin, callBack) {
+  if (message && message.length > 0) {
+    return sendMessage(message, taskId, workerId, timeInMin, getSubmissionMsgFileName(), function(err, msg, timeStamp) {
+      console.log(err)
+      console.log(msg)
+      console.log(timeStamp)
+      if (err) return callBack(err);
+      callBack(null, { files: [], messages: { submission: msg }, timeStamp: timeStamp });
+    });
+  }
+  return callBack(null);
+}
+
 exports.getDirectories = getDirectories;
 exports.writeFilesToPath = writeFilesToPath;
 exports.makeDirectory = makeDirectory;
@@ -193,6 +207,7 @@ exports.getTimeInMinutes = getTimeInMinutes;
 exports.getWorkerMsgFileName = getWorkerMsgFileName;
 exports.getRequesterMsgFileName = getRequesterMsgFileName;
 exports.getSubmissionMsgFileName = getSubmissionMsgFileName;
+exports.sendSubmissionMessage = sendSubmissionMessage;
 exports.getFilePath = getFilePath;
 exports.getFilesInTask = getFilesInTask;
 exports.getDownloadables = getDownloadables;

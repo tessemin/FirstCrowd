@@ -22,6 +22,7 @@ var writeFilesToPath = taskFile.writeFilesToPath,
   getDownloadables = taskFile.getDownloadables,
   getDownloadFile = taskFile.getDownloadFile,
   sendMessage = taskFile.sendMessage,
+  sendSubmissionMessage = taskFile.sendSubmissionMessage,
   getUserTypeObject = taskTools.getUserTypeObject,
   updateTotalTaskProgress = taskTools.updateTotalTaskProgress,
   taskFindOne = taskSearch.taskFindOne;
@@ -189,12 +190,5 @@ function sendWorkerMessage(message, taskId, workerId, timeInMin, callBack) {
   return sendMessage(message, taskId, workerId, timeInMin, getWorkerMsgFileName(), function(err, msg, timeStamp) {
     if (err) return callBack(err);
     callBack(null, { files: [], messages: { worker: msg }, timeStamp: timeStamp });
-  });
-}
-
-function sendSubmissionMessage(message, taskId, workerId, timeInMin, callBack) {
-  return sendMessage(message, taskId, workerId, timeInMin, getSubmissionMsgFileName(), function(err, msg, timeStamp) {
-    if (err) return callBack(err);
-    callBack(null, { files: [], messages: { submission: msg }, timeStamp: timeStamp });
   });
 }

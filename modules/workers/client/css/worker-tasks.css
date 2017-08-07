@@ -86,8 +86,12 @@ a {
 	top: auto; /* to remove the default positioning */
 	width: 8px;
 }
+
+.disable-slider.rzslider { cursor: pointer !important; }
  
 .worker-slider.rzslider .rz-bubble { bottom: 14px; }
+
+.disable-slider.rzslider .rz-pointer { display: none; }
  
 .worker-slider.rzslider .rz-pointer:after { display: none; }
  
@@ -111,6 +115,10 @@ a {
 .cell-input {width: 50%;}
  
 .tasks-table {padding-right: 0;}
+ 
+.dropdown-toggle {
+  cursor: pointer !important;
+} 
  
 .actions-dropdown-button-item { cursor: pointer; }
  

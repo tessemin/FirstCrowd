@@ -17,6 +17,7 @@ var getRequesterMsgFileName = taskFile.getRequesterMsgFileName,
   getDownloadables = taskFile.getDownloadables,
   getDownloadFile = taskFile.getDownloadFile,
   sendMessage = taskFile.sendMessage,
+  sendSubmissionMessage = taskFile.sendSubmissionMessage,
   getUserTypeObject = taskTools.getUserTypeObject,
   ownsTask = taskTools.ownsTask,
   taskFindOne = taskSearch.taskFindOne,
@@ -60,10 +61,14 @@ function setUpRequesterFileExchange(req, res, callBack) {
 }
 
 function sendRequesterMessage(message, taskId, workerId, timeInMin, callBack) {
-  return sendMessage(message, taskId, workerId, timeInMin, getRequesterMsgFileName(), function(err, msg, timeStamp) {
-    if (err) return callBack(err);
-    callBack(null, { files: [], messages: { requester: msg }, timeStamp: timeStamp });
-  });
+  if (message && message.length > 0) {
+    return sendMessage(message, taskId, workerId, timeInMin, getRequesterMsgFileName(), function(err, msg, timeStamp) {
+      if (err) return callBack(err);
+      callBack(null, { files: [], messages: { requester: msg }, timeStamp: timeStamp });
+    });
+  } else {
+    callBack()
+  }
 }
 
 // for file upload
@@ -106,3 +111,4 @@ exports.taskFiles = {
 };
 
 exports.setUpRequesterFileExchange = setUpRequesterFileExchange;
+exports.sendRequesterMessage = sendRequesterMessage;

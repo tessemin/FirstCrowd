@@ -29,7 +29,8 @@ var getUserTypeObject = taskTools.getUserTypeObject,
   taskFindMany = taskSearch.taskFindMany,
   findWorkerByWorkerTaskObject = taskSearch.findWorkerByWorkerTaskObject,
   findJobByWorker = taskSearch.findJobByWorker,
-  setUpRequesterFileExchange = requesterFiles.setUpRequesterFileExchange;
+  setUpRequesterFileExchange = requesterFiles.setUpRequesterFileExchange,
+  sendRequesterMessage = requesterFiles.sendRequesterMessage;
   
 var taskId = null;
   
@@ -244,11 +245,19 @@ exports.submission = {
             if (err)
               return res.status(422).send({
                 message: err
+              });
+            if (req.body.message && req.body.message.length > 0)
+              req.body.message = 'Task Submission Rejected: ' + req.body.message;
+            sendRequesterMessage(req.body.message, task._id, req.body.workerId, null, function(err) {
+              if (err)
+                return res.status(200).send({
+                  message: 'Submission rejected, but the message was not sent.'
+                });
+              return res.status(200).send({
+                message: 'Submission Rejected.',
+                task: task
               }); 
-            return res.status(200).send({
-              message: 'Submission Rejected',
-              task: task
-            }); 
+            });
           });
         });
       });
@@ -280,10 +289,18 @@ exports.submission = {
               return res.status(422).send({
                 message: err
               }); 
-            return res.status(200).send({
-              message: 'Submission Rejected',
-              task: task
-            }); 
+            if (req.body.message && req.body.message.length > 0)
+              req.body.message = 'Task Submission Accepted: ' + req.body.message;
+            sendRequesterMessage(req.body.message, task._id, req.body.workerId, null, function(err) {
+              if (err)
+                return res.status(200).send({
+                  message: 'Submission approved, but the message was not sent.'
+                });
+              return res.status(200).send({
+                message: 'Submission Approved!',
+                task: task
+              }); 
+            });
           });
         });
       });
@@ -301,11 +318,19 @@ exports.submission = {
         if (err)
           return res.status(422).send({
             message: errorHandler.getErrorMessage(err)
+          });
+        if (req.body.message && req.body.message.length > 0)
+          req.body.message = 'Task Owner Approved Retry: ' + req.body.message;
+        sendRequesterMessage(req.body.message, task._id, req.body.workerId, null, function(err) {
+          if (err)
+            return res.status(200).send({
+              message: 'Retry approved, but the message was not sent.'
+            });
+          return res.status(200).send({
+            message: 'Retry approved!',
+            task: task
           }); 
-        return res.status(200).send({
-          message: 'Retry approved!',
-          task: task
-        }); 
+        });
       });
     });
   }

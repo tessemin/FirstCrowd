@@ -323,9 +323,10 @@
             RequestersService.approveCompletion({
               taskId: vm.selectedTask._id,
               workerId: vm.submission.workerId,
-              message: vm.submissionReviewMessage
+              message: vm.submission.reviewMessage
             })
             .then(function(res){
+              vm.submission = {};
               vm.closeSubmissionReviewModal();
               vm.selectedTask = res.task;
               Notification.success({ message: res.message, title: '<i class="glyphicon glyphicon-ok"></i> Submission Aproved!' });
@@ -338,9 +339,10 @@
             RequestersService.rejectCompletion({
               taskId: vm.selectedTask._id,
               workerId: vm.submission.workerId,
-              message: vm.submissionReviewMessage
+              message: vm.submission.reviewMessage
             })
             .then(function(res){
+              vm.submission = {};
               vm.closeSubmissionReviewModal();
               vm.selectedTask = res.task;
               Notification.success({ message: res.message, title: '<i class="glyphicon glyphicon-ok"></i> Submission Rejected!' });
@@ -353,9 +355,10 @@
             RequestersService.retryCompletion({
               taskId: vm.selectedTask._id,
               workerId: vm.submission.workerId,
-              message: vm.submissionReviewMessage
+              message: vm.submission.reviewMessage
             })
             .then(function(res){
+              vm.submission = {};
               vm.closeSubmissionReviewModal();
               vm.selectedTask = res.task;
               Notification.success({ message: res.message, title: '<i class="glyphicon glyphicon-ok"></i> Retry Aproved!' });
