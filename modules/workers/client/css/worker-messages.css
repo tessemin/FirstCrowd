@@ -1,9 +1,9 @@
 .worker-messages {
-	background-color: white;
-	bottom: 38px;
-	position: absolute;
-	top: 51px;
-	width: 101.5%;
+  background-color: white;
+  position: absolute;
+  top: 51px;
+  bottom: 38px;
+  width: 100%;
 }
  
 div.message-sidebar {
