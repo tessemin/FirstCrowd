@@ -1,3 +1,42 @@
+<!-- submission review Modal -->
+<div id="submissionReviewModal" class="modal submissionModal">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Review Submission</h4>
+      </div>
+      <div class="modal-body row">
+        <div class="col-md-6 modalContent-left">
+          <br><p>Message:</p>
+          <textarea class="form-control noResize" rows="5" id="comment" ng-model="vm.submissionReviewMessage" placeholder="Attached Message"></textarea>
+        </div>
+        <div class="col-md-6 modalContent-right">
+          <h4>Submissions:</h4>
+          <ul>
+            <li ng-repeat="sub in vm.submittedReviewFiles" style="font:smaller">
+              <h5 class="keyHeader">{{vm.minutesToReadable(sub.timeStamp)}}</h5>
+              <textarea ng-if="sub.messages.submission" class="form-control resizeVertical disabled" rows="3" disabled>{{sub.messages.submission}}</textarea>
+              <div ng-if="sub.files && sub.files.length > 0">
+                Attachments:
+                <span ng-repeat="file in sub.files">
+                  <a ng-click="vm.submissionReviewDownload(file)">{{file.name}}</a><span class="fontBold" ng-if="sub.files.length > 1">,</span>
+                </span>
+                <a ng-click="vm.submissionReviewDownload(sub.files)" ng-if="sub.files.length > 1" class="glyphicon glyphicon-download-alt clickable-looking">-All</a>
+              </div>
+            </li>
+          </ul>
+          <a ui-sref="requesters.messages" ng-click="vm.closeSubmissionReviewModal()">See all submissions and messages</a>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <input type="submit" id="approve" value="Approve" class="btn btn-success" ng-click="vm.approveSubmission()">
+        <input type="submit" id="reject" value="Reject" class="btn btn-danger" ng-click="vm.rejectSubmission()">
+        <input type="submit" id="retry" value="Approve for Retrial" class="btn btn-primary" ng-click="vm.retrySubmission()">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="vm.closeSubmissionReviewModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div> <!-- end submission review modal -->
 <!-- Deletion Confirmation Modal -->
 <div id="confirmDeletion" class="modal">
   <div class="modal-dialog" role="document">
@@ -22,25 +61,25 @@
       <li class="list-group-item">
         <label class="filter-label">
           Title contains:
-          <input class="task-filter" ng-model="vm.filters.name" ng-change="vm.selectTask(-1)">
+          <input class="task-filter" ng-model="vm.filters.name">
         </label>
       </li>
       <li class="list-group-item">
         <label class="filter-label">
           Posting date:
-          <input class="task-filter" ng-model="vm.filters.postingDate" ng-change="vm.selectTask(-1)">
+          <input class="task-filter" ng-model="vm.filters.postingDate">
         </label>
       </li>
       <li class="list-group-item">
         <label class="filter-label" >
           Deadline:
-          <input class="task-filter" ng-model="vm.filters.deadline" ng-change="vm.selectTask(-1)">
+          <input class="task-filter" ng-model="vm.filters.deadline">
         </label>
       </li>
       <li class="list-group-item">
         <label class="filter-label">
           Status:
-            <input class="task-filter" ng-model="vm.filters.status" ng-change="vm.selectTask(-1)">
+            <input class="task-filter" ng-model="vm.filters.status">
         </label>
       </li>
       <li class="list-group-item">
@@ -153,8 +192,8 @@
         <!-- 'Actions' doesn't need a column label, but we need one to line up other elements -->
       </div>
     </div>
-    <div class="tasks-group" ng-repeat="task in vm.tasks | filter : vm.filters : false | orderBy: vm.sort : vm.sortReversed as results track by $index">
-      <div class="tasks-row" ng-click="$event.originalEvent.dropdown || (vm.toggleTask(vm.tasks.indexOf(task)))">
+    <div class="tasks-group" ng-repeat="task in vm.tasks | filter : vm.filters : false | orderBy: vm.sort : vm.sortReversed as results track by $index" ng-init="vm.actOnTask(task, 'getBidderInfo')">
+      <div class="tasks-row" ng-click="vm.selectedTask !== task ? vm.selectedTask = task : vm.selectedTask = null;">
         <div class="tasks-cell  clickable-looking">
           {{task.name}}
         </div>
@@ -172,17 +211,17 @@
         </div>
         <div class="tasks-cell">
           <div class="dropdown" ng-click="$event.originalEvent.dropdown = true">
-            <button class="btn btn-primary dropdown-toggle" ng-click="vm.selectTask(vm.tasks.indexOf(task))" ng-disabled="task.taskActions.length === 0" type="button" data-toggle="dropdown">Actions
+            <button class="btn btn-primary dropdown-toggle" ng-click="vm.selectedTask = task" ng-disabled="task.taskActions.length === 0" type="button" data-toggle="dropdown">Actions
             <span class="caret"></span></button>
             <ul class="dropdown-menu actions-dropdown-menu">
               <div ng-repeat="action in task.taskActions">
-                <li class="dropdown-button-item actions-dropdown-button-item" ng-click="vm.actOnTask(vm.tasks.indexOf(task), action.id)">{{action.bikeshed}}</li>
+                <li class="dropdown-button-item actions-dropdown-button-item" ng-click="vm.selectedTask = task; vm.actOnTask(task, action.id)">{{action.bikeshed}}</li>
               </div>
             </ul>
           </div>
         </div>
       </div>
-      <div ng-if="vm.selectedTask == vm.tasks.indexOf(task)">
+      <div ng-if="vm.selectedTask === task">
         <div class="tasks-row">
           <div class="tasks-cell">
             Categories: {{task.category}}
@@ -202,7 +241,7 @@
               Applicants:
             </div>
             <div class="tasks-cell" ng-repeat="bid in task.bids track by $index">
-              <button class="btn" ng-class="{'bid-selected': vm.tasks[vm.selectedTask].bids.indexOf(bid) === vm.selectedBid}" ng-click="vm.selectBid(vm.tasks[vm.selectedTask].bids.indexOf(bid))">{{ bid.bidDetails.displayId }}: ${{ bid.bid }}
+              <button class="btn" ng-class="{'bid-selected': task.bids.indexOf(bid) === vm.selectedBid}" ng-click="vm.selectBid(task.bids.indexOf(bid), task)">{{ bid.bidDetails.displayId }}: ${{ bid.bid }}</button>
             </div>
           </div>
           <div class="tasks-col tasks-cell">
@@ -257,6 +296,20 @@
               </div>
               <button class="btn" ng-click="vm.rejectSelectedBidder()">Reject this worker</button>
               <button class="btn btn-primary" ng-click="vm.hireSelectedWorker()">Hire this worker</button>
+            </div>
+          </div>
+        </div>
+        <div class="tasks-row tasks-submittedJobs" ng-if="(task.status === 'open' || task.status === 'taken') && vm.submittedJobs()">
+          <div class="tasks-col">
+            <div class="tasks-cell">
+              Workers waiting on approval: 
+            </div>
+          </div>
+          <div class="tasks-col container">
+            <div class="tasks-cell row" ng-repeat="submission in task.jobs" ng-if="submission.status === 'submitted'">
+              <div class="col-md-2 clickable-looking no-underline" ng-click="vm.submission.workerId = submission.worker.workerId; vm.actOnTask(task, 'reviewSubmission')">
+                {{submission.worker.displayId}}
+              </div>
             </div>
           </div>
         </div>

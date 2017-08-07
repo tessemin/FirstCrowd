@@ -1,0 +1,10 @@
+.no-underline:hover { text-decoration: none !important; }
+ 
+.tasks-submittedJobs {
+	border-top: 1px solid LightGray;
+	display: block;
+	margin-top: 10px;
+	padding-top: 5px;
+ }
+ 
+.disabled { cursor: initial !important; }

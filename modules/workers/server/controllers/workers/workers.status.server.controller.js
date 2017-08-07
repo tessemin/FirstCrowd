@@ -73,7 +73,7 @@ function addWorkerToTask(taskId, req, typeObj, callBack) {
       return callBack('There are too many workers for this task');
     var bid = null;
     // FOR BIDDING
-    if (task.payment.bidding.bidable && !task.preapproval) {
+    if (task.payment.bidding.bidable) {
       var workerBid = req.body.bid;
       if (!workerBid) {
         return callBack('Please provide a bid for this task');

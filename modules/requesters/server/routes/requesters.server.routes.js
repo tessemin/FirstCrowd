@@ -26,6 +26,10 @@ module.exports = function(app) {
 
   // REJECTED TASKS
   app.route('/api/requesters/rejectedTask/all').post(requesters.rejectedTask.all);
+  
+  app.route('/api/tasks/completion/reject').post(requesters.submission.reject);
+  app.route('/api/tasks/completion/approve').post(requesters.submission.approve);
+  app.route('/api/tasks/completion/retry').post(requesters.submission.retry);
 
   // RATINGS
   app.route('/api/requesters/workerRating/makeRating').put(requesters.workerRating.makeRating);

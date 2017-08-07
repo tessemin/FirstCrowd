@@ -157,7 +157,7 @@ function getDownloadFile(taskId, typeObjId, filename, timeStamp, callBack) {
     }
     var stat = fs.statSync(filePath);
     var fileToSend = fs.readFileSync(filePath);
-    return callBack(stat, filename, fileToSend)
+    return callBack(null, stat, filename, fileToSend)
   });
 }
 

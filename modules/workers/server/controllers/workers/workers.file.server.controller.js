@@ -23,6 +23,7 @@ var writeFilesToPath = taskFile.writeFilesToPath,
   getDownloadFile = taskFile.getDownloadFile,
   sendMessage = taskFile.sendMessage,
   getUserTypeObject = taskTools.getUserTypeObject,
+  updateTotalTaskProgress = taskTools.updateTotalTaskProgress,
   taskFindOne = taskSearch.taskFindOne;
   
 function isWorkerForTask(jobs, Id) {
@@ -74,16 +75,26 @@ function setUpWorkerFileExchange(req, res, callBack) {
 
 exports.markTaskCompleted = function (req, res) {
   setUpWorkerFileExchange(req, res, function(typeObj, task, jobIndex) {
-    task.jobs[jobIndex].status = 'submitted';
-    task.save(function (err, task) {
-      if (err) {
-        return res.status(422).send({
-          message: errorHandler.getErrorMessage(err)
-        });
-      }
-      return res.status(200).send({
-        message: 'Task Marked Completed!'
+    if (task.jobs[jobIndex].status !== 'active' || !(task.status === 'open' || task.status === 'taken')) {
+      return res.status(422).send({
+        message: 'You are not a active worker for this task.'
       });
+    }
+    task.jobs[jobIndex].status = 'submitted';
+    task.jobs[jobIndex].progress = 100;
+    updateTotalTaskProgress(task, function(response) {
+      if (!response)
+        return res.status(422).send({
+          message: 'Error seting total progress'
+        });
+      else if (response.error)
+        return res.status(422).send({
+          message: response.error
+        });
+      else
+        return res.status(200).send({
+          message: 'Task Marked Completed!'
+        });
     });
   });
 }

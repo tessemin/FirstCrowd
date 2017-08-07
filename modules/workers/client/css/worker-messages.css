@@ -1,251 +1,242 @@
 .worker-messages {
-  background-color: white;
-  position: absolute;
-  top: 51px;
-  bottom: 38px;
-  width: 101.5%;
+	background-color: white;
+	bottom: 38px;
+	position: absolute;
+	top: 51px;
+	width: 101.5%;
 }
-
+ 
 div.message-sidebar {
-  background-color: #6495ed;
-  padding: 0;
-  height: 100%;
+	background-color: #6495ed;
+	height: 100%;
+	padding: 0;
 }
-
-div.sidebar-name {
-  cursor: pointer;
-}
-
+ 
+div.sidebar-name { cursor: pointer; }
+ 
 span.searchMessages {
-  display: inline-block;
-  padding-top: 3px;
-  width: 100%;
-  text-align: center
+	display: inline-block;
+	padding-top: 3px;
+	text-align: center;
+	width: 100%;
 }
-
-div.sidebar-name i{
-  float: right;
-}
-
+ 
+div.sidebar-name i { float: right; }
+ 
 div.tab-surround {
-  padding: 10px;
-  border: none;
-  width: 100%;
-  height: 100%;
+	border: none;
+	height: 100%;
+	padding: 10px;
+	width: 100%;
 }
-
+ 
 div.row.tab {
-  width: 100%;
-  border: none;
-  margin: 0;
+	border: none;
+	margin: 0;
+	width: 100%;
 }
-
+ 
 .tab-col {
-  margin: 0;
-  padding: 0;
-  border: none;
+	border: none;
+	margin: 0;
+	padding: 0;
 }
-
+ 
 /* Style the buttons inside the tab */
 .tablinks {
-  width: 100%;
-  outline: none;
-  border: none;
-  border-bottom: 1px solid DarkGray;
-  border-right: 1px solid DarkGray;
-  background-color: #f1f1f1;
-  margin: 0;
-  cursor: pointer;
-  padding: 6px 10px 6px 10px;
-  transition: 0.3s;
+	background-color: #f1f1f1;
+	border: none;
+	border-bottom: 1px solid DarkGray;
+	border-right: 1px solid DarkGray;
+	cursor: pointer;
+	margin: 0;
+	padding: 6px 10px 6px 10px;
+	transition: 0.3s;
+	width: 100%;
 }
-
+ 
 /* Change background color of buttons on hover */
-div.tab .tablinks:hover {
-  background-color: #ddd;
-}
-
+div.tab .tablinks:hover { background-color: #ddd; }
+ 
 .connected-tablinks {
-  border-bottom: none;
-  border-top: 1px solid DarkGray;
+	border-bottom: none;
+	border-top: 1px solid DarkGray;
 }
-
-.connected-tablinks.activeSortTab {
-  background-color: white;
-  border-top: 2px solid grey;
-}
-
-button.connected-tablinks.activeSortTab:hover {
-  background-color: white;
-}
-
+ 
+	.connected-tablinks.activeSortTab {
+		background-color: white;
+		border-top: 2px solid grey;
+	}
+ 
+button.connected-tablinks.activeSortTab:hover { background-color: white; }
+ 
 /* Create an active/current tablink class */
-div.tab .tablinks.active {
-  background-color: #ccc;
-}
-
+div.tab .tablinks.active { background-color: #ccc; }
+ 
 .messages-title {
-  text-align: center;
-  margin: 0 auto 10px auto;
-  display: inline-block;
-  font-size: 120%;
-  font-weight: bold;
+	display: inline-block;
+	font-size: 120%;
+	font-weight: bold;
+	margin: 0 auto 10px auto;
+	text-align: center;
 }
-
+ 
 div.sidebar-displayTasks {
-  position: absolute;
-  top: 135px;
-  bottom: 2px;
-  width: 93%;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  background-color: white;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  padding: 5px;
+	background-color: white;
+	bottom: 2px;
+	margin-bottom: 10px;
+	margin-top: 10px;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	padding: 5px;
+	position: absolute;
+	top: 135px;
+	width: 93%;
 }
-
+ 
 .searchTasks {
-  margin-top: 5px;
-  width: 100%;
+	margin-top: 5px;
+	width: 100%;
 }
-
+ 
 div.messageView {
-  height: 100%;
-  width: 75%;
+	height: 100%;
+	width: 75%;
 }
-
+ 
 div.messageView-messages {
-  position: absolute;
-  display: block;
-  top: 0;
-  bottom: 50px;
-  width: 100%;
-  margin: 0 10px 10px 10px;
-  margin-right: 0;
-  padding: 5px;
-  overflow-y: scroll;
-  overflow-x: hidden;
+	bottom: 50px;
+	display: block;
+	margin: 0 10px 10px 10px;
+	margin-right: 0;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	padding: 5px;
+	position: absolute;
+	top: 0;
+	width: 100%;
 }
-
+ 
 .indicateMore {
-  display: block;
-  width: 100%;
-  height: 10px;
-  cursor: pointer;
   background: white; /* For browsers that do not support gradients */
-  background: -webkit-linear-gradient(white, WhiteSmoke ); /* For Safari 5.1 to 6.0 */
-  background: -o-linear-gradient(white, WhiteSmoke ); /* For Opera 11.1 to 12.0 */
-  background: -moz-linear-gradient(white, WhiteSmoke ); /* For Firefox 3.6 to 15 */
   background: linear-gradient(white, WhiteSmoke ); /* Standard syntax */
+	background: -webkit-linear-gradient(white, WhiteSmoke ); /* For Safari 5.1 to 6.0 */
+	background: -o-linear-gradient(white, WhiteSmoke ); /* For Opera 11.1 to 12.0 */
+	background: -moz-linear-gradient(white, WhiteSmoke ); /* For Firefox 3.6 to 15 */
+  background: -webkit-gradient(linear, white, WhiteSmoke); /* For old web-kit */
+	cursor: pointer;
+	display: block;
+	height: 10px;
+	width: 100%;
 }
-
+ 
 .collapseButton {
-  display: inline-block;
-  width: 95%;
-  cursor: pointer;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+	cursor: pointer;
+	display: inline-block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	width: 95%;
 }
-
-.greyText {
-  color: grey;
-}
-
+ 
+.greyText { color: grey; }
+ 
 hr {
-  margin: 0;
-  margin-bottom: 5px;
-  padding: 0;
+	margin: 0;
+	margin-bottom: 5px;
+	padding: 0;
 }
-
-.expandMessage[aria-expanded=true] .glyphicon-chevron-down {
-  display: none;
-}
-
-.expandMessage[aria-expanded=false] .glyphicon-chevron-up {
-  display: none;
-}
-
+ 
+.expandMessage[aria-expanded=true] .glyphicon-chevron-down { display: none; }
+ 
+.expandMessage[aria-expanded=false] .glyphicon-chevron-up { display: none; }
+ 
 i.expandMessageGlyph {
-  display: inline-block;
+	cursor: pointer;
+	display: inline-block;
   margin: 10px;
-  margin-top: 0;
-  cursor: pointer;
+	margin-top: 0;
 }
-
+ 
 .message-body {
-  margin-bottom: 10px;
-  background-color: WhiteSmoke;
+	background-color: WhiteSmoke;
   border: 1px solid gray;
-  border-top: none;
+	border-top: none;
+	margin-bottom: 10px;
 }
 
+.message-body p {
+  text-overflow: initial !important;
+  overflow-y: none;
+  overflow-x: auto !important;
+  white-space: pre-line !important;
+}
+ 
 div.sendMessage {
-  position: relative;
-  top: -webkit-calc(100% - 70px);
+	bottom: 46px;
+	display: block;
+	margin: 13px;
+	position: relative;
   top: calc(100% - 70px);
-  bottom: 46px;
-  width: 100%;
-  display: block;
-  margin: 13px;
+	top: -webkit-calc(100% - 70px);
+	transition: top .5s;
   -webkit-transition: top .5s; /* Safari */
-  transition: top .5s;
+	width: 100%;
 }
-
-div.sendMessage.expandSend {
-  height: 25%;
-  top: -webkit-calc(72% - 45px);
-  top: calc(72% - 45px);
-  -webkit-transition: height 0.5s linear 1s; /* Safari */
-  transition: height 0.5s linear 1s;
-}
-
-div.sendMessage .messageBackDrop {
-  display: block;
-  background-color: white;
-  width: 98%;
-  height: 100%;
-  margin: 0;
-}
-
-div.sendMessage .message {
-  width: 98%;
-  padding: 5px;
-  resize: none;
-  border-color: LightGrey;
-}
-
-div.sendMessage .message {
-  height: 100%;
-}
-
+ 
+	div.sendMessage.expandSend {
+		height: 25%;
+		top: -webkit-calc(72% - 45px);
+		top: calc(72% - 45px);
+		transition: height 0.5s linear 1s;
+    -webkit-transition: height 0.5s linear 1s; /* Safari */
+  }
+ 
+	div.sendMessage .messageBackDrop {
+		background-color: white;
+		display: block;
+		height: 100%;
+		margin: 0;
+		width: 98%;
+  }
+ 
+	div.sendMessage .message {
+		border-color: LightGrey;
+		padding: 5px;
+		resize: none;
+		width: 98%;
+  }
+ 
+	div.sendMessage .message { height: 100%; }
+ 
 div.sendButtons {
-  display: block;
-  opacity: 0;
-  max-height: 0;
-  margin-left: -webkit-calc(100% - 150px);
-  margin-left: calc(100% - 150px);
+	display: block;
+	margin-left: -webkit-calc(100% - 150px);
+	margin-left: calc(100% - 150px);
+	max-height: 0;
+	opacity: 0;
+	transition: max-height 0.5s ease-in-out, opacity 0.2s linear;
   -webkit-transition: max-height 0.5s ease-in-out, opacity 0.2s linear; /* Safari */
-  transition: max-height 0.5s ease-in-out, opacity 0.2s linear;
 }
-
-div.sendButtons.expandSendButtons {
-  display: block;
-  opacity: 1;
-  max-height: inital;
-  -webkit-transition: max-height 0.5s ease-in-out, opacity 0.5s linear 0.2s; /* Safari */
-  transition: max-height 0.5s ease-in-out, opacity 0.5s linear 0.2s;
-}
-
-div.sendButtons .btn{
-  display: inline;
-  text-align: left
-}
-
+ 
+	div.sendButtons.expandSendButtons {
+		display: block;
+		max-height: inital;
+		opacity: 1;
+		transition: max-height 0.5s ease-in-out, opacity 0.5s linear 0.2s;
+    -webkit-transition: max-height 0.5s ease-in-out, opacity 0.5s linear 0.2s; /* Safari */
+	}
+ 
+	div.sendButtons .btn {
+		display: inline;
+		text-align: left
+	}
+ 
 span.closeSpan {
-  display: block;
-  position: relative;
-  top: -18px;
-  left: -8px;
+	display: block;
+	left: -8px;
+	position: relative;
+	top: -18px;
 }
+ 
+.disabled { cursor: initial !important; }

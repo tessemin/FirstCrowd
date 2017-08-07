@@ -37,7 +37,7 @@ module.exports = function(app) {
   app.post('/api/workers/task/file/getDownloadables', workers.taskFiles.getDownloadables);
   app.post('/api/workers/task/file/download', workers.taskFiles.downloadTaskFile);
   app.post('/api/workers/task/file/sendMessage', workers.taskFiles.sendMessage);
-  app.post('/api/workers/task/markCompleted').post(workers.markTaskCompleted);
+  app.route('/api/workers/task/markCompleted').post(workers.markTaskCompleted);
   
   // TASKS NATIVE API
   app.route('/api/getAllTasks/open').post(workers.getAllOpenTasks);

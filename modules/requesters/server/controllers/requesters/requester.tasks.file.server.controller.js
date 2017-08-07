@@ -104,3 +104,5 @@ exports.taskFiles = {
     });
   }
 };
+
+exports.setUpRequesterFileExchange = setUpRequesterFileExchange;

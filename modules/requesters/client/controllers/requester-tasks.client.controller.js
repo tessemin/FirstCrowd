@@ -6,12 +6,13 @@
     .module('requesters')
     .controller('RequesterTasksController', RequesterTasksController);
 
-  RequesterTasksController.$inject = ['$scope', '$state', '$timeout', 'RequestersService', 'Notification'];
+  RequesterTasksController.$inject = ['$scope', '$state', '$timeout', 'RequestersService', 'Notification', '$http'];
 
-  function RequesterTasksController ($scope, $state, $timeout, RequestersService, Notification) {
+  function RequesterTasksController ($scope, $state, $timeout, RequestersService, Notification, $http) {
     var vm = this;
     vm.tasks = [];
     vm.loaded = false;
+    vm.submission = {};
 
     // For activating a task
     var activateTaskId = null;
@@ -81,29 +82,8 @@
       }
     };
 
-    vm.selectedTask = -1;
-    vm.toggleTask = function(index) {
-      if (index !== vm.selectedTask) {
-        vm.selectTask(index);
-      } else {
-        vm.selectedTask = -1;
-      }
-      // Previously selected bid is invalidated
-      vm.selectedBid = -1;
-    };
-    vm.selectTask = function(index) {
-      if (index < vm.tasks.length && index >= 0) {
-        vm.selectedTask = index;
-        if (vm.tasks[index].bids.length > 0 && !vm.tasks[index].bids[0].hasOwnProperty('displayId')) {
-          vm.actOnTask(index, 'getBidderInfo');
-        }
-      } else {
-        vm.selectedTask = -1;
-      }
-    };
-
     vm.selectedBid = -1;
-    vm.selectBid = function(index) {
+    vm.selectBid = function(index, task) {
       if (index !== vm.selectedBid) {
         vm.selectedBid = index;
       } else {
@@ -113,13 +93,13 @@
 
     vm.hireSelectedWorker = function() {
       // Bidable tasks need to be paid on hire
-      if (vm.tasks[vm.selectedTask].bidable) {
+      if (vm.selectedTask.bidable) {
         initPaymentModal(vm.selectedTask);
       // Fixed-price tasks
       } else {
         var request = {
-          taskId: vm.tasks[vm.selectedTask]._id,
-          bidId: vm.tasks[vm.selectedTask].bids[vm.selectedBid]._id
+          taskId: vm.selectedTask._id,
+          bidId: vm.selectedTask.bids[vm.selectedBid]._id
         };
         console.log(request);
         RequestersService.acceptPreapproval(request)
@@ -139,10 +119,10 @@
     };
 
     vm.rejectSelectedBidder = function() {
-      console.log(vm.tasks[vm.selectedTask].bids[vm.selectedBid]);
+      console.log(vm.selectedTask.bids[vm.selectedBid]);
       RequestersService.rejectBid({
-        taskId: vm.tasks[vm.selectedTask]._id,
-        bidId: vm.tasks[vm.selectedTask].bids[vm.selectedBid]._id
+        taskId: vm.selectedTask._id,
+        bidId: vm.selectedTask.bids[vm.selectedBid]._id
       })
         .then(function(response) {
           Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> Worker rejected!' });
@@ -191,12 +171,12 @@
         });
     };
 
-    function initPaymentModal(index) {
+    function initPaymentModal(task) {
       vm.modal = {};
       // put task info into modal
-      if (vm.tasks[index]) {
+      if (task) {
+        task = task.taskRef
         vm.modal.showContent = true;
-        var task = vm.tasks[index].taskRef;
         if (task.payment.bidding.bidable) {
           vm.modal.bidable = true;
           vm.modal.bidding = {};
@@ -219,52 +199,176 @@
         vm.modal.category = task.category;
         vm.modal.multiplicity = task.multiplicity;
         vm.modal.tax = 0.00;
-        vm.modal.deadline = vm.tasks[index].deadline;
-        vm.modal.dateCreated = vm.tasks[index].postingDate;
+        vm.modal.deadline = vm.selectedTask.deadline;
+        vm.modal.dateCreated = vm.selectedTask.postingDate;
 
         // open modal for payment
-        console.log(activateTaskId);
         vm.openPaymentModal();
       } else {
         Notification.error({ message: 'Task index does not exist.', title: '<i class="glyphicon glyphicon-remove"></i> Cannot Find Task' });
       }
     }
+    
+    vm.submittedJobs = function() {
+      if (vm.selectedTask && vm.selectedTask.jobs)
+        for (var job = 0; job < vm.selectedTask.jobs.length; job++) {
+          if (vm.selectedTask.jobs[job].status === 'submitted')
+            return true;
+        }
+      return false;
+    }
+    
+    vm.minutesToReadable = function(minutes) {
+      var date = new Date(minutes*1000/60);
+      return date.toDateString() + ' at ' + date.getHours() + ':' + (date.getMinutes() <= 9 ? '0' : '') + date.getMinutes();
+    };
 
-    vm.actOnTask = function(index, action) {
+    vm.actOnTask = function(task, action) {
       switch (action) {
         case 'delete':
-          console.log(index);
-          vm.taskForDeletion = vm.tasks[index]._id;
+          vm.taskForDeletion = task._id;
           $('#confirmDeletion').modal();
           break;
         case 'getBidderInfo':
-          RequestersService.getBidderInfo({ taskId: vm.tasks[index]._id })
+          RequestersService.getBidderInfo({ taskId: task._id })
             .then(function(response) {
-              for (var i = 0; i < vm.tasks[index].bids.length; ++i) {
-                if (vm.tasks[index].bids[i].worker.workerType.individual) {
+              for (var i = 0; i < task.bids.length; ++i) {
+                if (task.bids[i].worker.workerType.individual) {
                   for (var j = 0; j < response.individuals.length; ++j) {
-                    if (vm.tasks[index].bids[i].worker.workerId === response.individuals[j]._id) {
-                      vm.tasks[index].bids[i].bidDetails = response.individuals[j];
+                    if (task.bids[i].worker.workerId === response.individuals[j]._id) {
+                      task.bids[i].bidDetails = response.individuals[j];
                     }
                   }
                 } else {
                   for (var k = 0; k < response.enterprises.length; ++k) {
-                    if (vm.tasks[index].bids[i].worker.workerId === response.enterprises[k]._id) {
-                      vm.tasks[index].bids[i].bidDetails = response.enterprises[k];
+                    if (task.bids[i].worker.workerId === response.enterprises[k]._id) {
+                      task.bids[i].bidDetails = response.enterprises[k];
                     }
                   }
                 }
               }
             })
             .catch(function(response) {
+              console.log('bidder info error' + response.data.message);
             });
           break;
         case 'activate':
           // init modal
-          initPaymentModal(index);
+          initPaymentModal(task);
+          break;
+        case 'reviewSubmission':
+          vm.previouslySubmittedFiles = [];
+          vm.openSubmissionReviewModal = function () {
+            $('#submissionReviewModal').modal();
+          };
+          vm.closeSubmissionReviewModal = function () {
+            $('#submissionReviewModal').modal('hide');
+          };
+          vm.submissionReviewDownload = function (file) {
+            if (Array.isArray(file)) {
+              file.forEach (function (fil) {
+                vm.submissionReviewDownload(fil);
+              });
+              return null;
+            }
+            $http({
+                url: '/api/requesters/task/file/download',
+                method: "POST",
+                data: {
+                  fileName: file.name,
+                  workerId: vm.submission.workerId,
+                  timeStamp: file.timeStamp,
+                  taskId: vm.selectedTask._id
+                },
+                responseType: 'blob'
+            }).success(function (data, status, headers, config) {
+              var blob = new Blob([data], { type: data.type });
+              var fileName = headers('content-disposition');
+              // this uses file-saver.js in public/lib
+              saveAs(blob, fileName);
+            }).error(function (data, status, headers, config) {
+              Notification.error({ message: 'Unable to download the file', title: '<i class="glyphicon glyphicon-remove"></i> Download Error!' });
+            });
+          };
+          function previousSubmissionDownloadables() {
+            RequestersService.getDownloadableTaskFiles({
+              taskId: vm.selectedTask._id,
+              workerId: vm.submission.workerId
+            })
+            .then(function(response) {
+              if (response.down) {
+                var totalFiles = 0;
+                var totalSubmissions = 0;
+                vm.submittedReviewFiles = [];
+                response.down.forEach(function(res) {
+                  if (res.files && res.files.length > 0) {
+                    totalFiles += res.files.length;
+                    totalSubmissions++;
+                    if (totalFiles < 15 && totalSubmissions < 5)
+                      vm.submittedReviewFiles = vm.submittedReviewFiles.concat(res);
+                  }
+                });
+                vm.submittedReviewFiles = vm.submittedReviewFiles.map(function(prev) {
+                  if (prev.messages && prev.messages.submission)
+                    prev.messages.submission = prev.messages.submission.replace('###', '').trim();
+                  return prev;
+                });
+              }
+            })
+            .catch(function(response) {
+              Notification.error({ message: '\n', title: '<i class="glyphicon glyphicon-remove"></i> Error getting previous submissions!' });
+            });
+          }
+          vm.approveSubmission = function() {
+            RequestersService.approveCompletion({
+              taskId: vm.selectedTask._id,
+              workerId: vm.submission.workerId,
+              message: vm.submissionReviewMessage
+            })
+            .then(function(res){
+              vm.closeSubmissionReviewModal();
+              vm.selectedTask = res.task;
+              Notification.success({ message: res.message, title: '<i class="glyphicon glyphicon-ok"></i> Submission Aproved!' });
+            })
+            .catch(function(res) {
+              Notification.error({ message: res.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Error aproving submission!' });
+            });
+          }
+          vm.rejectSubmission = function() {
+            RequestersService.rejectCompletion({
+              taskId: vm.selectedTask._id,
+              workerId: vm.submission.workerId,
+              message: vm.submissionReviewMessage
+            })
+            .then(function(res){
+              vm.closeSubmissionReviewModal();
+              vm.selectedTask = res.task;
+              Notification.success({ message: res.message, title: '<i class="glyphicon glyphicon-ok"></i> Submission Rejected!' });
+            })
+            .catch(function(res) {
+              Notification.error({ message: res.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Error rejecting submission!' });
+            });
+          }
+          vm.retrySubmission = function() {
+            RequestersService.retryCompletion({
+              taskId: vm.selectedTask._id,
+              workerId: vm.submission.workerId,
+              message: vm.submissionReviewMessage
+            })
+            .then(function(res){
+              vm.closeSubmissionReviewModal();
+              vm.selectedTask = res.task;
+              Notification.success({ message: res.message, title: '<i class="glyphicon glyphicon-ok"></i> Retry Aproved!' });
+            })
+            .catch(function(res) {
+              Notification.error({ message: res.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Error aproving retry!' });
+            });
+          }
+          previousSubmissionDownloadables();
+          vm.openSubmissionReviewModal();
           break;
         default:
-          console.log('perform ' + action + ' on task ' + vm.tasks[index]._id);
+          console.log('perform ' + action + ' on task ' + task._id);
       }
     };
 
@@ -327,7 +431,7 @@
       RequestersService.activateBidable({ taskId: bidId })
         .then(function(response) {
           var index = getIndexFromTaskId(response.taskId);
-          vm.tasks[index].status = 'taken';
+          vm.selectedTask.status = 'taken';
           Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> Bid approved! Task assigned!' });
         })
         .catch(function(response) {
@@ -360,7 +464,7 @@
             'payment/create';
           var request = { taskId: activateTaskId };
           if (vm.selectedBid !== -1) {
-            payTaskBidId = vm.tasks[vm.selectedTask].bids[vm.selectedBid]._id;
+            payTaskBidId = vm.selectedTask.bids[vm.selectedBid]._id;
             request.bidId = payTaskBidId;
             console.log('bid ' + vm.selectedBid + ' id ' + request.bidId);
           }

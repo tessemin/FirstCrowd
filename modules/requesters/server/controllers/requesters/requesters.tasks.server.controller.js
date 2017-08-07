@@ -9,6 +9,7 @@ var path = require('path'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   taskTools = require(path.resolve('./modules/requesters/server/controllers/requesters/task.tools.server.controller')),
   taskSearch = require(path.resolve('./modules/requesters/server/controllers/requesters/task.search.server.controller')),
+  requesterFiles = require(path.resolve('./modules/requesters/server/controllers/requesters/requester.tasks.file.server.controller')),
   _ = require('lodash');
 
 // functions for task tools  
@@ -17,13 +18,18 @@ var getUserTypeObject = taskTools.getUserTypeObject,
   ownsTask = taskTools.ownsTask,
   getIdsInArray = taskTools.getIdsInArray,
   isRequester = taskTools.isRequester,
-  setStatus = taskTools.setStatus,
+  addWorkerTaskWithStatus = taskTools.addWorkerTaskWithStatus,
   removeTaskFromWorkerArray = taskTools.removeTaskFromWorkerArray,
   statusPushTo = taskTools.statusPushTo,
   getNestedProperties = taskTools.getNestedProperties,
+  hashObjId = taskTools.hashObjId,
+  updateTotalTaskProgress = taskTools.updateTotalTaskProgress,
+  setStatusRequester = taskTools.setStatusRequester,
   taskFindOne = taskSearch.taskFindOne,
   taskFindMany = taskSearch.taskFindMany,
-  findWorkerByWorkerTaskObject = taskSearch.findWorkerByWorkerTaskObject;
+  findWorkerByWorkerTaskObject = taskSearch.findWorkerByWorkerTaskObject,
+  findJobByWorker = taskSearch.findJobByWorker,
+  setUpRequesterFileExchange = requesterFiles.setUpRequesterFileExchange;
   
 var taskId = null;
   
@@ -137,6 +143,7 @@ function getAllTasksForIds(req, res, taskIdGetFunction, callBack) {
               message: errorHandler.getErrorMessage(err)
             });
           } else {
+            tasks = mapTaskJobToDisplay(tasks);
             callBack(tasks);
           }
         });
@@ -168,5 +175,140 @@ function getAllCompletedTaskIds(typeObj) {
 function getAllRejectedTaskIds(typeObj) {
   return getIdsInArray(typeObj.requester.rejectedTasks);
 }
+
+function mapTaskJobToDisplay(tasks) {
+  return tasks.map(function(task) {
+    task = JSON.parse(JSON.stringify(task));
+    task.jobs = task.jobs.map(function(job) {
+      if (job.worker)
+        job.worker.displayId = hashObjId(job.worker.workerId);
+      return job;
+    });
+    return task;
+  });
+}
+
+function setTaskStatus(requester, task, callBack) {
+  var successes = 0;
+  var jobsAllDone = true;
+  for(var job = 0; job < task.jobs.length; job++) {
+    if (task.jobs[job].status === 'accepted')
+      successes++
+    if (task.jobs[job].status === 'active' || task.jobs[job].status === 'submitted') {
+      jobsAllDone = false;
+    }
+  };
+  if (!jobsAllDone)
+    callBack(null)
+  if (successes >= task.successFactor)
+    task.status = 'sclosed';
+  else
+    task.status = 'fclosed';
+  
+  setStatusRequester(task.status, task._id, requester, function(requester) {
+    task.save(function(err, task) {
+      if (err) return callBack(errorHandler.getErrorMessage(err));
+      requester.save(function(err) {
+        if (err) return callBack(errorHandler.getErrorMessage(err));
+        return callBack(null, task);
+      })
+    });
+  });
+  
+}
+
+exports.submission = {
+  reject: function (req, res) {
+    setUpRequesterFileExchange(req, res, function(typeObj, task) {
+      var jobIndex = task.jobs.indexOf(findJobByWorker(task, { _id: req.body.workerId }));
+      if (task.jobs[jobIndex].status === 'rejected' || task.jobs[jobIndex].status === 'accepted')
+        return res.status(422).send({ message: 'That worker is in a final state.' });
+      if (task.jobs[jobIndex].status === 'active')
+        return res.status(422).send({ message: 'That worker is still working.' }); 
+      findWorkerByWorkerTaskObject(task.jobs[jobIndex].worker, function(err, worker) {
+        if (err) {
+          return res.status(422).send({
+            message: err
+          }); 
+        }
+        worker = removeTaskFromWorkerArray(task._id, worker);
+        worker = addWorkerTaskWithStatus('fclosed', task._id, worker);
+        task.jobs[jobIndex].status = 'rejected';
+        
+        worker.save(function(err) {
+          if (err)
+            return res.status(422).send({
+              message: errorHandler.getErrorMessage(err)
+            }); 
+          setTaskStatus(typeObj, task, function(err, task) {
+            if (err)
+              return res.status(422).send({
+                message: err
+              }); 
+            return res.status(200).send({
+              message: 'Submission Rejected',
+              task: task
+            }); 
+          });
+        });
+      });
+    });
+  },
+  approve: function (req, res) {
+    setUpRequesterFileExchange(req, res, function(typeObj, task) {
+      var jobIndex = task.jobs.indexOf(findJobByWorker(task, { _id: req.body.workerId }));
+      if (task.jobs[jobIndex].status === 'rejected' || task.jobs[jobIndex].status === 'accepted')
+        return res.status(422).send({ message: 'That worker is in a final state.' });
+      if (task.jobs[jobIndex].status === 'active')
+        return res.status(422).send({ message: 'That worker is still working.' }); 
+      findWorkerByWorkerTaskObject(task.jobs[jobIndex].worker, function(err, worker) {
+        if (err) {
+          return res.status(422).send({
+            message: err
+          }); 
+        }
+        worker = removeTaskFromWorkerArray(task._id, worker);
+        worker = addWorkerTaskWithStatus('sclosed', task._id, worker);
+        task.jobs[jobIndex].status = 'accepted';
+        worker.save(function(err) {
+          if (err)
+            return res.status(422).send({
+              message: errorHandler.getErrorMessage(err)
+            }); 
+          setTaskStatus(typeObj, task, function(err, task) {
+            if (err)
+              return res.status(422).send({
+                message: err
+              }); 
+            return res.status(200).send({
+              message: 'Submission Rejected',
+              task: task
+            }); 
+          });
+        });
+      });
+    });
+  },
+  retry: function (req, res) {
+    setUpRequesterFileExchange(req, res, function(typeObj, task) {
+      var jobIndex = task.jobs.indexOf(findJobByWorker(task, { _id: req.body.workerId }));
+      if (task.jobs[jobIndex].status === 'rejected' || task.jobs[jobIndex].status === 'accepted')
+        return res.status(422).send({ message: 'That worker is in a final state.' }); 
+      if (task.jobs[jobIndex].status === 'active')
+        return res.status(422).send({ message: 'That worker is still working.' }); 
+      task.jobs[jobIndex].status = 'active';
+      task.save(function(err, task) {
+        if (err)
+          return res.status(422).send({
+            message: errorHandler.getErrorMessage(err)
+          }); 
+        return res.status(200).send({
+          message: 'Retry approved!',
+          task: task
+        }); 
+      });
+    });
+  }
+};
 
 exports.getAllRequesterTasks = getAllRequesterTasks;

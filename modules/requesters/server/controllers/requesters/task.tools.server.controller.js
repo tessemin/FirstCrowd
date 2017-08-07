@@ -34,7 +34,7 @@ function setStatus(taskId, status, callBack) {
     findRequesterByTask(task, function(err, requester) {
       if (err)
         callBack(err);
-      setStatusRequester(status, task._id, requester, callBack, function (typeObj) {
+      setStatusRequester(status, task._id, requester, function (typeObj) {
         setStatusOfWorkers(getWorkersIds(task.jobs), status, task._id, function() {
           task.status = status;
           typeObj.save(function (typeErr, typeObj) {
@@ -57,7 +57,7 @@ function setStatus(taskId, status, callBack) {
   });
 }
 
-function setStatusRequester(status, taskId, typeObj, res, callBack) {
+function setStatusRequester(status, taskId, typeObj, callBack) {
   typeObj = removeTaskFromRequesterArray(taskId, typeObj);
   switch (status) {
     case 'open':
@@ -78,8 +78,6 @@ function setStatusRequester(status, taskId, typeObj, res, callBack) {
     case 'fclosed':
       typeObj.requester.rejectedTasks = statusPushTo(taskId, typeObj.requester.rejectedTasks);
       break;
-    default:
-      return res({ error: 'Status not supported.' });
   }
   // save typeObj first to avoid orphaned tasks
   callBack(typeObj);
@@ -181,8 +179,6 @@ function setStatusOfWorkers(workerIdArray, status, taskId, callBack, errorIds, w
       } else if (enterprise.length <= 0) {
         return setStatusOfWorkers(workerIdArray, status, taskId, callBack, errorIds, workerId);
       } else {
-        if (enterprise.legnth <= 0)
-          return setStatusOfWorkers(workerIdArray, status, taskId, callBack, errorIds, workerId);
         enterprise = enterprise[0];
         enterprise = removeTaskFromWorkerArray(taskId, enterprise);
         enterprise = addWorkerTaskWithStatus(status, taskId, enterprise);
@@ -204,8 +200,6 @@ function setStatusOfWorkers(workerIdArray, status, taskId, callBack, errorIds, w
       } else if (individual.length <= 0) {
         return setStatusOfWorkers(workerIdArray, status, taskId, callBack, errorIds, workerId);
       } else {
-        if (individual.legnth <= 0)
-          return setStatusOfWorkers(workerIdArray, status, taskId, callBack, errorIds, workerId);
         individual = individual[0];
         individual = removeTaskFromWorkerArray(taskId, individual);
         individual = addWorkerTaskWithStatus(status, taskId, individual);
@@ -310,6 +304,23 @@ function getNestedProperties(object, propertyNames) {
   return null;
 }
 
+function hashObjId(id) {
+  if (id) {
+    id = id.toString();
+    var returnVal = null;
+    for (var i = 1; i <= id.length; i++) {
+      returnVal += id.codePointAt(i - 1) * i;
+    }
+    if (returnVal)
+      return returnVal.toString(16);
+  }
+  return null;
+}
+
+exports.addWorkerTaskWithStatus = addWorkerTaskWithStatus;
+
+exports.hashObjId = hashObjId;
+
 exports.taskWhiteListedFields = taskWhiteListedFields;
 
 exports.ownsTask = ownsTask;
@@ -317,6 +328,8 @@ exports.ownsTask = ownsTask;
 exports.removeTaskFromWorkerArray = removeTaskFromWorkerArray;
 
 exports.setStatus = setStatus;
+
+exports.setStatusRequester = setStatusRequester;
 
 exports.statusPushTo = statusPushTo;
 

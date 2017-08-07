@@ -23,7 +23,6 @@
         vm.sort = property;
         vm.sortReversed = false;
       }
-      vm.selectTask(-1);
     };
 
     // Filters
@@ -104,6 +103,12 @@
           id: 'submit',
           bikeshed: 'Submit Work'
         });
+        if (task.jobs[0].status === 'active') {
+          task.taskActions.push({
+            id: 'markCompleted',
+            bikeshed: 'Mark Task Complete'
+          });
+        }
         task.taskActions.push({
           id: 'quit',
           bikeshed: 'Quit Task'
@@ -137,6 +142,7 @@
           dueDate;
         for (var i = 0; i < data.tasks.length; ++i) {
           task = data.tasks[i];
+          console.log(task.jobs)
           postDate = new Date(task.dateCreated);
           dueDate = new Date(task.deadline);
           var clientTask = {
@@ -145,6 +151,7 @@
             'category': task.category,
             'description': task.description,
             'skillsNeeded': task.skillsNeeded.length ? task.skillsNeeded.join(', ') : 'none',
+            'jobs': task.jobs,
             'postingDate': postDate,
             'deadline': dueDate,
             'status': task.status,
@@ -178,8 +185,7 @@
     vm.changeTaskCategory = function() {
       vm.tasks = [];
       vm.loaded = false;
-      vm.selectedTask = -1;
-      if(vm.taskCategory.id === 'active') {
+      if (vm.taskCategory.id === 'active') {
         WorkersService.getActiveTasks()
           .then(function(data) {
             vm.loadData(data);
@@ -200,10 +206,10 @@
             vm.loadData(data);
           });
      } else if (vm.taskCategory.id === 'uncompleted') {
-       WorkersService.getRejectedTasks()
-         .then(function(data) {
-           vm.loadData(data);
-         });
+      WorkersService.getRejectedTasks()
+        .then(function(data) {
+          vm.loadData(data);
+        });
       } else {
         Notification.error({ message: 'Unrecognized task category.', title: 'Error!' });
         WorkersService.getActiveTasks()
@@ -246,7 +252,6 @@
               });
             break;
           case 'take':
-            console.log('take task ' + vm.tasks[index]._id);
             WorkersService.takeTask({
               taskId: vm.tasks[index]._id
             })
@@ -282,7 +287,7 @@
                   data: {
                     fileName: file.name,
                     timeStamp: file.timeStamp,
-                    taskId: vm.tasks[vm.selectedTask]._id
+                    taskId: vm.selectedTask._id
                   },
                   responseType: 'blob'
               }).success(function (data, status, headers, config) {
@@ -295,8 +300,9 @@
               });
             };
             function previousSubmissionDownloadables() {
+              console.log(vm.selTask);
               WorkersService.getDownloadableTaskFiles({
-                taskId: vm.tasks[vm.selectedTask]._id
+                taskId: vm.selectedTask._id
               })
               .then(function(response) {
                 if (response.down) {
@@ -323,7 +329,7 @@
               });
             }
             vm.submissionConfirmed = function(files) {
-              var task = vm.tasks[vm.selectedTask];
+              var task = vm.selectedTask;
               if (files && files.length) {
                 Upload.upload({
                   url: '/api/workers/task/file/submit',
@@ -347,25 +353,26 @@
                   vm.submissionProgress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total, 10));
                 });
               }
-              /* if (vm.submissionMessage) {
-                $http({
-                  url: '/api/workers/task/file/sendMessage',
-                  method: "POST",
-                  data: {
-                    taskId: vm.tasks[vm.selectedTask]._id,
-                    message: vm.submissionMessage
-                  },
-                }).success(function (response) {
-                  Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> Submitted!' });
-                }).error(function (response) {
-
-                  Notification.error({ message: response.message, title: '<i class="glyphicon glyphicon-remove"></i> Message Error!' });
-                });
-              } */
             };
             previousSubmissionDownloadables();
             vm.openSubmissionModal();
             break;
+          case 'markCompleted':
+            (function(selectedTask) {
+              return WorkersService.markCompleted({
+                taskId: selectedTask._id
+              })
+              .then(function(response) {
+                selectedTask.jobs[0].status = 'submitted';
+                selectedTask.progress = 100;
+                recalculateTaskActions(selectedTask);
+                Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> Successfully Marked Completed!' });
+              })
+              .catch(function(response) {
+                Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Error Marking Complete!' });
+              });
+            }(vm.selectedTask))
+          break;
           default:
             break;
         }
@@ -376,15 +383,6 @@
     vm.minutesToReadable = function(minutes) {
       var date = new Date(minutes*1000/60);
       return date.toDateString() + ' at ' + date.getHours() + ':' + (date.getMinutes() <= 9 ? '0' : '') + date.getMinutes();
-    };
-
-    vm.selectedTask = -1;
-    vm.selectTask = function(index) {
-      if (index === vm.selectedTask) {
-        vm.selectedTask = -1;
-      } else if (index < vm.tasks.length && index >= 0) {
-        vm.selectedTask = index;
-      }
     };
 
     // This function is necessary to initially render the progress sliders

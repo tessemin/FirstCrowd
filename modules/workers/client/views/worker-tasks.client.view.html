@@ -29,7 +29,7 @@
             <ul>
               <li ng-repeat="prev in vm.previouslySubmittedFiles" style="font:smaller">
                 <h5 class="keyHeader">{{vm.minutesToReadable(prev.timeStamp)}}</h5>
-                <textarea ng-if="prev.messages.submission" class="form-control resizeVertical" rows="3">{{prev.messages.submission}}</textarea>
+                <textarea ng-if="prev.messages.submission" class="form-control resizeVertical disabled" rows="3" disabled>{{prev.messages.submission}}</textarea>
                 <div ng-if="prev.files && prev.files.length > 0">
                   Attachments:
                   <span ng-repeat="file in prev.files">
@@ -189,7 +189,7 @@
     </div>
     <div ng-repeat="task in vm.tasks | filter : vm.filters : false | orderBy: vm.sort : vm.sortReversed as results track by $index">
       <div class="tasks-group">
-        <div class="tasks-row" ng-click="vm.selectTask($index)">
+        <div class="tasks-row" ng-click="vm.selectedTask !== task ? vm.selectedTask = task : vm.selectedTask = null">
           <div class="tasks-cell clickable-looking">
             {{task.name}}
           </div>
@@ -202,8 +202,8 @@
           <div class="tasks-cell">
             {{task.status}}
           </div>
-          <div class="tasks-cell" ng-if="vm.taskCategory.id === 'active'" ng-click="$event.stopPropagation()">
-            <rzslider class="worker-slider" rz-slider-model="task.progress" rz-slider-options="vm.getSliderOptions(vm.tasks.indexOf(task))"></rzslider>
+          <div class="tasks-cell" ng-if="vm.taskCategory.id === 'active'" ng-click="$event.stopPropagation()" ng-disabled="task.jobs[0].status !== 'active'">
+            <rzslider class="worker-slider" rz-slider-model="task.progress" rz-slider-options="vm.getSliderOptions(vm.tasks.indexOf(task))" ng-disabled="task.jobs[0].status !== 'active'"></rzslider>
           </div>
           <div class="tasks-cell" ng-if="task.payment.bidding.bidable && task.payment.bidding.bids.length === 0">
             ${{task.payment.bidding.startingPrice}} (negotiable)
@@ -215,7 +215,7 @@
             ${{task.payment.staticPrice}}
           </div>
         </div>
-        <div ng-if="vm.selectedTask == $index">
+        <div ng-if="vm.selectedTask === task">
           <div class="tasks-row">
             <div class="tasks-cell">
               Categories: {{task.category}}

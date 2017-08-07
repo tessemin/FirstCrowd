@@ -96,6 +96,18 @@
         method: 'POST',
         url: '/api/tasks/preapproval/reject'
       },
+      _rejectCompletion: {
+        method: 'POST',
+        url: '/api/tasks/completion/reject'
+      },
+      _approveCompletion: {
+        method: 'POST',
+        url: '/api/tasks/completion/approve'
+      },
+      _retryCompletion: {
+        method: 'POST',
+        url: '/api/tasks/completion/retry'
+      },
       // Biding actions
       _rejectBid: {
         method: 'POST',
@@ -185,6 +197,15 @@
       },
       rejectPreapproval: function (taskId_bidId) {
         return this._rejectPreapproval(taskId_bidId).$promise;
+      },
+      rejectCompletion: function (taskId_workerId_message) {
+        return this._rejectCompletion(taskId_workerId_message).$promise;
+      },
+      approveCompletion: function (taskId_workerId_message) {
+        return this._approveCompletion(taskId_workerId_message).$promise;
+      },
+      retryCompletion: function (taskId_workerId_message) {
+        return this._retryCompletion(taskId_workerId_message).$promise;
       },
       // Biding actions
       rejectBid: function (taskId_bidId) {

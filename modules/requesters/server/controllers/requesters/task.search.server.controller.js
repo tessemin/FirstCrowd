@@ -126,7 +126,7 @@ function findWorkerByWorkerTaskObject(workerTaskObj, callBack) {
     if (workerTaskObj.workerType.enterprise && !workerTaskObj.workerType.individual) {
       Enterprise.findById(workerTaskObj.workerId, function (err, worker) { 
         if (err) {
-          callBack({ error: errorHandler.getErrorMessage(err) }); 
+          callBack(errorHandler.getErrorMessage(err)); 
         }
         if (worker)
           callBack(null, worker);
@@ -136,7 +136,7 @@ function findWorkerByWorkerTaskObject(workerTaskObj, callBack) {
     } else if (workerTaskObj.workerType.individual && !workerTaskObj.workerType.enterprise) {
       Individual.findById(workerTaskObj.workerId, function (err, worker) { 
         if (err) {
-          callBack({ error: errorHandler.getErrorMessage(err) }); 
+          callBack(errorHandler.getErrorMessage(err)); 
         }
         if (worker)
           callBack(null, worker);
@@ -146,10 +146,10 @@ function findWorkerByWorkerTaskObject(workerTaskObj, callBack) {
     } else {
       Enterprise.findById(workerTaskObj.workerId, function (err, worker) { 
         if (err) {
-          callBack({ error: errorHandler.getErrorMessage(err) }); 
+          callBack(errorHandler.getErrorMessage(err)); 
         }
         if (worker)
-          callBack(worker);
+          callBack(null, worker);
         else
           Individual.findById(workerTaskObj.workerId, function (err, worker) { 
             if (err) {

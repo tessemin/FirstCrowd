@@ -48,6 +48,11 @@ exports.activeTask = {
               message: 'You are not a worker for this task'
             });
           }
+          if (taskJob.status !== 'active') {
+            return res.status(422).send({
+              message: 'You are not an active worker for this task.'
+            });
+          }
           taskJob = _.extend(taskJob, _.pick(req.body, jobWhitelistedFields));
           taskJob.save(function(err) {
             if (err) {

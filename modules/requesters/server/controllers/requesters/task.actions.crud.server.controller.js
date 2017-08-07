@@ -20,6 +20,7 @@ var getUserTypeObject = taskTools.getUserTypeObject,
   ownsTask = taskTools.ownsTask,
   statusPushTo = taskTools.statusPushTo,
   getNestedProperties = taskTools.getNestedProperties,
+  hashObjId = taskTools.hashObjId,
   taskFindOne = taskSearch.taskFindOne;
 
 var individualWhiteListFields = ['_id', 'schools', 'jobExperience', 'certification', 'tools', 'specialities', 'skills', 'worker.requesterRatingsPerCategory', 'worker.acceptanceRatesPerCategory', 'worker.acceptanceRate', 'worker.averageCompletionTime', 'worker.preferedCategories'],
@@ -265,12 +266,12 @@ exports.biddingActions = {
                 });
               var safeInds = individuals.map(function(ind) {
                 ind = getNestedProperties(ind, individualWhiteListFields);
-                ind.displayId = hashTypeObjId(ind._id);
+                ind.displayId = hashObjId(ind._id);
                 return ind;
               });
               var safeEnts = enterprises.map(function(ent) {
                 ent = getNestedProperties(ent, enterpriseWhiteListFields);
-                ent.displayId = hashTypeObjId(ent._id);
+                ent.displayId = hashObjId(ent._id);
                 return ent;
               });
               res.json({ individuals: safeInds, enterprises: safeEnts });
@@ -310,15 +311,4 @@ function getMongoEnterprises(entIds, callBack) {
     });
   else
     return callBack(null, []);
-}
-
-function hashTypeObjId(id) {
-  id = id.toString();
-  var returnVal = null;
-  for (var i = 1; i <= id.length; i++) {
-    returnVal += id.codePointAt(i - 1) * i;
-  }
-  if (returnVal)
-    return returnVal.toString(16);
-  return null;
 }
