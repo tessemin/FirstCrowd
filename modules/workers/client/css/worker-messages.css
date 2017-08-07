@@ -1,5 +1,6 @@
 .worker-messages {
   background-color: white;
+  padding-left: 0;
   position: absolute;
   top: 51px;
   bottom: 38px;
