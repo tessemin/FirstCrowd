@@ -634,6 +634,33 @@ function makeNewEnterprise() {
   ent.profile.companyAddress.city = generateRandomString(5) + 'burg';
   ent.profile.companyAddress.state = 'IL';
   ent.profile.companyAddress.zipCode = getRandomNumber(100000, 999999);
+  
+  ent.catalog = {};
+  var i = 0;
+  ent.catalog.services = [];
+  for (i  = getRandomNumber(2, 10); i > 0; i--) {
+    ent.catalog.services.push({
+      price: getRandomNumber(200, 1000),
+      productName: generateRandomString(getRandomNumber(8, 12)),
+      description: generateRandomString(getRandomNumber(30, 40))
+    });
+  }
+  ent.catalog.products = [];
+  for (i  = getRandomNumber(2, 10); i > 0; i--) {
+    ent.catalog.products.push({
+      price: getRandomNumber(200, 1000),
+      productName: generateRandomString(getRandomNumber(8, 12)),
+      description: generateRandomString(getRandomNumber(30, 40))
+    });
+  }
+  ent.demands = [];
+  for (i  = getRandomNumber(2, 10); i > 0; i--) {
+    ent.demands.push({
+      productName: generateRandomString(getRandomNumber(8, 16)),
+      quantity: getRandomNumber(20, 400)
+    });
+  }
+  
   return ent;
 }
 

@@ -117,17 +117,48 @@ var EnterpriseUserSchema = new Schema({
   }],
   catalog: {
     products: [{
-      type: String,
-      default: ''
+      price: {
+        type: Number,
+        default: 0
+      },
+      productName: {
+        type: String,
+        default: '',
+        trim: true
+      },
+      description: {
+        type: String,
+        default: '',
+        trim: true
+      }
     }],
     services: [{
-      type: String,
-      default: ''
+      price: {
+        type: Number,
+        default: 0
+      },
+      productName: {
+        type: String,
+        default: '',
+        trim: true
+      },
+      description: {
+        type: String,
+        default: '',
+        trim: true
+      }
     }]
   },
   demands: [{
-    type: String,
-    default: ''
+    productName: {
+      type: String,
+      default: '',
+      trim: true
+    },
+    quantity: {
+      type: Number,
+      default: 0
+    }
   }],
   partners: {
     supplier: [{
