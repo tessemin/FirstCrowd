@@ -223,7 +223,7 @@
             <div class="tasks-cell">
               Requires: {{task.skillsNeeded}}
             </div>
-            <div class="tasks-cell" ng-if="task.payment.bidding.bidable">
+            <div class="tasks-cell" ng-if="task.payment.bidding.bidable && task.status == 'open'">
               Bid amount: <input class="cell-input" ng-model="task.payment.bidding.myBid">
             </div>
             <div class="tasks-cell">
