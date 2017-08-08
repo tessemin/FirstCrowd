@@ -12,9 +12,12 @@
     vm.showSubmissions = true;
     vm.showMessages = true;
     vm.sendMessage = {};
+    vm.messageRecipient = '';
     vm.sidebar = {};
     vm.activeTaskType = '';
     vm.loadedMessages = {};
+    vm.messageView = {};
+    vm.messageView.task = {};
 
     function getTaskError(err) {
       Notification.error({ message: err, title: '<i class="glyphicon glyphicon-remove"></i> Error getting tasks!' });
@@ -141,6 +144,14 @@
       });
     };
 
+    vm.selectTask = function(task) {
+      if (vm.messageView.task !== task) {
+        vm.messageView.task = task;
+        vm.loadMessages(task);
+        vm.closeSendMessage();
+      }
+    };
+
     vm.loadMessagesIncrementally = function(tasks) {
       vm.messageView = {};
       vm.messageView.messages = [];
@@ -250,28 +261,35 @@
       return (new Date(time)).toDateString();
     };
 
-    vm.sendMessage.send = function() {
-      async function sendMessage(task) {
-        task.jobs.forEach(function(job) {
-          RequestersService.sendMessage({
-            taskId: task._id,
-            message: vm.sendMessage.message,
-            workerId: job.worker.workerId
-          })
-          .then(function(res) {
-            vm.closeSendMessage();
-            if (vm.messageView.task === task) {
-              vm.messageView.messages.unshift(res.data);
-            }
-            Notification.success({ message: res.message, title: '<i class="glyphicon glyphicon-remove"></i> Message Sent!' });
-          })
-          .catch(function(res) {
-            Notification.error({ message: res.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Message Error!' });
-          });
-        });
-      }
-      sendMessage(vm.messageView.taskMessage);
+    async function sendMessage(task, workerId) {
+      RequestersService.sendMessage({
+        taskId: task._id,
+        message: vm.sendMessage.message,
+        workerId: workerId
+      })
+      .then(function(res) {
+        vm.closeSendMessage();
+        if (vm.messageView.task === task) {
+          vm.messageView.messages.unshift(res.data);
+        }
+        Notification.success({ message: res.message, title: '<i class="glyphicon glyphicon-remove"></i> Message Sent!' });
+      })
+      .catch(function(res) {
+        Notification.error({ message: res.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Message Error!' });
+      });
     }
+    vm.sendMessage.toAll = function() {
+      vm.messageView.taskMessage.jobs.forEach(function(job) {
+        vm.sendMessage.send(job.worker.workerId);
+      });
+    };
+    vm.sendMessage.send = function(workerId) {
+      if (workerId === '') {
+        vm.sendMessage.toAll();
+      } else {
+        sendMessage(vm.messageView.taskMessage, workerId);
+      }
+    };
 
     vm.collapseAllMessages= function() {
       var eles = angular.element(document.getElementsByClassName('message'));
@@ -281,7 +299,7 @@
     vm.closeSendMessage = function() {
       vm.sendMessage.expanded = false;
       vm.sendMessage.message = '';
+      vm.messageRecipient = '';
     };
-
   }
 }());

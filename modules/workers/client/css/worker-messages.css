@@ -6,43 +6,43 @@
   bottom: 38px;
   width: 100%;
 }
- 
+
 div.message-sidebar {
 	background-color: #6495ed;
 	height: 100%;
 	padding: 0;
 }
- 
+
 div.sidebar-name { cursor: pointer; }
- 
+
 span.searchMessages {
 	display: inline-block;
 	padding-top: 3px;
 	text-align: center;
 	width: 100%;
 }
- 
+
 div.sidebar-name i { float: right; }
- 
+
 div.tab-surround {
 	border: none;
 	height: 100%;
 	padding: 10px;
 	width: 100%;
 }
- 
+
 div.row.tab {
 	border: none;
 	margin: 0;
 	width: 100%;
 }
- 
+
 .tab-col {
 	border: none;
 	margin: 0;
 	padding: 0;
 }
- 
+
 /* Style the buttons inside the tab */
 .tablinks {
 	background-color: #f1f1f1;
@@ -55,25 +55,25 @@ div.row.tab {
 	transition: 0.3s;
 	width: 100%;
 }
- 
+
 /* Change background color of buttons on hover */
 div.tab .tablinks:hover { background-color: #ddd; }
- 
+
 .connected-tablinks {
 	border-bottom: none;
 	border-top: 1px solid DarkGray;
 }
- 
+
 	.connected-tablinks.activeSortTab {
 		background-color: white;
 		border-top: 2px solid grey;
 	}
- 
+
 button.connected-tablinks.activeSortTab:hover { background-color: white; }
- 
+
 /* Create an active/current tablink class */
 div.tab .tablinks.active { background-color: #ccc; }
- 
+
 .messages-title {
 	display: inline-block;
 	font-size: 120%;
@@ -81,7 +81,7 @@ div.tab .tablinks.active { background-color: #ccc; }
 	margin: 0 auto 10px auto;
 	text-align: center;
 }
- 
+
 div.sidebar-displayTasks {
 	background-color: white;
 	bottom: 2px;
@@ -94,17 +94,17 @@ div.sidebar-displayTasks {
 	top: 135px;
 	width: 93%;
 }
- 
+
 .searchTasks {
 	margin-top: 5px;
 	width: 100%;
 }
- 
+
 div.messageView {
 	height: 100%;
 	width: 75%;
 }
- 
+
 div.messageView-messages {
 	bottom: 50px;
 	display: block;
@@ -117,7 +117,7 @@ div.messageView-messages {
 	top: 0;
 	width: 100%;
 }
- 
+
 .indicateMore {
   background: white; /* For browsers that do not support gradients */
   background: linear-gradient(white, WhiteSmoke ); /* Standard syntax */
@@ -130,7 +130,7 @@ div.messageView-messages {
 	height: 10px;
 	width: 100%;
 }
- 
+
 .collapseButton {
 	cursor: pointer;
 	display: inline-block;
@@ -139,26 +139,26 @@ div.messageView-messages {
 	white-space: nowrap;
 	width: 95%;
 }
- 
+
 .greyText { color: grey; }
- 
+
 hr {
 	margin: 0;
 	margin-bottom: 5px;
 	padding: 0;
 }
- 
+
 .expandMessage[aria-expanded=true] .glyphicon-chevron-down { display: none; }
- 
+
 .expandMessage[aria-expanded=false] .glyphicon-chevron-up { display: none; }
- 
+
 i.expandMessageGlyph {
 	cursor: pointer;
 	display: inline-block;
   margin: 10px;
 	margin-top: 0;
 }
- 
+
 .message-body {
 	background-color: WhiteSmoke;
   border: 1px solid gray;
@@ -172,7 +172,7 @@ i.expandMessageGlyph {
   overflow-x: auto !important;
   white-space: pre-line !important;
 }
- 
+
 div.sendMessage {
 	bottom: 46px;
 	display: block;
@@ -184,7 +184,7 @@ div.sendMessage {
   -webkit-transition: top .5s; /* Safari */
 	width: 100%;
 }
- 
+
 	div.sendMessage.expandSend {
 		height: 25%;
 		top: -webkit-calc(72% - 45px);
@@ -192,7 +192,7 @@ div.sendMessage {
 		transition: height 0.5s linear 1s;
     -webkit-transition: height 0.5s linear 1s; /* Safari */
   }
- 
+
 	div.sendMessage .messageBackDrop {
 		background-color: white;
 		display: block;
@@ -200,26 +200,29 @@ div.sendMessage {
 		margin: 0;
 		width: 98%;
   }
- 
+
 	div.sendMessage .message {
 		border-color: LightGrey;
 		padding: 5px;
 		resize: none;
 		width: 98%;
   }
- 
+
 	div.sendMessage .message { height: 100%; }
- 
-div.sendButtons {
-	display: block;
-	margin-left: -webkit-calc(100% - 150px);
-	margin-left: calc(100% - 150px);
-	max-height: 0;
-	opacity: 0;
-	transition: max-height 0.5s ease-in-out, opacity 0.2s linear;
-  -webkit-transition: max-height 0.5s ease-in-out, opacity 0.2s linear; /* Safari */
-}
- 
+
+  div.buttonMover {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  div.sendButtons {
+  	display: block;
+  	max-height: 0;
+  	opacity: 0;
+  	transition: max-height 0.5s ease-in-out, opacity 0.2s linear;
+    -webkit-transition: max-height 0.5s ease-in-out, opacity 0.2s linear; /* Safari */
+  }
+
 	div.sendButtons.expandSendButtons {
 		display: block;
 		max-height: inital;
@@ -227,17 +230,17 @@ div.sendButtons {
 		transition: max-height 0.5s ease-in-out, opacity 0.5s linear 0.2s;
     -webkit-transition: max-height 0.5s ease-in-out, opacity 0.5s linear 0.2s; /* Safari */
 	}
- 
+
 	div.sendButtons .btn {
 		display: inline;
 		text-align: left
 	}
- 
+
 span.closeSpan {
 	display: block;
 	left: -8px;
 	position: relative;
 	top: -18px;
 }
- 
+
 .disabled { cursor: initial !important; }

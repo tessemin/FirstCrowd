@@ -31,7 +31,7 @@
         </div>
         <div class="row" ng-repeat="task in vm.sidebar.tasks | filter: vm.taskSearch">
           <div class="col-md-12">
-            <div class="sidebar-name expandMessage" ng-click="(vm.messageView.task != task) ? vm.loadMessages(task) : vm.something;" data-toggle="collapse" data-target="#task{{task._id}}" aria-expanded="false">Title: {{task.title}}
+            <div class="sidebar-name expandMessage" ng-click="vm.selectTask(task)" data-toggle="collapse" data-target="#task{{task._id}}" aria-expanded="false">Title: {{task.title}}
               <span>
                 <i class="glyphicon glyphicon-chevron-down expandMessageGlyph greyText"></i>
                 <i class="glyphicon glyphicon-chevron-up expandMessageGlyph greyText"></i>
@@ -149,10 +149,14 @@
         <span class="closeSpan"><button ng-if="vm.sendMessage.expanded" ng-click="vm.closeSendMessage()" type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></span>
         <textarea class="message" ng-model="vm.sendMessage.message" placeholder="Send a new message to task: {{vm.messageView.taskMessage.title}}" ng-click="vm.sendMessage.expanded = true"></textarea>
         <div class="buttonMover">
-        <div ng-class="{expandSendButtons: vm.sendMessage.expanded}" class="sendButtons">
-          <button ng-click="vm.sendMessage.send()" type="button" class="btn btn-primary">Send</button>
-          <button ng-click="vm.closeSendMessage()" type="button" class="btn btn-secondary">Cancel</button>
-        </div>
+          <div ng-class="{expandSendButtons: vm.sendMessage.expanded}" class="sendButtons">
+            Recipient:
+            <select ng-model="vm.messageRecipient" ng-options="job.worker.workerId as job.worker.workerId for job in vm.messageView.task.jobs">
+              <option value="">All</option>
+            </select>
+            <button ng-click="vm.sendMessage.toAll()" type="button" class="btn btn-primary">Send</button>
+            <button ng-click="vm.closeSendMessage()" type="button" class="btn btn-secondary">Cancel</button>
+          </div>
         </div>
       </div>
     </div>
