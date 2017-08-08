@@ -118,6 +118,10 @@ div.messageView-messages {
 	width: 100%;
 }
 
+div.messageView-messages.expandMessageBackDrop {
+  bottom: 38%;
+}
+
 .indicateMore {
   background: white; /* For browsers that do not support gradients */
   background: linear-gradient(white, WhiteSmoke ); /* Standard syntax */
@@ -187,8 +191,9 @@ div.sendMessage {
 
 	div.sendMessage.expandSend {
 		height: 25%;
-		top: -webkit-calc(72% - 45px);
-		top: calc(72% - 45px);
+		top: -webkit-calc(69% - 50px);
+		top: calc(73% - 70px);
+    bottom: 40px;
 		transition: height 0.5s linear 1s;
     -webkit-transition: height 0.5s linear 1s; /* Safari */
   }
@@ -203,12 +208,19 @@ div.sendMessage {
 
 	div.sendMessage .message {
 		border-color: LightGrey;
+    height: 100%;
 		padding: 5px;
 		resize: none;
 		width: 98%;
   }
-
-	div.sendMessage .message { height: 100%; }
+  
+  div.sendMessage .to-field {
+    background-color: #6495ed;
+    border-color: LightGrey;
+    display: block;
+    padding: 2px 0 0 5px;
+    width: 98%;
+  }
 
   div.buttonMover {
     display: flex;
@@ -238,9 +250,22 @@ div.sendMessage {
 
 span.closeSpan {
 	display: block;
-	left: -8px;
+	left: -5px;
 	position: relative;
-	top: -18px;
+	top: -20px;
 }
 
+  span.closeSpan button.close {
+    font-size: 200%;
+  }
+
+  span.closeSpan span {
+    color: black !important;
+    font-weight: bold !important;
+  }
+
 .disabled { cursor: initial !important; }
+
+.bold-font {
+  font-weight: bold;
+}

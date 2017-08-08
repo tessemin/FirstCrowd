@@ -60,7 +60,7 @@
     </div>
   </div>
   <div class="col-md-9 container-fluid messageView">
-    <div class="messageView-messages">
+    <div class="messageView-messages" ng-class="{'expandMessageBackDrop': vm.sendMessage.expanded}">
       <div class="row">
         <span class="messages-title col-md-12" ng-if="vm.messageView.title">Messages For: {{vm.messageView.title}}</span>
         <span class="messages-title col-md-12" ng-if="!vm.messageView.title">No Task Selected</span>
@@ -76,7 +76,7 @@
           <button class="tablinks connected-tablinks" ng-click="vm.sidebar.sortTasks('submissions')" ng-class="{activeSortTab: vm.sortTabs.submissions}">Your Submissions</button>
         </div>
         <div class="col-md-3 tab-col">
-          <span class="searchMessages"><input type="text" ng-model="vm.messageSearch" placeholder="Search Messages" ng-disabled="!vm.messageView.task._id"><i class="glyphicon glyphicon-search expandMessageGlyph greyText"></i></span>
+          <span class="searchMessages"><input type="text" ng-model="vm.messageSearch" placeholder="Search Messages" ng-disabled="vm.messageView.messages.length <= 0"><i class="glyphicon glyphicon-search expandMessageGlyph greyText"></i></span>
         </div>
       </div>
       <br>
@@ -147,9 +147,10 @@
         </div>
       </div>
     </div>
-    <div class="sendMessage" ng-class="{'expandSend': vm.sendMessage.expanded}" ng-if="vm.messageView.taskMessage">
-      <div class="messageBackDrop" ng-class="{'expandMessageBackDrop': vm.sendMessage.expanded}">
+    <div class="sendMessage" ng-class="{'expandSend': vm.sendMessage.expanded}">
+      <div class="messageBackDrop" ng-class="{'expandMessageBackDrop': vm.sendMessage.expanded}" ng-if="vm.messageView.taskMessage">
         <span class="closeSpan"><button ng-if="vm.sendMessage.expanded" ng-click="vm.closeSendMessage()" type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button></span>
+        <span class="bold-font to-field" ng-if="vm.sendMessage.expanded">To: {{vm.messageView.taskMessage.title}}</span>
         <textarea class="message" ng-model="vm.sendMessage.message" placeholder="Send a new message to task: {{vm.messageView.taskMessage.title}}" ng-click="vm.sendMessage.expanded = true"></textarea>
         <div class="buttonMover">
         <div ng-class="{expandSendButtons: vm.sendMessage.expanded}" class="sendButtons">
