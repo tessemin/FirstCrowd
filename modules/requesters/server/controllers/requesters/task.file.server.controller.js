@@ -100,42 +100,42 @@ function getFilePath(taskId, workerId, timeInMin, callBack) {
 }
 
 
-function getFilesInTask(taskDir, forEach, callBack) {
-  var subDir = getDirectories(taskDir);
-  subDir.sort(function(a, b) {
+function getFilesInTask(taskDir, forEach, callBack, afterTimeX) {
+  var subDirs = getDirectories(taskDir);
+  subDirs.sort(function(a, b) {
     if (a > b) return -1;
     if (a < b) return 1;
     return 0;
   });
-  subDir.forEach(function (sub) {
-    var subDir = path.resolve(taskDir + '/' + sub);
-    if (fs.existsSync(subDir)) {
-      var timeStampFiles = fs.readdirSync(subDir);
+  for (var sub = 0; sub < subDirs.length && (subDirs[sub] > afterTimeX || !afterTimeX); sub++) {
+    var timeDir = path.resolve(taskDir + '/' + subDirs[sub]);
+    if (fs.existsSync(timeDir)) {
+      var timeStampFiles = fs.readdirSync(timeDir);
       var files = [];
       timeStampFiles.forEach(function(file) {
-        if (!fs.lstatSync(path.resolve(subDir + '/' + file)).isDirectory())
+        if (!fs.lstatSync(path.resolve(timeDir + '/' + file)).isDirectory())
           files.push({
             name: file,
-            timeStamp: sub
+            timeStamp: subDirs[sub]
           })
       });
       var messages = {};
-      var messagePath = path.resolve(subDir + '/messages/' + getRequesterMsgFileName());
+      var messagePath = path.resolve(timeDir + '/messages/' + getRequesterMsgFileName());
       if (fs.existsSync(messagePath))
         messages.requester = fs.readFileSync(messagePath, 'utf8');
-      messagePath = path.resolve(subDir + '/messages/' + getWorkerMsgFileName());
+      messagePath = path.resolve(timeDir + '/messages/' + getWorkerMsgFileName());
       if (fs.existsSync(messagePath))
         messages.worker = fs.readFileSync(messagePath, 'utf8');
-      messagePath = path.resolve(subDir + '/messages/' + getSubmissionMsgFileName());
+      messagePath = path.resolve(timeDir + '/messages/' + getSubmissionMsgFileName());
       if (fs.existsSync(messagePath))
         messages.submission = fs.readFileSync(messagePath, 'utf8');
-      forEach(sub, files || [], messages || null);
+      forEach(subDirs[sub], files || [], messages || null);
     }
-  });
+  };
   return callBack();
 }
 
-function getDownloadables(taskId, typeObjId, callBack) {
+function getDownloadables(taskId, typeObjId, callBack, afterTimeX) {
   getFilePath(taskId, typeObjId, null, function (err, taskWorkerDir) {
     var files = [];
     getFilesInTask(taskWorkerDir, function(sub, fils, messages) {
@@ -143,7 +143,7 @@ function getDownloadables(taskId, typeObjId, callBack) {
         files.push({ files: fils, messages: messages, timeStamp: sub });
     }, function () {
       return callBack({ down: files });
-    });
+    }, afterTimeX);
   });
 }
 

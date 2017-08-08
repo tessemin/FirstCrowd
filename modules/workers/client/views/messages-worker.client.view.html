@@ -29,12 +29,12 @@
       <div class="sidebar-displayTasks">
         <div class="row" ng-if="vm.sidebar.tasks && vm.sidebar.tasks.length >= 1 && !vm.taskSearch">
           <div class="col-md-12">
-            <div class="sidebar-name" ng-click="vm.loadMessagesIncrementally(vm.sidebar.tasks)">All</div>
+            <div class="sidebar-name" ng-click="vm.loadMessagesIncrementally(vm.sidebar.tasks, true)">All</div>
           </div>
         </div>
         <div class="row" ng-repeat="task in vm.sidebar.tasks | filter: vm.taskSearch">
           <div class="col-md-12">
-            <div class="sidebar-name expandMessage" ng-click="(vm.messageView.task != task) ? vm.loadMessages(task) : vm.something;" data-toggle="collapse" data-target="#task{{task._id}}" aria-expanded="false">Title: {{task.title}}
+            <div class="sidebar-name expandMessage" ng-click="(vm.messageView.task != task) ? vm.loadMessagesIncrementally(task, true) : nothing;" data-toggle="collapse" data-target="#task{{task._id}}" aria-expanded="false">Title: {{task.title}}
               <span>
                 <i class="glyphicon glyphicon-chevron-down expandMessageGlyph greyText"></i>
                 <i class="glyphicon glyphicon-chevron-up expandMessageGlyph greyText"></i>
@@ -62,8 +62,8 @@
   <div class="col-md-9 container-fluid messageView">
     <div class="messageView-messages">
       <div class="row">
-        <span class="messages-title col-md-12" ng-if="vm.messageView.task.title">Messages For: {{vm.messageView.task.title}}</span>
-        <span class="messages-title col-md-12" ng-if="!vm.messageView.task.title">No Task Selected</span>
+        <span class="messages-title col-md-12" ng-if="vm.messageView.title">Messages For: {{vm.messageView.title}}</span>
+        <span class="messages-title col-md-12" ng-if="!vm.messageView.title">No Task Selected</span>
       </div>
       <div class="row tab">
         <div class="col-md-3 tab-col">
@@ -131,7 +131,7 @@
         <!-- Requester Messages -->
         <div ng-if="message.messages.requester && message.messages.requester.length > 0 && vm.showMessages" ng-click="vm.messageView.taskMessage = message.task; vm.collapseAllMessages()">
           <div data-toggle="collapse" data-target="#requesterMsg{{message.timeStamp}}" aria-expanded="false" class="expandMessage">
-            <span class="collapseButton">Message sent: {{vm.minutesToReadable(message.timeStamp)}}<span ng-if="vm.messageView.task !== message.task"> for task {{message.task.title}}</span><span class="greyText" ng-if="message.messages.requester"> ~ &ldquo;{{vm.trimMessage(message.messages.requester)[0]}}&rdquo;</span></span>
+            <span class="collapseButton">Message received: {{vm.minutesToReadable(message.timeStamp)}}<span ng-if="vm.messageView.task !== message.task"> for task {{message.task.title}}</span><span class="greyText" ng-if="message.messages.requester"> ~ &ldquo;{{vm.trimMessage(message.messages.requester)[0]}}&rdquo;</span></span>
             <span>
               <i class="glyphicon glyphicon-chevron-down expandMessageGlyph greyText"></i>
               <i class="glyphicon glyphicon-chevron-up expandMessageGlyph greyText"></i>

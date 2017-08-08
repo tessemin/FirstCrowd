@@ -151,7 +151,7 @@ exports.taskFiles = {
     setUpWorkerFileExchange(req, res, function(typeObj, task, jobIndex) {
       getDownloadables(task._id, typeObj._id, function(down) {
         return res.status(200).send(down);
-      });
+      }, req.body.sinceTimeX);
     });
   },
   downloadTaskFile: function(req, res) {

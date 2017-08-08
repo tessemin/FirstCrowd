@@ -77,7 +77,7 @@ exports.taskFiles = {
     setUpRequesterFileExchange(req, res, function(typeObj, task) {
       getDownloadables(task._id, req.body.workerId, function(down) {
         return res.status(200).send(down);
-      });
+      }, req.body.sinceTimeX);
     });
   },
   downloadTaskFile: function(req, res) {
