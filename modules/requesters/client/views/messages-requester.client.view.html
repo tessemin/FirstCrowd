@@ -100,7 +100,7 @@
               <br ng-if="!message.messages.submission">
               Attachments:
               <span ng-repeat="file in message.files">
-                <a ng-click="vm.previousSubmissionDownload(file)">{{file.name}}</a><span class="fontBold" ng-if="message.files.length > 1">,</span>
+                <a ng-click="vm.previousSubmissionDownload(file, message.workerId)">{{file.name}}</a><span class="fontBold" ng-if="message.files.length > 1">,</span>
               </span>
               <a ng-click="vm.previousSubmissionDownload(message.files)" ng-if="message.files.length > 1" class="glyphicon glyphicon-download-alt clickable-looking">-All</a>
               <br>

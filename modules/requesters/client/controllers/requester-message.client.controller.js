@@ -202,7 +202,8 @@
       return date.toDateString() + ' at ' + date.getHours() + ':' + (date.getMinutes() <= 9 ? '0' : '') + date.getMinutes();
     };
 
-    vm.previousSubmissionDownload = function previousSubmissionDownload(file) {
+    vm.previousSubmissionDownload = function previousSubmissionDownload(file, workerId) {
+      console.log(file);
       if (Array.isArray(file)) {
         file.forEach (function (fil) {
           vm.previousSubmissionDownload(fil);
@@ -215,7 +216,8 @@
           data: {
             fileName: file.name,
             timeStamp: file.timeStamp,
-            taskId: vm.messageView.task._id
+            taskId: vm.messageView.task._id,
+            workerId: workerId
           },
           responseType: 'blob'
       }).success(function (data, status, headers, config) {
