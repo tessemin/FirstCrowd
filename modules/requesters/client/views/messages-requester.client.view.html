@@ -81,7 +81,7 @@
         <!-- Submissions Messages -->
         <div ng-if="message.files && message.files.length > 0 && vm.showSubmissions" ng-click="vm.messageView.taskMessage = message.task; vm.collapseAllMessages()">
           <div data-toggle="collapse" data-target="#submissionMsg{{message.timeStamp}}" aria-expanded="false" class="expandMessage">
-            <span class="collapseButton">Submission on: {{vm.minutesToReadable(message.timeStamp)}}
+            <span class="collapseButton">Submission from {{message.workerId}} on: {{vm.minutesToReadable(message.timeStamp)}}
               <span class="greyText" >
                 ~ &ldquo;<span ng-if="message.messages.submission">{{vm.trimMessage(message.messages.submission)[0]}}</span><span ng-if="!message.messages.submission">{{vm.joinFileNames(message.files)}}</span>&rdquo;
               </span>
@@ -111,7 +111,7 @@
         <!-- Messages -->
         <div ng-if="message.messages.worker && message.messages.worker.length > 0 && vm.showMessages" ng-click="vm.messageView.taskMessage = message.task; vm.collapseAllMessages()">
           <div data-toggle="collapse" data-target="#workerMsg{{message.timeStamp}}" aria-expanded="false" class="expandMessage">
-            <span class="collapseButton">Message sent: {{vm.minutesToReadable(message.timeStamp)}}<span class="greyText" ng-if="message.messages.worker"> ~ &ldquo;{{vm.trimMessage(message.messages.worker)[0]}}&rdquo;</span></span>
+            <span class="collapseButton">Message from {{message.workerId}} sent: {{vm.minutesToReadable(message.timeStamp)}}<span class="greyText" ng-if="message.messages.worker"> ~ &ldquo;{{vm.trimMessage(message.messages.worker)[0]}}&rdquo;</span></span>
             <span>
               <i class="glyphicon glyphicon-chevron-down expandMessageGlyph greyText"></i>
               <i class="glyphicon glyphicon-chevron-up expandMessageGlyph greyText"></i>
@@ -128,7 +128,7 @@
         <!-- Requester Messages -->
         <div ng-if="message.messages.requester && message.messages.requester.length > 0 && vm.showMessages" ng-click="vm.messageView.taskMessage = message.task; vm.collapseAllMessages()">
           <div data-toggle="collapse" data-target="#requesterMsg{{message.timeStamp}}" aria-expanded="false" class="expandMessage">
-            <span class="collapseButton">Message sent: {{vm.minutesToReadable(message.timeStamp)}}<span class="greyText" ng-if="message.messages.requester"> ~ &ldquo;{{vm.trimMessage(message.messages.requester)[0]}}&rdquo;</span></span>
+            <span class="collapseButton">Your message sent: {{vm.minutesToReadable(message.timeStamp)}}<span class="greyText" ng-if="message.messages.requester"> ~ &ldquo;{{vm.trimMessage(message.messages.requester)[0]}}&rdquo;</span></span>
             <span>
               <i class="glyphicon glyphicon-chevron-down expandMessageGlyph greyText"></i>
               <i class="glyphicon glyphicon-chevron-up expandMessageGlyph greyText"></i>

@@ -84,7 +84,8 @@
               var recentMsges = [];
               for (var msg = 0; msg < messages.length; msg++) {
                 if (messages[msg].timeStamp > recentTimeStamp) {
-                  messages[msg].task = task
+                  messages[msg].task = task;
+                  messages[msg].workerId = job.worker.workerId;
                   recentMsges.push(messages[msg]);
                 } else {
                   break;
