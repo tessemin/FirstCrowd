@@ -648,9 +648,13 @@ function makeNewEnterprise() {
   ent.catalog.products = [];
   for (i  = getRandomNumber(2, 10); i > 0; i--) {
     ent.catalog.products.push({
-      price: getRandomNumber(200, 1000),
+      payment: {
+        price: getRandomNumber(200, 1000),
+        negotiable: getRandomNumber(1, 0)
+      },
       productName: generateRandomString(getRandomNumber(8, 12)),
-      description: generateRandomString(getRandomNumber(30, 40))
+      description: generateRandomString(getRandomNumber(30, 40)),
+      maker: ent._id
     });
   }
   ent.demands = [];

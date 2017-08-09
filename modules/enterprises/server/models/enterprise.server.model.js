@@ -117,9 +117,15 @@ var EnterpriseUserSchema = new Schema({
   }],
   catalog: {
     products: [{
-      price: {
-        type: Number,
-        default: 0
+      payment: {
+        price: {
+          type: Number,
+          default: 0
+        },
+        negotiable: {
+          type: Boolean,
+          default: false
+        }
       },
       productName: {
         type: String,
@@ -130,6 +136,11 @@ var EnterpriseUserSchema = new Schema({
         type: String,
         default: '',
         trim: true
+      },
+      maker: {
+        type: Schema.ObjectId,
+        ref: 'Enterprise',
+        default: null
       }
     }],
     services: [{
