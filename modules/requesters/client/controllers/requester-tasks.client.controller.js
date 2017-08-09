@@ -412,23 +412,30 @@
       }
     };
 
-    RequestersService.getAllTasks()
-      .then(function(data) {
-        vm.loadData(data.tasks);
-      });
+    vm.getAllTasks = function() {
+      RequestersService.getAllTasks()
+        .then(function(data) {
+          vm.loadData(data.tasks);
+        });
+    };
+    vm.getAllTasks();
 
     vm.searchTasks = function() {
-      RequestersService.searchMyTasks({
-        query: vm.searchInput
-      })
-      .then(function(response){
-        console.log(response);
-        vm.loadData(response.results);
-      })
-      .catch(function(response){
-        console.log(response);
-        Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Error searching tasks!' });
-      });
+      if(vm.searchInput === '') {
+        vm.getAllTasks();
+      } else {
+        RequestersService.searchMyTasks({
+          query: vm.searchInput
+        })
+        .then(function(response){
+          console.log(response);
+          vm.loadData(response.results);
+        })
+        .catch(function(response){
+          console.log(response);
+          Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Error searching tasks!' });
+        });
+      }
     };
 
     // This function is necessary to initially render the progress sliders
