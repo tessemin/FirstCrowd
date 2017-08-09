@@ -13,6 +13,7 @@
     vm.tasks = [];
     vm.loaded = false;
     vm.submission = {};
+    vm.searchInput = '';
 
     // For activating a task
     var activateTaskId = null;
@@ -24,6 +25,25 @@
     vm.clearFilters();
     vm.sort = 'name';
     vm.sortReversed = false;
+    vm.statuses = [{
+        id: 'open',
+        bikeshed: 'Open'
+      }, {
+        id: 'taken',
+        bikeshed: 'In Progress'
+      }, {
+        id: 'sClosed',
+        bikeshed: 'Complete'
+      }, {
+        id: 'fClosed',
+        bikeshed: 'Failed'
+      }, {
+        id: 'inactive',
+        bikeshed: 'Inactive'
+      }, {
+        id: 'suspended',
+        bikeshed: 'Suspended'
+      }];
 
 
     function recalculateTaskActions(task) {
@@ -210,7 +230,7 @@
         Notification.error({ message: 'Task index does not exist.', title: '<i class="glyphicon glyphicon-remove"></i> Cannot Find Task' });
       }
     }
-    
+
     vm.submittedJobs = function() {
       if (vm.selectedTask && vm.selectedTask.jobs)
         for (var job = 0; job < vm.selectedTask.jobs.length; job++) {
@@ -219,7 +239,7 @@
         }
       return false;
     }
-    
+
     vm.minutesToReadable = function(minutes) {
       var date = new Date(minutes*1000/60);
       return date.toDateString() + ' at ' + date.getHours() + ':' + (date.getMinutes() <= 9 ? '0' : '') + date.getMinutes();
@@ -395,6 +415,18 @@
       .then(function(data) {
         vm.loadData(data);
       });
+
+    vm.searchTasks = function() {
+      RequestersService.searchMyTasks({
+        query: vm.searchInput
+      })
+      .then(function(response){
+        console.log(response);
+      })
+      .catch(function(response){
+        Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Error searching tasks!' });
+      });
+    };
 
     // This function is necessary to initially render the progress sliders
     (function refreshProgressSliders() {

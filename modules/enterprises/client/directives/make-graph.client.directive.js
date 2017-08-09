@@ -22,6 +22,7 @@
         var supplierCol = 0;
         var customerCol = 0;
         var zoomListener, group;
+
         d3().then(function(d3) {
           var header = getBounds(d3.select('header')._groups[0][0]);
           var sideHeight = getBounds(d3.select('.form-group')._groups[0][0]);
@@ -40,6 +41,7 @@
                     - sideHeight.offsetHeight
                     - footer.offsetHeight - 90) + 'px';
           });
+
           d3.select('.content').style('margin-top', function() {
             return header.offsetHeight + 'px';
           });
@@ -66,23 +68,11 @@
               return -1 * height / 2 + 'px';
             });
 
-          function zoom() {
-            if (d3.event.transform.x > extent.minX && d3.event.transform.x < extent.maxX
-                && d3.event.transform.y > extent.minY && d3.event.transform.y < extent.maxY) {
-              console.log(d3.event.transform);
-              group.attr('transform', d3.event.transform);
-            }
-            else {
-              console.log(extent);
-              console.log(d3.event.transform);
-              console.log('edge of zooming');
-            }
-          }
+          getGraph().then(function(rootNode) {
 
           var extent;
           var group;
 
-          getGraph().then(function(rootNode) {
             var graphPromises = [];
             var root1 = $.extend( {}, rootNode);
             var root2 = $.extend( {}, rootNode);
@@ -91,6 +81,29 @@
             graphPromises.push(getGraphSuppliers(root2));
 
             Promise.all(graphPromises).then(function(res) {
+              function zoom() {
+            if ((d3.event.transform.x > (extent.minX ) // * d3.event.transform.k
+                )
+                && (d3.event.transform.x < (extent.maxX + width / 2 + 100) // * d3.event.transform.k
+                   )
+                && (d3.event.transform.y > (extent.minY ) // * d3.event.transform.k
+                   )
+                && (d3.event.transform.y < (extent.maxY + height / 2) // * d3.event.transform.k
+                   )) {
+                     console.log(d3.event.transform);
+                     group.attr('transform', d3.event.transform);
+                   }
+            else {
+              if (d3.event.transform.x < (extent.minX) // * d3.event.transform.k
+                 ){
+                   getAnotherRow('customers');
+                 }
+              else if (d3.event.transform.x > (extent.maxX + width / 2) // * d3.event.transform.k
+                      ){
+                        getAnotherRow('suppliers');
+                      }
+            }
+          }
 
               // Create d3 hierarchies
               var right = d3.hierarchy(res[0]);
@@ -110,7 +123,6 @@
                     .scaleExtent([1 / 8, 1 / 2])
                     .on('zoom', zoom);
 
-              // svg.call(zoomListener);
               svg.call(zoomListener);
               group = svg.append('g').attr('class', 'everything');
 
@@ -157,8 +169,16 @@
                 return extent;
               }
 
-              function loadNewChildren() {
-
+              function getAnotherRow(group) {
+                if (group === 'suppliers') {
+                  console.log(res[0]);
+                  console.log(left);
+                } else if (group === 'customers') {
+                  console.log(res[1]);
+                  console.log(right);
+                } else {
+                  console.log('hi');
+                }
               }
 
               function getBottomChildren(tree, side) {

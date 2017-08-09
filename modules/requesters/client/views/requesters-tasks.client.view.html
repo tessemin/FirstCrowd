@@ -79,7 +79,9 @@
       <li class="list-group-item">
         <label class="filter-label">
           Status:
-            <input class="task-filter" ng-model="vm.filters.status">
+          <select class="task-filter" ng-model="vm.filters.status" ng-options="status.id as status.bikeshed for status in vm.statuses">
+            <option value="">Any</option>
+          </select>
         </label>
       </li>
       <li class="list-group-item">
@@ -98,7 +100,10 @@
   </nav>
   <div class="tasks-caption">
     All My Tasks
-    <input placeholder="Search All My Tasks"/>
+    <form ng-submit="vm.searchTasks()">
+      <input ng-model="vm.searchInput" placeholder="Search All My Tasks"/>
+      <input type="submit"/>
+    </form>
     <a ui-sref="requesters.newtask">Create New Task</a>
   </div>
   <div class="col-md-10 tasks-table">
@@ -302,7 +307,7 @@
         <div class="tasks-row tasks-submittedJobs" ng-if="(task.status === 'open' || task.status === 'taken') && vm.submittedJobs()">
           <div class="tasks-col">
             <div class="tasks-cell">
-              Workers waiting on approval: 
+              Workers waiting on approval:
             </div>
           </div>
           <div class="tasks-col container">
