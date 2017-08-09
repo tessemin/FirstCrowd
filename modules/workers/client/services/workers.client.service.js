@@ -20,37 +20,25 @@
         method: 'POST',
         url: '/api/workers/activeTask/update'
       },
+      _quitActiveTask: {
+        method: 'POST',
+        url: '/api/workers/activeTask/quit'
+      },
       _getRejectedTasks: {
         method: 'POST',
         url: '/api/workers/rejectedTask/all'
-      },
-      _updateRejectedTask: {
-        method: 'PUT',
-        url: '/api/workers/RejectedTask/'
       },
       _getCompletedTasks: {
         method: 'POST',
         url: '/api/workers/completedTask/all'
       },
-      _updateCompletedTask: {
-        method: 'PUT',
-        url: '/api/workers/completedTask/'
-      },
       _getInactiveTasks: {
         method: 'POST',
         url: '/api/workers/inactiveTask/all'
       },
-      _updateInactiveTask: {
-        method: 'PUT',
-        url: '/api/workers/inactiveTask/'
-      },
       _getRecomendedTasks: {
         method: 'POST',
         url: '/api/workers/recomendedTask/all'
-      },
-      _updateRecomendedTask: {
-        method: 'PUT',
-        url: '/api/workers/recomendedTask/'
       },
       // Worker Actions
       _takeTask: {
@@ -106,8 +94,11 @@
       getActiveTasks: function () {
         return this._getActiveTasks().$promise;
       },
-      updateActiveTask: function (Id) {
-        return this._updateActiveTask(Id).$promise;
+      updateActiveTask: function (taskId) {
+        return this._updateActiveTask(taskId).$promise;
+      },
+      quitActiveTask: function (taskId) {
+        return this._quitActiveTask(taskId).$promise;
       },
       // rejected
       getRejectedTasks: function () {

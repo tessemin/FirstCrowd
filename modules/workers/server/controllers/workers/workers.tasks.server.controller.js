@@ -19,6 +19,8 @@ var jobWhitelistedFields = ['progress'],
   getUserTypeObject = taskTools.getUserTypeObject,
   getIdsInArray = taskTools.getIdsInArray,
   updateTotalTaskProgress = taskTools.updateTotalTaskProgress,
+  addWorkerTaskWithStatus = taskTools.addWorkerTaskWithStatus,
+  removeTaskFromWorkerArray = taskTools.removeTaskFromWorkerArray,
   taskFindOne = taskSearch.taskFindOne,
   taskFindMany = taskSearch.taskFindMany,
   taskFindWithOption = taskSearch.taskFindWithOption,
@@ -104,6 +106,45 @@ exports.activeTask = {
           message: 'User does not have a valid worker'
         });
       }
+    });
+  },
+  quitTask: function(req, res) {
+    getUserTypeObject(req, res, function(typeObj) {
+      taskId = req.body.taskId;
+      taskFindOne(taskId, function(err, task) {
+        if (err) {
+          return res.status(422).send({
+            message: errorHandler.getErrorMessage(err)
+          });
+        }
+        var taskJob = findJobByWorker(task, typeObj);
+        if (!taskJob) {
+          return res.status(422).send({
+            message: 'You are not a worker for this task'
+          });
+        }
+        if (taskJob.status !== 'active') {
+          return res.status(422).send({
+            message: 'You are not an active worker for this task.'
+          });
+        }
+        task.jobs[task.jobs.indexOf(taskJob)].status = 'quit';
+        task.multiplicity++;
+        typeObj = removeTaskFromWorkerArray(task._id, typeObj)
+        typeObj = addWorkerTaskWithStatus('fclosed', task._id, typeObj)
+        typeObj.save(function(err) {
+          if (err)
+            return res.status(422).send({ message: errorHandler.getErrorMessage(err) });
+          task.save(function(err, task) {
+            if (err)
+              return res.status(422).send({ message: errorHandler.getErrorMessage(err) });
+            return res.status(200).send({
+              message: 'You have quit task: ' + task.title,
+              task: task
+            });
+          });
+        });
+      });
     });
   }
 };

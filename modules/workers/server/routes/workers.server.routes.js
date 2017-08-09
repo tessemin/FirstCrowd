@@ -17,6 +17,7 @@ module.exports = function(app) {
   // ACTIVE TASKS
   app.route('/api/workers/activeTask/update').post(workers.activeTask.update);
   app.route('/api/workers/activeTask/all').post(workers.activeTask.all);
+  app.route('/api/workers/activeTask/quit').post(workers.activeTask.quitTask);
 
   // REJECTED TASKS
   app.route('/api/workers/rejectedTask/all').post(workers.rejectedTask.all); // .all(workersPolicy.isAllowed)
