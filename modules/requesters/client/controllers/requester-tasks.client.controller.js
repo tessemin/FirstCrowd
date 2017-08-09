@@ -68,7 +68,7 @@
         });
       }
     }
-    
+
     function getFrontTask(task) {
       return {
         '_id': task._id,
@@ -92,12 +92,13 @@
     vm.loadData = function(data) {
       if (data) {
         vm.loaded = true;
+        vm.tasks = [];
         var task,
           clientTask,
           postDate,
           dueDate;
-        for (var i = 0; i < data.tasks.length; ++i) {
-          task = data.tasks[i];
+        for (var i = 0; i < data.length; ++i) {
+          task = data[i];
           clientTask = getFrontTask(task);
           recalculateTaskActions(clientTask);
           vm.tasks.push(clientTask);
@@ -413,7 +414,7 @@
 
     RequestersService.getAllTasks()
       .then(function(data) {
-        vm.loadData(data);
+        vm.loadData(data.tasks);
       });
 
     vm.searchTasks = function() {
@@ -422,8 +423,10 @@
       })
       .then(function(response){
         console.log(response);
+        vm.loadData(response.results);
       })
       .catch(function(response){
+        console.log(response);
         Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Error searching tasks!' });
       });
     };
