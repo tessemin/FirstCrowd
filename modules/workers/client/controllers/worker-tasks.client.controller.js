@@ -134,7 +134,6 @@
     }
 
     vm.loadData = function(data) {
-      console.log(data);
       if (data) {
         vm.loaded = true;
         var task,
@@ -142,7 +141,6 @@
           dueDate;
         for (var i = 0; i < data.tasks.length; ++i) {
           task = data.tasks[i];
-          console.log(task.jobs)
           postDate = new Date(task.dateCreated);
           dueDate = new Date(task.deadline);
           var clientTask = {
@@ -358,7 +356,7 @@
             vm.openSubmissionModal();
             break;
           case 'markCompleted':
-            (function(selectedTask) {
+            (async function(selectedTask) {
               return WorkersService.markCompleted({
                 taskId: selectedTask._id
               })
@@ -371,8 +369,22 @@
               .catch(function(response) {
                 Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Error Marking Complete!' });
               });
-            }(vm.selectedTask))
-          break;
+            }(vm.selectedTask));
+            break;
+          case 'quit':
+          (async function(selectedTask) {
+            return WorkersService.quitActiveTask({
+              taskId: selectedTask._id
+            })
+            .then(function(response) {
+              vm.tasks.splice(vm.tasks.indexOf(selectedTask), 1);
+              Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> Successfully Quit!' });
+            })
+            .catch(function(response) {
+              Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Error Quitting!' });
+            });
+          }(vm.selectedTask));
+            break;
           default:
             break;
         }

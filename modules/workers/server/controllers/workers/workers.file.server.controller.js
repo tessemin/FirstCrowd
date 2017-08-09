@@ -192,3 +192,5 @@ function sendWorkerMessage(message, taskId, workerId, timeInMin, callBack) {
     callBack(null, { files: [], messages: { worker: msg }, timeStamp: timeStamp });
   });
 }
+
+exports.sendWorkerMessage = sendWorkerMessage;

@@ -63,6 +63,9 @@ module.exports = function(app) {
 
   app.route('/api/tasks/preapproval/accept').post(requesters.stateActions.workerPick.preapproval.accept);
   app.route('/api/tasks/preapproval/reject').post(requesters.stateActions.workerPick.rejectBid);
+  
+  app.route('/api/tasks/suspend').post(requesters.stateActions.suspendTask);
+  app.route('/api/tasks/unsuspend').post(requesters.stateActions.unsuspendTask);
 
   // Bidding
   app.route('/api/tasks/bidding/reject').post(requesters.stateActions.workerPick.rejectBid);

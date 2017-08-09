@@ -67,6 +67,12 @@
           bikeshed: 'Suspend Task'
         });
       }
+      if (task.status === 'suspended') {
+        task.taskActions.push({
+          id: 'unsuspend',
+          bikeshed: 'Unsuspend Task'
+        });
+      }
     }
 
     function getFrontTask(task) {
@@ -125,7 +131,6 @@
           taskId: vm.selectedTask._id,
           bidId: vm.selectedTask.bids[vm.selectedBid]._id
         };
-        console.log(request);
         RequestersService.acceptPreapproval(request)
         .then(function(response) {
           Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> Worker hired!' });
@@ -404,7 +409,21 @@
             Notification.success({ message: res.message, title: '<i class="glyphicon glyphicon-ok"></i> Task Suspended!' });
           })
           .catch(function(res) {
-            Notification.error({ message: res.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Error suspending!' });
+            Notification.error({ message: res.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Error Suspending!' });
+          });
+          break;
+        case 'unsuspend':
+          RequestersService.unsuspendTask({
+            taskId: vm.selectedTask._id,
+          })
+          .then(function(res){
+            var clientTask = getFrontTask(res.task);
+            recalculateTaskActions(clientTask);
+            vm.tasks[vm.tasks.indexOf(task)] = clientTask;
+            Notification.success({ message: res.message, title: '<i class="glyphicon glyphicon-ok"></i> Task Unsuspended!' });
+          })
+          .catch(function(res) {
+            Notification.error({ message: res.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Error Unsuspended!' });
           });
           break;
         default:

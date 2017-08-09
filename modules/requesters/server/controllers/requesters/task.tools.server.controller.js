@@ -331,6 +331,8 @@ exports.setStatus = setStatus;
 
 exports.setStatusRequester = setStatusRequester;
 
+exports.removeTaskFromRequesterArray = removeTaskFromRequesterArray;
+
 exports.statusPushTo = statusPushTo;
 
 exports.updateTotalTaskProgress = updateTotalTaskProgress;
