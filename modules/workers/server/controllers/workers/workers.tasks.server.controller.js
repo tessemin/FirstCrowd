@@ -9,7 +9,7 @@ var path = require('path'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   taskTools = require(path.resolve('modules/requesters/server/controllers/requesters/task.tools.server.controller')),
   taskSearch = require(path.resolve('./modules/requesters/server/controllers/requesters/task.search.server.controller')),
-  taskFile = require(path.resolve('./modules/requesters/server/controllers/requesters/task.file.server.controller')),
+  workerFile = require(path.resolve('./modules/workers/server/controllers/workers/workers.file.server.controller')),
   _ = require('lodash'),
   fs = require('fs');
 
@@ -21,11 +21,13 @@ var jobWhitelistedFields = ['progress'],
   updateTotalTaskProgress = taskTools.updateTotalTaskProgress,
   addWorkerTaskWithStatus = taskTools.addWorkerTaskWithStatus,
   removeTaskFromWorkerArray = taskTools.removeTaskFromWorkerArray,
+  hashObjId = taskTools.hashObjId,
   taskFindOne = taskSearch.taskFindOne,
   taskFindMany = taskSearch.taskFindMany,
   taskFindWithOption = taskSearch.taskFindWithOption,
   findTaskWorker = taskSearch.findTaskWorker,
-  findJobByWorker = taskSearch.findJobByWorker;
+  findJobByWorker = taskSearch.findJobByWorker,
+  sendWorkerMessage = workerFile.sendWorkerMessage;
 
 
 /*
@@ -123,6 +125,11 @@ exports.activeTask = {
             message: 'You are not a worker for this task'
           });
         }
+        if (taskJob.status === 'submitted') {
+          return res.status(422).send({
+            message: 'Your task is marked complete, please wait for the task owner to approve your work.'
+          });
+        }
         if (taskJob.status !== 'active') {
           return res.status(422).send({
             message: 'You are not an active worker for this task.'
@@ -138,9 +145,15 @@ exports.activeTask = {
           task.save(function(err, task) {
             if (err)
               return res.status(422).send({ message: errorHandler.getErrorMessage(err) });
-            return res.status(200).send({
-              message: 'You have quit task: ' + task.title,
-              task: task
+            sendWorkerMessage('Worker: ' + hashObjId(typeObj._id) + ' has quit this task.', task._id, typeObj._id, null, function (err, message) {
+              if (err)
+                return res.status(422).send({
+                  message: 'You have quit the task, but no message was sent.'
+                });
+              return res.status(200).send({
+                message: 'You have quit task: ' + task.title,
+                task: task
+              });
             });
           });
         });

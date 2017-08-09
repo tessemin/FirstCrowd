@@ -80,6 +80,14 @@
         method: 'PUT',
         url: '/api/tasks/updateTask'
       },
+      _suspendTask: {
+        method: 'POST',
+        url: '/api/tasks/suspend'
+      },
+      _unsuspendTask: {
+        method: 'POST',
+        url: '/api/tasks/unsuspend'
+      },
       _getWorkerRatingsForTask: {
         method: 'POST',
         url: '/api/tasks/getWorkerRatingsForTask'
@@ -180,11 +188,17 @@
       createTask: function (taskInfo) {
         return this._createTask(taskInfo).$promise;
       },
-      deleteTask: function (taskId) {
+      deleteTask: function (taskId) { 
         return this._deleteTask(taskId).$promise;
       },
       updateTask: function (taskId_updateInfo) {
         return this._updateTask(taskId_updateInfo).$promise;
+      },
+      suspendTask: function (taskId) {
+        return this._suspendTask(taskId).$promise;
+      },
+      unsuspendTask: function (taskId) {
+        return this._unsuspendTask(taskId).$promise;
       },
       getWorkerRatingsForTask: function (taskId) {
         return this._getWorkerRatingsForTask(taskId).$promise;

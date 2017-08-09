@@ -127,7 +127,7 @@ var TaskSchema = new Schema({
     type: [{
       status: {
         type: String,
-        enum: ['active', 'accepted', 'rejected', 'submitted', 'quit'],
+        enum: ['active', 'accepted', 'rejected', 'submitted', 'quit', 'suspended'],
         required: 'Please provide a status'
       },
       ratingOnWorker: {

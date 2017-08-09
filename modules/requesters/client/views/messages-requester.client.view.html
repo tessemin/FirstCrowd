@@ -77,7 +77,7 @@
         </div>
       </div>
       <br>
-      <div ng-repeat="message in vm.messageView.messages | filter: { messages: { $: vm.messageSearch } }">
+      <div ng-repeat="message in vm.messageView.messages | filter: { messages: { $: vm.messageSearch }}">
         <!-- Submissions Messages -->
         <div ng-if="message.files && message.files.length > 0 && vm.showSubmissions" ng-click="vm.messageView.taskMessage = message.task">
           <div data-toggle="collapse" data-target="#submissionMsg{{message.timeStamp}}" aria-expanded="false" class="expandMessage" ng-click="vm.collapseAllMessages()">

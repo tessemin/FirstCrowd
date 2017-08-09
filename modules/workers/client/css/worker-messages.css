@@ -207,7 +207,7 @@ div.sendMessage {
   }
 
 	div.sendMessage .message {
-		border-color: LightGrey;
+		border-color: #6495ed;
     height: 100%;
 		padding: 5px;
 		resize: none;

@@ -246,8 +246,7 @@ exports.submission = {
               return res.status(422).send({
                 message: err
               });
-            if (req.body.message && req.body.message.length > 0)
-              req.body.message = 'Task Submission Rejected: ' + req.body.message;
+            req.body.message = 'Task Submission Rejected' + ((req.body.message) ? ': ' + req.body.message : '');
             sendRequesterMessage(req.body.message, task._id, req.body.workerId, null, function(err) {
               if (err)
                 return res.status(200).send({
@@ -289,8 +288,7 @@ exports.submission = {
               return res.status(422).send({
                 message: err
               }); 
-            if (req.body.message && req.body.message.length > 0)
-              req.body.message = 'Task Submission Accepted: ' + req.body.message;
+            req.body.message = 'Task Submission Accepted' + ((req.body.message) ? ': ' + req.body.message : '');
             sendRequesterMessage(req.body.message, task._id, req.body.workerId, null, function(err) {
               if (err)
                 return res.status(200).send({
@@ -319,8 +317,7 @@ exports.submission = {
           return res.status(422).send({
             message: errorHandler.getErrorMessage(err)
           });
-        if (req.body.message && req.body.message.length > 0)
-          req.body.message = 'Task Owner Approved Retry: ' + req.body.message;
+        req.body.message = 'Task Owner Approved Retry' + ((req.body.message) ? ': ' + req.body.message : '');
         sendRequesterMessage(req.body.message, task._id, req.body.workerId, null, function(err) {
           if (err)
             return res.status(200).send({
