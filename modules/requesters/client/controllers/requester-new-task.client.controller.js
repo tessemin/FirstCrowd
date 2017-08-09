@@ -43,7 +43,6 @@
         Notification.error({ message: 'Check the form for errors!' });
         return false;
       }
-      console.log(vm.newTask);
 
       RequestersService.createTask(vm.newTask)
         .then(onSubmitNewTaskSuccess)

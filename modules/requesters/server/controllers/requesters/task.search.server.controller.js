@@ -202,6 +202,7 @@ exports.searchTasks = {
       query.description = true;
       query.skills = true;
       query.category = true;
+      query.status = true;
       
       searchTasks(query, null, function(err, results) {
         if (err)
@@ -234,6 +235,8 @@ function searchTasks(query, extraTerms, callBack) {
     FuseOptions.keys.push('skillsNeeded');
   if (query.category)
     FuseOptions.keys.push('category');
+  if (query.status)
+    FuseOptions.keys.push('status');
   
   if (query.bidding && query.bidding.bidable)
     mongoOptions.push({ payment: { bidding: { bidable: { $eq: true } } } });

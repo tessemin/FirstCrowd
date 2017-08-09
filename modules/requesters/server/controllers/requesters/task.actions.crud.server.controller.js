@@ -60,7 +60,7 @@ exports.taskActions = {
             newTask.save(function (err, task) {
               if (err) {
                 return res.status(422).send({
-                  message: 'Error creating task: ' + newTask.title
+                  message: errorHandler.getErrorMessage(err)
                 });
               } else {
                 return res.status(200).send({

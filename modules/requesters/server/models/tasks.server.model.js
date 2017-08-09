@@ -9,6 +9,50 @@ var mongoose = require('mongoose'),
   validator = require('validator'),
   Schema = mongoose.Schema;
 
+var validateDateAfterNow = function(date) {
+  if (!date)
+    return true;
+  return (new Date(date)).getTime() > (new Date()).getTime();
+};
+
+var validateStartBeforeEnd = function(timeRange) {
+  if (!timeRange.end && !timeRange.start)
+    return true;
+  if (!timeRange.end || !timeRange.start)
+    return false;
+  return (new Date(timeRange.end)).getTime() > (new Date(timeRange.start)).getTime();
+};
+
+var validateBiggerThanZero = function(num) {
+  return num > 0;
+};
+
+var validateBiggerThanEqualZero = function(num) {
+  if (!num)
+    return true;
+  return num >= 0;
+};
+
+var validateBidPrices = function() {
+  if(!this.payment.bidding.bidable)
+    return true;
+  return this.payment.bidding.startingPrice >= this.payment.bidding.minPrice;
+};
+
+var validateProgress = function(num) {
+  return num >= 0 && num <= 100;
+};
+
+var validateBiddingBeforeDeadline = function(timeRange) {
+  if(!this.payment.bidding.bidable)
+    return true;
+  return (new Date(timeRange.end).getTime() < (new Date(this.deadline)).getTime());
+}
+
+var validateBiddingStartBeforeNow = function(timeRange) {
+  return validateDateAfterNow(timeRange.start);
+};
+  
 /**
  * Requester Schema
  */
@@ -33,7 +77,9 @@ var TaskSchema = new Schema({
   deadline: {
     type: Date,
     default: null,
-    trim: true
+    trim: true,
+    required: 'Must have a deadline after today.',
+    validate: [validateDateAfterNow, 'Deadline must be after todays date']
   },
   totalProgress: {
     type: Number,
@@ -46,23 +92,43 @@ var TaskSchema = new Schema({
         default: false
       },
       startingPrice: {
-        type: Number
+        type: Number,
+        default: 0,
+        validate: [
+          { validator: validateBiggerThanEqualZero, msg: 'Starting Bid must be zero or larger.' },
+          { validator: validateBidPrices, msg: 'Default/Starting Bid must be greater than or equal to the Minimum Bid' }
+        ]
       },
       minPrice: {
-        type: Number
+        type: Number,
+        default: 0,
+        validate: [
+          { validator: validateBiggerThanEqualZero, msg: 'Minimum Bid must be zero or larger.' },
+          { validator: validateBidPrices, msg: 'Default/Starting Bid must be greater than or equal to the Minimum Bid' }
+        ]
       },
       timeRange: {
-        start: {
-          type: Date
+        type: {
+          start: {
+            type: Date,
+            default: null
+          },
+          end: {
+            type: Date,
+            default: null
+          }
         },
-        end: {
-          type: Date
-        }
+        validate: [
+          { validator: validateStartBeforeEnd, msg: 'Bidding Start Date must be before end date' },
+          { validator: validateBiddingBeforeDeadline, msg: 'Bidding must end before the deadline.' },
+          { validator: validateBiddingStartBeforeNow, msg: 'Bidding Start Date must be after todays date' }
+        ]
       }
     },
     staticPrice: {
       type: Number,
-      default: null
+      default: null,
+      validate: [validateBiggerThanEqualZero, 'Success Factor must be greater than zero.']
     },
     paymentInfo: {
       paymentType: {
@@ -94,12 +160,14 @@ var TaskSchema = new Schema({
   },
   multiplicity: {
     type: Number,
-    default: 1
+    default: 1,
+    validate: [validateBiggerThanZero, 'Multiplicity must be greater than zero.']
   },
   successFactor: {
     // this is the number of sccesses needed for the project to be considered a sccuess
     type: Number,
-    default: 1
+    default: 1,
+    validate: [validateBiggerThanZero, 'Success Factor must be greater than zero.']
   },
   preapproval: {
     type: Boolean,
@@ -156,11 +224,13 @@ var TaskSchema = new Schema({
       },
       progress: {
         type: Number,
-        default: 0
+        default: 0,
+        validate: [validateProgress, 'Progress must be between 0 and 100']
       },
       timeSpent: { // in seconds
         type: Number,
-        default: 0
+        default: 1,
+        validate: [validateBiggerThanZero, 'Time Spent must be greater than zero.']
       },
       awardAmount: {
         type: Number,
@@ -195,7 +265,8 @@ var TaskSchema = new Schema({
       },
       bid: {
         type: Number,
-        required: 'Please provide a bid'
+        required: 'Please provide a bid',
+        validate: [validateBiggerThanEqualZero, 'Bid must be zero or larger.']
       },
       status: {
         type: String,
