@@ -82,8 +82,8 @@
       <br>
       <div ng-repeat="message in vm.messageView.messages | filter: vm.messageSearch">
         <!-- Submissions Messages -->
-        <div ng-if="message.files && message.files.length > 0 && vm.showSubmissions" ng-click="vm.messageView.taskMessage = message.task; vm.collapseAllMessages()">
-          <div data-toggle="collapse" data-target="#submissionMsg{{message.timeStamp}}" aria-expanded="false" class="expandMessage">
+        <div ng-if="message.files && message.files.length > 0 && vm.showSubmissions" ng-click="vm.messageView.taskMessage = message.task">
+          <div data-toggle="collapse" data-target="#submissionMsg{{message.timeStamp}}" aria-expanded="false" class="expandMessage" ng-click="vm.collapseAllMessages()">
             <span class="collapseButton">Submission on: {{vm.minutesToReadable(message.timeStamp)}}<span ng-if="vm.messageView.task !== message.task"> for task {{message.task.title}}</span>
               <span class="greyText" >
                 ~ &ldquo;<span ng-if="message.messages.submission">{{vm.trimMessage(message.messages.submission)[0]}}</span><span ng-if="!message.messages.submission">{{vm.joinFileNames(message.files)}}</span>&rdquo;
@@ -112,8 +112,8 @@
           <hr>
         </div>
         <!-- Worker Messages -->
-        <div ng-if="message.messages.worker && message.messages.worker.length > 0 && vm.showMessages" ng-click="vm.messageView.taskMessage = message.task; vm.collapseAllMessages()">
-          <div data-toggle="collapse" data-target="#workerMsg{{message.timeStamp}}" aria-expanded="false" class="expandMessage">
+        <div ng-if="message.messages.worker && message.messages.worker.length > 0 && vm.showMessages" ng-click="vm.messageView.taskMessage = message.task">
+          <div data-toggle="collapse" data-target="#workerMsg{{message.timeStamp}}" aria-expanded="false" class="expandMessage" ng-click="vm.collapseAllMessages()">
             <span class="collapseButton">Message sent: {{vm.minutesToReadable(message.timeStamp)}}<span ng-if="vm.messageView.task !== message.task"> for task {{message.task.title}}</span><span class="greyText" ng-if="message.messages.worker"> ~ &ldquo;{{vm.trimMessage(message.messages.worker)[0]}}&rdquo;</span></span>
             <span>
               <i class="glyphicon glyphicon-chevron-down expandMessageGlyph greyText"></i>
@@ -129,8 +129,8 @@
           <hr>
         </div>
         <!-- Requester Messages -->
-        <div ng-if="message.messages.requester && message.messages.requester.length > 0 && vm.showMessages" ng-click="vm.messageView.taskMessage = message.task; vm.collapseAllMessages()">
-          <div data-toggle="collapse" data-target="#requesterMsg{{message.timeStamp}}" aria-expanded="false" class="expandMessage">
+        <div ng-if="message.messages.requester && message.messages.requester.length > 0 && vm.showMessages" ng-click="vm.messageView.taskMessage = message.task">
+          <div data-toggle="collapse" data-target="#requesterMsg{{message.timeStamp}}" aria-expanded="false" class="expandMessage" ng-click="vm.collapseAllMessages()">
             <span class="collapseButton">Message received: {{vm.minutesToReadable(message.timeStamp)}}<span ng-if="vm.messageView.task !== message.task"> for task {{message.task.title}}</span><span class="greyText" ng-if="message.messages.requester"> ~ &ldquo;{{vm.trimMessage(message.messages.requester)[0]}}&rdquo;</span></span>
             <span>
               <i class="glyphicon glyphicon-chevron-down expandMessageGlyph greyText"></i>
@@ -153,10 +153,10 @@
         <span class="bold-font to-field" ng-if="vm.sendMessage.expanded">To: {{vm.messageView.taskMessage.title}}</span>
         <textarea class="message" ng-model="vm.sendMessage.message" placeholder="Send a new message to task: {{vm.messageView.taskMessage.title}}" ng-click="vm.sendMessage.expanded = true"></textarea>
         <div class="buttonMover">
-        <div ng-class="{expandSendButtons: vm.sendMessage.expanded}" class="sendButtons">
-          <button ng-click="vm.sendMessage.send()" type="button" class="btn btn-primary">Send</button>
-          <button ng-click="vm.closeSendMessage()" type="button" class="btn btn-secondary">Cancel</button>
-        </div>
+          <div ng-class="{expandSendButtons: vm.sendMessage.expanded}" class="sendButtons">
+            <button ng-click="vm.sendMessage.toAll()" type="button" class="btn btn-primary">Send</button>
+            <button ng-click="vm.closeSendMessage()" type="button" class="btn btn-secondary">Cancel</button>
+          </div>
         </div>
       </div>
     </div>

@@ -118,9 +118,9 @@ div.messageView-messages {
 	width: 100%;
 }
 
-div.messageView-messages.expandMessageBackDrop {
-  bottom: 38%;
-}
+  div.messageView-messages.expandMessageBackDrop {
+    bottom: 38%;
+  }
 
 .indicateMore {
   background: white; /* For browsers that do not support gradients */
@@ -191,7 +191,7 @@ div.sendMessage {
 
 	div.sendMessage.expandSend {
 		height: 25%;
-		top: -webkit-calc(69% - 50px);
+		top: -webkit-calc(73% - 70px);
 		top: calc(73% - 70px);
     bottom: 40px;
 		transition: height 0.5s linear 1s;
@@ -222,18 +222,22 @@ div.sendMessage {
     width: 98%;
   }
 
-  div.buttonMover {
-    display: flex;
-    justify-content: flex-end;
-  }
+div.buttonMover {
+  display: flex;
+  padding: 0;
+  margin: 0;
+  justify-content: flex-end;
+}
 
-  div.sendButtons {
-  	display: block;
-  	max-height: 0;
-  	opacity: 0;
-  	transition: max-height 0.5s ease-in-out, opacity 0.2s linear;
-    -webkit-transition: max-height 0.5s ease-in-out, opacity 0.2s linear; /* Safari */
-  }
+div.sendButtons {
+  display: block;
+  margin: 0;
+  max-height: 0;
+  opacity: 0;
+  padding: 0;
+  transition: max-height 0.5s ease-in-out, opacity 0.2s linear;
+  -webkit-transition: max-height 0.5s ease-in-out, opacity 0.2s linear; /* Safari */
+}
 
 	div.sendButtons.expandSendButtons {
 		display: block;
@@ -269,3 +273,16 @@ span.closeSpan {
 .bold-font {
   font-weight: bold;
 }
+
+.select-recipient {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+}
+  .select-recipient select {
+    display: block;
+    margin: 2px;
+    max-height: 20%;
+    overflow-y: auto;
+    padding: 0;
+  }

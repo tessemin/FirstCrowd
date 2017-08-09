@@ -28,7 +28,7 @@
     }
 
     vm.sidebar.getTasks = function(taskType) {
-      currentMessageTimers.forEach(function(timer) { clearInterval(timer); });
+      setNewMessageTimer();
       vm.messageView.messages = [];
       vm.messageView.task = {};
       vm.messageView.title = '';
@@ -88,9 +88,8 @@
         await getRecomendedTasks(function(tasks) { return loadRecent(tasks) });
         await getCompletedTasks(function(tasks) { return loadRecent(tasks) });
         await getRejectedTasks(function(tasks) { return loadRecent(tasks) });
-        console.log(allTasks)
-        vm.loadMessagesIncrementally(allTasks);
-      }())
+        vm.loadMessagesIncrementally(allTasks, true, getRecentDefTime());
+      }());
       function loadRecent(tasks) {
         allTasks = allTasks.concat(tasks);
         vm.sidebar.tasks = vm.sidebar.tasks.concat(tasks)
@@ -146,13 +145,15 @@
       }, loadTime);
     };
 
-    vm.loadMessagesIncrementally = function(tasks, refresh) {
+    vm.loadMessagesIncrementally = function(tasks, refresh, timeStamp) {
       var time = null;
       if (refresh) {
         vm.resetSendMessage();
         vm.messageView.messages = [];
         time = 0;
       }
+      if (timeStamp)
+        time = timeStamp;
       tasks ? vm.messageView.task = tasks : tasks = vm.messageView.task;
       if (Array.isArray(tasks)) {
         vm.messageView.title = vm.activeTaskType;
@@ -295,8 +296,8 @@
         while(currentMessageTimers.length) {
           window.clearInterval(currentMessageTimers.shift());
         }
-      
-      currentMessageTimers.push(setTimeout(func, messageRefreshSpeed));
+      if (func)
+        currentMessageTimers.push(setTimeout(func, messageRefreshSpeed));
     }
     
     vm.resetSendMessage = function() {
