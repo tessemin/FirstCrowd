@@ -9,15 +9,16 @@
 
   function RequestersMessagesController(RequestersService, Notification, $http) {
     var vm = this;
+    var messageRefreshSpeed = 10000;
     vm.showSubmissions = true;
     vm.showMessages = true;
     vm.sendMessage = {};
-    vm.messageRecipient = '';
     vm.sidebar = {};
     vm.activeTaskType = '';
     vm.loadedMessages = {};
     vm.messageView = {};
-    vm.messageView.task = {};
+    vm.messageView.messages = [];
+    var currentMessageTimers = [];
 
     function getTaskError(err) {
       Notification.error({ message: err, title: '<i class="glyphicon glyphicon-remove"></i> Error getting tasks!' });
@@ -28,8 +29,13 @@
     }
 
     vm.sidebar.getTasks = function(taskType) {
-      vm.sortTabs = {};
-      vm.sortTabs.all = true;
+      setNewMessageTimer();
+      vm.messageView.messages = [];
+      vm.messageView.task = {};
+      vm.messageView.title = '';
+      vm.messageView.taskMessage = null;
+      vm.closeSendMessage();
+      vm.sidebar.sortTasks('all');
       vm.sidebar.tasks = [];
       switch(taskType) {
         case 'active':
@@ -68,36 +74,18 @@
     }
 
     function getRecentMessages() {
-      vm.messageView = {};
       vm.sidebar.tasks = [];
-      vm.messageView.messages = [];
-      vm.messageView.task = {};
-      vm.messageView.task.title = vm.activeTaskType;
-      getActiveTasks(function(tasks) { return loadRecent(tasks) });
-      getCompletedTasks(function(tasks) { return loadRecent(tasks) });
-      getRejectedTasks(function(tasks) { return loadRecent(tasks) });
+      vm.messageView.title = vm.activeTaskType;
+      var allTasks = [];
+      (async function() {
+        await getActiveTasks(function(tasks) { return loadRecent(tasks) });
+        await getCompletedTasks(function(tasks) { return loadRecent(tasks) });
+        await getRejectedTasks(function(tasks) { return loadRecent(tasks) });
+        vm.loadMessagesIncrementally(allTasks, true, getRecentDefTime());
+      }());
       function loadRecent(tasks) {
-        tasks.forEach(function(task) {
-          task.jobs.forEach(function(job) {
-            asyncGetTaskFiles(task, job.worker.workerId, function(task, messages) {
-              var recentTimeStamp = getRecentDefTime();
-              var recentMsges = [];
-              for (var msg = 0; msg < messages.length; msg++) {
-                if (messages[msg].timeStamp > recentTimeStamp) {
-                  messages[msg].task = task;
-                  messages[msg].workerId = job.worker.workerId;
-                  recentMsges.push(messages[msg]);
-                } else {
-                  break;
-                }
-              }
-              if (recentMsges.length > 0) {
-                vm.sidebar.tasks.push(task);
-                loadAndSortMessages(recentMsges);
-              }
-            });
-          });
-        });
+        allTasks = allTasks.concat(tasks);
+        vm.sidebar.tasks = vm.sidebar.tasks.concat(tasks)
       }
     }
 
@@ -108,73 +96,84 @@
     }
 
     function getActiveTasks(callBack) {
-      RequestersService.getActiveTasks()
+      return RequestersService.getActiveTasks()
         .then(function(res) { callBack(res.tasks) })
         .catch(function(res) { getTaskError(res.message); callBack(); });
     }
 
     function getCompletedTasks(callBack) {
-      RequestersService.getCompletedTasks()
+      return RequestersService.getCompletedTasks()
         .then(function(res) { callBack(res.tasks) })
         .catch(function(res) { getTaskError(res.message); callBack(); });
     }
 
     function getRejectedTasks(callBack) {
-      RequestersService.getRejectedTasks()
+      return RequestersService.getRejectedTasks()
         .then(function(res) { callBack(res.tasks) })
         .catch(function(res) { getTaskError(res.message); callBack(); });
     }
 
-    vm.loadMessages = function(task) {
+    vm.loadMessages = async function(task, job, timeStamp) {
       // sets the origanal sort tab
       if (!vm.sortTabs) {
         vm.sortTabs = {};
         vm.sortTabs.all = true;
       }
-      vm.messageView = {};
-      vm.messageView.task = task;
-      vm.messageView.taskMessage = task;
-      task.jobs.forEach(function(job) {
-        asyncGetTaskFiles(task, job.worker.workerId, function(task, messages) {
-          vm.messageView.messages = messages.map(function(msg) {
-            msg.task = task;
-            msg.workerId = job.worker.workerId;
-            return msg;
+      var loadTime = 0;
+      if (timeStamp) {
+        loadTime = timeStamp;
+      } else if (vm.messageView.messages && vm.messageView.messages.length > 0 && vm.messageView.messages[0] && vm.messageView.messages[0].timeStamp) {
+        loadTime = vm.messageView.messages[0].timeStamp;
+      }
+      asyncGetTaskFiles(task, job.worker.workerId, function(task, messages) {
+        loadAndSortMessages(messages.map(function(msg) {
+          msg.task = task;
+          msg.workerId = job.worker.workerId;
+          msg.displayId = job.worker.displayId;
+          return msg;
+        }));
+      }, loadTime);
+    };
+    
+    vm.loadMessagesIncrementally = function(tasks, refresh, timeStamp) {
+      var time = null;
+      if (refresh) {
+        vm.messageView.messages = [];
+        time = 0;
+      }
+      if (timeStamp)
+        time = timeStamp;
+      tasks ? vm.messageView.task = tasks : tasks = vm.messageView.task;
+      if (Array.isArray(tasks)) {
+        tasks.forEach(function(task) {
+          task.jobs.forEach(function(job) {
+            vm.loadMessages(task, job, time);
           });
         });
-      });
+      } else {
+        tasks.jobs.forEach(function(job) {
+          vm.loadMessages(tasks, job, time);
+        });
+      }
+      setNewMessageTimer(vm.loadMessagesIncrementally);
     };
 
     vm.selectTask = function(task) {
-      if (vm.messageView.task !== task) {
-        vm.messageView.task = task;
-        vm.loadMessages(task);
-        vm.closeSendMessage();
+      vm.closeSendMessage(); // this must happen first
+      if (Array.isArray(task)) {
+        vm.messageView.title = vm.activeTaskType;
+      } else {
+        vm.messageView.title = task.title;
+        vm.messageView.taskMessage = task;
       }
+      vm.messageView.task = task;
+      vm.loadMessagesIncrementally(task, true);
     };
-
-    vm.loadMessagesIncrementally = function(tasks) {
-      vm.messageView = {};
-      vm.messageView.messages = [];
-      vm.messageView.task = {};
-      vm.messageView.task.title = vm.activeTaskType;
-      tasks.forEach(function(task) {
-        task.jobs.forEach(function(job) {
-          asyncGetTaskFiles(task, job.worker.workerId, function(task, messages) {
-            loadAndSortMessages(messages.map(function(msg) {
-                msg.task = task
-                msg.workerId = job.worker.workerId;
-                return msg;
-              }));
-          });
-        });
-      });
-    };
-
-    async function asyncGetTaskFiles(task, workerId, callBack) {
+    async function asyncGetTaskFiles(task, workerId, callBack, sinceTimeX) {
       await RequestersService.getDownloadableTaskFiles({
         taskId: task._id,
-        workerId: workerId
+        workerId: workerId,
+        sinceTimeX: sinceTimeX
       })
       .then(function(response) {
         if (response.down) {
@@ -183,17 +182,18 @@
         return callBack(task)
       })
       .catch(function(response) {
-        Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Error getting messages!' });
+        Notification.error({ message: response.message, title: '<i class="glyphicon glyphicon-remove"></i> Error getting messages!' });
       });
     }
 
-    function loadAndSortMessages(messages) {
+    async function loadAndSortMessages(messages) {
       vm.messageView.messages = vm.messageView.messages.concat(messages);
       vm.messageView.messages.sort(function(taskA, taskB) {
         if (taskA.timeStamp > taskB.timeStamp) return -1;
         if (taskA.timeStamp < taskB.timeStamp) return 1;
         return 0;
       });
+      vm.messageView.messages = vm.messageView.messages.filter(function(ele, index, array) { if (index === array.indexOf(ele)) return true; return false; });
       return vm.messageView.messages;
     }
 
@@ -203,10 +203,9 @@
     };
 
     vm.previousSubmissionDownload = function previousSubmissionDownload(file, workerId) {
-      console.log(file);
       if (Array.isArray(file)) {
         file.forEach (function (fil) {
-          vm.previousSubmissionDownload(fil);
+          vm.previousSubmissionDownload(fil, workerId);
         });
         return null;
       }
@@ -216,7 +215,7 @@
           data: {
             fileName: file.name,
             timeStamp: file.timeStamp,
-            taskId: vm.messageView.task._id,
+            taskId: vm.messageView.taskMessage._id,
             workerId: workerId
           },
           responseType: 'blob'
@@ -226,7 +225,7 @@
         // this uses file-saver.js in public/lib
         saveAs(blob, fileName);
       }).error(function (data, status, headers, config) {
-        Notification.error({ message: 'Unable to download the file', title: '<i class="glyphicon glyphicon-remove"></i> Download Error!' });
+        Notification.error({ message: 'Unable to download the file(s)', title: '<i class="glyphicon glyphicon-remove"></i> Download Error!' });
       });
     };
 
@@ -300,9 +299,19 @@
     }
 
     vm.closeSendMessage = function() {
+      vm.messageView.taskMessage = null;
       vm.sendMessage.expanded = false;
       vm.sendMessage.message = '';
       vm.messageRecipient = '';
     };
+    
+    async function setNewMessageTimer(func) {
+      if (currentMessageTimers)
+        while(currentMessageTimers.length) {
+          window.clearInterval(currentMessageTimers.shift());
+        }
+      if (func)
+        currentMessageTimers.push(setTimeout(func, messageRefreshSpeed));
+    }
   }
 }());
