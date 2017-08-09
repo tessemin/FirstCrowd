@@ -159,13 +159,14 @@
     };
 
     vm.selectTask = function(task) {
-      vm.closeSendMessage(); // this must happen first
       if (Array.isArray(task)) {
         vm.messageView.title = vm.activeTaskType;
+        vm.messageView.taskMessage = null;
       } else {
         vm.messageView.title = task.title;
         vm.messageView.taskMessage = task;
       }
+      vm.closeSendMessage();
       vm.messageView.task = task;
       vm.loadMessagesIncrementally(task, true);
     };
@@ -299,7 +300,6 @@
     }
 
     vm.closeSendMessage = function() {
-      vm.messageView.taskMessage = null;
       vm.sendMessage.expanded = false;
       vm.sendMessage.message = '';
       vm.messageRecipient = '';
