@@ -23,14 +23,14 @@
     };
 
     function addNote() {
-      vm.newTask.publicNotes.type.push({
+      vm.newTask.publicNotes.push({
         note: ''
       });
     }
 
     function removeNote(noteIndex) {
-      if (noteIndex < vm.newTask.publicNotes.type.length) {
-        vm.newTask.publicNotes.type.splice(noteIndex, 1);
+      if (noteIndex < vm.newTask.publicNotes.length) {
+        vm.newTask.publicNotes.splice(noteIndex, 1);
       } else {
         Notification.error({ message: 'Error removing note: note index does not exist!' });
       }
