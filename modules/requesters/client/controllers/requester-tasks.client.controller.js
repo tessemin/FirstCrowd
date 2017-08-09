@@ -41,12 +41,32 @@
           bikeshed: 'Activate Task'
         });
       }
-      if (task.status === 'open') {
+      if (task.status === 'open' || task.status === 'taken') {
         task.taskActions.push({
           id: 'suspend',
           bikeshed: 'Suspend Task'
         });
       }
+    }
+    
+    function getFrontTask(task) {
+      return {
+        '_id': task._id,
+        'name': task.title,
+        'category': task.category,
+        'description': task.description,
+        'skillsNeeded': task.skillsNeeded.length ? task.skillsNeeded.join(', ') : 'none',
+        'postingDate': new Date(task.dateCreated),
+        'deadline': new Date(task.deadline),
+        'status': task.status,
+        'progress': task.totalProgress,
+        'taskActions': [],
+        'taskRef': task,
+        'bidable': task.payment.bidding.bidable,
+        'bids': task.bids,
+        'jobs': task.jobs,
+        'multiplicity': task.multiplicity
+      };
     }
 
     vm.loadData = function(data) {
@@ -54,28 +74,11 @@
         vm.loaded = true;
         var task,
           clientTask,
-          taskActions,
           postDate,
           dueDate;
         for (var i = 0; i < data.tasks.length; ++i) {
           task = data.tasks[i];
-          clientTask = {
-            '_id': task._id,
-            'name': task.title,
-            'category': task.category,
-            'description': task.description,
-            'skillsNeeded': task.skillsNeeded.length ? task.skillsNeeded.join(', ') : 'none',
-            'postingDate': new Date(task.dateCreated),
-            'deadline': new Date(task.deadline),
-            'status': task.status,
-            'progress': task.totalProgress,
-            'taskActions': taskActions,
-            'taskRef': task,
-            'bidable': task.payment.bidding.bidable,
-            'bids': task.bids,
-            'jobs': task.jobs,
-            'multiplicity': task.multiplicity
-          };
+          clientTask = getFrontTask(task);
           recalculateTaskActions(clientTask);
           vm.tasks.push(clientTask);
         }
@@ -139,7 +142,6 @@
         vm.sort = property;
         vm.sortReversed = false;
       }
-      vm.selectTask(-1);
     };
 
     // bootstrap modal seems difficult to work with so this is an awkward hack
@@ -369,6 +371,20 @@
           }
           previousSubmissionDownloadables();
           vm.openSubmissionReviewModal();
+          break;
+        case 'suspend':
+          RequestersService.suspendTask({
+            taskId: vm.selectedTask._id,
+          })
+          .then(function(res){
+            var clientTask = getFrontTask(res.task);
+            recalculateTaskActions(clientTask);
+            vm.tasks[vm.tasks.indexOf(task)] = clientTask;
+            Notification.success({ message: res.message, title: '<i class="glyphicon glyphicon-ok"></i> Task Suspended!' });
+          })
+          .catch(function(res) {
+            Notification.error({ message: res.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Error suspending!' });
+          });
           break;
         default:
           console.log('perform ' + action + ' on task ' + task._id);
