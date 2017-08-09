@@ -184,7 +184,8 @@ exports.searchTasks = {
   },
   searchMyTasks: function (req, res) {
     getUserTypeObject(req, res, function(typeObj) {
-      var query = req.body.query;
+      var query = {};
+      query.searchTerm = req.body.query;
       var ids = [];
       if (isRequester(req.user)) {
         ids = [].concat(getIdsInArray(typeObj.requester.activeTasks), getIdsInArray(typeObj.requester.suspendedTasks), getIdsInArray(typeObj.requester.completedTasks), getIdsInArray(typeObj.requester.rejectedTasks));
@@ -197,6 +198,11 @@ exports.searchTasks = {
       }
       query.secret = true;
       query.taskIds = ids;
+      query.title = true;
+      query.description = true;
+      query.skills = true;
+      query.category = true;
+      
       searchTasks(query, null, function(err, results) {
         if (err)
           return res.status(422).send({
@@ -212,7 +218,7 @@ function searchTasks(query, extraTerms, callBack) {
   var mongoOptions = [];
   var FuseOptions = {
     shouldSort: true,
-    threshold: 0.15,
+    threshold: 0.30,
     location: 0,
     distance: 100,
     maxPatternLength: 32,
@@ -298,8 +304,8 @@ function searchTasks(query, extraTerms, callBack) {
         mongoOptions.push({ deadline: { $gte: query.deadline.min } });
     }
   }
-  if (query.secret) {
-    mongoOptions.push({ secret: { $eq: true } });
+  if (!query.secret) {
+    mongoOptions.push({ secret: { $eq: false } });
   }
   
   // searches for specific ids
@@ -311,8 +317,8 @@ function searchTasks(query, extraTerms, callBack) {
       mongoOptions = mongoOptions.concat(extraTerms);
     else
       mongoOptions.push(extraTerms);
-  
-  taskFindWithOption(mongoOptions, {}, function (err, tasks) {
+  console.log(mongoOptions)
+  taskFindWithOption({ $and: mongoOptions }, {}, function (err, tasks) {
     if (err)
       return callBack(errorHandler.getErrorMessage(err));
     if (query.searchTerm) {
