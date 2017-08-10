@@ -250,7 +250,7 @@
           </div>
           <div class="tasks-col tasks-cell">
             <div ng-if="vm.selectedBid !== -1">
-              <h6>Experience</h6>
+              <h5>Experience</h5>
               <div ng-repeat="experience in task.bids[vm.selectedBid].bidDetails.jobExperience">
                 <div class="tasks-row">
                   <div class="tasks-cell">
@@ -264,11 +264,11 @@
                   </div>
                 </div>
               </div>
-              <h6>Education</h6>
+              <h5>Education</h5>
               <div ng-repeat="school in task.bids[vm.selectedBid].bidDetails.schools">
                 <div class="tasks-row" ng-repeat="degree in school.degrees">
                   {{degree.degreeLevel}} in {{degree.name}}
-                  <span ng-repeat="concentration in degree.concentration">, concentration in {{concentration}}</span>
+                  <span ng-if="concentration.length > 0" ng-repeat="concentration in degree.concentration">, concentration in {{concentration}}</span>
                 </div>
                 <div class="tasks-row">
                   <div class="tasks-cell">
@@ -276,7 +276,7 @@
                   </div>
                 </div>
               </div>
-              <h6>Certifications</h6>
+              <h5>Certifications</h5>
               <div ng-repeat="certification in task.bids[vm.selectedBid].bidDetails.certification">
                 <div class="tasks-row">
                   <div class="tasks-cell">
