@@ -1,32 +1,45 @@
 <section class="row">
   <div class="col-xs-offset-1 col-xs-10">
-    <div class="resume-section">
-      {{vm.user.firstName}} {{vm.user.middleName}} {{vm.user.lastName}}, {{vm.individual.bio.profession}}<br/>
-      {{vm.user.email}} {{vm.user.phone}}
-    </div>
-    <div class="resume-section">
-      {{vm.individual.bio.address.streetAddress}}<br/>
-      {{vm.individual.bio.address.city}} {{vm.individual.bio.address.state}}
-      {{vm.individual.bio.address.zipCode}} {{vm.individual.bio.address.country}}
-    </div>
-    <div class="resume-section">
-      <div class="resume-component" ng-repeat="school in vm.individual.schools">
-          {{school.schoolName}}, {{school.startDate.substr(0, school.startDate.indexOf('-'))}} - {{school.endDate.substr(0, school.endDate.indexOf('-'))}}
-        <div ng-repeat="degree in school.degrees">
-          {{degree.degreeLevel}} in {{degree.name}}
+    <div class="resume-header">
+      <h4>{{vm.user.firstName}} {{vm.user.middleName}} {{vm.user.lastName}}</h4>
+      <div class="resume-subhead">
+        <div class="resume-section">
+          {{vm.individual.bio.profession}}<br/>
+          {{vm.user.email}} {{vm.user.phone}}
+        </div>
+        <div class="resume-section">
+          {{vm.individual.bio.address.streetAddress}}<br/>
+          {{vm.individual.bio.address.city}} {{vm.individual.bio.address.state}}
+          {{vm.individual.bio.address.zipCode}} {{vm.individual.bio.address.country}}
         </div>
       </div>
     </div>
-    <div class="resume-section">
-      <div class="resume-component" ng-repeat="cert in vm.individual.certification">
-        {{cert.certificationName}} Certification from {{cert.institution}}, {{cert.dateIssued.substr(0, cert.dateIssued.indexOf('-'))}} - {{cert.dateExpired.substr(0, cert.dateExpired.indexOf('-'))}}</br>
+    <div class="resume-body">
+      <h4>Education</h4>
+      <div class="resume-section" ng-repeat="school in vm.individual.schools">
+        <div class="resume-leftmargin"></div>
+        <div class="resume-component">
+            {{school.schoolName}}, {{school.startDate.substr(0, school.startDate.indexOf('-'))}} - {{school.endDate.substr(0, school.endDate.indexOf('-'))}}
+          <div ng-repeat="degree in school.degrees">
+            {{degree.degreeLevel}} in {{degree.name}}
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="resume-section">
-      <div class="resume-component" ng-repeat="job in vm.individual.jobExperience">
-        {{job.jobTitle}} for {{job.employer}}, {{job.startDate.substr(0, job.startDate.indexOf('-'))}} - {{job.endDate.substr(0, job.endDate.indexOf('-'))}}<br/>
-        <span ng-repeat="skill in job.skills">{{skill}}{{$last ? '.' : ','}} </span><br/>
-        {{job.description}}
+      <h4>Certifications</h4>
+      <div class="resume-section" ng-repeat="cert in vm.individual.certification">
+        <div class="resume-leftmargin"></div>
+        <div class="resume-component">
+          {{cert.certificationName}} Certification from {{cert.institution}}, {{cert.dateIssued.substr(0, cert.dateIssued.indexOf('-'))}} - {{cert.dateExpired.substr(0, cert.dateExpired.indexOf('-'))}}</br>
+        </div>
+      </div>
+      <h4>Work Experience</h4>
+      <div class="resume-section" ng-repeat="job in vm.individual.jobExperience">
+        <div class="resume-leftmargin"></div>
+        <div class="resume-component">
+          {{job.jobTitle}} for {{job.employer}}, {{job.startDate.substr(0, job.startDate.indexOf('-'))}} - {{job.endDate.substr(0, job.endDate.indexOf('-'))}}<br/>
+          <span ng-repeat="skill in job.skills">{{skill}}{{$last ? '.' : ','}} </span><br/>
+          {{job.description}}
+        </div>
       </div>
     </div>
     <!--

@@ -1,6 +1,34 @@
+.resume-header {
+  text-align: center;
+}
+
+.resume-subhead {
+  display: flex;
+  justify-content: center;
+}
+
+div.resume-subhead > div.resume-section {
+  flex: auto;
+}
 
 .resume-component {
   margin-bottom: 1em;
+}
+
+.resume-body {
+}
+
+div.resume-body > div.resume-section {
+  display: flex;
+  justify-content: flex-start;
+}
+
+div.resume-body > div.resume-section > div.resume-leftmargin {
+  flex: 0 1 5%;
+}
+
+div.resume-body > div.resume-section > div.resume-component {
+  flex: 1 0 auto;
 }
 
 .resume-section {
