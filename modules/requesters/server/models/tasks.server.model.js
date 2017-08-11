@@ -160,8 +160,7 @@ var TaskSchema = new Schema({
   },
   multiplicity: {
     type: Number,
-    default: 1,
-    validate: [validateBiggerThanZero, 'Multiplicity must be greater than zero.']
+    default: 1
   },
   successFactor: {
     // this is the number of sccesses needed for the project to be considered a sccuess

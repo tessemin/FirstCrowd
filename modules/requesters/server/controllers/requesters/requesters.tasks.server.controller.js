@@ -317,7 +317,7 @@ exports.submission = {
           return res.status(422).send({
             message: errorHandler.getErrorMessage(err)
           });
-        req.body.message = 'Task Owner Approved Retry' + ((req.body.message) ? ': ' + req.body.message : '');
+        req.body.message = 'Submission Rejected, Task Owner Approved Retry' + ((req.body.message) ? ': ' + req.body.message : '');
         sendRequesterMessage(req.body.message, task._id, req.body.workerId, null, function(err) {
           if (err)
             return res.status(200).send({

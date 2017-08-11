@@ -22,11 +22,18 @@
       vm.partners.splice(index, 1);
     }
     
-    vm.addPartner = function() {
-      vm.partners.push({
-        URL: '',
-        companyName: ''
-      });
+    vm.addPartner = function(param) {
+      if (param === 'push')
+        vm.partners.push({
+          URL: '',
+          companyName: ''
+        });
+      else {
+        vm.partners.unshift({
+          URL: '',
+          companyName: ''
+        });
+      }
     }
 
     // UpdateSuppliers Enterprise

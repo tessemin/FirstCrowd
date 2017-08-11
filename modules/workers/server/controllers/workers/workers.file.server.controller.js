@@ -168,10 +168,6 @@ exports.taskFiles = {
   },
   sendMessage: function(req, res) {
     setUpWorkerFileExchange(req, res, function(typeObj, task, jobIndex) {
-      if (!youAreActiveOnTask(task, task.jobs[jobIndex])) 
-        return res.status(422).send({
-          message: 'Task is not active.'
-        });
       sendWorkerMessage(req.body.message, task._id, typeObj._id, null, function (err, message) {
         if (err)
           return res.status(422).send({

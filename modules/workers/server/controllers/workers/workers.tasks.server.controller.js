@@ -135,16 +135,24 @@ exports.activeTask = {
             message: 'You are not an active worker for this task.'
           });
         }
+        if (!(task.status === 'open' || task.status === 'taken' || task.status === 'suspended')) {
+          return res.status(422).send({
+            message: 'Task is in a final state, no need to quit.'
+          });
+        }
         task.jobs[task.jobs.indexOf(taskJob)].status = 'quit';
         task.multiplicity++;
+        if (task.status === 'taken') {
+          task.status = 'open';
+        }
         typeObj = removeTaskFromWorkerArray(task._id, typeObj)
         typeObj = addWorkerTaskWithStatus('fclosed', task._id, typeObj)
         typeObj.save(function(err) {
           if (err)
             return res.status(422).send({ message: errorHandler.getErrorMessage(err) });
-          task.save(function(err, task) {
-            if (err)
-              return res.status(422).send({ message: errorHandler.getErrorMessage(err) });
+          updateTotalTaskProgress(task, function (percent) {
+            if (percent.error)
+              return res.status(422).send(percent.error);
             sendWorkerMessage('Worker: ' + hashObjId(typeObj._id) + ' has quit this task.', task._id, typeObj._id, null, function (err, message) {
               if (err)
                 return res.status(422).send({

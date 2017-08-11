@@ -9,7 +9,7 @@
 
   function WorkersMessagesController(WorkersService, Notification, $http) {
     var vm = this;
-    var messageRefreshSpeed = 10000;
+    var messageRefreshSpeed = 2000;
     vm.showSubmissions = true;
     vm.showMessages = true;
     vm.sendMessage = {};
@@ -262,6 +262,7 @@
     };
 
     vm.sendMessage.send = function() {
+      console.log('here')
       async function sendMessage(task) {
         WorkersService.sendMessage({
           taskId: task._id,
@@ -269,9 +270,6 @@
         })
         .then(function(res) {
           vm.closeSendMessage();
-          if (vm.messageView.task === task) {
-            vm.messageView.messages.unshift(res.data);
-          }
           Notification.success({ message: res.message, title: '<i class="glyphicon glyphicon-remove"></i> Message Sent!' });
         })
         .catch(function(res) {

@@ -35,11 +35,16 @@
           <input class="flex-lineitem" name="skillsNeeded" class="form-control" ng-model="vm.newTask.skillsNeeded" placeholder="Skills Needed">
         </div>
 
-        <div class="form-group flex-linegroup" show-errors>
-          <label class="flex-lineitem required-label" for="deadline">Deadline:</label>
-          <input class="flex-lineitem" type="date" name="deadline" class="form-control" ng-model="vm.newTask.deadline" placeholder="Deadline" required>
-          <div ng-messages="vm.newTaskForm['deadline'].$error" role="alert">
-            <p class="help-block error-text" ng-message="required">Deadline is required.</p>
+        <div class="form-group" show-errors>
+          <div class="flex-linegroup">
+            <label class="flex-lineitem required-label" for="deadline">Deadline:</label>
+            <input class="flex-lineitem" type="date" name="deadline" class="form-control" ng-model="vm.newTask.deadline" placeholder="Deadline" required>
+          </div>
+          <div class="flex-linegroup">
+            <span class="flex-lineitem"></span>
+            <div ng-messages="vm.newTaskForm['deadline'].$error" role="alert" class="flex-lineitem">
+              <p class="help-block error-text" ng-message="required">Deadline is required.</p>
+            </div>
           </div>
         </div>
 

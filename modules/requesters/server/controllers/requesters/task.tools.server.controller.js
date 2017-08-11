@@ -245,7 +245,7 @@ function updateTotalTaskProgress(task, callBack) {
     var agregateProgress = 0;
     var workers = 0;
     for (var job = 0; job < task.jobs.length; job++) {
-      if (task.jobs[job] && task.jobs[job].worker && task.jobs[job].worker.workerId) {
+      if (task.jobs[job] && task.jobs[job].worker && task.jobs[job].worker.workerId && (task.jobs[job].status !== 'quit')) {
         workers++;
         agregateProgress += task.jobs[job].progress;
       }
