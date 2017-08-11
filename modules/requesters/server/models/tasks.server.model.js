@@ -52,17 +52,6 @@ var validateBiddingBeforeDeadline = function(timeRange) {
 var validateBiddingStartBeforeNow = function(timeRange) {
   return validateDateAfterNow(timeRange.start);
 };
-
-var paymentMessage = '';
-var validatePayment = function(payment) {
-  if (payment.bidding.bidable) {
-    paymentMessage = 'Must have a bidding starting price.';
-    return (payment.bidding.startingPrice) ? true : false;
-  } else {
-    paymentMessage = 'Must have a payment price.';
-    return (payment.staticPrice) ? true : false
-  }
-};
   
 /**
  * Requester Schema
@@ -97,74 +86,71 @@ var TaskSchema = new Schema({
     default: 0
   },
   payment: {
-    type: {
-      bidding: {
-        bidable: {
-          type: Boolean,
-          default: false
-        },
-        startingPrice: {
-          type: Number,
-          default: 0,
-          validate: [
-            { validator: validateBiggerThanEqualZero, msg: 'Starting Bid must be zero or larger.' },
-            { validator: validateBidPrices, msg: 'Default/Starting Bid must be greater than or equal to the Minimum Bid' }
-          ]
-        },
-        minPrice: {
-          type: Number,
-          default: 0,
-          validate: [
-            { validator: validateBiggerThanEqualZero, msg: 'Minimum Bid must be zero or larger.' },
-            { validator: validateBidPrices, msg: 'Default/Starting Bid must be greater than or equal to the Minimum Bid' }
-          ]
-        },
-        timeRange: {
-          type: {
-            start: {
-              type: Date,
-              default: null
-            },
-            end: {
-              type: Date,
-              default: null
-            }
-          },
-          validate: [
-            { validator: validateStartBeforeEnd, msg: 'Bidding Start Date must be before end date' },
-            { validator: validateBiddingBeforeDeadline, msg: 'Bidding must end before the deadline.' },
-            { validator: validateBiddingStartBeforeNow, msg: 'Bidding Start Date must be after todays date' }
-          ]
-        }
+    bidding: {
+      bidable: {
+        type: Boolean,
+        default: false
       },
-      staticPrice: {
+      startingPrice: {
         type: Number,
-        default: null,
-        validate: [validateBiggerThanEqualZero, 'Success Factor must be greater than zero.']
+        default: 0,
+        validate: [
+          { validator: validateBiggerThanEqualZero, msg: 'Starting Bid must be zero or larger.' },
+          { validator: validateBidPrices, msg: 'Default/Starting Bid must be greater than or equal to the Minimum Bid' }
+        ]
       },
-      paymentInfo: {
-        paymentType: {
-          type: String,
-          enum: ['paypal'],
-          default: 'paypal',
-          required: 'Please provide a payment type'
+      minPrice: {
+        type: Number,
+        default: 0,
+        validate: [
+          { validator: validateBiggerThanEqualZero, msg: 'Minimum Bid must be zero or larger.' },
+          { validator: validateBidPrices, msg: 'Default/Starting Bid must be greater than or equal to the Minimum Bid' }
+        ]
+      },
+      timeRange: {
+        type: {
+          start: {
+            type: Date,
+            default: null
+          },
+          end: {
+            type: Date,
+            default: null
+          }
         },
-        paid: {
-          type: Boolean,
-          default: false
-        },
-        paymentId: {
-          type: String
-        },
-        payerId: {
-          type: String
-        },
-        paymentObject: {
-          type: Schema.Types.Mixed
-        }
+        validate: [
+          { validator: validateStartBeforeEnd, msg: 'Bidding Start Date must be before end date' },
+          { validator: validateBiddingBeforeDeadline, msg: 'Bidding must end before the deadline.' },
+          { validator: validateBiddingStartBeforeNow, msg: 'Bidding Start Date must be after todays date' }
+        ]
       }
     },
-    validate: [validatePayment, paymentMessage]
+    staticPrice: {
+      type: Number,
+      default: null,
+      validate: [validateBiggerThanEqualZero, 'Success Factor must be greater than zero.']
+    },
+    paymentInfo: {
+      paymentType: {
+        type: String,
+        enum: ['paypal'],
+        default: 'paypal',
+        required: 'Please provide a payment type'
+      },
+      paid: {
+        type: Boolean,
+        default: false
+      },
+      paymentId: {
+        type: String
+      },
+      payerId: {
+        type: String
+      },
+      paymentObject: {
+        type: Schema.Types.Mixed
+      }
+    }
   },
   status: {
     type: String,
