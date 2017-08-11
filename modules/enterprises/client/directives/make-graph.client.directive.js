@@ -181,13 +181,13 @@
 
 
               function collapse(d) {
-                if(d.children) {
+                if(d.data.children) {
                   if (d.parent) {
-                    d._children = d.children;
-                    d._children.forEach(collapse);
-                    d.children = null;
+                    d.data_children = d.data.children;
+                    d.data._children.forEach(collapse);
+                    d.data.children = null;
                   } else {
-                    d.children.forEach((d) => d.children.forEach(collapse));
+                    d.data.children.forEach((d) => d.data.children.forEach(collapse));
                   }
                 }
               }
@@ -361,10 +361,15 @@
                     .attr('node-num', function(d, i) { return (i + tmp); })
                     .attr('r', radius)
                     .on('click', function(d, i) {
+                      console.log(d);
 
                       var thisNode = d;
 
-                      // if (thisNode.hasOwnProperty(chil))
+                      if (!thisNode.data.hasOwnProperty('children')) {
+                        if (!thisNode.data.hasOwnProperty('_children')) {
+                          click(d);
+                        }
+                      }
 
                       function click(d) {
                         console.log('click!', d);
@@ -395,38 +400,26 @@
                       function revertHierarchy(haystack, needle, depth) {
                         return new Promise(function(resolve, reject) {
                           console.log('created');
-                        if (depth <= 0) {
                           if (haystack._id === needle._id) {
                             console.log('found', haystack._id);
                             haystack = needle;
-                          }
-                          console.log('resolved');
-                          resolve();
-                        } else {
-                          if (haystack._id === needle._id) {
-                            haystack = needle;
                             console.log('resolved');
-                            resolve();
-
-                          } else if (haystack.hasOwnProperty('children')) {
-                            if (haystack.children !== null) {
-                            haystack.children.forEach((child) => {
-                              resolve(revertHierarchy(child, needle, depth - 1));
-                            });
-                            } else {
-                              console.log('resolved');
-                              resolve();
+                            // resolve();
+                          }
+                          if (depth < 0) {
+                            // resolve();
+                          } else {
+                            if (haystack.hasOwnProperty('children')) {
+                              if (haystack.children !== null) {
+                                haystack.children.forEach((child) => {
+                                  resolve(revertHierarchy(child, needle, depth - 1));
+                                });
+                              }
                             }
                           }
-                        }
+                          resolve();
                         });
                       }
-
-                      function fixToggle(master, student) {
-                        console.log(master, student);
-                      }
-
-
 
 
                       function addToTree(node) {
