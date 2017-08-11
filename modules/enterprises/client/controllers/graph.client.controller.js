@@ -46,56 +46,108 @@
     }
 
     function viewCatalog(obj) {
+
+      vm.selected = obj.selected;
+
+      if (vm.selected.hasOwnProperty('profile')) {
+        vm.selected.companyName = vm.selected.profile.companyName;
+        vm.selected.countryOfBusiness = vm.selected.profile.countryOfBusiness;
+        vm.selected.classifications = vm.selected.profile.classifications;
+        vm.selected.URL = vm.selected.profile.URL;
+        vm.selected.yearEstablished = vm.selected.profile.yearEstablished;
+        vm.selected.description = vm.selected.profile.description;
+      }
+
+
       EnterprisesService.getServices({ enterpriseId: obj.selected._id }).then(function(res) {
-        console.log(res);
         // vm.list = res.
       });
       EnterprisesService.getProducts({ enterpriseId: obj.selected._id }).then(function(res) {
-        console.log(res);
         // vm.list = res.
       });
     }
     function viewDemands(obj) {
+
+      vm.selected = obj.selected;
+
+      if (vm.selected.hasOwnProperty('profile')) {
+        vm.selected.companyName = vm.selected.profile.companyName;
+        vm.selected.countryOfBusiness = vm.selected.profile.countryOfBusiness;
+        vm.selected.classifications = vm.selected.profile.classifications;
+        vm.selected.URL = vm.selected.profile.URL;
+        vm.selected.yearEstablished = vm.selected.profile.yearEstablished;
+        vm.selected.description = vm.selected.profile.description;
+      }
+
+      vm.sidebar = true;
+      vm.head = 'Demands';
+      vm.header = 'Demands from';
+
       EnterprisesService.getDemands({ enterpriseId: obj.selected._id }).then(function(res) {
-        console.log(res);
         vm.list = res.demands;
       });
     }
+
     function viewSuppliers(obj) {
       vm.selected = obj.selected;
+
+      if (vm.selected.hasOwnProperty('profile')) {
+        vm.selected.companyName = vm.selected.profile.companyName;
+        vm.selected.countryOfBusiness = vm.selected.profile.countryOfBusiness;
+        vm.selected.classifications = vm.selected.profile.classifications;
+        vm.selected.URL = vm.selected.profile.URL;
+        vm.selected.yearEstablished = vm.selected.profile.yearEstablished;
+        vm.selected.description = vm.selected.profile.description;
+      }
+
       vm.sidebar = true;
       vm.head = 'Suppliers';
       vm.header = 'Suppliers for ';
       EnterprisesService.getSuppliers({ enterpriseId: obj.selected._id }).then(function(res) {
         vm.list = res.suppliers;
-        console.log(vm.list);
       });
-      console.log(obj.selected);
     }
     function viewCustomers(obj) {
       vm.selected = obj.selected;
+
+      if (vm.selected.hasOwnProperty('profile')) {
+        vm.selected.companyName = vm.selected.profile.companyName;
+        vm.selected.countryOfBusiness = vm.selected.profile.countryOfBusiness;
+        vm.selected.classifications = vm.selected.profile.classifications;
+        vm.selected.URL = vm.selected.profile.URL;
+        vm.selected.yearEstablished = vm.selected.profile.yearEstablished;
+        vm.selected.description = vm.selected.profile.description;
+      }
+
+
       vm.sidebar = true;
       vm.head = 'Customers';
       vm.header = 'Customers for ';
       EnterprisesService.getCustomers({ enterpriseId: obj.selected._id }).then(function(res) {
         vm.list = res.customers;
-        console.log(vm.list);
       });
     }
     function viewCompetitors(obj) {
       vm.selected = obj.selected;
-      console.log(obj.selected);
+
+      if (vm.selected.hasOwnProperty('profile')) {
+        vm.selected.companyName = vm.selected.profile.companyName;
+        vm.selected.countryOfBusiness = vm.selected.profile.countryOfBusiness;
+        vm.selected.classifications = vm.selected.profile.classifications;
+        vm.selected.URL = vm.selected.profile.URL;
+        vm.selected.yearEstablished = vm.selected.profile.yearEstablished;
+        vm.selected.description = vm.selected.profile.description;
+      }
+
       vm.sidebar = true;
       vm.head = 'Competitors';
       vm.header = 'Competitors for ';
       EnterprisesService.getCompetitors({ enterpriseId: obj.selected._id }).then(function(res) {
         vm.list = res.competitors;
-        console.log(vm.list);
       });
     }
 
     function chooseCompany(obj) {
-      console.log(obj);
       $scope.$apply(
         vm.sidebar = true,
         vm.selected = obj.selected,

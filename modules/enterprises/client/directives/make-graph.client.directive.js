@@ -52,7 +52,7 @@
                 .attr('height', height - header.offsetHeight - footer.offsetHeight - 5);
 
           // var i = 0;
-          var duration = 1250;
+          var duration = 2000;
 
 
           var zoomListener;
@@ -70,8 +70,8 @@
 
           getGraph().then(function(rootNode) {
 
-          var extent;
-          var group;
+            var extent;
+            var group;
 
             var graphPromises = [];
             var root1 = $.extend( {}, rootNode);
@@ -82,46 +82,45 @@
 
             Promise.all(graphPromises).then(function(res) {
               function zoom() {
-            if ((d3.event.transform.x > (extent.minX ) // * d3.event.transform.k
-                )
-                && (d3.event.transform.x < (extent.maxX + width / 2 + 100) // * d3.event.transform.k
-                   )
-                && (d3.event.transform.y > (extent.minY ) // * d3.event.transform.k
-                   )
-                && (d3.event.transform.y < (extent.maxY + height / 2) // * d3.event.transform.k
-                   )) {
-                     console.log(d3.event.transform);
-                     group.attr('transform', d3.event.transform);
-                   }
-            else {
-              if (d3.event.transform.x < (extent.minX) // * d3.event.transform.k
-                 ){
-                   getAnotherRow('customers');
-                 }
-              else if (d3.event.transform.x > (extent.maxX + width / 2) // * d3.event.transform.k
-                      ){
-                        getAnotherRow('suppliers');
-                      }
-            }
-          }
+                group.attr('transform', d3.event.transform);
+                // if ((d3.event.transform.x > (extent.minX ) // * d3.event.transform.k
+                //     )
+                //     && (d3.event.transform.x < (extent.maxX + width / 2 + 100) // * d3.event.transform.k
+                //        )
+                //     && (d3.event.transform.y > (extent.minY ) // * d3.event.transform.k
+                //        )
+                //     && (d3.event.transform.y < (extent.maxY + height / 2) // * d3.event.transform.k
+                //        )) {
+                //          group.attr('transform', d3.event.transform);
+                //        }
+                // else {
+                //   if (d3.event.transform.x < (extent.minX) // * d3.event.transform.k
+                //      ){
+                //        getAnotherRow('customers');
+                //      }
+                //   else if (d3.event.transform.x > (extent.maxX + width / 2) // * d3.event.transform.k
+                //           ){
+                //             getAnotherRow('suppliers');
+                //           }
+                // }
+              }
 
               // Create d3 hierarchies
-              var right = d3.hierarchy(res[0]);
-              var left = d3.hierarchy(res[1]);
+              var tree = { 'suppliers': res[1], 'customers': res[0] };
               var count = 0;
 
-              var treeHeight = { 'suppliers': left.height, 'customers': right.height };
+              var treeHeight = { 'suppliers': tree.suppliers.height, 'customers': tree.customers.height };
               var treeBottom = { 'suppliers': [], 'customers': [] };
 
-              getBottomChildren(right, 'customers');
-              getBottomChildren(left, 'suppliers');
-              extent = getExtent(treeBottom);
+              // getBottomChildren(right, 'customers');
+              // getBottomChildren(left, 'suppliers');
+              getExtent();
 
               zoomListener = d3.zoom()
-                // .extent([[extent.minX - 200, extent.minY - 200], [extent.maxX + 200, extent.maxY + 200]])
-                    // .translateExtent([[extent.minX - 200, extent.minY - 200], [extent.maxX + 200, extent.maxY + 200]])
-                    .scaleExtent([1 / 8, 1 / 2])
-                    .on('zoom', zoom);
+              // .extent([[extent.minX - 200, extent.minY - 200], [extent.maxX + 200, extent.maxY + 200]])
+              // .translateExtent([[extent.minX - 200, extent.minY - 200], [extent.maxX + 200, extent.maxY + 200]])
+                .scaleExtent([1 / 8, 1])
+                .on('zoom', zoom);
 
               svg.call(zoomListener);
               group = svg.append('g').attr('class', 'everything');
@@ -143,42 +142,70 @@
                 }
               }
 
-              function getExtent(tree) {
-                var extent = { minX: 0, maxX: 0, minY: 0, maxY: 0 };
-                tree.suppliers.concat(tree.customers).forEach((node) => {
+              function getExtent() {
+                var retExtent = { minX: 0, maxX: 0, minY: 0, maxY: 0 };
+                treeBottom.suppliers.concat(treeBottom.customers).forEach((node) => {
                   checkForCoords(node, function(node) {
-                    if (node.x < extent.minY) {
-                      extent.minY = node.x;
-                      console.log('minY ' + node.y);
+                    if (node.x < retExtent.minY) {
+                      retExtent.minY = node.x;
                     }
-                    if (node.x > extent.maxY) {
-                      extent.maxY = node.x;
-                      console.log('maxY ' + node.y);
+                    if (node.x > retExtent.maxY) {
+                      retExtent.maxY = node.x;
                     }
-                    if (node.y < extent.minX) {
-                      extent.minX = node.y;
-                      console.log('minX ' + node.x);
+                    if (node.y < retExtent.minX) {
+                      retExtent.minX = node.y;
                     }
-                    if (node.y > extent.maxX) {
-                      extent.maxX = node.y;
-                      console.log('minX ' + node.x);
+                    if (node.y > retExtent.maxX) {
+                      retExtent.maxX = node.y;
                     }
                   });
                 });
-                console.log(extent);
-                return extent;
+                extent = retExtent;
               }
 
-              function getAnotherRow(group) {
-                if (group === 'suppliers') {
-                  console.log(res[0]);
-                  console.log(left);
-                } else if (group === 'customers') {
-                  console.log(res[1]);
-                  console.log(right);
-                } else {
-                  console.log('hi');
+              // function getAnotherRow(group) {
+
+              //   var obj;
+              //   if (group === 'suppliers') {
+              //     obj = $.extend( {}, left);
+              //   } else if (group === 'customers') {
+              //     obj = $.extend( {}, right);
+              //   } else {
+              //     console.log('hi');
+              //   }
+
+              //   addChildrenToBottom(obj, group).then((res) => {
+              //     console.log('hi', res);
+              //   });
+              // }
+
+
+              function collapse(d) {
+                if(d.children) {
+                  if (d.parent) {
+                    d._children = d.children;
+                    d._children.forEach(collapse);
+                    d.children = null;
+                  } else {
+                    d.children.forEach((d) => d.children.forEach(collapse));
+                  }
                 }
+              }
+
+              function addChildrenToBottom(tree, group) {
+                return new Promise(function(resolve, reject) {
+                  if (tree.hasOwnProperty('children')) {
+                    tree.children.forEach((child)=> {
+                      addChildrenToBottom(child, group);
+                    });
+                  } else {
+                    getChildren(tree.data._id, group).then(function(childArray) {
+                      console.log(childArray);
+                      tree.children = childArray;
+                      resolve(tree);
+                    });
+                  }
+                });
               }
 
               function getBottomChildren(tree, side) {
@@ -189,186 +216,349 @@
                 } else {
                   if (tree.depth === treeHeight[side]) {
                     treeBottom[side].push(tree);
-                    console.log(tree);
                   }
                 }
               }
 
+              var width = +svg.attr('width'),
+                  height = +svg.attr('height');
+
+              var node, link;
+
+              // collapse(tree.suppliers);
+              // collapse(tree.customers);
+
               // Render both trees
-              drawTree(right, 'right');
-              drawTree(left, 'left');
+              drawTree(tree.suppliers);
+              drawTree(tree.customers);
 
+              function drawTree(head) {
 
-              // draw single tree
-              function drawTree(root, pos) {
+                console.log(head);
 
-                var SWITCH_CONST = 1;
-                if (pos === 'left') {
-                  SWITCH_CONST = -1;
+                // var temp = $.extend( {}, tree[node.data.type]);
+                var root = d3.hierarchy(head);
+
+                console.log(head);
+
+              var pos;
+              var SWITCH_CONST = 1;
+              if (root.hasOwnProperty('children')) {
+                if(root.children) {
+                  pos = root.children[0].data.type;
                 }
+              } else if (root.hasOwnProperty('children')) {
+                if (root._children) {
+                  pos = root._children[0].data.type;
+                }
+              } else {
+                pos = 'root';
+              }
 
-                var width = +svg.attr('width'),
-                    height = +svg.attr('height');
+              d3.selectAll('.link-' + pos).remove();
+              d3.selectAll('.node-' + pos).remove();
+              if (pos === 'suppliers') {
+                SWITCH_CONST = -1;
+              }
 
-                var g = d3.select('.everything').append('g');
+              var g = d3.select('.everything');
 
-                // Create new default tree layout
-                var tree = d3.tree()
-                      .nodeSize([radius / 1.5, radius * 10])
-                      .separation(function(a, b) {
-                        return a.parent === b.parent ? 5 : 6;
-                      });
-                // Set the size
-                // Remember the tree is rotated
-                // so the height is used as the width
-                // and the width as the height
+              // Create new default tree layout
+              var treemap = d3.tree()
+                    .nodeSize([radius / 1.5, radius * 10])
+                    .separation(function(a, b) {
+                      return a.parent === b.parent ? 5 : 6;
+                    });
+              // Set the size
+              // Remember the tree is rotated
+              // so the height is used as the width
+              // and the width as the height
 
-                tree(root);
+              console.log(treemap(root));
+              treemap(root);
 
-                var nodes = root.descendants();
-                var links = root.links();
-                // Set both root nodes to be dead center vertically
+              var nodes = root.descendants();
+              var links = root.links();
+              // Set both root nodes to be dead center vertically
 
-                nodes.forEach(function(node) {
-                  // node.x = node.x * 2;
-                  if (node.y !== 0) node.y = node.y * SWITCH_CONST * 2;
+              nodes.forEach(function(node) {
+                if (node.y !== 0) node.y = node.y * SWITCH_CONST * 1.5;
+              });
+
+              console.log(nodes);
+
+              link = g.selectAll('.link-' + pos)
+                .data(links)
+                .enter();
+
+              var linkEnter = link.append('path')
+                    .attr('class', 'link-' + pos)
+                    .attr('d', function(d) {
+                      return 'M' + d.target.y + ',' + d.target.x +
+                        'C' + (d.target.y + d.source.y) / 2.5 + ',' + d.target.x +
+                        ' ' + (d.target.y + d.source.y) / 2 + ',' + d.source.x +
+                        ' ' + d.source.y + ',' + d.source.x;
+                    });
+
+              // UPDATE
+              var linkUpdate = linkEnter.merge(link);
+
+              // Transition back to the parent element position
+              linkUpdate.transition()
+                .duration(duration)
+                .attr('d', function(d) {
+                  return 'M' + d.target.y + ',' + d.target.x +
+                    'C' + (d.target.y + d.source.y) / 2.5 + ',' + d.target.x +
+                    ' ' + (d.target.y + d.source.y) / 2 + ',' + d.source.x +
+                    ' ' + d.source.y + ',' + d.source.x;
                 });
 
-                var link = g.selectAll('.link-' + pos)
-                      .data(links)
-                      .enter();
+              // Remove any exiting links
+              var linkExit = link.exit().transition()
+                    .duration(duration)
+                    .attr('d', function(d) {
+                      return 'M' + d.target.y + ',' + d.target.x +
+                        'C' + (d.target.y + d.source.y) / 2.5 + ',' + d.target.x +
+                        ' ' + (d.target.y + d.source.y) / 2 + ',' + d.source.x +
+                        ' ' + d.source.y + ',' + d.source.x;
+                    })
+                    .remove();
 
-                link.append('path')
-                  .attr('class', 'link-' + pos)
-                  .attr('d', function(d) {
-                    return 'M' + d.target.y + ',' + d.target.x +
-                      'C' + (d.target.y + d.source.y) / 2.5 + ',' + d.target.x +
-                      ' ' + (d.target.y + d.source.y) / 2 + ',' + d.source.x +
-                      ' ' + d.source.y + ',' + d.source.x;
-                  });
+              var tmp = count;
+              var defs = svg.append('defs')
+                    .selectAll('pattern')
+                    .data(nodes)
+                    .enter()
+                    .append('pattern')
+                    .attr('id', function () { return 'image' + count++; })
+                    .attr('x', 0)
+                    .attr('y', 0)
+                    .attr('height', radius * 2)
+                    .attr('width', radius * 2)
+                    .append('image')
+                    .attr('x', 0)
+                    .attr('y', 0)
+                    .attr('height', radius * 2)
+                    .attr('width', radius * 2)
+                    .attr('xlink:href', function (d) { return d.data.img; });
 
-                var tmp = count;
-                var defs = svg.append('defs')
-                      .selectAll('pattern')
-                      .data(nodes)
-                      .enter()
-                      .append('pattern')
-                      .attr('id', function () { return 'image' + count++; })
-                      .attr('x', 0)
-                      .attr('y', 0)
-                      .attr('height', radius * 2)
-                      .attr('width', radius * 2)
-                      .append('image')
-                      .attr('x', 0)
-                      .attr('y', 0)
-                      .attr('height', radius * 2)
-                      .attr('width', radius * 2)
-                      .attr('xlink:href', function (d) { return d.data.img; });
+              // Create nodes
+              node = g.selectAll('.node-' + pos)
+                .data(nodes)
+                .enter()
+                .append('g')
+                .attr('class', function(d) {
+                  return 'node-' + pos + (d.children ? ' node--internal' : ' node--leaf');
+                })
+                .attr('transform', function(d) {
+                  return 'translate(' + d.y + ',' + d.x + ')';
+                });
 
-                // Create nodes
-                var node = g.selectAll('.node-' + pos)
-                      .data(nodes)
-                      .enter()
-                      .append('g')
-                      .attr('class', function(d) {
-                        return 'node-' + pos + (d.children ? ' node--internal' : ' node--leaf');
-                      })
-                      .attr('transform', function(d) {
-                        return 'translate(' + d.y + ',' + d.x + ')';
-                      });
+              var nodeEnter = node
+                    .append('circle')
+                    .style('fill', function(d, i) { return 'url(#image' + (i + tmp) + ')'; })
+                    .attr('id', function(d, i) { return 'node' + (i + tmp); })
+                    .attr('node-num', function(d, i) { return (i + tmp); })
+                    .attr('r', radius)
+                    .on('click', function(d, i) {
 
-                node
-                  .append('circle')
-                  .style('fill', function(d, i) { return 'url(#image' + (i + tmp) + ')'; })
-                  .attr('id', function(d, i) { return 'node' + (i + tmp); })
-                  .attr('node-num', function(d, i) { return (i + tmp); })
-                  .attr('r', radius);
+                      var thisNode = d;
 
-                // node
-                // .on('dblclick', function(d) {
-                //   d3.selectAll('text').remove();
-                //   d3.selectAll('rect').remove();
-                //   centerNode(d3.select(this)._groups[0][0].__data__);
-                //   scope.$parent.vm.chooseCompany({ selected: d3.select(this)._groups[0][0].__data__.data });
-                // })
+                      // if (thisNode.hasOwnProperty(chil))
 
-                node
-                  .on('click', function(d, i) {
-                    console.log(d);
-                    d3.selectAll('text').remove();
-                    d3.selectAll('rect').remove();
-                    centerNode(d3.select(this)._groups[0][0].__data__);
+                      function click(d) {
+                        console.log('click!', d);
+                        if (d.data.hasOwnProperty('children')) {
+                          if (d.data.children) {
+                            d.data._children = d.data.children;
+                            d.data.children = null;
+                          } else {
+                            d.data.children = d.data._children;
+                            d.data._children = null;
+                          }
+                          drawTree(tree[d.data.type]);
 
-                    d3.select('#selected-circle').style('stroke', 'black').style('stroke-width', 1).attr('id', function(d, i) { return 'node' + i; });
-                    d3.select(this).transition().duration(300)
-                      .style('stroke', 'red')
-                      .style('stroke-width', 5)
-                      .attr('id', 'selected-circle');
-
-                    var items = [
-                      { 'func': removeGraph, 'text': 'See this Company\'s Graph', 'y': 1 },
-                      { 'func': viewCatalog, 'text': 'See Product & Service Catalog', 'y': 2 },
-                      { 'func': viewDemands, 'text': 'See Demands', 'y': 3 },
-                      { 'func': viewSuppliers, 'text': 'See Suppliers', 'y': 4 },
-                      { 'func': viewCustomers, 'text': 'See Customers', 'y': 5 },
-                      { 'func': viewCompetitors, 'text': 'See Competitors', 'y': 6 }
-                    ];
-
-                    var menuWidth = 200;
-                    var itemHeight = 30;
-                    var menuHeight = itemHeight * items.length;
-                    var coords = getScreenCoords(d3.select(this)._groups[0][0].__data__.x,
-                                                 d3.select(this)._groups[0][0].__data__.y,
-                                                 menuHeight,
-                                                 menuWidth);
-
-                    var x = coords.x;
-                    var y = coords.y;
-
-                    var menuItems = g.selectAll('rect').data(items).enter()
-                          .append('rect').attr('class', 'conmenu-items')
-                          .attr('width', menuWidth).attr('height', itemHeight)
-                          .style('fill', '#d3d3d3')
-                          .on('mouseout', function(d) {
-                            d3.select(this).style('fill', '#d3d3d3');
-                          })
-                          .on('mouseover', function(d) {
-                            d3.select(this).style('fill', '#fff');
-                          })
-                          .on('click', function(d) {
-                            d3.selectAll('text').remove();
-                            d3.selectAll('rect').remove();
-
-                            if (d.func === centerNode) {
-                              d.func(d3.select('#selected-circle')._groups[0][0].__data__);
-                            } else {
-                              d.func(d3.select('#selected-circle')._groups[0][0].__data__.data);
-                            }
-                          })
-                          .style('stroke', 'black')
-                          .style('stroke-width', 0.5)
-                          .attr('x', x)
-                          .attr('y', function(d) {
-                            return y + (30 * (d.y));
+                        } else {
+                          d.data.type = d.parent.data.type;
+                          getChildren(d.data._id, d.data.type).then((children) => {
+                            console.log(children);
+                            children.forEach((child) => {
+                              child.type = d.data.type;
+                            });
+                            d.data.children = children;
+                            console.log(d);
+                            addToTree(d);
                           });
+                        }
+                      }
 
-                    var menuText = g.selectAll('text').data(items).enter()
-                          .append('text')
-                          .style('cursor', 'default')
-                          .style('pointer-events', 'none')
-                          .attr('x', x + 3)
-                          .attr('y', function(d) {
-                            return y + 20 + (30 * (d.y));
-                          })
-                          .text(function (d) { return d.text; });
-                  });
+                      function revertHierarchy(haystack, needle, depth) {
+                        return new Promise(function(resolve, reject) {
+                          console.log('created');
+                        if (depth <= 0) {
+                          if (haystack._id === needle._id) {
+                            console.log('found', haystack._id);
+                            haystack = needle;
+                          }
+                          console.log('resolved');
+                          resolve();
+                        } else {
+                          if (haystack._id === needle._id) {
+                            haystack = needle;
+                            console.log('resolved');
+                            resolve();
 
-                // node.append('text')
-                //   .attr('dy', 30)
-                //   .style('text-anchor', 'middle')
-                //   .text(function(d) {
-                //     return d.data.companyName;
-                //   });
+                          } else if (haystack.hasOwnProperty('children')) {
+                            if (haystack.children !== null) {
+                            haystack.children.forEach((child) => {
+                              resolve(revertHierarchy(child, needle, depth - 1));
+                            });
+                            } else {
+                              console.log('resolved');
+                              resolve();
+                            }
+                          }
+                        }
+                        });
+                      }
+
+                      function fixToggle(master, student) {
+                        console.log(master, student);
+                      }
+
+
+
+
+                      function addToTree(node) {
+                        // console.log(node);
+                        var depth = node.depth;
+
+                        var temp = $.extend( {}, tree[node.data.type]);
+
+                        // setTimeout(function() {
+                        console.log(tree[node.data.type]);
+                        revertHierarchy(tree[node.data.type], node.data, depth).then(function(res, rej) {
+                          if (rej) console.log(rej);
+
+                          console.log(tree[node.data.type]);
+                          console.log('res', res);
+                          // res = node.data;
+
+                          // tree[node.data.type] = d3.hierarchy(tree[node.data.type].data);
+                          drawTree(tree[node.data.type]);
+                        });
+                        // }, 100);
+
+                        // var hierarchy = d3.hierarchy(tree[node.data.type].data);
+                      }
+
+                      d3.selectAll('text').remove();
+                      d3.selectAll('rect').remove();
+                      // centerNode(d3.select(this)._groups[0][0].__data__);
+
+                      d3.select('#selected-circle').style('stroke', 'black').style('stroke-width', 1).attr('id', function(d, i) { return 'node' + i; });
+                      d3.select(this).transition().duration(300)
+                        .style('stroke', 'red')
+                        .style('stroke-width', 10)
+                        .attr('id', 'selected-circle');
+
+                      var items = [
+                        // { 'func': removeGraph, 'text': 'See this Company\'s Graph', 'y': 1 },
+                        { 'func': centerNode, 'text': 'Center Graph on this company', 'y': 1 },
+                        { 'func': click, 'text': 'Toggle this Node\'s children', 'y': 2 },
+                        { 'func': viewCatalog, 'text': 'See Product & Service Catalog', 'y': 3 },
+                        { 'func': viewDemands, 'text': 'See Demands', 'y': 4 },
+                        { 'func': viewSuppliers, 'text': 'See Suppliers', 'y': 5 },
+                        { 'func': viewCustomers, 'text': 'See Customers', 'y': 6 },
+                        { 'func': viewCompetitors, 'text': 'See Competitors', 'y': 7 }
+                      ];
+
+                      var menuWidth = 600;
+                      var itemHeight = 100;
+                      var menuHeight = itemHeight * items.length;
+                      var coords = getScreenCoords(d3.select(this)._groups[0][0].__data__.x,
+                                                   d3.select(this)._groups[0][0].__data__.y,
+                                                   menuHeight,
+                                                   menuWidth);
+
+                      var x = coords.x - 20;
+                      var y = coords.y - 300;
+
+                      var menuItems = g.selectAll('rect').data(items).enter()
+                            .append('rect').attr('class', 'conmenu-items')
+                            .attr('width', menuWidth).attr('height', itemHeight)
+                            .style('fill', '#d3d3d3')
+                            .on('mouseout', function(d) {
+                              d3.select(this).style('fill', '#d3d3d3');
+                            })
+                            .on('mouseover', function(d) {
+                              d3.select(this).style('fill', '#fff');
+                            })
+                            .on('click', function(d) {
+                              d3.selectAll('text').remove();
+                              d3.selectAll('rect').remove();
+
+                              if (d.func === centerNode) {
+                                d.func(thisNode);
+                              } else if (d.func === click) {
+                                console.log('clicked');
+                                d.func(thisNode);
+                              } else {
+                                d.func(thisNode.data);
+                              }
+                            })
+                            .style('stroke', 'black')
+                            .style('stroke-width', 0.5)
+                            .attr('x', x)
+                            .attr('y', function(d) {
+                              return y + (-25) +(itemHeight * (d.y));
+                            });
+
+                      var menuText = g.selectAll('text').data(items).enter()
+                            .append('text')
+                            .style('cursor', 'pointer')
+                            .style('pointer-events', 'none')
+                            .style("font-size", function(d) { return Math.min(2 * 20, (2 * 20 - 8) / this.getComputedTextLength() * 24) + "px"; })
+                            .attr('x', x + 10)
+                            .attr('y', function(d) {
+                              return y + 25 + (itemHeight * (d.y));
+                            })
+                            .text(function (d) { return d.text; });
+                    });
+
+
+
+              var nodeUpdate = nodeEnter.merge(node);
+
+              // Transition to the proper position for the node
+              nodeUpdate.transition()
+                .duration(duration)
+                .attr('class', function(d) {
+                  return 'node-' + pos + (d.children ? ' node--internal' : ' node--leaf');
+                });
+              // .attr("transform", function(d) {
+              //   return "translate(" + d.y + "," + d.x + ")";
+              // });
+
+              // Update the node attributes and style
+              nodeUpdate.select('circle')
+                .attr('r', radius)
+                .style('fill', function(d, i) { return 'url(#image' + (i + tmp) + ')'; })
+                .attr('cursor', 'pointer');
+
+
+              // Remove any exiting nodes
+              var nodeExit = node.exit().transition()
+                    .duration(duration)
+                    .attr("transform", function(d) {
+                      return "translate(" + d.parent.y + "," + d.parent.x + ")";
+                    })
+                    .remove();
+
+              // On exit reduce the node circles size to 0
+              nodeExit.select('circle')
+                .attr('r', 1e-6);
+
               }
             });
 
@@ -376,7 +566,7 @@
             // functions!
             //
             function getScreenCoords(x, y, menuHeight, menuWidth) {
-              var xn = y + 30;
+              var xn = y + 100;
               var yn = x - 50;
               return { x: xn, y: yn };
             }
@@ -400,12 +590,13 @@
               var t = d3.zoomTransform(group.node());
               var x = -source.y;
               var y = -source.x;
-              x = x * t.k + width / 2;
-              y = y * t.k + height / 2;
+              var s = t.k === 1 ? 0.5 : t.k;
+              x = x * s + width / 2;
+              y = y * s + height / 2;
               d3.selectAll('svg')
                 .transition()
                 .duration(duration)
-                .call(zoomListener.transform, d3.zoomIdentity.translate(x, y).scale(t.k));
+                .call(zoomListener.transform, d3.zoomIdentity.translate(x, y).scale(s));
             }
 
             function centerHome() {
@@ -438,11 +629,13 @@
           function getGraphCustomers(obj) {
             return new Promise(function(resolve, reject) {
               var data = obj;
+              data.type = 'root';
               // recurseTree (nodeObj, number of levels to get, group)
               // group can either be suppliers or customers
 
               getChildren(data._id, 'customers').then(function(childArray) {
                 data.children = childArray;
+                data.children.forEach((child) => { child.type = 'customers'; });
                 resolve(recurseTree(data, 3, 'customers'));
               });
             });
@@ -451,11 +644,13 @@
           function getGraphSuppliers(obj) {
             return new Promise(function(resolve, reject) {
               var data = obj;
+              data.type = 'root';
               // recurseTree (nodeObj, number of levels to get, group)
               // group can either be suppliers or customers
 
               getChildren(data._id, 'suppliers').then(function(childArray) {
                 data.children = childArray;
+                data.children.forEach((child) => { child.type = 'suppliers'; });
                 resolve(recurseTree(data, 3, 'suppliers'));
               });
             });
@@ -470,6 +665,7 @@
                 if (data.hasOwnProperty('children')) {
                   var childPromises = [];
                   data.children.forEach(function(child) {
+                    child.type = group;
                     child.children = [];
                     childPromises.push(getChildren(child._id, group));
                   });
