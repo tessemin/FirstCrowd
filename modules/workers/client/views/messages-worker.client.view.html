@@ -154,7 +154,7 @@
         <textarea class="message" ng-model="vm.sendMessage.message" placeholder="Send a new message to task: {{vm.messageView.taskMessage.title}}" ng-click="vm.sendMessage.expanded = true"></textarea>
         <div class="buttonMover">
           <div ng-class="{expandSendButtons: vm.sendMessage.expanded}" class="sendButtons">
-            <button ng-click="vm.sendMessage.toAll()" type="button" class="btn btn-primary">Send</button>
+            <button ng-click="vm.sendMessage.send()" type="button" class="btn btn-primary">Send</button>
             <button ng-click="vm.closeSendMessage()" type="button" class="btn btn-secondary">Cancel</button>
           </div>
         </div>
