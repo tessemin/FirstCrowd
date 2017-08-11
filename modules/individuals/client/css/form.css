@@ -33,3 +33,19 @@
 .form-body {
   margin-bottom: 20px;
 }
+
+.hr-font-color-lightBlue {
+  border-top: 2px solid #DDFFFF;
+  border-bottom: 1px solid LightGray;
+}
+
+.center-button-group {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.center-button-group button {
+  margin: 3px;
+}

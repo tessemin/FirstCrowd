@@ -31,10 +31,7 @@
             
             <div class="form-group" show-errors>
               <label for="skills{{$index}}">Skills (if more than one, seperate with a comma):</label>
-              <input type="text" id="skills{{$index}}" name="skills{{$index}}" class="form-control" ng-model="vm.experiences[$index].skills" placeholder="Skills" required>
-              <div ng-messages="vm.experienceForm['skills'+$index].$error" role="alert">
-                <p class="help-block error-text" ng-message="required">Skills are required. </p>
-              </div>
+              <input type="text" id="skills{{$index}}" name="skills{{$index}}" class="form-control" ng-model="vm.experiences[$index].skills" placeholder="Skills">
             </div>
             
             <div class="form-group" show-errors>
@@ -48,9 +45,8 @@
             
             <div class="form-group" show-errors>
               <label for="endDate{{$index}}">End Date:</label>
-              <input type="date" id="endDate{{$index}}" name="endDate{{$index}}" class="form-control" ng-model="vm.experiences[$index].endDate" placeholder="yyyy-MM-dd" required>
+              <input type="date" id="endDate{{$index}}" name="endDate{{$index}}" class="form-control" ng-model="vm.experiences[$index].endDate" placeholder="yyyy-MM-dd">
               <div ng-messages="vm.experienceForm['endDate'+$index].$error" role="alert">
-                <p class="help-block error-text" ng-message="required">End Date is required. </p>
                 <p class="help-block error-text" ng-message="date">Dates must be in yyyy-MM-dd format. </p>
               </div>
             </div>

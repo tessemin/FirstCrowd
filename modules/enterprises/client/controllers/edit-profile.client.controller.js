@@ -20,6 +20,98 @@
 
     autopopulateForms();
 
+    // UpdateProfile Enterprise
+    function saveProfile(isValid) {
+
+      if (!isValid) {
+        $scope.$broadcast('show-errors-check-validity', 'vm.enterpriseForm');
+        return false;
+      }
+
+      saveProfileItems();
+
+      EnterprisesService.updateProfileFromForm(vm.ret)
+        .then(onUpdateProfileSuccess)
+        .catch(onUpdateProfileError);
+
+    }
+
+    function onUpdateProfileSuccess(response) {
+      Authentication.user = response.user;
+      vm.email = response.user.email;
+      vm.phone = response.user.phone;
+      Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Profile updated!' });
+    }
+
+    function onUpdateProfileError(response) {
+      Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Update failed! Profile not updated!' });
+    }
+
+    function autopopulateForms() {
+      EnterprisesService.getEnterprise()
+        .then(function(response) {
+
+          var res = response.profile;
+
+          vm.companyName = res.companyName;
+          vm.URL = res.URL;
+          vm.employeeCount = res.employeeCount;
+          vm.yearEstablished = res.yearEstablished;
+          vm.description = res.description;
+          vm.companyName = res.companyName;
+          vm.zipCode = res.companyAddress.zipCode;
+          vm.city = res.companyAddress.city;
+          vm.state = res.companyAddress.state;
+          vm.classifications = res.classifications;
+          vm.streetAddress = res.companyAddress.streetAddress;
+          vm.country = countryByCode(res.companyAddress.country);
+          vm.countryOfBusiness = countryByCode(res.countryOfBusiness);
+
+          var user = Authentication.user;
+
+          vm.email = user.email;
+          vm.phone = user.phone;
+        });
+    }
+
+    function countryByCode(code) {
+      for (var i = 0; i < vm.countryList.length; i++) {
+        if (code === vm.countryList[i].code) {
+          return vm.countryList[i];
+        }
+      }
+      return '';
+    }
+
+    function saveProfileItems() {
+
+      var profile = {
+        companyAddress: {},
+        classifications: []
+      };
+
+      profile.companyName = vm.companyName;
+      profile.URL = vm.URL;
+      profile.classifications = vm.classifications;
+      profile.employeeCount = vm.employeeCount;
+      profile.yearEstablished = vm.yearEstablished;
+      profile.description = vm.description;
+      profile.companyName = vm.companyName;
+      profile.companyAddress.zipCode = vm.zipCode;
+      profile.companyAddress.city = vm.city;
+      profile.companyAddress.state = vm.state;
+      profile.companyAddress.streetAddress = vm.streetAddress;
+
+      profile.companyAddress.country = vm.country.code;
+      profile.countryOfBusiness = vm.countryOfBusiness.code;
+
+      vm.ret.email = vm.email;
+      vm.ret.phone = vm.phone;
+
+      vm.ret.profile = profile;
+
+    }
+    
     vm.classificationList = [
       {
         code: '0111',
@@ -1945,94 +2037,5 @@
       { name: 'Zambia', code: 'ZM' },
       { name: 'Zimbabwe', code: 'ZW' }
     ];
-
-    // UpdateProfile Enterprise
-    function saveProfile(isValid) {
-
-      if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'vm.enterpriseForm');
-        return false;
-      }
-
-      saveProfileItems();
-
-      EnterprisesService.updateProfileFromForm(vm.ret)
-        .then(onUpdateProfileSuccess)
-        .catch(onUpdateProfileError);
-
-    }
-
-    function onUpdateProfileSuccess(response) {
-      Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Profile updated!' });
-    }
-
-    function onUpdateProfileError(response) {
-      Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Update failed! Profile not updated!' });
-    }
-
-    function autopopulateForms() {
-      EnterprisesService.getEnterprise()
-        .then(function(response) {
-
-          var res = response.profile;
-
-          vm.companyName = res.companyName;
-          vm.URL = res.URL;
-          vm.employeeCount = res.employeeCount;
-          vm.yearEstablished = res.yearEstablished;
-          vm.description = res.description;
-          vm.companyName = res.companyName;
-          vm.zipCode = res.companyAddress.zipCode;
-          vm.city = res.companyAddress.city;
-          vm.state = res.companyAddress.state;
-          vm.classifications = res.classifications;
-          vm.streetAddress = res.companyAddress.streetAddress;
-          vm.country = countryByCode(res.companyAddress.country);
-          vm.countryOfBusiness = countryByCode(res.countryOfBusiness);
-
-          var user = Authentication.user;
-
-          vm.email = user.email;
-          vm.phone = user.phone;
-        });
-    }
-
-    function countryByCode(code) {
-      for (var i = 0; i < vm.countryList.length; i++) {
-        if (code === vm.countryList[i].code) {
-          return vm.countryList[i];
-        }
-      }
-      return '';
-    }
-
-    function saveProfileItems() {
-
-      var profile = {
-        companyAddress: {},
-        classifications: []
-      };
-
-      profile.companyName = vm.companyName;
-      profile.URL = vm.URL;
-      profile.classifications = vm.classifications;
-      profile.employeeCount = vm.employeeCount;
-      profile.yearEstablished = vm.yearEstablished;
-      profile.description = vm.description;
-      profile.companyName = vm.companyName;
-      profile.companyAddress.zipCode = vm.zipCode;
-      profile.companyAddress.city = vm.city;
-      profile.companyAddress.state = vm.state;
-      profile.companyAddress.streetAddress = vm.streetAddress;
-
-      profile.companyAddress.country = vm.country.code;
-      profile.countryOfBusiness = vm.countryOfBusiness.code;
-
-      vm.ret.email = vm.email;
-      vm.ret.phone = vm.phone;
-
-      vm.ret.profile = profile;
-
-    }
   }
 }());

@@ -15,7 +15,7 @@
             
             <div class="form-group" show-errors>
               <label for="firstUsed{{$index}}">First Used:</label>
-              <input type="text" id="firstUsed{{$index}}" name="firstUsed{{$index}}" class="form-control" ng-model="vm.skills[$index].firstUsed" placeholder="First Used" required>
+              <input type="date" id="firstUsed{{$index}}" name="firstUsed{{$index}}" class="form-control" ng-model="vm.skills[$index].firstUsed" placeholder="First Used" required>
               <div ng-messages="vm.skillsForm['firstUsed'+$index].$error" role="alert">
                 <p class="help-block error-text" ng-message="required">First Used is required. </p>
               </div>
@@ -23,10 +23,7 @@
             
             <div class="form-group" show-errors>
               <label for="lastUsed{{$index}}">Last Used:</label>
-              <input type="text" id="lastUsed{{$index}}" name="lastUsed{{$index}}" class="form-control" ng-model="vm.skills[$index].lastUsed" placeholder="Last Used" required>
-              <div ng-messages="vm.skillsForm['lastUsed'+$index].$error" role="alert">
-                <p class="help-block error-text" ng-message="required">Last Used is required. </p>
-              </div>
+              <input type="date" id="lastUsed{{$index}}" name="lastUsed{{$index}}" class="form-control" ng-model="vm.skills[$index].lastUsed" placeholder="Last Used">
             </div>
             
             <div class="form-group" show-errors>

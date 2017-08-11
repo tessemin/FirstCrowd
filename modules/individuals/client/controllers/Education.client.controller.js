@@ -18,19 +18,27 @@
     
     // Fill in the form with current saved data on pageload
     IndividualsService.getIndividual().$promise
-      .then(function(data) {
-        for (var i = 0; i < data.schools.length; ++i) {
-          addSchool();
-          // Most data needs no special effort
-          vm.schools[i] = data.schools[i];
-          // Dates are strings, and need to be Dates
-          vm.schools[i].startDate = new Date(data.schools[i].startDate);
-          vm.schools[i].endDate = new Date(data.schools[i].endDate);
-        }
+      .then(function(individual) {
+        formatSchool(individual)
       });
+      
+    function formatSchool(individual) {
+      individual.schools.forEach(function(school, i) {
+        addSchool();
+        // Most data needs no special effort
+        vm.schools[i]._id = school._id.toString();
+        vm.schools[i] = school;
+        // Dates are strings, and need to be Dates
+        if (school.startDate)
+          vm.schools[i].startDate = new Date(school.startDate);
+         if (school.endDate)
+          vm.schools[i].endDate = new Date(school.endDate);
+      });
+    }
     
     function addSchool() {
       vm.schools.push({
+        _id: null,
         schoolName: '',
         startDate: '',
         endDate: '',
@@ -47,6 +55,11 @@
     
     function removeSchool(schoolIndex) {
       if (schoolIndex < vm.schools.length) {
+        if (vm.schools[schoolIndex]._id) {
+          updateEducation(true, schoolIndex, true);
+        } else {
+          Notification.success({ message: 'School Removed!', title: '<i class="glyphicon glyphicon-ok"></i> School updated!' });
+        }
         vm.schools.splice(schoolIndex, 1);
       } else {
         Notification.error({ message: 'Error removing school: school index does not exist!' });
@@ -83,25 +96,28 @@
 
     
     // Update a user education
-    function updateEducation(isValid) {
-
+    function updateEducation(isValid, schoolIndex, deleteSchool) {
       if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'vm.educationForm');
+        $scope.$broadcast('show-errors-check-validity', 'vm.educationForm[$index]');
         Notification.error({ message: 'Check the form for errors!' });
         return false;
       }
-      
-      IndividualsService.updateEducationFromForm(vm.schools)
-        .then(onUpdateEducationSuccess)
-        .catch(onUpdateEducationError);
+      if (!deleteSchool)
+        deleteSchool = false;
+      IndividualsService.updateEducationFromForm({
+        school: vm.schools[schoolIndex],
+        delete: deleteSchool
+      })
+      .then(onUpdateEducationSuccess)
+      .catch(onUpdateEducationError);
     }
     
     function onUpdateEducationSuccess(response) {
-      Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Education updated!' });
+      Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> School updated!' });
     }
     
     function onUpdateEducationError(response) {
-      Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Update failed! Education not updated!' });
+      Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Error, School not updated!' });
     }
     
     vm.countries = [

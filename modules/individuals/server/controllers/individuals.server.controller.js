@@ -184,23 +184,66 @@ exports.updateCertification = function(req, res) {
  * Individual Education update
  */
 exports.updateEducation = function(req, res) {
-  if (req.body) {
+  if (req.body && req.body.school) {
     getIndividual(req, res, function(individual) {
-      individual.schools = req.body;
-      
-      individual.save(function (err) {
-        if (err) {
-          return res.status(422).send({
-            message: errorHandler.getErrorMessage(err)
+      var reqID = null;
+      if (req.body.school.hasOwnProperty('_id')) {
+        if (req.body.school._id)
+          reqID = req.body.school._id.toString();
+        delete req.body.school._id;
+      }
+      var individualUpdated = false;
+      if (req.body.delete && reqID) {
+        var deleteIndex = -1;
+        for (var deleteIndex = 0; deleteIndex < individual.schools.length; deleteIndex++) {
+          if (individual.schools[deleteIndex]._id.toString() === reqID)
+            break;
+        }
+        if (deleteIndex < individual.schools.length) {
+          individual.schools.splice(deleteIndex);
+          individualUpdated = true;
+        }
+      } else if (!req.body.delete) {
+        if (reqID) {
+          individual.schools = individual.schools.map(function(school) {
+            if (school._id.toString() === reqID) {
+              individualUpdated = true;
+              return req.body.school;
+            }
+            return school;
           });
         } else {
-          res.jsonp(individual);
+          individual.schools.push(req.body.school);
+          individualUpdated = true;
+        }
+      }
+      var message;
+      if (!individualUpdated) {
+        message = 'No changes sent!';
+        if (req.body.delete)
+          message = 'School Deleted Sucessfully!';
+        return res.status(200).send({
+          individual: individual | null,
+          message: message
+        });
+      }
+      individual.save(function (err, individual) {
+        if (err) {
+          return res.status(422).send({ message: errorHandler.getErrorMessage(err) });
+        } else {
+          message = 'School Update Sucessful!'
+          if (req.body.delete)
+            message = 'School Deleted Sucessfully!'
+          return res.status(200).send({
+            individual: individual,
+            message: message
+          });
         }
       });
     });
   } else {
-    return res.status(422).send({
-      message: errorHandler.getErrorMessage('Nothing to Update')
+    return res.status(200).send({
+      message: 'Nothing to Update'
     });
   }
 };
@@ -235,19 +278,63 @@ exports.updateSkill = function(req, res) {
   }
 };
 
+
+
+function setJobExperience(individual, jobExps) {
+  // transfers skills from work experience to skills
+  // this is not version control
+  while(individual.jobExperience.length > 0) {
+    individual.jobExperience.pop();
+  }
+  
+  if (jobExps && jobExps.length > 0) {
+    jobExps.forEach(function(jobExp) {
+      var jobIndex = null;
+      if (jobExp._id) {
+        individual.skills = individual.skills.reduce(function(skills, skill) {
+          if (skill.jobConnection && skill.jobConnection.toString() !== jobExp._id.toString())
+            skills.push(skill);
+          return skills;
+        }, []);
+        // for future version control
+/*         individual.jobExperience.forEach(function(indJob, index) {
+          if (indJob._id.toString() === jobExp._id.toString())
+            jobIndex = index;
+        }); */
+      }
+      if (jobExp.skills.trim())
+        jobExp.skills = jobExp.skills.split(',');
+      if (jobExp.skills && Array.isArray(jobExp.skills)) {
+        jobExp.skills = jobExp.skills.map(function(skill) {
+          individual.skills.push({
+            skill: skill,
+            firstUsed: jobExp.startDate,
+            lastUsed: jobExp.endDate,
+            locationLearned: jobExp.employer,
+            jobConnection: jobExp._id
+          });
+          return individual.skills[individual.skills.length - 1]._id;
+        });
+      } else {
+        jobExp.skills = [];
+      }
+      if (jobIndex)
+        individual.jobExperience[jobIndex] = jobExp;
+      else 
+        individual.jobExperience.push(jobExp);
+    });
+  }
+  return individual
+}
+
 /**
  * Individual Experience update
  */
 exports.updateExperience = function(req, res) {
   if (req.body) {
     getIndividual(req, res, function(individual) {
-      for (var i in req.body) {
-        if (req.body[i].skills) {
-          req.body[i].skills = req.body[i].skills.split(',');
-        }
-      }
-      individual.jobExperience = req.body;
       
+      individual = setJobExperience(individual, req.body)
       individual.save(function (err) {
         if (err) {
           return res.status(422).send({
@@ -274,25 +361,30 @@ exports.updateBio = function(req, res) {
       let user = new User(req.user);
       individual.bio = req.body;
       user = _.extend(user, _.pick(req.body, whitelistedFields));
+      if (req.body.firstName || req.body.lastName)
+        user.displayName = user.firstName + ' ' + user.lastName;
       
       req.user = user;
       
-      individual.save(function (err) {
+      individual.save(function (err, individual) {
         if (err) {
           return res.status(422).send({
             message: errorHandler.getErrorMessage(err)
           });
         }
-      });
-      
-      user.save(function (err) {
-        if (err) {
-          return res.status(422).send({
-            message: errorHandler.getErrorMessage(err)
-          });
-        } else {
-          coreController.renderIndex(req, res);
-        }
+        user.save(function (err, user) {
+          if (err) {
+            return res.status(422).send({
+              message: errorHandler.getErrorMessage(err)
+            });
+          } else {
+            res.status(200).send({
+              user: user,
+              individual: individual,
+              message: 'Bio updated successfuly!'
+            });
+          }
+        });
       });
     });
   } else {
@@ -321,9 +413,23 @@ exports.getIndividual = function(req, res) {
         },
         schools: individual.schools,
         certification: individual.certification,
-        jobExperience: individual.jobExperience,
+        jobExperience: [],
         skills: individual.skills
       };
+      var experiences = JSON.parse(JSON.stringify(individual.jobExperience));
+      experiences = experiences.map(function(exp) {
+        var returnSkills = [];
+        exp.skills.forEach(function(skill) {
+          if (skill)
+            individual.skills.forEach(function(trueSkill) {
+              if (trueSkill._id && trueSkill._id.toString() === skill.toString())
+                returnSkills.push(trueSkill.skill)
+            });
+        });
+        exp.skills = returnSkills;
+        return exp;
+      });
+      safeIndividualObject.jobExperience = experiences;
     }
     res.json(safeIndividualObject || null);
   });

@@ -17,15 +17,19 @@
     IndividualsService.getIndividual().$promise
       .then(function(data) {
         var work = data.jobExperience;
-        for (var i = 0; i < work.length; ++i) {
+        data.jobExperience.forEach(function (work, i) {
           addExperience();
-          vm.experiences[i].employer = work[i].employer;
-          vm.experiences[i].jobTitle = work[i].jobTitle;
-          vm.experiences[i].description = work[i].description;
-          vm.experiences[i].skills = work[i].skills.join(', ');
-          vm.experiences[i].startDate = new Date(work[i].startDate);
-          vm.experiences[i].endDate = new Date(work[i].endDate);
-        }
+          if (work._id)
+            vm.experiences[i]._id = work._id.toString();
+          vm.experiences[i].employer = work.employer;
+          vm.experiences[i].jobTitle = work.jobTitle;
+          vm.experiences[i].description = work.description;
+          vm.experiences[i].skills = work.skills.join(', ');
+          if (work.startDate)
+            vm.experiences[i].startDate = new Date(work.startDate);
+          if (work.endDate)
+            vm.experiences[i].endDate = new Date(work.endDate);
+        })
       });
 
     function addExperience() {
