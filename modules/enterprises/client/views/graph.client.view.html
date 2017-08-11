@@ -31,35 +31,68 @@
             <span ng-bind="vm.header"></span>
             <span ng-model="vm.selected">{{vm.selected.companyName}}</span>
           </h3>
-          <div class="side-list col-xs-12">
+
+          <div ng-show="vm.list" class="side-list">
             <div ng-repeat="item in vm.list" class="side-list-item">
               <div class="spacer"></div>
               <img ng-src="{{item.img}}" alt="Company Logo" class="side-logo header-profile-image" src="/modules/users/client/img/profile/default.png">
-              hi {{item.companyName}}
+              <h4>{{item.profile.companyName}}:</h4> {{item.profile.description}}
             </div>
           </div>
-          <div class="see-all col-xs-12">
-            Click <a>here</a> to see all <span ng-bind="vm.head"></span>
+
+          <div ng-show="vm.demands" class="side-list">
+            <div ng-repeat="item in vm.demands" class="side-list-item">
+              <div class="spacer"></div>
+              <!-- <img ng-src="{{item.img}}" alt="Company Logo" class="side-logo header-profile-image" src="/modules/users/client/img/profile/default.png"> -->
+               {{item.quantity}} of {{item.productName}}
+            </div>
           </div>
+
+          <div ng-show="vm.products" class="side-list">
+            <h4>
+              Products
+            </h4>
+            <div ng-repeat="item in vm.products" class="side-list-item">
+              <div class="spacer"></div>
+              {{item.productName}}:
+              for the price of ${{item.price}}, described as
+              {{item.description}}
+              <!-- {{item.payment}} -->
+            </div>
+
+            <h4>
+              Services
+            </h4>
+            <div ng-repeat="item in vm.services" class="side-list-item">
+              <div class="spacer"></div>
+              {{item.productName}}:
+              for the price of ${{item.price}}, described as
+              {{item.description}}
+              <!-- {{item.payment}} -->
+            </div>
+          </div>
+
         </div>
-      </div>
 
-      <!-- <img ng-src="{{vm.selected.img}}" alt="Company Logo" class="side-logo header-profile-image" src="/modules/users/client/img/profile/default.png"> -->
-      <!-- <h3 ng-bind="vm.selected.companyName"></h3> -->
-      <!-- <span>Company URL: <a href="http://{{vm.selected.URL}}">{{vm.selected.URL}}</a></span> -->
-      <!-- <br> -->
-      <!-- <br> -->
-      <!-- <br> -->
-      <!-- <br> -->
-      <!-- <br> -->
-      <!-- <div ng-repeat="item in vm.text"> -->
-      <!-- <span class="glyphicon" ng-class="{'glyphicon-envelope': $index === 0, 'glyphicon-glass': $index === 1, 'glyphicon-home': $index === 2, 'glyphicon-signal': $index === 3 }"></span> -->
-      <!-- {{item}} -->
-      <!-- </div> -->
-    </div>
 
-    <div ng-click="vm.toggleSidebar()" class="btn-default btn toggle-side" ng-class="{'side-active': vm.sidebar}">
-      <span class="glyphicon" ng-class="{'glyphicon-triangle-left': vm.sidebar, 'glyphicon-triangle-right': !vm.sidebar}"></span>
-    </div>
+
+
+  <!-- <img ng-src="{{vm.selected.img}}" alt="Company Logo" class="side-logo header-profile-image" src="/modules/users/client/img/profile/default.png"> -->
+  <!-- <h3 ng-bind="vm.selected.companyName"></h3> -->
+  <!-- <span>Company URL: <a href="http://{{vm.selected.URL}}">{{vm.selected.URL}}</a></span> -->
+  <!-- <br> -->
+  <!-- <br> -->
+  <!-- <br> -->
+  <!-- <br> -->
+  <!-- <br> -->
+  <!-- <div ng-repeat="item in vm.text"> -->
+  <!-- <span class="glyphicon" ng-class="{'glyphicon-envelope': $index === 0, 'glyphicon-glass': $index === 1, 'glyphicon-home': $index === 2, 'glyphicon-signal': $index === 3 }"></span> -->
+  <!-- {{item}} -->
+  <!-- </div> -->
+  </div>
+
+  <div ng-click="vm.toggleSidebar()" class="btn-default btn toggle-side" ng-class="{'side-active': vm.sidebar}">
+    <span class="glyphicon" ng-class="{'glyphicon-triangle-left': vm.sidebar, 'glyphicon-triangle-right': !vm.sidebar}"></span>
+  </div>
   </div>
 </section>

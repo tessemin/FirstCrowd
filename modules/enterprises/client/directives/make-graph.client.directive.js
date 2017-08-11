@@ -24,6 +24,7 @@
         var zoomListener, group;
 
         d3().then(function(d3) {
+
           var header = getBounds(d3.select('header')._groups[0][0]);
           var sideHeight = getBounds(d3.select('.form-group')._groups[0][0]);
           var footer = getBounds(d3.select('footer')._groups[0][0]);
@@ -34,8 +35,7 @@
           d3.select('.display').style('height', function() {
             return (height - sideHeight.offsetTop - header.offsetHeight - footer.offsetHeight) + 'px';
           });
-          d3.select('.side-list').style('min-height', function() {
-            // return 50 + 'px';
+          d3.select('.side-list').style('max-height', function() {
             return (height - header.offsetHeight
                     - sideHeight.offsetTop
                     - sideHeight.offsetHeight

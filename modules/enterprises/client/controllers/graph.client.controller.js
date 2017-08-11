@@ -15,6 +15,9 @@
     vm.query = '';
     vm.text = [];
     vm.list = [];
+    vm.demands = [];
+    vm.products = [];
+    vm.service = [];
     vm.searchResults = [];
     vm.header = 'Header!';
     vm.head = 'Head';
@@ -48,6 +51,12 @@
     function viewCatalog(obj) {
 
       vm.selected = obj.selected;
+      vm.sidebar = true;
+      vm.head = 'Catalog';
+      vm.header = 'Products and Services by ';
+
+      vm.list = [];
+      vm.demands = null;
 
       if (vm.selected.hasOwnProperty('profile')) {
         vm.selected.companyName = vm.selected.profile.companyName;
@@ -58,12 +67,15 @@
         vm.selected.description = vm.selected.profile.description;
       }
 
+      var promises = [];
+      promises.push(EnterprisesService.getServices({ enterpriseId: obj.selected._id }));
+      promises.push(EnterprisesService.getProducts({ enterpriseId: obj.selected._id }));
 
-      EnterprisesService.getServices({ enterpriseId: obj.selected._id }).then(function(res) {
-        // vm.list = res.
-      });
-      EnterprisesService.getProducts({ enterpriseId: obj.selected._id }).then(function(res) {
-        // vm.list = res.
+      Promise.all(promises).then(function(res) {
+        $scope.$apply(
+          vm.services = res[0].services,
+          vm.products = res[1].products
+        );
       });
     }
     function viewDemands(obj) {
@@ -83,8 +95,12 @@
       vm.head = 'Demands';
       vm.header = 'Demands from';
 
+      vm.services = null;
+      vm.products = null;
+      vm.list = [];
+
       EnterprisesService.getDemands({ enterpriseId: obj.selected._id }).then(function(res) {
-        vm.list = res.demands;
+        vm.demands = res.demands;
       });
     }
 
@@ -103,6 +119,10 @@
       vm.sidebar = true;
       vm.head = 'Suppliers';
       vm.header = 'Suppliers for ';
+      vm.demands = null;
+      vm.services = null;
+      vm.products = null;
+
       EnterprisesService.getSuppliers({ enterpriseId: obj.selected._id }).then(function(res) {
         vm.list = res.suppliers;
       });
@@ -123,6 +143,10 @@
       vm.sidebar = true;
       vm.head = 'Customers';
       vm.header = 'Customers for ';
+      vm.demands = null;
+      vm.services = null;
+      vm.products = null;
+
       EnterprisesService.getCustomers({ enterpriseId: obj.selected._id }).then(function(res) {
         vm.list = res.customers;
       });
@@ -142,6 +166,10 @@
       vm.sidebar = true;
       vm.head = 'Competitors';
       vm.header = 'Competitors for ';
+      vm.demands = null;
+      vm.services = null;
+      vm.products = null;
+
       EnterprisesService.getCompetitors({ enterpriseId: obj.selected._id }).then(function(res) {
         vm.list = res.competitors;
       });
