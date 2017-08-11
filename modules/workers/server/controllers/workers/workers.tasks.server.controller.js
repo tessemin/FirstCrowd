@@ -150,9 +150,9 @@ exports.activeTask = {
         typeObj.save(function(err) {
           if (err)
             return res.status(422).send({ message: errorHandler.getErrorMessage(err) });
-          task.save(function(err, task) {
-            if (err)
-              return res.status(422).send({ message: errorHandler.getErrorMessage(err) });
+          updateTotalTaskProgress(task, function (percent) {
+            if (percent.error)
+              return res.status(422).send(percent.error);
             sendWorkerMessage('Worker: ' + hashObjId(typeObj._id) + ' has quit this task.', task._id, typeObj._id, null, function (err, message) {
               if (err)
                 return res.status(422).send({
