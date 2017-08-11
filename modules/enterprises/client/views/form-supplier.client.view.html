@@ -1,10 +1,14 @@
 <section class="row">
+  <div class="col-md-12 center-form">
+    <input type="button" class="btn btn-success" value="New Competitor +" ng-click="vm.addPartner()">
+    <div><br></div>
+  </div>
   <div ng-repeat="partner in vm.partners track by $index">
     <div class="col-md-6 center-form">
       <form name="vm.supplierForm[$index]" ng-submit="vm.updatePartner(vm.supplierForm[$index].$valid, $index)">
         <div class="form-group" show-errors>
           <label for="companyName">Company Name</label>
-          <input type="text" id="companyName" name="companyName" class="form-control" ng-model="partner.companyName" placeholder="Company Name" required autofocus>
+          <input type="text" id="companyName" name="companyName" class="form-control" ng-model="partner.companyName" placeholder="Company Name" required>
           <div ng-messages="vm.supplierForm[$index].companyName.$error" role="alert">
             <p class="help-block error-text" ng-message="required">Company name is required.</p>
           </div>
@@ -26,7 +30,9 @@
       <h5 class="bold-font">No Suppliers Found</h5>
     </div>
     <hr>
-    <input type="button" class="btn btn-success" value="New Supplier +" ng-click="vm.addPartner()">
-    <div><br></div>
+    <div ng-if="vm.partners.length >= 5">
+      <input type="button" class="btn btn-success" value="New Supplier +" ng-click="vm.addPartner('push')">
+      <div><br></div>
+    </div>
   </div>
 </section>
