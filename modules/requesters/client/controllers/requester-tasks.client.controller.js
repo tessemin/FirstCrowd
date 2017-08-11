@@ -184,8 +184,6 @@
     };
 
     vm.deleteTaskConfirmed = function() {
-      console.log('delete task with _id of ' + vm.taskForDeletion);
-      console.log('task is at index ' + getIndexFromTaskId(vm.taskForDeletion));
       RequestersService.deleteTask({ taskId: vm.taskForDeletion })
         .then(function(response) {
           var index = getIndexFromTaskId(vm.taskForDeletion);

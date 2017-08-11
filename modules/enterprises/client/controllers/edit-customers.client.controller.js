@@ -10,74 +10,54 @@
 
   function EnterpriseCustomerController ($scope, $state, $window, Authentication, EnterprisesService, Notification) {
     var vm = this;
+    vm.partners = [];
+    vm.updatePartner = updatePartner;
+    vm.deletePartner = deletePartner;
 
-    vm.selected = {};
-    vm.selectedURL = null;
-    vm.selectedCompany = null;
-    vm.selectedId = null;
-
-    vm.saveCustomer = saveCustomer;
-    vm.edit = edit;
-    vm.delete = deleteItem;
-    vm.cancel = cancel;
-
-    createList();
-
-    function edit(item) {
-      vm.company = item.companyName;
-      vm.selectedId = item._id;
-      vm.selectedURL = item.URL;
-      vm.selectedCompany = item.companyName;
+    function deletePartner(index) {
+      if (vm.partners[index]._id)
+        updatePartner(true, index, true);
+      else
+        Notification.success({ message: 'customer deleted!', title: '<i class="glyphicon glyphicon-ok"></i> Customers updated!' });
+      vm.partners.splice(index, 1);
     }
-
-    function deleteItem(item) {
-      item.companyName = '';
-      item.URL = '';
-
-      EnterprisesService.updateCustomersFromForm(item)
-        .then(onUpdateCustomersSuccess)
-        .catch(onUpdateCustomersError);
-    }
-
-    function cancel() {
-      vm.selectedId = null;
-      vm.selectedURL = null;
-      vm.selectedCompany = null;
+    
+    vm.addPartner = function() {
+      vm.partners.push({
+        URL: '',
+        companyName: ''
+      });
     }
 
     // UpdateCustomers Enterprise
-    function saveCustomer(isValid) {
-
-      vm.selected._id = vm.selectedId;
-      vm.selected.URL = vm.selectedURL;
-      vm.selected.companyName = vm.selectedCompany;
-
+    function updatePartner(isValid, index, deleteItem) {
+      if (!deleteItem)
+        deleteItem = false;
       if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'vm.customerForm');
+        $scope.$broadcast('show-errors-check-validity', 'vm.customersForm.$index');
         return false;
       }
-
-      EnterprisesService.updateCustomersFromForm(vm.selected)
-        .then(onUpdateCustomersSuccess)
+      EnterprisesService.updateCustomersFromForm({
+        customer: vm.partners[index],
+        delete: deleteItem
+        })
+        .then(function(response) {
+          if (!deleteItem)
+            vm.partners[index] = response.customer;
+          Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> Customers updated!' });
+        })
         .catch(onUpdateCustomersError);
-    }
-
-    function onUpdateCustomersSuccess(response) {
-      Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Customers updated!' });
-      createList();
-      cancel();
     }
 
     function onUpdateCustomersError(response) {
       Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Update failed! Customers not updated!' });
-      createList();
     }
 
-    function createList() {
+    (function createList() {
       EnterprisesService.getEnterprise()
         .then(function(response) {
-          vm.customer = response.partners.customer;
+          vm.partners = response.partners.customer;
         });
-    }
+    }())
   }
 }());

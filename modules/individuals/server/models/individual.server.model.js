@@ -176,11 +176,10 @@ var IndividualUserSchema = new Schema({
       default: '',
       trim: true
     },
-    skills: [{
-      type: String,
-      default: '',
-      trim: true
-    }],
+    skills: {
+      type: [ Schema.Types.ObjectId ],
+      default: []
+    },
     startDate: {
       type: Date,
       default: null,
@@ -393,38 +392,5 @@ var IndividualUserSchema = new Schema({
     }]
   }
 });
-
-IndividualUserSchema.pre('save', function (next) {
-  // transfers skills from work experience to skills
-  if (this.jobExperience) {
-    if (this.skills.length > 0) {
-      // removes all job skills
-      for (var skill = 0; skill < this.skills.length; skill++) {
-        if (this.skills[skill].jobConnection) {
-          this.skills.splice(skill--, 1);
-        }
-      }
-    }
-    // adds the skills from job experience into skills
-    for (var exp = 0; exp < this.jobExperience.length; exp++) {
-      if (this.jobExperience[exp].skills) {
-        for (var jobSkill = 0; jobSkill < this.jobExperience[exp].skills.length; jobSkill++) {
-          if (this.jobExperience[exp].skills[jobSkill]) {
-            var newSkill = {
-              skill: this.jobExperience[exp].skills[jobSkill],
-              firstUsed: this.jobExperience[exp].startDate,
-              lastUsed: this.jobExperience[exp].endDate,
-              locationLearned: [this.jobExperience[exp].employer],
-              jobConnection: this.jobExperience[exp]._id
-            };
-            this.skills.push(newSkill);
-          }
-        }
-      }
-    }
-  }
-  next();
-});
-
 
 mongoose.model('Individual', IndividualUserSchema);

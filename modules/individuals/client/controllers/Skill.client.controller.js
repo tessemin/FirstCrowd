@@ -20,18 +20,14 @@
         var skills = data.skills;
         for (var i = 0; i < skills.length; ++i) {
           addSkill();
+          vm.skills[i] = skills[i];
           vm.skills[i].skill = skills[i].skill;
-          var date = new Date(skills[i].firstUsed);
-          vm.skills[i].firstUsed = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
-          date = new Date(skills[i].lastUsed);
-          vm.skills[i].lastUsed = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
-          vm.skills[i].locationLearned = '';
-          if (skills[i].locationLearned.length > 0) {
-            vm.skills[i].locationLearned = skills[i].locationLearned[0];
-            for (var j = 1; j < skills[i].locationLearned.length; ++j) {
-              vm.skills[i].locationLearned += (', ' + skills[i].locationLearned[j]);
-            }
-          }
+          if (skills[i].firstUsed)
+            vm.skills[i].firstUsed = new Date(skills[i].firstUsed);
+          if (skills[i].lastUsed)
+            vm.skills[i].lastUsed = new Date(skills[i].lastUsed);
+          if (skills[i].locationLearned.length > 0)
+            vm.skills[i].locationLearned = skills[i].locationLearned.join(', ');
         }
       });
     

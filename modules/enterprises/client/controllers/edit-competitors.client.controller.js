@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  // Enterprises controller
+  // EnterpriseCompetitor controller
   angular
     .module('enterprises')
     .controller('EnterpriseCompetitorController', EnterpriseCompetitorController);
@@ -10,74 +10,54 @@
 
   function EnterpriseCompetitorController ($scope, $state, $window, Authentication, EnterprisesService, Notification) {
     var vm = this;
+    vm.partners = [];
+    vm.updatePartner = updatePartner;
+    vm.deletePartner = deletePartner;
 
-    vm.selected = {};
-    vm.selectedURL = null;
-    vm.selectedCompany = null;
-    vm.selectedId = null;
-
-    vm.saveCompetitor = saveCompetitor;
-    vm.edit = edit;
-    vm.delete = deleteItem;
-    vm.cancel = cancel;
-
-    createList();
-
-    function edit(item) {
-      vm.company = item.companyName;
-      vm.selectedId = item._id;
-      vm.selectedURL = item.URL;
-      vm.selectedCompany = item.companyName;
+    function deletePartner(index) {
+      if (vm.partners[index]._id)
+        updatePartner(true, index, true);
+      else
+        Notification.success({ message: 'competitor deleted!', title: '<i class="glyphicon glyphicon-ok"></i> Competitors updated!' });
+      vm.partners.splice(index, 1);
+    }
+    
+    vm.addPartner = function() {
+      vm.partners.push({
+        URL: '',
+        companyName: ''
+      });
     }
 
-    function deleteItem(item) {
-      item.companyName = '';
-      item.URL = '';
-
-      EnterprisesService.updateCompetitorsFromForm(item)
-        .then(onUpdateCompetitorsSuccess)
-        .catch(onUpdateCompetitorsError);
-    }
-
-    function cancel() {
-      vm.selectedId = null;
-      vm.selectedURL = null;
-      vm.selectedCompany = null;
-    }
-
-    // UpdateCompetitor Enterprise
-    function saveCompetitor(isValid) {
-
-      vm.selected._id = vm.selectedId;
-      vm.selected.URL = vm.selectedURL;
-      vm.selected.companyName = vm.selectedCompany;
-
+    // UpdateCompetitors Enterprise
+    function updatePartner(isValid, index, deleteItem) {
+      if (!deleteItem)
+        deleteItem = false;
       if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'vm.competitorForm');
+        $scope.$broadcast('show-errors-check-validity', 'vm.competitorsForm.$index');
         return false;
       }
-
-      EnterprisesService.updateCompetitorsFromForm(vm.selected)
-        .then(onUpdateCompetitorsSuccess)
+      EnterprisesService.updateCompetitorsFromForm({
+        competitor: vm.partners[index],
+        delete: deleteItem
+        })
+        .then(function(response) {
+          if (!deleteItem)
+            vm.partners[index] = response.competitor;
+          Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> Competitors updated!' });
+        })
         .catch(onUpdateCompetitorsError);
-    }
-
-    function onUpdateCompetitorsSuccess(response) {
-      Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Competitors updated!' });
-      createList();
-      cancel();
     }
 
     function onUpdateCompetitorsError(response) {
       Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Update failed! Competitors not updated!' });
-      createList();
     }
 
-    function createList() {
+    (function createList() {
       EnterprisesService.getEnterprise()
         .then(function(response) {
-          vm.competitor = response.partners.competitor;
+          vm.partners = response.partners.competitor;
         });
-    }
+    }())
   }
 }());

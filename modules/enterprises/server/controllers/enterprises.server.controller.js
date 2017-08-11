@@ -90,19 +90,23 @@ exports.updateProfile = function(req, res) {
       delete req.body.phone;
       enterprise.profile = req.body.profile;
 
-      enterprise.save(function (err) {
+      enterprise.save(function (err, enterprise) {
         if (err) {
           return res.status(422).send({
             message: errorHandler.getErrorMessage(err)
           });
         } else {
-          user.save(function (err) {
+          user.save(function (err, user) {
             if (err) {
               return res.status(422).send({
                 message: errorHandler.getErrorMessage(err)
               });
             } else {
-              coreController.renderIndex(req, res);
+              return res.status(200).send({
+                user: user,
+                enterprise: enterprise,
+                message: 'Profile Update!'
+              });
             }
           });
         }
@@ -117,169 +121,84 @@ exports.updateProfile = function(req, res) {
   }
 };
 
-/**
- * update Enterprise Suppliers
- */
-exports.updateSuppliers = function(req, res) {
+function findIdInArray(array, Id) {
+  Id = Id.toString();
+  for (var i = 0; i < array.length; i++) {
+    if (array[i]._id && array[i]._id.toString() === Id) {
+      break;
+    }
+  }
+  return (i < array.length) ? i : -1;
+}
+
+function updatePartner(req, res, key) {
   if (req.body) {
     getEnterprise(req, res, function (enterprise) {
-      if (req.body._id) { // update
-        if (enterprise.partners.supplier) {
-          var brakeout = false;
-          for (var index = 0; index < enterprise.partners.supplier.length && !brakeout; index++) {
-            if (enterprise.partners.supplier[index]._id.toString() === req.body._id.toString()) {
-              if (req.body.URL === '' && req.body.companyName === '') {
-                enterprise.partners.supplier.splice(index, 1);
-              } else {
-                enterprise.partners.supplier[index] = req.body;
-              }
-              brakeout = true;
-            }
-          }
-          if (!brakeout) {
-            return res.status(422).send({
-              message: errorHandler.getErrorMessage('No enterprise suppliers with that ID found')
-            });
+      var partner = req.body[key],
+        entChanged = false,
+        message = '',
+        index = -1;
+      if (req.body.delete && partner._id) {
+        index = findIdInArray(enterprise.partners[key], partner._id);
+        if (index >= 0) {
+          enterprise.partners[key].splice(index, 1);
+          entChanged = true;
+        }
+      } else if (!req.body.delete) {
+        if (partner._id) {
+          index = findIdInArray(enterprise.partners[key], partner._id);
+          if (index >= 0) {
+            enterprise.partners[key][index] = partner;
+            entChanged = true;
           }
         } else {
-          return res.status(422).send({
-            message: errorHandler.getErrorMessage('No enterprise suppliers, can\'t find by ID')
-          });
-        }
-      } else { // make new Suppliers
-        if (enterprise.partners.supplier) { // supplier is not empty
-          delete req.body._id;
-          enterprise.partners.supplier[enterprise.partners.supplier.length] = req.body;
-        } else { // supplier is empty
-          delete req.body._id;
-          enterprise.partners.supplier[0] = req.body;
+          enterprise.partners[key].push(partner);
+          index = enterprise.partners[key].length - 1;
+          entChanged = true;
         }
       }
-      enterprise.save(function (err) {
+      enterprise.save(function (err, enterprise) {
         if (err) {
           return res.status(422).send({
             message: errorHandler.getErrorMessage(err)
           });
         } else {
-          res.jsonp(enterprise);
+          message = key + ' updated!';
+          if (req.body.delete)
+            message = key + ' deleted!';
+          var obj = {};
+          obj.message = message;
+          obj[key] = enterprise.partners[key][index];
+          return res.status(200).send(obj);
         }
       });
     });
   } else {
-    return res.status(422).send({
+    return res.status(200).send({
       message: errorHandler.getErrorMessage('Nothing to Update')
     });
   }
+}
+
+/**
+ * update Enterprise Suppliers
+ */
+exports.updateSuppliers = function(req, res) {
+  updatePartner(req, res, 'supplier');
 };
 
 /**
  * update Enterprise Competitors
  */
 exports.updateCompetitors = function(req, res) {
-  if (req.body) {
-    getEnterprise(req, res, function (enterprise) {
-      if (req.body._id) { // update
-        if (enterprise.partners.competitor) {
-          var brakeout = false;
-          for (var index = 0; index < enterprise.partners.competitor.length && !brakeout; index++) {
-            if (enterprise.partners.competitor[index]._id.toString() === req.body._id.toString()) {
-              if (req.body.URL === '' && req.body.companyName === '') {
-                enterprise.partners.competitor.splice(index, 1);
-              } else {
-                enterprise.partners.competitor[index] = req.body;
-              }
-              brakeout = true;
-            }
-          }
-          if (!brakeout) {
-            return res.status(422).send({
-              message: errorHandler.getErrorMessage('No enterprise competitors with that ID found')
-            });
-          }
-        } else {
-          return res.status(422).send({
-            message: errorHandler.getErrorMessage('No enterprise competitors, can\'t find by ID')
-          });
-        }
-      } else { // make new Competitors
-        if (enterprise.partners.competitor) { // competitor is not empty
-          delete req.body._id;
-          enterprise.partners.competitor[enterprise.partners.competitor.length] = req.body;
-        } else { // competitor is empty
-          delete req.body._id;
-          enterprise.partners.competitor[0] = req.body;
-        }
-      }
-      enterprise.save(function (err) {
-        if (err) {
-          return res.status(422).send({
-            message: errorHandler.getErrorMessage(err)
-          });
-        } else {
-          res.jsonp(enterprise);
-        }
-      });
-    });
-  } else {
-    return res.status(422).send({
-      message: errorHandler.getErrorMessage('Nothing to Update')
-    });
-  }
+  updatePartner(req, res, 'competitor');
 };
 
 /**
  * update Enterprise Customers
  */
 exports.updateCustomers = function(req, res) {
-  if (req.body) {
-    getEnterprise(req, res, function (enterprise) {
-      if (req.body._id) { // update
-        if (enterprise.partners.customer) {
-          var brakeout = false;
-          for (var index = 0; index < enterprise.partners.customer.length && !brakeout; index++) {
-            if (enterprise.partners.customer[index]._id.toString() === req.body._id.toString()) {
-              if (req.body.URL === '' && req.body.companyName === '') { // delete
-                enterprise.partners.customer.splice(index, 1);
-              } else { // update
-                enterprise.partners.customer[index] = req.body;
-              }
-              brakeout = true;
-            }
-          }
-          if (!brakeout) {
-            return res.status(422).send({
-              message: errorHandler.getErrorMessage('No enterprise customers with that ID found')
-            });
-          }
-        } else {
-          return res.status(422).send({
-            message: errorHandler.getErrorMessage('No enterprise customers, can\'t find by ID')
-          });
-        }
-      } else { // make new Competitors
-        if (enterprise.partners.customer) { // customer is not empty
-          delete req.body._id;
-          enterprise.partners.customer[enterprise.partners.customer.length] = req.body;
-        } else { // customersis empty
-          delete req.body._id;
-          enterprise.partners.customer[0] = req.body;
-        }
-      }
-      enterprise.save(function (err) {
-        if (err) {
-          return res.status(422).send({
-            message: errorHandler.getErrorMessage(err)
-          });
-        } else {
-          res.jsonp(enterprise);
-        }
-      });
-    });
-  } else {
-    return res.status(422).send({
-      message: errorHandler.getErrorMessage('Nothing to Update')
-    });
-  }
+  updatePartner(req, res, 'customer');
 };
 
 exports.partners = {

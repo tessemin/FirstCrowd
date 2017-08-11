@@ -32,17 +32,24 @@
     };
     vm.updateBio = updateBio;
     
+    vm.loadBio = function(individual) {
+      var bio = individual.bio;
+      if (bio.dateOfBirth) {
+        var date = new Date(bio.dateOfBirth);
+        vm.bio.dateOfBirth = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+      }
+      vm.bio.sex = bio.sex;
+      vm.bio.profession = bio.profession.split(',');
+      vm.bio.address = bio.address;
+    };
+    
     // Populate bio data
     IndividualsService.getIndividual().$promise
-      .then(function(data) {
-        var bio = data.bio;
-        if (bio.dateOfBirth) {
-          var date = new Date(bio.dateOfBirth);
-          vm.bio.dateOfBirth = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
-        }
-        vm.bio.sex = bio.sex;
-        vm.bio.profession = bio.profession.split(',');
-        vm.bio.address = bio.address;
+      .then(function(individual) {
+        vm.loadBio(individual);
+      })
+      .catch(function(res) {
+        Notification.error({ message: res.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Error getting individual information!' });
       });
       
     var user = Authentication.user;
@@ -65,7 +72,11 @@
     }
     
     function onUpdateBioSuccess(response) {
-      Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Bio updated!' });
+      if (response.user)
+        Authentication.user = response.user;
+      if (response.individual)
+        vm.loadBio(response.individual);
+      Notification.success({ message: response.message, title:'<i class="glyphicon glyphicon-ok"></i> Bio updated!' });
     }
     
     function onUpdateBioError(response) {

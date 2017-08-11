@@ -10,74 +10,54 @@
 
   function EnterpriseSupplierController ($scope, $state, $window, Authentication, EnterprisesService, Notification) {
     var vm = this;
+    vm.partners = [];
+    vm.updatePartner = updatePartner;
+    vm.deletePartner = deletePartner;
 
-    vm.selected = {};
-    vm.selectedURL = null;
-    vm.selectedCompany = null;
-    vm.selectedId = null;
-
-    vm.saveSupplier = saveSupplier;
-    vm.edit = edit;
-    vm.cancel = cancel;
-    vm.delete = deleteItem;
-
-    createList();
-
-    function edit(item) {
-      vm.company = item.companyName;
-      vm.selectedId = item._id;
-      vm.selectedURL = item.URL;
-      vm.selectedCompany = item.companyName;
+    function deletePartner(index) {
+      if (vm.partners[index]._id)
+        updatePartner(true, index, true);
+      else
+        Notification.success({ message: 'supplier deleted!', title: '<i class="glyphicon glyphicon-ok"></i> Suppliers updated!' });
+      vm.partners.splice(index, 1);
     }
-
-    function deleteItem(item) {
-      item.companyName = '';
-      item.URL = '';
-
-      EnterprisesService.updateSuppliersFromForm(item)
-        .then(onUpdateSuppliersSuccess)
-        .catch(onUpdateSuppliersError);
-    }
-
-    function cancel() {
-      vm.selectedId = null;
-      vm.selectedURL = null;
-      vm.selectedCompany = null;
+    
+    vm.addPartner = function() {
+      vm.partners.push({
+        URL: '',
+        companyName: ''
+      });
     }
 
     // UpdateSuppliers Enterprise
-    function saveSupplier(isValid) {
-
-      vm.selected._id = vm.selectedId;
-      vm.selected.URL = vm.selectedURL;
-      vm.selected.companyName = vm.selectedCompany;
-
+    function updatePartner(isValid, index, deleteItem) {
+      if (!deleteItem)
+        deleteItem = false;
       if (!isValid) {
-        $scope.$broadcast('show-errors-check-validity', 'vm.suppliersForm');
+        $scope.$broadcast('show-errors-check-validity', 'vm.suppliersForm.$index');
         return false;
       }
-
-      EnterprisesService.updateSuppliersFromForm(vm.selected)
-        .then(onUpdateSuppliersSuccess)
+      EnterprisesService.updateSuppliersFromForm({
+        supplier: vm.partners[index],
+        delete: deleteItem
+        })
+        .then(function(response) {
+          if (!deleteItem)
+            vm.partners[index] = response.supplier;
+          Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> Suppliers updated!' });
+        })
         .catch(onUpdateSuppliersError);
-    }
-
-    function onUpdateSuppliersSuccess(response) {
-      Notification.success({ message: '<i class="glyphicon glyphicon-ok"></i> Suppliers updated!' });
-      createList();
-      cancel();
     }
 
     function onUpdateSuppliersError(response) {
       Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Update failed! Suppliers not updated!' });
-      createList();
     }
 
-    function createList() {
+    (function createList() {
       EnterprisesService.getEnterprise()
         .then(function(response) {
-          vm.supplier = response.partners.supplier;
+          vm.partners = response.partners.supplier;
         });
-    }
+    }())
   }
 }());
