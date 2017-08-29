@@ -23,7 +23,7 @@ var noReturnUrls = [
 /**
  * Signup
  */
-exports.signup = function (req, res) {
+module.exports.signup = function (req, res) {
   // For security measurement we remove the roles from the req.body object
   // delete req.body.roles;
   
@@ -98,7 +98,7 @@ exports.signup = function (req, res) {
 /**
  * Signin after passport authentication
  */
-exports.signin = function (req, res, next) {
+module.exports.signin = function (req, res, next) {
   // must have just password and username/email for passport to work
   if (!req.body.userRole) {
     return res.status(422).send({
@@ -164,7 +164,7 @@ exports.signin = function (req, res, next) {
 /**
  * Signout
  */
-exports.signout = function (req, res) {
+module.exports.signout = function (req, res) {
   req.logout();
   res.redirect('/');
 };
@@ -172,7 +172,7 @@ exports.signout = function (req, res) {
 /**
  * OAuth provider call
  */
-exports.oauthCall = function (strategy, scope) {
+module.exports.oauthCall = function (strategy, scope) {
   return function (req, res, next) {
     if (req.query && req.query.redirect_to)
       req.session.redirect_to = req.query.redirect_to;
@@ -185,7 +185,7 @@ exports.oauthCall = function (strategy, scope) {
 /**
  * OAuth callback
  */
-exports.oauthCallback = function (strategy) {
+module.exports.oauthCallback = function (strategy) {
   return function (req, res, next) {
 
     // info.redirect_to contains inteded redirect path
@@ -210,7 +210,7 @@ exports.oauthCallback = function (strategy) {
 /**
  * Helper function to save or update a OAuth user profile
  */
-exports.saveOAuthUserProfile = function (req, providerUserProfile, done) {
+module.exports.saveOAuthUserProfile = function (req, providerUserProfile, done) {
   // Setup info object
   var info = {};
 
@@ -300,7 +300,7 @@ exports.saveOAuthUserProfile = function (req, providerUserProfile, done) {
 /**
  * Remove OAuth provider
  */
-exports.removeOAuthProvider = function (req, res, next) {
+module.exports.removeOAuthProvider = function (req, res, next) {
   var user = req.user;
   var provider = req.query.provider;
 

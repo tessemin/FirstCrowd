@@ -11,14 +11,14 @@ var path = require('path'),
 /**
  * Show the current user
  */
-exports.read = function (req, res) {
+module.exports.read = function (req, res) {
   res.json(req.model);
 };
 
 /**
  * Update a User
  */
-exports.update = function (req, res) {
+module.exports.update = function (req, res) {
   var user = req.model;
 
   // For security purposes only merge these parameters
@@ -43,7 +43,7 @@ exports.update = function (req, res) {
 /**
  * Delete a user
  */
-exports.delete = function (req, res) {
+module.exports.delete = function (req, res) {
   var user = req.model;
 
   user.remove(function (err) {
@@ -60,7 +60,7 @@ exports.delete = function (req, res) {
 /**
  * List of Users
  */
-exports.list = function (req, res) {
+module.exports.list = function (req, res) {
   User.find({}, '-salt -password -providerData').sort('-created').populate('user', 'displayName').exec(function (err, users) {
     if (err) {
       return res.status(422).send({
@@ -75,7 +75,7 @@ exports.list = function (req, res) {
 /**
  * User middleware
  */
-exports.userByID = function (req, res, next, id) {
+module.exports.userByID = function (req, res, next, id) {
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).send({
       message: 'User is invalid'

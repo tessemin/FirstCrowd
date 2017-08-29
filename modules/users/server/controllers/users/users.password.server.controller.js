@@ -17,7 +17,7 @@ var smtpTransport = nodemailer.createTransport(config.mailer.options);
 /**
  * Forgot for reset password (forgot POST)
  */
-exports.forgot = function (req, res, next) {
+module.exports.forgot = function (req, res, next) {
   async.waterfall([
     // Generate random token
     function (done) {
@@ -102,7 +102,7 @@ exports.forgot = function (req, res, next) {
 /**
  * Reset password GET from email token
  */
-exports.validateResetToken = function (req, res) {
+module.exports.validateResetToken = function (req, res) {
   User.findOne({
     resetPasswordToken: req.params.token,
     resetPasswordExpires: {
@@ -120,7 +120,7 @@ exports.validateResetToken = function (req, res) {
 /**
  * Reset password POST from email token
  */
-exports.reset = function (req, res, next) {
+module.exports.reset = function (req, res, next) {
   // Init Variables
   var passwordDetails = req.body;
 
@@ -203,7 +203,7 @@ exports.reset = function (req, res, next) {
 /**
  * Change Password
  */
-exports.changePassword = function (req, res, next) {
+module.exports.changePassword = function (req, res, next) {
   // Init Variables
   var passwordDetails = req.body;
 

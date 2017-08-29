@@ -20,7 +20,7 @@ var rollWhitelistedData = ['requester', 'resourceOwner', 'worker'];
 /**
  * Update user details
  */
-exports.update = function (req, res) {
+module.exports.update = function (req, res) {
   // Init Variables
   var user = req.user;
 
@@ -56,7 +56,7 @@ exports.update = function (req, res) {
 /**
  * Update white listed roles
  */
-exports.updateRoles = function (req, res) {
+module.exports.updateRoles = function (req, res) {
   var user = req.user;
   if (req.body) {
     if (user.roles.indexOf('worker') > -1) {
@@ -106,7 +106,7 @@ exports.updateRoles = function (req, res) {
 /**
  * Update profile picture
  */
-exports.changeProfilePicture = function (req, res) {
+module.exports.changeProfilePicture = function (req, res) {
   var user = req.user;
   var existingImageUrl;
 
@@ -193,7 +193,7 @@ exports.changeProfilePicture = function (req, res) {
 /**
  * Send User
  */
-exports.me = function (req, res) {
+module.exports.me = function (req, res) {
   // Sanitize the user - short term solution. Copied from core.server.controller.js
   // TODO create proper passport mock: See https://gist.github.com/mweibel/5219403
   var safeUserObject = null;
@@ -224,7 +224,7 @@ exports.me = function (req, res) {
   res.json(safeUserObject || null);
 };
 
-exports.whitelistedData = {
+module.exports.whitelistedData = {
   rollWhitelistedData: rollWhitelistedData,
   whitelistedFields: whitelistedFields
 };

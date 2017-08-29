@@ -34,7 +34,7 @@ var validateBiggerThanEqualZero = function(num) {
 };
 
 var validateBidPrices = function() {
-  if(!this.payment.bidding.bidable)
+  if (!this.payment.bidding.bidable)
     return true;
   return this.payment.bidding.startingPrice >= this.payment.bidding.minPrice;
 };
@@ -44,10 +44,10 @@ var validateProgress = function(num) {
 };
 
 var validateBiddingBeforeDeadline = function(timeRange) {
-  if(!this.payment.bidding.bidable)
+  if (!this.payment.bidding.bidable)
     return true;
   return (new Date(timeRange.end).getTime() < (new Date(this.deadline)).getTime());
-}
+};
 
 var validateBiddingStartBeforeNow = function(timeRange) {
   return validateDateAfterNow(timeRange.start);

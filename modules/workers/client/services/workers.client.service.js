@@ -66,10 +66,6 @@
         method: 'POST',
         url: '/api/getAllTasks/open'
       },
-      _getOneTask: {
-        method: 'POST',
-        url: '/api/getOneTask'
-      },
       _getWorkerForTask: {
         method: 'POST',
         url: '/api/task/getYourWorker'
@@ -147,9 +143,6 @@
       // all tasks
       getAllOpenTasks: function () {
         return this._getAllOpenTasks().$promise;
-      },
-      getOneTasks: function (Id) {
-        return this._getOneTasks(Id).$promise;
       },
       getWorkerForTask: function (Id) {
         return this._getWorkerForTask(Id).$promise;
