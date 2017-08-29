@@ -11,7 +11,7 @@ acl = new acl(new acl.memoryBackend());
 /**
  * Invoke Enterprises Permissions
  */
-exports.invokeRolesPolicies = function () {
+module.exports.invokeRolesPolicies = function () {
   acl.allow([{
     roles: ['admin'],
     allows: [{
@@ -45,7 +45,7 @@ exports.invokeRolesPolicies = function () {
 /**
  * Check If Enterprises Policy Allows
  */
-exports.isAllowed = function (req, res, next) {
+module.exports.isAllowed = function (req, res, next) {
   var roles = (req.user) ? req.user.roles : ['guest'];
 
   // If an Enterprise is being processed and the current user created it then allow any manipulation

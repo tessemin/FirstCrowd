@@ -55,10 +55,6 @@
         url: '/api/requesters/workerRating/delete'
       },
       // REQUESTER INFORMATION
-      _getRequesterData: {
-        method: 'POST',
-        url: '/api/requesters/getRequesterData'
-      },
       _getAllRequesterRatings: {
         method: 'POST',
         url: '/api/requesters/getRequesterRatings'
@@ -175,9 +171,6 @@
         return this._deleteWorkerRating(workerId_taskId).$promise;
       },
       // REQUESTER INFORMATION
-      getRequesterData: function () {
-        return this._getRequesterData().$promise;
-      },
       getRequesterRatings: function () {
         return this._getRequesterRatings().$promise;
       },
@@ -237,7 +230,7 @@
       },
       sendMessage: function (taskId_message) {
         return this._sendMessage(taskId_message).$promise;
-      },
+      }
     });
 
     return Requesters;

@@ -34,7 +34,7 @@
           companyName: ''
         });
       }
-    }
+    };
 
     // UpdateCustomers Enterprise
     function updatePartner(isValid, index, deleteItem) {
@@ -47,13 +47,13 @@
       EnterprisesService.updateCustomersFromForm({
         customer: vm.partners[index],
         delete: deleteItem
-        })
-        .then(function(response) {
-          if (!deleteItem)
-            vm.partners[index] = response.customer;
-          Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> Customers updated!' });
-        })
-        .catch(onUpdateCustomersError);
+      })
+      .then(function(response) {
+        if (!deleteItem)
+          vm.partners[index] = response.customer;
+        Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> Customers updated!' });
+      })
+      .catch(onUpdateCustomersError);
     }
 
     function onUpdateCustomersError(response) {
@@ -65,6 +65,6 @@
         .then(function(response) {
           vm.partners = response.partners.customer;
         });
-    }())
+    }());
   }
 }());

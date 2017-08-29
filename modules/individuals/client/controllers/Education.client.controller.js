@@ -19,7 +19,7 @@
     // Fill in the form with current saved data on pageload
     IndividualsService.getIndividual().$promise
       .then(function(individual) {
-        formatSchool(individual)
+        formatSchool(individual);
       });
       
     function formatSchool(individual) {
@@ -31,7 +31,7 @@
         // Dates are strings, and need to be Dates
         if (school.startDate)
           vm.schools[i].startDate = new Date(school.startDate);
-         if (school.endDate)
+        if (school.endDate)
           vm.schools[i].endDate = new Date(school.endDate);
       });
     }

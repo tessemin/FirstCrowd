@@ -29,7 +29,7 @@
             vm.experiences[i].startDate = new Date(work.startDate);
           if (work.endDate)
             vm.experiences[i].endDate = new Date(work.endDate);
-        })
+        });
       });
 
     function addExperience() {

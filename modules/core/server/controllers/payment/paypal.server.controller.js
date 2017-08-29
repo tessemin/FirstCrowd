@@ -6,15 +6,13 @@
 var path = require('path'),
   paypal = require('paypal-rest-sdk'),
   mongoose = require('mongoose'),
-  taskTools = require(path.resolve('./modules/requesters/server/controllers/requesters/task.tools.server.controller')),
-  taskSearch = require(path.resolve('./modules/requesters/server/controllers/requesters/task.search.server.controller')),
   errorHandler = require('../errors.server.controller'),
   _ = require('lodash');
   
-var getUserTypeObject = taskTools.getUserTypeObject,
+/* var getUserTypeObject = taskTools.getUserTypeObject,
   ownsTask = taskTools.ownsTask,
   setStatus = taskTools.setStatus,
-  taskFindOne = taskSearch.taskFindOne;
+  taskFindOne = taskSearch.taskFindOne; */
 
 paypal.configure({
   'mode': 'sandbox',
@@ -48,7 +46,7 @@ var create_web_profile_json = {
   'quantity': task.multiplicity
 }]
 */
-exports.createPaypalPayment = function (items, description, callBack, returnURL, cancelURL) {
+module.exports.createPaypalPayment = function (items, description, callBack, returnURL, cancelURL) {
   
   var create_payment_json = {
     'intent': 'authorize',
@@ -93,7 +91,7 @@ exports.createPaypalPayment = function (items, description, callBack, returnURL,
     }
   });
 };
-exports.executePaypalPayment = function (payerID, paymentID, transactions, callBack) {
+module.exports.executePaypalPayment = function (payerID, paymentID, transactions, callBack) {
   var execute_payment_json = {
     'payer_id': payerID,
     'transactions': transactions

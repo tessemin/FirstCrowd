@@ -6,6 +6,8 @@ module.exports = function (app) {
   
   var payment = require('../controllers/payment.server.controller');
 
+  var modulesExports = require('../controllers/modules.depend.server.controller');
+
   // Define error pages
   app.route('/server-error').get(core.renderServerError);
   

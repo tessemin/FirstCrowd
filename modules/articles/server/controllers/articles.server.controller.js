@@ -11,7 +11,7 @@ var path = require('path'),
 /**
  * Create an article
  */
-exports.create = function (req, res) {
+module.exports.create = function (req, res) {
   var article = new Article(req.body);
   article.user = req.user;
 
@@ -29,7 +29,7 @@ exports.create = function (req, res) {
 /**
  * Show the current article
  */
-exports.read = function (req, res) {
+module.exports.read = function (req, res) {
   // convert mongoose document to JSON
   var article = req.article ? req.article.toJSON() : {};
 
@@ -43,7 +43,7 @@ exports.read = function (req, res) {
 /**
  * Update an article
  */
-exports.update = function (req, res) {
+module.exports.update = function (req, res) {
   var article = req.article;
 
   article.title = req.body.title;
@@ -63,7 +63,7 @@ exports.update = function (req, res) {
 /**
  * Delete an article
  */
-exports.delete = function (req, res) {
+module.exports.delete = function (req, res) {
   var article = req.article;
 
   article.remove(function (err) {
@@ -80,7 +80,7 @@ exports.delete = function (req, res) {
 /**
  * List of Articles
  */
-exports.list = function (req, res) {
+module.exports.list = function (req, res) {
   Article.find().sort('-created').populate('user', 'displayName').exec(function (err, articles) {
     if (err) {
       return res.status(422).send({
@@ -95,7 +95,7 @@ exports.list = function (req, res) {
 /**
  * Article middleware
  */
-exports.articleByID = function (req, res, next, id) {
+module.exports.articleByID = function (req, res, next, id) {
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).send({

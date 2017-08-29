@@ -10,16 +10,16 @@ var path = require('path'),
   passport = require('passport'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   coreController = require(path.resolve('./modules/core/server/controllers/core.server.controller')),
-  taskTools = require(path.resolve('modules/requesters/server/controllers/requesters/task.tools.server.controller')),
   _ = require('lodash'),
   Fuse = require('fuse.js'),
   validator = require('validator'),
   superEnterprise = null;
+
+var moduleDependencies = require(path.resolve('./modules/core/server/controllers/modules.depend.server.controller'));
+var getNestedProperties = moduleDependencies.getDependantByKey('getNestedProperties');
   
 var whitelistedFields = ['contactPreference', 'email', 'phone', 'username', 'middleName', 'displayName'],
   whitelistedPartnersFields = ['img', '_id', 'profile.companyName', 'profile.countryOfBusiness', 'profile.URL', 'profile.description', 'profile.classifications', 'profile.yearEstablished', 'specialities', 'catalog', 'demands'];
-
-var getNestedProperties = taskTools.getNestedProperties;
 
 /**
  * Find the Enterprise
@@ -68,14 +68,14 @@ var getEnterprise = function(req, res, callBack) {
 /**
  * Enterprise middleware
  */
-exports.enterpriseByID = function(req, res, next, id) {
+module.exports.enterpriseByID = function(req, res, next, id) {
   
 };
 
 /**
  * update Enterprise Profile
  */
-exports.updateProfile = function(req, res) {
+module.exports.updateProfile = function(req, res) {
   if (req.body) {
     getEnterprise(req, res, function (enterprise) {
       
@@ -123,7 +123,8 @@ exports.updateProfile = function(req, res) {
 
 function findIdInArray(array, Id) {
   Id = Id.toString();
-  for (var i = 0; i < array.length; i++) {
+  var i;
+  for (i = 0; i < array.length; i++) {
     if (array[i]._id && array[i]._id.toString() === Id) {
       break;
     }
@@ -183,25 +184,25 @@ function updatePartner(req, res, key) {
 /**
  * update Enterprise Suppliers
  */
-exports.updateSuppliers = function(req, res) {
+module.exports.updateSuppliers = function(req, res) {
   updatePartner(req, res, 'supplier');
 };
 
 /**
  * update Enterprise Competitors
  */
-exports.updateCompetitors = function(req, res) {
+module.exports.updateCompetitors = function(req, res) {
   updatePartner(req, res, 'competitor');
 };
 
 /**
  * update Enterprise Customers
  */
-exports.updateCustomers = function(req, res) {
+module.exports.updateCustomers = function(req, res) {
   updatePartner(req, res, 'customer');
 };
 
-exports.partners = {
+module.exports.partners = {
   getSuppliers: function(req, res) {
     Enterprise.findById(req.body.enterpriseId, function (err, thisEnterprise) {
       if (err) {
@@ -290,7 +291,7 @@ function findPartnersWhiteFields(enterpriseIds, callBack) {
   });
 }
 
-exports.catalog = {
+module.exports.catalog = {
   getProducts: function(req, res) {
     Enterprise.findById(req.body.enterpriseId, function (err, enterprise) {
       if (err) {
@@ -329,7 +330,7 @@ exports.catalog = {
   }
 };
 
-exports.getDemands = function(req, res) {
+module.exports.getDemands = function(req, res) {
   Enterprise.findById(req.body.enterpriseId, function (err, enterprise) {
     if (err) {
       return res.status(422).send({
@@ -348,7 +349,7 @@ exports.getDemands = function(req, res) {
   });
 };
 
-exports.fuzzyEntepriseQuery = function(req, res) {
+module.exports.fuzzyEntepriseQuery = function(req, res) {
   var query = req.body.query;
   if (query)
     Enterprise.find({}, function (err, ents) {
@@ -405,7 +406,7 @@ exports.fuzzyEntepriseQuery = function(req, res) {
 /**
  * get Enterprise object
  */
-exports.getEnterprise = function(req, res) {
+module.exports.getEnterprise = function(req, res) {
   getEnterprise(req, res, function (enterprise) {
     var safeEnterpriseObject = null;
     if (enterprise) {
@@ -440,7 +441,7 @@ exports.getEnterprise = function(req, res) {
 
 
 // WILL BE GONE, FOR TESTING ONLY
-exports.setupEnterpriseGraph = function(req, res) {
+module.exports.setupEnterpriseGraph = function(req, res) {
   getEnterprise(req, res, function (myEnterprise) {
     var entConnect = [];
     for (var numEnts = getRandomNumber(30, 100); numEnts > 0; numEnts--) {
@@ -557,7 +558,7 @@ function makeNewEnterprise() {
   ent.catalog = {};
   var i = 0;
   ent.catalog.services = [];
-  for (i  = getRandomNumber(2, 10); i > 0; i--) {
+  for (i = getRandomNumber(2, 10); i > 0; i--) {
     ent.catalog.services.push({
       price: getRandomNumber(200, 1000),
       productName: generateRandomString(getRandomNumber(8, 12)),
@@ -565,7 +566,7 @@ function makeNewEnterprise() {
     });
   }
   ent.catalog.products = [];
-  for (i  = getRandomNumber(2, 10); i > 0; i--) {
+  for (i = getRandomNumber(2, 10); i > 0; i--) {
     ent.catalog.products.push({
       payment: {
         price: getRandomNumber(200, 1000),
@@ -577,7 +578,7 @@ function makeNewEnterprise() {
     });
   }
   ent.demands = [];
-  for (i  = getRandomNumber(2, 10); i > 0; i--) {
+  for (i = getRandomNumber(2, 10); i > 0; i--) {
     ent.demands.push({
       productName: generateRandomString(getRandomNumber(8, 16)),
       quantity: getRandomNumber(20, 400)
@@ -602,4 +603,4 @@ function generateRandomString(length) {
   return text;
 }
 
-exports.getThisEnterprise = getEnterprise;
+module.exports.getThisEnterprise = getEnterprise;

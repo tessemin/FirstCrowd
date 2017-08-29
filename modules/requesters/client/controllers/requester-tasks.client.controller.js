@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-
+  /* global saveAs:true, paypal:true */
   // Workers controller
   angular
     .module('requesters')
@@ -26,24 +26,24 @@
     vm.sort = 'name';
     vm.sortReversed = false;
     vm.statuses = [{
-        id: 'open',
-        bikeshed: 'Open'
-      }, {
-        id: 'taken',
-        bikeshed: 'In Progress'
-      }, {
-        id: 'sClosed',
-        bikeshed: 'Complete'
-      }, {
-        id: 'fClosed',
-        bikeshed: 'Failed'
-      }, {
-        id: 'inactive',
-        bikeshed: 'Inactive'
-      }, {
-        id: 'suspended',
-        bikeshed: 'Suspended'
-      }];
+      id: 'open',
+      bikeshed: 'Open'
+    }, {
+      id: 'taken',
+      bikeshed: 'In Progress'
+    }, {
+      id: 'sClosed',
+      bikeshed: 'Complete'
+    }, {
+      id: 'fClosed',
+      bikeshed: 'Failed'
+    }, {
+      id: 'inactive',
+      bikeshed: 'Inactive'
+    }, {
+      id: 'suspended',
+      bikeshed: 'Suspended'
+    }];
 
 
     function recalculateTaskActions(task) {
@@ -136,7 +136,7 @@
           Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> Worker hired!' });
           var task = vm.tasks[getIndexFromTaskId(request.taskId)];
           task.multiplicity -= 1;
-          if(task.multiplicity <= 0) {
+          if (task.multiplicity <= 0) {
             task.status = 'taken';
           }
           recalculateTaskActions(task);
@@ -201,7 +201,7 @@
       vm.modal = {};
       // put task info into modal
       if (task) {
-        task = task.taskRef
+        task = task.taskRef;
         vm.modal.showContent = true;
         if (task.payment.bidding.bidable) {
           vm.modal.bidable = true;
@@ -242,10 +242,10 @@
             return true;
         }
       return false;
-    }
+    };
 
     vm.minutesToReadable = function(minutes) {
-      var date = new Date(minutes*1000/60);
+      var date = new Date(minutes * 1000 / 60);
       return date.toDateString() + ' at ' + date.getHours() + ':' + (date.getMinutes() <= 9 ? '0' : '') + date.getMinutes();
     };
 
@@ -292,21 +292,21 @@
           };
           vm.submissionReviewDownload = function (file) {
             if (Array.isArray(file)) {
-              file.forEach (function (fil) {
+              file.forEach(function (fil) {
                 vm.submissionReviewDownload(fil);
               });
               return null;
             }
             $http({
-                url: '/api/requesters/task/file/download',
-                method: "POST",
-                data: {
-                  fileName: file.name,
-                  workerId: vm.submission.workerId,
-                  timeStamp: file.timeStamp,
-                  taskId: vm.selectedTask._id
-                },
-                responseType: 'blob'
+              url: '/api/requesters/task/file/download',
+              method: 'POST',
+              data: {
+                fileName: file.name,
+                workerId: vm.submission.workerId,
+                timeStamp: file.timeStamp,
+                taskId: vm.selectedTask._id
+              },
+              responseType: 'blob'
             }).success(function (data, status, headers, config) {
               var blob = new Blob([data], { type: data.type });
               var fileName = headers('content-disposition');
@@ -316,7 +316,7 @@
               Notification.error({ message: 'Unable to download the file', title: '<i class="glyphicon glyphicon-remove"></i> Download Error!' });
             });
           };
-          function previousSubmissionDownloadables() {
+          var previousSubmissionDownloadables = function() {
             RequestersService.getDownloadableTaskFiles({
               taskId: vm.selectedTask._id,
               workerId: vm.submission.workerId
@@ -344,14 +344,14 @@
             .catch(function(response) {
               Notification.error({ message: '\n', title: '<i class="glyphicon glyphicon-remove"></i> Error getting previous submissions!' });
             });
-          }
+          };
           vm.approveSubmission = function() {
             RequestersService.approveCompletion({
               taskId: vm.selectedTask._id,
               workerId: vm.submission.workerId,
               message: vm.submission.reviewMessage
             })
-            .then(function(res){
+            .then(function(res) {
               vm.submission = {};
               vm.closeSubmissionReviewModal();
               vm.selectedTask = res.task;
@@ -360,14 +360,14 @@
             .catch(function(res) {
               Notification.error({ message: res.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Error aproving submission!' });
             });
-          }
+          };
           vm.rejectSubmission = function() {
             RequestersService.rejectCompletion({
               taskId: vm.selectedTask._id,
               workerId: vm.submission.workerId,
               message: vm.submission.reviewMessage
             })
-            .then(function(res){
+            .then(function(res) {
               vm.submission = {};
               vm.closeSubmissionReviewModal();
               vm.selectedTask = res.task;
@@ -376,14 +376,14 @@
             .catch(function(res) {
               Notification.error({ message: res.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Error rejecting submission!' });
             });
-          }
+          };
           vm.retrySubmission = function() {
             RequestersService.retryCompletion({
               taskId: vm.selectedTask._id,
               workerId: vm.submission.workerId,
               message: vm.submission.reviewMessage
             })
-            .then(function(res){
+            .then(function(res) {
               vm.submission = {};
               vm.closeSubmissionReviewModal();
               vm.selectedTask = res.task;
@@ -392,15 +392,15 @@
             .catch(function(res) {
               Notification.error({ message: res.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Error aproving retry!' });
             });
-          }
+          };
           previousSubmissionDownloadables();
           vm.openSubmissionReviewModal();
           break;
         case 'suspend':
           RequestersService.suspendTask({
-            taskId: vm.selectedTask._id,
+            taskId: vm.selectedTask._id
           })
-          .then(function(res){
+          .then(function(res) {
             var clientTask = getFrontTask(res.task);
             recalculateTaskActions(clientTask);
             vm.tasks[vm.tasks.indexOf(task)] = clientTask;
@@ -412,9 +412,9 @@
           break;
         case 'unsuspend':
           RequestersService.unsuspendTask({
-            taskId: vm.selectedTask._id,
+            taskId: vm.selectedTask._id
           })
-          .then(function(res){
+          .then(function(res) {
             var clientTask = getFrontTask(res.task);
             recalculateTaskActions(clientTask);
             vm.tasks[vm.tasks.indexOf(task)] = clientTask;
@@ -438,17 +438,17 @@
     vm.getAllTasks();
 
     vm.searchTasks = function() {
-      if(vm.searchInput === '') {
+      if (vm.searchInput === '') {
         vm.getAllTasks();
       } else {
         RequestersService.searchMyTasks({
           query: vm.searchInput
         })
-        .then(function(response){
+        .then(function(response) {
           console.log(response);
           vm.loadData(response.results);
         })
-        .catch(function(response){
+        .catch(function(response) {
           console.log(response);
           Notification.error({ message: response.data.message, title: '<i class="glyphicon glyphicon-remove"></i> Error searching tasks!' });
         });
@@ -573,7 +573,7 @@
             if (payTaskBidId !== null) {
               // approve worker for task
               task.multiplicity -= 1;
-              if(task.multiplicity === 0) {
+              if (task.multiplicity === 0) {
                 task.status = 'taken';
               }
             } else {

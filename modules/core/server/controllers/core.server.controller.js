@@ -7,7 +7,7 @@ var validator = require('validator'),
 /**
  * Render the main application page
  */
-exports.renderIndex = function (req, res) {
+module.exports.renderIndex = function (req, res) {
   var safeUserObject = null;
   if (req.user) {
     safeUserObject = {
@@ -36,7 +36,7 @@ exports.renderIndex = function (req, res) {
 /**
  * Render the server error page
  */
-exports.renderServerError = function (req, res) {
+module.exports.renderServerError = function (req, res) {
   res.status(500).render('modules/core/server/views/500', {
     error: 'Oops! Something went wrong...'
   });
@@ -46,7 +46,7 @@ exports.renderServerError = function (req, res) {
  * Render the server not found responses
  * Performs content-negotiation on the Accept HTTP header
  */
-exports.renderNotFound = function (req, res) {
+module.exports.renderNotFound = function (req, res) {
 
   res.status(404).format({
     'text/html': function () {

@@ -76,7 +76,7 @@
         Authentication.user = response.user;
       if (response.individual)
         vm.loadBio(response.individual);
-      Notification.success({ message: response.message, title:'<i class="glyphicon glyphicon-ok"></i> Bio updated!' });
+      Notification.success({ message: response.message, title: '<i class="glyphicon glyphicon-ok"></i> Bio updated!' });
     }
     
     function onUpdateBioError(response) {

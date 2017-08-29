@@ -177,7 +177,7 @@ var IndividualUserSchema = new Schema({
       trim: true
     },
     skills: {
-      type: [ Schema.Types.ObjectId ],
+      type: [Schema.Types.ObjectId],
       default: []
     },
     startDate: {

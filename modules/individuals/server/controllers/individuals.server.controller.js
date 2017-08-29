@@ -61,7 +61,7 @@ var getIndividual = function(req, res, callBack) {
 /**
  * Show the current Individual
  */
-exports.read = function(req, res) {
+module.exports.read = function(req, res) {
   // convert mongoose document to JSON
   var individual = req.individual ? req.individual.toJSON() : {};
 
@@ -76,7 +76,7 @@ exports.read = function(req, res) {
 /**
  * Update a Individual
  */
-exports.update = function(req, res) {
+module.exports.update = function(req, res) {
   var individual = req.individual;
 
   individual = _.extend(individual, req.body);
@@ -95,7 +95,7 @@ exports.update = function(req, res) {
 /**
  * Delete an Individual
  */
-exports.delete = function(req, res) {
+module.exports.delete = function(req, res) {
   var individual = req.individual;
 
   individual.remove(function(err) {
@@ -112,7 +112,7 @@ exports.delete = function(req, res) {
 /**
  * List of Individuals
  */
-exports.list = function(req, res) {
+module.exports.list = function(req, res) {
   Individual.find().sort('-created').populate('user', 'displayName').exec(function(err, individuals) {
     if (err) {
       return res.status(400).send({
@@ -127,7 +127,7 @@ exports.list = function(req, res) {
 /**
  * List of Certifications
  */
-exports.listCertifications = function(req, res) {
+module.exports.listCertifications = function(req, res) {
   getIndividual(req, res, function(individual) {
     if (individual.certification) {
       res.jsonp(individual.certification);
@@ -140,7 +140,7 @@ exports.listCertifications = function(req, res) {
 /**
  * Individual middleware
  */
-exports.individualByID = function(req, res, next, id) {
+module.exports.individualByID = function(req, res, next, id) {
 
   /* Individual.findById(id).populate('user', 'displayName').exec(function (err, individual) {
     if (err) {
@@ -158,7 +158,7 @@ exports.individualByID = function(req, res, next, id) {
 /**
  * Individual certification update
  */
-exports.updateCertification = function(req, res) {
+module.exports.updateCertification = function(req, res) {
   if (req.body) {
     getIndividual(req, res, function(individual) {
       individual.certification = req.body;
@@ -183,7 +183,7 @@ exports.updateCertification = function(req, res) {
 /**
  * Individual Education update
  */
-exports.updateEducation = function(req, res) {
+module.exports.updateEducation = function(req, res) {
   if (req.body && req.body.school) {
     getIndividual(req, res, function(individual) {
       var reqID = null;
@@ -194,8 +194,8 @@ exports.updateEducation = function(req, res) {
       }
       var individualUpdated = false;
       if (req.body.delete && reqID) {
-        var deleteIndex = -1;
-        for (var deleteIndex = 0; deleteIndex < individual.schools.length; deleteIndex++) {
+        var deleteIndex;
+        for (deleteIndex = 0; deleteIndex < individual.schools.length; deleteIndex++) {
           if (individual.schools[deleteIndex]._id.toString() === reqID)
             break;
         }
@@ -231,9 +231,9 @@ exports.updateEducation = function(req, res) {
         if (err) {
           return res.status(422).send({ message: errorHandler.getErrorMessage(err) });
         } else {
-          message = 'School Update Sucessful!'
+          message = 'School Update Sucessful!';
           if (req.body.delete)
-            message = 'School Deleted Sucessfully!'
+            message = 'School Deleted Sucessfully!';
           return res.status(200).send({
             individual: individual,
             message: message
@@ -251,7 +251,7 @@ exports.updateEducation = function(req, res) {
 /**
  * Individual Skills update
  */
-exports.updateSkill = function(req, res) {
+module.exports.updateSkill = function(req, res) {
   if (req.body) {
     getIndividual(req, res, function(individual) {
       for (var i in req.body) {
@@ -278,12 +278,10 @@ exports.updateSkill = function(req, res) {
   }
 };
 
-
-
 function setJobExperience(individual, jobExps) {
   // transfers skills from work experience to skills
   // this is not version control
-  while(individual.jobExperience.length > 0) {
+  while (individual.jobExperience.length > 0) {
     individual.jobExperience.pop();
   }
   
@@ -324,17 +322,17 @@ function setJobExperience(individual, jobExps) {
         individual.jobExperience.push(jobExp);
     });
   }
-  return individual
+  return individual;
 }
 
 /**
  * Individual Experience update
  */
-exports.updateExperience = function(req, res) {
+module.exports.updateExperience = function(req, res) {
   if (req.body) {
     getIndividual(req, res, function(individual) {
       
-      individual = setJobExperience(individual, req.body)
+      individual = setJobExperience(individual, req.body);
       individual.save(function (err) {
         if (err) {
           return res.status(422).send({
@@ -355,7 +353,7 @@ exports.updateExperience = function(req, res) {
 /**
  * Individual Bio update
  */
-exports.updateBio = function(req, res) {
+module.exports.updateBio = function(req, res) {
   if (req.body) {
     getIndividual(req, res, function(individual) {
       let user = new User(req.user);
@@ -394,7 +392,7 @@ exports.updateBio = function(req, res) {
   }
 };
 
-exports.getIndividual = function(req, res) {
+module.exports.getIndividual = function(req, res) {
   getIndividual(req, res, function(individual) {
     var safeIndividualObject = null;
     if (individual) {
@@ -423,7 +421,7 @@ exports.getIndividual = function(req, res) {
           if (skill)
             individual.skills.forEach(function(trueSkill) {
               if (trueSkill._id && trueSkill._id.toString() === skill.toString())
-                returnSkills.push(trueSkill.skill)
+                returnSkills.push(trueSkill.skill);
             });
         });
         exp.skills = returnSkills;
@@ -438,8 +436,8 @@ exports.getIndividual = function(req, res) {
 /**
  * create an individual
  */
-exports.create = function(req, res) {
+module.exports.create = function(req, res) {
   
 };
 
-exports.getThisIndividual = getIndividual;
+module.exports.getThisIndividual = getIndividual;
