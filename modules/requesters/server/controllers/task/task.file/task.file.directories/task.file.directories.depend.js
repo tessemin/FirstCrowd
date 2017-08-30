@@ -21,7 +21,6 @@ function makeDirectory(dir, callBack) {
 }
 module.exports.makeDirectory = makeDirectory;
 
-
 module.exports.getFilePath = function(taskId, workerId, timeInMin, callBack) {
   var dir = './resources/taskSubmissions';
   if (taskId) {
