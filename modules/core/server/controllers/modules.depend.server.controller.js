@@ -136,6 +136,7 @@ function printAssignedDependantsToFile(keys) {
   fileLine = fileLine.substring(n !== -1 ? n : 0, fileLine.length).trim();
   n = fileLine.indexOf(':');
   fileLine = fileLine.substring(0, n !== -1 ? n : fileLine.length);
+  //console.log(fileLine);
   assignedDependantsObj.files[fileLine] = {};
   assignedDependantsObj.files[fileLine].filePath = fileLine;
   assignedDependantsObj.files[fileLine].dependencies = keys;
