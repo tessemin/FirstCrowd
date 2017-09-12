@@ -6,9 +6,8 @@
 var _ = require('lodash');
 
 /**
- * Extend payment controller
+ * Extend workers's controller
  */
 _.extend(
-  module.exports,
-  require('./payment/paypal.includes')
+  module.exports
 );

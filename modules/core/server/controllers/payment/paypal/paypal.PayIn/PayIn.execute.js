@@ -46,51 +46,7 @@ var create_web_profile_json = {
   'quantity': task.multiplicity
 }]
 */
-module.exports.createPaypalPayment = function (items, description, callBack, returnURL, cancelURL) {
-  
-  var create_payment_json = {
-    'intent': 'authorize',
-    'payer': {
-      'payment_method': 'paypal'
-    },
-    'redirect_urls': {
-      'return_url': '/',
-      'cancel_url': '/'
-    },
-    'transactions': [{
-      'item_list': {
-        'items': items
-      },
-      'amount': {
-        'currency': 'USD',
-        'total': 0
-      },
-      'description': description
-    }]
-  };
-  
-  var total = 0;
-  items.forEach(function(item) {
-    total += item.price * item.quantity;
-  });
-  create_payment_json.transactions[0].amount.total = total;
-  
-  if (returnURL)
-    create_payment_json.redirect_urls.cancel_url = returnURL;
-  if (cancelURL)
-    create_payment_json.redirect_urls.cancel_url = cancelURL;
-  
-  // adds our paypal web profile so no shipping option pops up
-  create_payment_json.experience_profile_id = paypalWebProfileId;
-  
-  paypal.payment.create(create_payment_json, function(error, createdPayment) {
-    if (error) {
-      callBack(error.message);
-    } else {
-      callBack(null, createdPayment);
-    }
-  });
-};
+
 module.exports.executePaypalPayment = function (payerID, paymentID, transactions, callBack) {
   var execute_payment_json = {
     'payer_id': payerID,

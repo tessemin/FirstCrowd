@@ -12,15 +12,15 @@ var path = require('path'),
   _ = require('lodash'),
   validator = require('validator'),
   superIndividual = null;
-  
+
 var whitelistedFields = ['firstName', 'lastName', 'contactPreference', 'email', 'phone', 'username', 'middleName'];
-  
+
 /**
  * Find the Individual
  */
 var findIndividual = function(req, res, callBack) {
   var individualID = req.user.individual;
-  Individual.findById(individualID, function (err, individual) { 
+  Individual.findById(individualID, function (err, individual) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
@@ -113,15 +113,7 @@ module.exports.delete = function(req, res) {
  * List of Individuals
  */
 module.exports.list = function(req, res) {
-  Individual.find().sort('-created').populate('user', 'displayName').exec(function(err, individuals) {
-    if (err) {
-      return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
-      });
-    } else {
-      res.jsonp(individuals);
-    }
-  });
+
 };
 
 /**
@@ -162,7 +154,7 @@ module.exports.updateCertification = function(req, res) {
   if (req.body) {
     getIndividual(req, res, function(individual) {
       individual.certification = req.body;
-      
+
       individual.save(function (err) {
         if (err) {
           return res.status(422).send({
@@ -260,7 +252,7 @@ module.exports.updateSkill = function(req, res) {
         }
       }
       individual.skills = req.body;
-      
+
       individual.save(function (err) {
         if (err) {
           return res.status(422).send({
@@ -284,7 +276,7 @@ function setJobExperience(individual, jobExps) {
   while (individual.jobExperience.length > 0) {
     individual.jobExperience.pop();
   }
-  
+
   if (jobExps && jobExps.length > 0) {
     jobExps.forEach(function(jobExp) {
       var jobIndex = null;
@@ -318,7 +310,7 @@ function setJobExperience(individual, jobExps) {
       }
       if (jobIndex)
         individual.jobExperience[jobIndex] = jobExp;
-      else 
+      else
         individual.jobExperience.push(jobExp);
     });
   }
@@ -331,7 +323,7 @@ function setJobExperience(individual, jobExps) {
 module.exports.updateExperience = function(req, res) {
   if (req.body) {
     getIndividual(req, res, function(individual) {
-      
+
       individual = setJobExperience(individual, req.body);
       individual.save(function (err) {
         if (err) {
@@ -361,9 +353,9 @@ module.exports.updateBio = function(req, res) {
       user = _.extend(user, _.pick(req.body, whitelistedFields));
       if (req.body.firstName || req.body.lastName)
         user.displayName = user.firstName + ' ' + user.lastName;
-      
+
       req.user = user;
-      
+
       individual.save(function (err, individual) {
         if (err) {
           return res.status(422).send({
@@ -437,7 +429,7 @@ module.exports.getIndividual = function(req, res) {
  * create an individual
  */
 module.exports.create = function(req, res) {
-  
+
 };
 
 module.exports.getThisIndividual = getIndividual;
