@@ -37,8 +37,8 @@ if (!moduleDependants) {
     var dirs = getDirectories(modPath);
     dirs.forEach(function(dir) {
       dir = path.resolve(modPath + '/' + dir + '/server/controllers');
-      glob(dir + '\\*.includes.js', {}, function (err, files) {
-        if (err) {        
+      glob(dir + '/*.includes.js', {}, function (err, files) {
+        if (err) {
           console.log(err);
         } else if (files.length > 0) {
           files.forEach(function (file) {
@@ -67,7 +67,7 @@ function flatenObject(obj) {
         flattenedObj[key] = obj[key];
     }
   });
-  return flattenedObj; 
+  return flattenedObj;
 }
 module.exports.flatenObject = flatenObject;
 
