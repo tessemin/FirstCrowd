@@ -16,14 +16,14 @@
         controller: 'SideMenuController',
         controllerAs: 'vm'
       })
-      .state('graph', {
-        url: '/graph',
-        templateUrl: '/modules/enterprises/client/views/graph.client.view.html',
-        controller: 'EnterpriseGraphController',
+      .state('recommendations', {
+        url: '/recommendations',
+        templateUrl: '/modules/enterprises/client/views/recommendations.client.view.html',
+        controller: 'EnterpriseRecommendationsController',
         controllerAs: 'vm',
         data: {
           roles: ['enterprise'],
-          pageTitle: 'Enterprise Graph'
+          pageTitle: 'Company Recommendations'
         }
       })
       .state('enterprises.profile', {

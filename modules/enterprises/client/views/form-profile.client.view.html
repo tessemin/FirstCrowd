@@ -76,8 +76,8 @@
           </div>
 
           <div class="form-group" show-errors>
-            <label for="description">Business Description</label>
-            <textarea id="description" name="description" placeholder="Description" class="form-control" ng-model="vm.description" form="vm.enterpriseForm" required></textarea>
+            <label for="description">business description</label>
+            <textarea id="description" name="description" placeholder="description" class="form-control" ng-model="vm.description" form="vm.enterpriseform" required></textarea>
           </div>
 
           <div class="form-group" show-errors>
@@ -108,6 +108,17 @@
             <div ng-messages="vm.enterpriseForm.employeeCount.$error" role="alert">
               <p class="help-block error-text" ng-message="required">Employee Count is required.</p>
             </div>
+          </div>
+
+
+          <div class="form-group" show-errors>
+            <label for="demands">Demands</label>
+            <textarea id="demands" name="demands" placeholder="Demands" class="form-control" ng-model="vm.demands" form="vm.enterpriseform" ></textarea>
+          </div>
+
+          <div class="form-group" show-errors>
+            <label for="productsAndServices">Products & Services</label>
+            <textarea id="productsAndServices" name="productsAndServices" placeholder="Products And Services" class="form-control" ng-model="vm.productsAndServices" form="vm.enterpriseform" ></textarea>
           </div>
 
           <div class="text-center form-group">

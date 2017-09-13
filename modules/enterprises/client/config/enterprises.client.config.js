@@ -9,40 +9,44 @@
 
   function menuConfig(menuService) {
     // Set top bar menu items
-    menuService.addMenuItem('topbar', {
-      title: 'Enterprises',
-      state: 'enterprises',
-      type: 'dropdown',
-      roles: ['enterprise']
-    });
+    // menuService.addMenuItem('topbar', {
+    //   title: 'Enterprises',
+    //   state: 'enterprises',
+    //   type: 'dropdown',
+    //   roles: ['enterprise']
+    // });
 
     // Add the dropdown create item
-    menuService.addSubMenuItem('topbar', 'enterprises', {
-      title: 'Edit Company Profile',
-      state: 'enterprises.profile'
-    });
+    // menuService.addSubMenuItem('account', 'settings', {
+    //   title: 'Edit Company Profile',
+    //   state: 'enterprises.profile',
+    //   roles: ['enterprise']
+    // });
     
-    menuService.addSubMenuItem('topbar', 'enterprises', {
-      title: 'Edit Suppliers',
-      state: 'enterprises.supplier'
-    });
+    // menuService.addSubMenuItem('account', 'settings', {
+    //   title: 'Edit Suppliers',
+    //   state: 'enterprises.supplier',
+    //   roles: ['enterprise']
+    // });
     
-    menuService.addSubMenuItem('topbar', 'enterprises', {
-      title: 'Edit Customers',
-      state: 'enterprises.customer'
-    });
+    // menuService.addSubMenuItem('account', 'settings', {
+    //   title: 'Edit Customers',
+    //   state: 'enterprises.customer',
+    //   roles: ['enterprise']
+    // });
     
-    menuService.addSubMenuItem('topbar', 'enterprises', {
-      title: 'Edit Competitors',
-      state: 'enterprises.competitor'
-    });
+    // menuService.addSubMenuItem('account', 'settings', {
+    //   title: 'Edit Competitors',
+    //   state: 'enterprises.competitor',
+    //   roles: ['enterprise']
+    // });
 
     //
     // custom menu items
     //
     menuService.addMenuItem('topbar', {
-      title: 'Enterprise Graph',
-      state: 'graph',
+      title: 'Company Recommendations',
+      state: 'recommendations',
       roles: ['enterprise']
     });
 
@@ -59,19 +63,19 @@
     });
 
     menuService.addMenuItem('enterprise', {
-      title: 'View Suppliers',
+      title: 'Company Suppliers',
       state: 'enterprises.supplier',
       roles: ['enterprise']
     });
 
     menuService.addMenuItem('enterprise', {
-      title: 'View Customers',
+      title: 'Company Customers',
       state: 'enterprises.customer',
       roles: ['enterprise']
     });
 
     menuService.addMenuItem('enterprise', {
-      title: 'View Competitors',
+      title: 'Company Competitors',
       state: 'enterprises.competitor',
       roles: ['enterprise']
     });
