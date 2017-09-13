@@ -6,9 +6,9 @@
 var path = require('path'),
   paypal = require('paypal-rest-sdk'),
   mongoose = require('mongoose'),
-  errorHandler = require('../errors.server.controller'),
+  errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   _ = require('lodash');
-  
+
 /* var getUserTypeObject = taskTools.getUserTypeObject,
   ownsTask = taskTools.ownsTask,
   setStatus = taskTools.setStatus,
@@ -21,7 +21,7 @@ paypal.configure({
 });
 
 var paypalWebProfileId = 'XP-BSQB-HQRX-4474-GGLT';
-/* 
+/*
 var create_web_profile_json = {
   'name': 'First Crowd Paypal Profile',
   'presentation': {
@@ -35,7 +35,7 @@ var create_web_profile_json = {
     'address_override': 1
   }
 }; */
-  
+
 // itmes in format:
 /*
 [{
@@ -46,17 +46,48 @@ var create_web_profile_json = {
   'quantity': task.multiplicity
 }]
 */
+module.exports.createPaypalPayment = function (items, description, callBack, returnURL, cancelURL) {
 
-module.exports.executePaypalPayment = function (payerID, paymentID, transactions, callBack) {
-  var execute_payment_json = {
-    'payer_id': payerID,
-    'transactions': transactions
+  var create_payment_json = {
+    'intent': 'authorize',
+    'payer': {
+      'payment_method': 'paypal'
+    },
+    'redirect_urls': {
+      'return_url': '/',
+      'cancel_url': '/'
+    },
+    'transactions': [{
+      'item_list': {
+        'items': items
+      },
+      'amount': {
+        'currency': 'USD',
+        'total': 0
+      },
+      'description': description
+    }]
   };
-  paypal.payment.execute(paymentID, execute_payment_json, function (error, payment) {
+
+  var total = 0;
+  items.forEach(function(item) {
+    total += item.price * item.quantity;
+  });
+  create_payment_json.transactions[0].amount.total = total;
+
+  if (returnURL)
+    create_payment_json.redirect_urls.cancel_url = returnURL;
+  if (cancelURL)
+    create_payment_json.redirect_urls.cancel_url = cancelURL;
+
+  // adds our paypal web profile so no shipping option pops up
+  create_payment_json.experience_profile_id = paypalWebProfileId;
+
+  paypal.payment.create(create_payment_json, function(error, createdPayment) {
     if (error) {
-      callBack(error.name);
+      callBack(error.message);
     } else {
-      callBack(null, payment);
+      callBack(null, createdPayment);
     }
   });
 };
