@@ -56,14 +56,39 @@
       state: 'settings.picture'
     });
 
+      menuService.addSubMenuItem('account', 'settings', {
+          title: 'Edit Company Profile',
+          state: 'enterprises.profile',
+          roles: ['enterprise']
+      });
+      
+      menuService.addSubMenuItem('account', 'settings', {
+          title: 'Edit Suppliers',
+          state: 'enterprises.supplier',
+          roles: ['enterprise']
+      });
+      
+      menuService.addSubMenuItem('account', 'settings', {
+          title: 'Edit Customers',
+          state: 'enterprises.customer',
+          roles: ['enterprise']
+      });
+      
+      menuService.addSubMenuItem('account', 'settings', {
+          title: 'Edit Competitors',
+          state: 'enterprises.competitor',
+          roles: ['enterprise']
+      });
+
+
     menuService.addSubMenuItem('account', 'settings', {
       title: 'Change Password',
       state: 'settings.password'
     });
 
-    menuService.addSubMenuItem('account', 'settings', {
-      title: 'Manage Social Accounts',
-      state: 'settings.accounts'
-    });
+    // menuService.addSubMenuItem('account', 'settings', {
+    //   title: 'Manage Social Accounts',
+    //   state: 'settings.accounts'
+    // });
   }
 }());
