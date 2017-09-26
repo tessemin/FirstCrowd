@@ -17,7 +17,7 @@ var path = require('path'),
 
 var moduleDependencies = require(path.resolve('./modules/core/server/controllers/modules.depend.server.controller'));
 var getNestedProperties = moduleDependencies.getDependantByKey('getNestedProperties');
-  
+
 var whitelistedFields = ['contactPreference', 'email', 'phone', 'username', 'middleName', 'displayName'],
   whitelistedPartnersFields = ['img', '_id', 'profile.companyName', 'profile.countryOfBusiness', 'profile.URL', 'profile.description', 'profile.classifications', 'profile.yearEstablished', 'specialities', 'catalog', 'demands'];
 
@@ -26,7 +26,7 @@ var whitelistedFields = ['contactPreference', 'email', 'phone', 'username', 'mid
  */
 var findEnterprise = function(req, res, callBack) {
   var enterpriseID = req.user.enterprise;
-
+  // find the enterprise and set the super enterprise
   Enterprise.findById(enterpriseID, function (err, enterprise) {
     if (err) {
       return res.status(400).send({
@@ -46,6 +46,7 @@ var findEnterprise = function(req, res, callBack) {
 /**
  * Get the Enterprise
  */
+ // this function is called when you dont want to query the mongodb each time you get the enterprise
 var getEnterprise = function(req, res, callBack) {
   if (!superEnterprise) {
     findEnterprise(req, res, callBack);
@@ -69,39 +70,42 @@ var getEnterprise = function(req, res, callBack) {
  * Enterprise middleware
  */
 module.exports.enterpriseByID = function(req, res, next, id) {
-  
+
 };
 
 /**
  * update Enterprise Profile
  */
 module.exports.updateProfile = function(req, res) {
+  // if we have information sent from the front
   if (req.body) {
     getEnterprise(req, res, function (enterprise) {
-      
+
       req.user.displayName = req.body.profile.companyName;
-      
+
       var user = new User(req.user);
-      
+      // pick only whitelisted fields from the sent object
       user = _.extend(user, _.pick(req.body, whitelistedFields));
       req.user = user;
-      
+
       delete req.body.email;
       delete req.body.phone;
       enterprise.profile = req.body.profile;
-
+      // save the enterprise
       enterprise.save(function (err, enterprise) {
         if (err) {
           return res.status(422).send({
             message: errorHandler.getErrorMessage(err)
           });
         } else {
+          // save the user
           user.save(function (err, user) {
             if (err) {
               return res.status(422).send({
                 message: errorHandler.getErrorMessage(err)
               });
             } else {
+              // send back the user and enterprise objects along with a success message
               return res.status(200).send({
                 user: user,
                 enterprise: enterprise,
@@ -112,7 +116,7 @@ module.exports.updateProfile = function(req, res) {
         }
       });
 
-      
+
     });
   } else {
     return res.status(422).send({
@@ -121,52 +125,65 @@ module.exports.updateProfile = function(req, res) {
   }
 };
 
+// given an id Id
+// find an id in an array like [{ _id : "id" }]
+// where Id === "id" and return the index
 function findIdInArray(array, Id) {
   Id = Id.toString();
   var i;
   for (i = 0; i < array.length; i++) {
     if (array[i]._id && array[i]._id.toString() === Id) {
-      break;
+      return i;
     }
   }
-  return (i < array.length) ? i : -1;
+  return -1;
 }
 
+// updates the partner array of an enterprise
+// where enum key = ['supplier', 'competitor', 'customer']
 function updatePartner(req, res, key) {
+  // if information exists else error
   if (req.body) {
+    // find the enterprise
     getEnterprise(req, res, function (enterprise) {
       var partner = req.body[key],
-        entChanged = false,
         message = '',
         index = -1;
+      // if we want to delete the specified partner the req.body.delete will eval to true
       if (req.body.delete && partner._id) {
+        // find the index of the partner specifed for deletion
         index = findIdInArray(enterprise.partners[key], partner._id);
+        // if id exists
         if (index >= 0) {
+          // remove partner
           enterprise.partners[key].splice(index, 1);
-          entChanged = true;
         }
+      // else we want to update or create a partner
       } else if (!req.body.delete) {
+        // if there is an id, update partner
         if (partner._id) {
           index = findIdInArray(enterprise.partners[key], partner._id);
           if (index >= 0) {
             enterprise.partners[key][index] = partner;
-            entChanged = true;
           }
+        // otherwise create a new partner based on the information
         } else {
           enterprise.partners[key].push(partner);
           index = enterprise.partners[key].length - 1;
-          entChanged = true;
         }
       }
+      // save the enterprise
       enterprise.save(function (err, enterprise) {
         if (err) {
           return res.status(422).send({
             message: errorHandler.getErrorMessage(err)
           });
         } else {
+          // find proper return message
           message = key + ' updated!';
           if (req.body.delete)
             message = key + ' deleted!';
+          // build the return object
           var obj = {};
           obj.message = message;
           obj[key] = enterprise.partners[key][index];
@@ -202,81 +219,65 @@ module.exports.updateCustomers = function(req, res) {
   updatePartner(req, res, 'customer');
 };
 
+// gets the partner array of an enterprise
+// where enum key = ['supplier', 'competitor', 'customer']
+function getPartners(req, res, key) {
+  Enterprise.findById(req.body.enterpriseId, function (err, thisEnterprise) {
+    if (err) {
+      return res.status(422).send({ message: errorHandler.getErrorMessage(err) });
+    } else if (!thisEnterprise) {
+      return res.status(422).send({ message: 'No Enterprise with that identifier has been found' });
+    } else {
+      var entIds = [];
+      thisEnterprise.partners[key].forEach(function(ele) {
+        if (ele.enterpriseId)
+          entIds.push(ele.enterpriseId);
+      });
+      findPartnersWhiteFields(entIds, function(err, partners) {
+        if (err)
+          return res.status(422).send({ message: err });
+        var obj = {};
+        // add the 's' on the end for front end support
+        obj[key + 's'] = partners;
+        return res.json(obj);
+      });
+    }
+  });
+}
+
+/**
+ * Function performed upon partners
+ */
 module.exports.partners = {
+  //
   getSuppliers: function(req, res) {
-    Enterprise.findById(req.body.enterpriseId, function (err, thisEnterprise) {
-      if (err) {
-        return res.status(422).send({ message: errorHandler.getErrorMessage(err) });
-      } else if (!thisEnterprise) {
-        return res.status(422).send({ message: 'No Enterprise with that identifier has been found' });
-      } else {
-        var entIds = [];
-        thisEnterprise.partners.supplier.forEach(function(ele) {
-          if (ele.enterpriseId)
-            entIds.push(ele.enterpriseId);
-        });
-        findPartnersWhiteFields(entIds, function(err, suppliers) {
-          if (err)
-            return res.status(422).send({ message: err });
-          return res.json({ suppliers: suppliers });
-        });
-      }
-    });
+    getPartners(req, res, 'supplier');
   },
   getCustomers: function(req, res) {
-    Enterprise.findById(req.body.enterpriseId, function (err, thisEnterprise) {
-      if (err) {
-        return res.status(422).send({ message: errorHandler.getErrorMessage(err) });
-      } else if (!thisEnterprise) {
-        return res.status(422).send({ message: 'No Enterprise with that identifier has been found' });
-      } else {
-        var entIds = [];
-        thisEnterprise.partners.customer.forEach(function(ele) {
-          if (ele.enterpriseId)
-            entIds.push(ele.enterpriseId);
-        });
-        findPartnersWhiteFields(entIds, function(err, customers) {
-          if (err)
-            return res.status(422).send({ message: err });
-          return res.json({ customers: customers });
-        });
-      }
-    });
+    getPartners(req, res, 'customer');
   },
   getCompetitors: function(req, res) {
-    Enterprise.findById(req.body.enterpriseId, function (err, thisEnterprise) {
-      if (err) {
-        return res.status(422).send({ message: errorHandler.getErrorMessage(err) });
-      } else if (!thisEnterprise) {
-        return res.status(422).send({ message: 'No Enterprise with that identifier has been found' });
-      } else {
-        var entIds = [];
-        thisEnterprise.partners.competitor.forEach(function(ele) {
-          if (ele.enterpriseId)
-            entIds.push(ele.enterpriseId);
-        });
-        findPartnersWhiteFields(entIds, function(err, competitors) {
-          if (err)
-            return res.status(422).send({ message: err });
-          return res.json({ competitors: competitors });
-        });
-      }
-    });
+    getPartners(req, res, 'competitor');
   }
 };
 
+// get build the partner object to send to the front
 function findPartnersWhiteFields(enterpriseIds, callBack) {
+  // find each partner
   Enterprise.find({ '_id': { $in: enterpriseIds } }, function (err, enterprises) {
     if (err)
       return callBack(errorHandler.getErrorMessage(err));
+    // get user ids for each partner
     var userIds = [];
     enterprises.forEach(function(ele) {
       if (ele.user)
         userIds.push(ele.user);
     });
+    // find each user
     User.find({ '_id': { $in: userIds } }, function (err, users) {
       if (err)
         return callBack('Error connecting partners to users');
+      // add the specified user feilds to the partners
       var partners = enterprises.map(function(ent) {
         for (var user = 0; user < users.length; user++) {
           if (users[user]._id.toString() === ent.user.toString()) {
@@ -284,53 +285,18 @@ function findPartnersWhiteFields(enterpriseIds, callBack) {
             break;
           }
         }
+        // remove non whitelisted fields from the enterprise
         return getNestedProperties(ent, whitelistedPartnersFields);
       });
+      // return the partners
       callBack(null, partners);
     });
   });
 }
 
-module.exports.catalog = {
-  getProducts: function(req, res) {
-    Enterprise.findById(req.body.enterpriseId, function (err, enterprise) {
-      if (err) {
-        return res.status(422).send({
-          message: errorHandler.getErrorMessage(err)
-        });
-      } else if (!enterprise) {
-        return res.status(422).send({
-          message: 'No Enterprise with that identifier has been found'
-        });
-      } else {
-        if (enterprise.catalog && enterprise.catalog.products)
-          return res.json({ products: enterprise.catalog.products });
-        else
-          return res.json({ products: [] });
-      }
-    });
-  },
-  getServices: function(req, res) {
-    Enterprise.findById(req.body.enterpriseId, function (err, enterprise) {
-      if (err) {
-        return res.status(422).send({
-          message: errorHandler.getErrorMessage(err)
-        });
-      } else if (!enterprise) {
-        return res.status(422).send({
-          message: 'No Enterprise with that identifier has been found'
-        });
-      } else {
-        if (enterprise.catalog && enterprise.catalog.services)
-          return res.json({ services: enterprise.catalog.products });
-        else
-          return res.json({ services: [] });
-      }
-    });
-  }
-};
-
-module.exports.getDemands = function(req, res) {
+// get the catalog items
+// where enum itemName = ['products', 'services']
+function getCatalogItems(req, res, itemName) {
   Enterprise.findById(req.body.enterpriseId, function (err, enterprise) {
     if (err) {
       return res.status(422).send({
@@ -341,6 +307,42 @@ module.exports.getDemands = function(req, res) {
         message: 'No Enterprise with that identifier has been found'
       });
     } else {
+      // build the return obj
+      var obj = {};
+      if (enterprise.catalog && enterprise.catalog[itemName]) {
+        obj[itemName] = enterprise.catalog[itemName];
+      } else {
+        obj[itemName] = [];
+      }
+      return res.json(obj);
+    }
+  });
+}
+
+// catalog actions
+module.exports.catalog = {
+  getProducts: function(req, res) {
+    getCatalogItems(req, res, 'products');
+  },
+  getServices: function(req, res) {
+    getCatalogItems(req, res, 'services');
+  }
+};
+
+// get the demands
+module.exports.getDemands = function(req, res) {
+  // find the enterprise
+  Enterprise.findById(req.body.enterpriseId, function (err, enterprise) {
+    if (err) {
+      return res.status(422).send({
+        message: errorHandler.getErrorMessage(err)
+      });
+    } else if (!enterprise) {
+      return res.status(422).send({
+        message: 'No Enterprise with that identifier has been found'
+      });
+    } else {
+      // return the demands
       if (enterprise.demands)
         return res.json({ demands: enterprise.demands });
       else
@@ -349,15 +351,18 @@ module.exports.getDemands = function(req, res) {
   });
 };
 
+// fuzzy query the enterprise db
 module.exports.fuzzyEntepriseQuery = function(req, res) {
   var query = req.body.query;
   if (query)
+    // get all enterprises
     Enterprise.find({}, function (err, ents) {
       if (err) {
         return res.status(422).send({
           message: errorHandler.getErrorMessage(err)
         });
       }
+      // set the options for FUSE
       var options = {
         shouldSort: true,
         threshold: 0.15,
@@ -365,6 +370,7 @@ module.exports.fuzzyEntepriseQuery = function(req, res) {
         distance: 100,
         maxPatternLength: 32,
         minMatchCharLength: 1,
+        // these are the searchable fields
         keys: [
           'profile.companyName',
           'profile.companyAddress.country',
@@ -387,15 +393,18 @@ module.exports.fuzzyEntepriseQuery = function(req, res) {
             }
           }
         });
-      } else { // this is a letter query
+      } else { // this is a letter query FUSE
+        // map the ents to a new modifiable ent and format the string
         ents = ents.map(function(ent) {
           var newEnt = JSON.parse(JSON.stringify(ent));
           newEnt.profile.companyAddress.displayAddress = newEnt.profile.companyAddress.streetAddress + ' ' + newEnt.profile.companyAddress.city + ' ' + newEnt.profile.companyAddress.state + ' ' + newEnt.profile.companyAddress.zipCode + ' ' + newEnt.profile.companyAddress.country;
           return newEnt;
         });
+        // set up and query the ents
         var fuse = new Fuse(ents, options);
         results = fuse.search(req.body.query);
       }
+      // return the whitelisted fields from the query
       results = results.map(function(ent) {
         return getNestedProperties(ent, whitelistedPartnersFields);
       });
@@ -410,6 +419,7 @@ module.exports.getEnterprise = function(req, res) {
   getEnterprise(req, res, function (enterprise) {
     var safeEnterpriseObject = null;
     if (enterprise) {
+      // this gives us a clean object with no extra information
       safeEnterpriseObject = {
         _id: enterprise._id,
         profile: {
@@ -440,7 +450,7 @@ module.exports.getEnterprise = function(req, res) {
 };
 
 
-// WILL BE GONE, FOR TESTING ONLY
+//------------------------------- FOR TESTING ONLY --------------------------------------------
 module.exports.setupEnterpriseGraph = function(req, res) {
   getEnterprise(req, res, function (myEnterprise) {
     var entConnect = [];
@@ -543,7 +553,7 @@ function makeNewEnterprise() {
   user.displayName = user.firstName + ' ' + user.lastName;
   user.profileImageURL = 'modules/users/client/img/profile/logo-' + getRandomNumber(1, 20) + '.jpg';
   user.save();
-  
+
   ent.profile.companyName = generateRandomString(10);
   ent.profile.URL = 'www.' + generateRandomString(8) + '.com';
   ent.profile.description = 'This is the description of ' + ent.profile.companyName;
@@ -554,7 +564,7 @@ function makeNewEnterprise() {
   ent.profile.companyAddress.city = generateRandomString(5) + 'burg';
   ent.profile.companyAddress.state = 'IL';
   ent.profile.companyAddress.zipCode = getRandomNumber(100000, 999999);
-  
+
   ent.catalog = {};
   var i = 0;
   ent.catalog.services = [];
@@ -584,7 +594,7 @@ function makeNewEnterprise() {
       quantity: getRandomNumber(20, 400)
     });
   }
-  
+
   return ent;
 }
 

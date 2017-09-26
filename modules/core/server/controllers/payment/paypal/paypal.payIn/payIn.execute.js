@@ -14,6 +14,7 @@ var path = require('path'),
   setStatus = taskTools.setStatus,
   taskFindOne = taskSearch.taskFindOne; */
 
+// configure the paypal object
 paypal.configure({
   'mode': 'sandbox',
   'client_id': 'AecAzJEgQRFF8kL2hhPkyBjiNmvLLCxyQR3cCkNN4hmobtGKQBLyWpUAwUqYZK7hIJhQhRlX36X3YaAV',
@@ -48,10 +49,12 @@ var create_web_profile_json = {
 */
 
 module.exports.executePaypalPayment = function (payerID, paymentID, transactions, callBack) {
+  // build the execute object
   var execute_payment_json = {
     'payer_id': payerID,
     'transactions': transactions
   };
+  // execute the payment
   paypal.payment.execute(paymentID, execute_payment_json, function (error, payment) {
     if (error) {
       callBack(error.name);

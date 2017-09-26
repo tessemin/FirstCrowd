@@ -9,13 +9,16 @@ var path = require('path'),
   fs = require('fs'),
   config = require(path.resolve('./config/config')),
   mkdirp = require('mkdirp'),
+  // decalre the share modular dependencies
   moduleDependants = null;
 
+// get the directories with the specified directory
 var getDirectories = function(srcpath) {
   return fs.readdirSync(srcpath)
     .filter(file => fs.lstatSync(path.join(srcpath, file)).isDirectory());
 };
 
+// make a full directory path
 function makeDirectory(dir, callBack) {
   if (!fs.existsSync(dir)) {
     mkdirp(dir, function (err) {
@@ -33,10 +36,13 @@ function makeDirectory(dir, callBack) {
 if (!moduleDependants) {
   (function readModuleDepend() {
     moduleDependants = {};
+    // get all modules in the project
     var modPath = path.resolve('./modules');
     var dirs = getDirectories(modPath);
     dirs.forEach(function(dir) {
+      // find each server controller
       dir = path.resolve(modPath + '/' + dir + '/server/controllers');
+      // get the include files
       glob(dir + '/*.includes.js', {}, function (err, files) {
         if (err) {
           console.log(err);
@@ -44,6 +50,7 @@ if (!moduleDependants) {
           files.forEach(function (file) {
             var check = (require(file)).depend;
             for (var key in check) {
+              // thow an error if there is more than one dependency with the same name
               if (moduleDependants[key])
                 console.log((new Error('Dependancy -- ' + key + ' has been declared twice as a dependency.')).stack);
             }
@@ -83,6 +90,8 @@ function getDependantByKey(key) {
 }
 module.exports.getDependantByKey = getDependantByKey;
 
+// this is a function that can help you decalre the functions you need
+// it doent actually declare the function, just prints what you should write to the console
 module.exports.declareDependantVariables = function(keys) {
   console.log('\n' + ((new Error()).stack).split('\n')[2].replace('at Object.<anonymous> (C:\\Users\\adam\\Desktop\\FirstCrowd', '').replace(')', '').trim() + '\n');
   if (keys && keys.length > 0) {
@@ -98,6 +107,7 @@ module.exports.declareDependantVariables = function(keys) {
   return null;
 };
 
+// get multiple dependencies in a mass assignment operation
 exports.assignDependantVariables = function(keys) {
   printAssignedDependantsToFile(keys);
   var vars = [];
@@ -107,11 +117,14 @@ exports.assignDependantVariables = function(keys) {
   return vars;
 };
 
+/*------------------------ THESE FUNCTIONS ARE FOR DOCUMENTATION ONLY -------------------------------------*/
+
 var assignedDependantsDirectory = path.resolve('./resources/dependancies/');
 var assignedDependantsFile = path.resolve(assignedDependantsDirectory + '/filesDependants.json');
 var assignedDependantsFileCleared = false;
 var assignedDependantsObj = { 'files': {} };
 
+// clear the file where the exports are stored
 if(!assignedDependantsFileCleared) {
   assignedDependantsFileCleared = true;
   makeDirectory(assignedDependantsDirectory, function(err) {
@@ -126,22 +139,22 @@ if(!assignedDependantsFileCleared) {
   });
 }
 
+// populate the documentation file for the export
 var timeOut = null;
 function printAssignedDependantsToFile(keys) {
   if (timeOut)
     clearTimeout(timeOut)
   var stack = (new Error).stack;
   var fileLine = stack.split('\n')[3];
-  var n = fileLine.indexOf('FirstCrowd');
-  fileLine = fileLine.substring(n !== -1 ? n : 0, fileLine.length).trim();
+  var projectName = 'FirstCrowd';
+  var n = fileLine.indexOf(projectName);
+  fileLine = fileLine.substring(n !== -1 ? n + projectName.length : 0, fileLine.length).trim();
   n = fileLine.indexOf(':');
-  fileLine = fileLine.substring(0, n !== -1 ? n : fileLine.length);
-  //console.log(fileLine);
+  fileLine = fileLine.substring(0, n !== -1 ? n : fileLine.length).trim();
   assignedDependantsObj.files[fileLine] = {};
   assignedDependantsObj.files[fileLine].filePath = fileLine;
   assignedDependantsObj.files[fileLine].dependencies = keys;
-  //console.log(fullFilePath);
-  //assignedDependantsObj.files[fileLine].exports = require(fullFilePath);
+  //assignedDependantsObj.files[fileLine].exports = require(path.resolve(fileLine));
 
   timeOut = setTimeout(function() {
     fs.writeFile(assignedDependantsFile, JSON.stringify(assignedDependantsObj, null, 2), 'utf8', function (err) {

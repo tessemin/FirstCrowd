@@ -14,6 +14,7 @@ var path = require('path'),
   setStatus = taskTools.setStatus,
   taskFindOne = taskSearch.taskFindOne; */
 
+// paypal configuration
 paypal.configure({
   'mode': 'sandbox',
   'client_id': 'AecAzJEgQRFF8kL2hhPkyBjiNmvLLCxyQR3cCkNN4hmobtGKQBLyWpUAwUqYZK7hIJhQhRlX36X3YaAV',
@@ -47,7 +48,7 @@ var create_web_profile_json = {
 }]
 */
 module.exports.createPaypalPayment = function (items, description, callBack, returnURL, cancelURL) {
-
+  // create the payment object
   var create_payment_json = {
     'intent': 'authorize',
     'payer': {
@@ -68,7 +69,7 @@ module.exports.createPaypalPayment = function (items, description, callBack, ret
       'description': description
     }]
   };
-
+  // calculate the total price
   var total = 0;
   items.forEach(function(item) {
     total += item.price * item.quantity;
@@ -82,7 +83,7 @@ module.exports.createPaypalPayment = function (items, description, callBack, ret
 
   // adds our paypal web profile so no shipping option pops up
   create_payment_json.experience_profile_id = paypalWebProfileId;
-
+  // create and send the payment for authorization
   paypal.payment.create(create_payment_json, function(error, createdPayment) {
     if (error) {
       callBack(error.message);
