@@ -7,7 +7,7 @@ var _ = require('lodash'),
   path = require('path');
 
 /**
- * Extend workers's controller
+ * Extend workers's crud controller
  */
 module.exports.crud = _.extend(
   require('./worker.task.actions.crud/read.server.controller'),

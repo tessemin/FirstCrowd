@@ -6,6 +6,7 @@
 var path = require('path'),
   _ = require('lodash');
 
+// this is an important dependencie for this module
 module.exports.getTimeInMinutes = function(milli) {
   var date = null;
   if (milli)
@@ -15,6 +16,7 @@ module.exports.getTimeInMinutes = function(milli) {
   return parseInt(((date.getTime()) / 1000 * 60), 10).toString();
 };
 
+// extends the tasks dependancies
 _.extend(
   module.exports,
   require('./task.file.directories/task.file.directories.depend'),

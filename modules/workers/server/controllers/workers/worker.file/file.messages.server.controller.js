@@ -12,9 +12,12 @@ var moduleDependencies = require(path.resolve('./modules/core/server/controllers
 var dependants = ['setUpWorkerFileExchange', 'sendWorkerMessage'];
 var setUpWorkerFileExchange, sendWorkerMessage;
 [setUpWorkerFileExchange, sendWorkerMessage] = moduleDependencies.assignDependantVariables(dependants);
-  
+
+// send a worker message
 module.exports.sendMessage = function(req, res) {
+  // set up the file exchange
   setUpWorkerFileExchange(req, res, function(typeObj, task, jobIndex) {
+    // send the worker message
     sendWorkerMessage(req.body.message, task._id, typeObj._id, null, function (err, message) {
       if (err)
         return res.status(422).send({

@@ -12,10 +12,12 @@ var path = require('path'),
   moduleDependencies = require(path.resolve('./modules/core/server/controllers/modules.depend.server.controller'));
 
 var hashObjId = moduleDependencies.getDependantByKey('hashObjId');
-  
+
 // todo: move to indidvidual controllers
+// for each array of ids reaturn the list of individuals
 module.exports.getMongoIndividuals = function(indIds, callBack) {
   if (indIds.length > 0)
+    // find all the individuals and return
     Individual.find({ '_id': { $in: indIds } }, function(err, inds) {
       if (err)
         callBack(errorHandler.getErrorMessage(err));
@@ -28,8 +30,10 @@ module.exports.getMongoIndividuals = function(indIds, callBack) {
 };
 
 // todo: move to enterprise controllers
+// for each array of ids reaturn the list of enterprises
 module.exports.getMongoEnterprises = function(entIds, callBack) {
   if (entIds.length > 0)
+  // find all the erterprises and return
     Enterprise.find({ '_id': { $in: entIds } }, function(err, ents) {
       if (err)
         callBack(errorHandler.getErrorMessage(err));
@@ -41,6 +45,7 @@ module.exports.getMongoEnterprises = function(entIds, callBack) {
     return callBack(null, []);
 };
 
+// returns a task with a hashedworkerId for each worker in this task
 module.exports.mapTaskJobToDisplay = function(tasks) {
   return tasks.map(function(task) {
     task = JSON.parse(JSON.stringify(task));
@@ -53,6 +58,7 @@ module.exports.mapTaskJobToDisplay = function(tasks) {
   });
 };
 
+// extend the depends files
 _.extend(
   module.exports,
   require('./requester.task.actions.bid/requester.task.actions.bid.depend'),

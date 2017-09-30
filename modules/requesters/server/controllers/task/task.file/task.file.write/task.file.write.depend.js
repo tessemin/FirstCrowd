@@ -12,6 +12,8 @@ var dependants = ['makeDirectory', 'getTimeInMinutes', 'getFilePath', 'getSubmis
 var makeDirectory, getTimeInMinutes, getFilePath, getSubmissionMsgFileName;
 [makeDirectory, getTimeInMinutes, getFilePath, getSubmissionMsgFileName] = moduleDependencies.assignDependantVariables(dependants);
 
+// sends files to the right path with name of file
+// this is for file upload!
 module.exports.writeFilesToPath = function(file, dirPath, callBack, next) {
   fs.readFile(file.path, function (err, data) {
     if (err) {
@@ -44,6 +46,7 @@ module.exports.writeFilesToPath = function(file, dirPath, callBack, next) {
   });
 };
 
+// sends a message
 function sendMessage(message, taskId, workerId, timeInMin, fileName, callBack) {
   if (message) {
     if (!timeInMin)
@@ -70,7 +73,7 @@ function sendMessage(message, taskId, workerId, timeInMin, fileName, callBack) {
 }
 module.exports.sendMessage = sendMessage;
 
-
+// middle ware so we can just send a submission message
 module.exports.sendSubmissionMessage = function(message, taskId, workerId, timeInMin, callBack) {
   if (message && message.length > 0) {
     return sendMessage(message, taskId, workerId, timeInMin, getSubmissionMsgFileName(), function(err, msg, timeStamp) {

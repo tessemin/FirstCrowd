@@ -13,14 +13,20 @@ var dependants = ['getDirectories', 'getRequesterMsgFileName', 'getWorkerMsgFile
 var getDirectories, getRequesterMsgFileName, getWorkerMsgFileName, getSubmissionMsgFileName, getFilePath;
 [getDirectories, getRequesterMsgFileName, getWorkerMsgFileName, getSubmissionMsgFileName, getFilePath] = moduleDependencies.assignDependantVariables(dependants);
 
+// get get the message files for a task after timeX
+// afterTimeX can be ommited
+// files are stores like ->resources->taskId->workerId->timestamps->worker|requester|submissions
 function getFilesInTask(taskDir, forEach, callBack, afterTimeX) {
+  // get each subdirectory in the task file path
   var subDirs = getDirectories(taskDir);
   subDirs.sort(function(a, b) {
     if (a > b) return -1;
     if (a < b) return 1;
     return 0;
   });
+  // for each subdir get the ones after timeX
   for (var sub = 0; sub < subDirs.length && (subDirs[sub] > afterTimeX || !afterTimeX); sub++) {
+    // then get each file in those sub dirs
     var timeDir = path.resolve(taskDir + '/' + subDirs[sub]);
     if (fs.existsSync(timeDir)) {
       var timeStampFiles = fs.readdirSync(timeDir);
@@ -32,6 +38,7 @@ function getFilesInTask(taskDir, forEach, callBack, afterTimeX) {
             timeStamp: subDirs[sub]
           });
       }
+      // get all the messages in that timedirectory
       var messages = {};
       var messagePath = path.resolve(timeDir + '/messages/' + getRequesterMsgFileName());
       if (fs.existsSync(messagePath))
@@ -49,6 +56,7 @@ function getFilesInTask(taskDir, forEach, callBack, afterTimeX) {
 }
 module.exports.getFilesInTask = getFilesInTask;
 
+// get the downloadables for a task, this does not download the files
 module.exports.getDownloadables = function(taskId, typeObjId, callBack, afterTimeX) {
   getFilePath(taskId, typeObjId, null, function (err, taskWorkerDir) {
     var files = [];
@@ -61,6 +69,8 @@ module.exports.getDownloadables = function(taskId, typeObjId, callBack, afterTim
   });
 };
 
+// downoad the blob test for a file
+// this actually downloads the file
 module.exports.getDownloadFile = function(taskId, typeObjId, filename, timeStamp, callBack) {
   var file = {};
   file.name = filename;

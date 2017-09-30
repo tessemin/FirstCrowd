@@ -5,5 +5,6 @@
  */
 var path = require('path'),
   _ = require('lodash');
-  
+
+// no exports
 module.exports = {};

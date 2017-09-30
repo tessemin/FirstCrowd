@@ -12,15 +12,19 @@ var dependants = ['getUserTypeObject', 'taskFindOne', 'ownsTask', 'findJobByWork
 var getUserTypeObject, taskFindOne, ownsTask, findJobByWorker, findBidByWorker, sendMessage, getRequesterMsgFileName;
 [getUserTypeObject, taskFindOne, ownsTask, findJobByWorker, findBidByWorker, sendMessage, getRequesterMsgFileName] = moduleDependencies.assignDependantVariables(dependants);
 
+// sets up the requester file exchange
 module.exports.setUpRequesterFileExchange = function(req, res, callBack) {
+  // finds your type object
   getUserTypeObject(req, res, function(typeObj) {
     var taskId = req.body.taskId;
+    // finds the task
     taskFindOne(taskId, function(err, task) {
       if (err) {
         return res.status(422).send({
           message: errorHandler.getErrorMessage(err)
         });
       }
+      // various checks
       if (!task) {
         return res.status(422).send({
           message: 'No task with that Id found.'
@@ -31,7 +35,7 @@ module.exports.setUpRequesterFileExchange = function(req, res, callBack) {
           message: 'You don\'t own this task.'
         });
       }
-      
+
       if (!req.body.workerId) {
         return res.status(422).send({
           message: 'No worker id provided.'
@@ -43,13 +47,16 @@ module.exports.setUpRequesterFileExchange = function(req, res, callBack) {
           message: 'That id is not a worker for this task'
         });
       }
+      // return the typeobject and the task
       callBack(typeObj, task);
     });
   });
 };
 
+// setys up sending a requester message
 module.exports.sendRequesterMessage = function(message, taskId, workerId, timeInMin, callBack) {
   if (message && message.length > 0) {
+    // sends a message with the requesterMsgFileName specified
     return sendMessage(message, taskId, workerId, timeInMin, getRequesterMsgFileName(), function(err, msg, timeStamp) {
       if (err) return callBack(err);
       callBack(null, { files: [], messages: { requester: msg }, timeStamp: timeStamp });

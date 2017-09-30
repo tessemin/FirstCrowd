@@ -6,7 +6,7 @@
 var _ = require('lodash');
 
 /**
- * Extend requesters's file controller
+ * Extend requesters's actions bid controller
  */
 _.extend(
   module.exports,

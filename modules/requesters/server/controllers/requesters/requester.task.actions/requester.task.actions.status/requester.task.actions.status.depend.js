@@ -15,22 +15,30 @@ var dependants = ['taskFindOne', 'findRequesterByTask', 'removeTaskFromRequester
 var taskFindOne, findRequesterByTask, removeTaskFromRequesterArray;
 [taskFindOne, findRequesterByTask, removeTaskFromRequesterArray] = moduleDependencies.assignDependantVariables(dependants);
 
+// set the status for the task
 exports.setStatus = function(taskId, status, callBack) {
+  // finds the task
   taskFindOne(taskId, function (err, task) {
     if (err) {
       // TODO: *** should remove from requester task list *** //
       callBack({ error: errorHandler.getErrorMessage(err) });
     }
+    // find the requester by the task
     findRequesterByTask(task, function(err, requester) {
       if (err)
         callBack(err);
+      // sets the reuqester status
       setStatusRequester(status, task._id, requester, function (typeObj) {
+        // set the workers status
         setStatusOfWorkers(getWorkersIds(task.jobs), status, task._id, function() {
+          // set the task status
           task.status = status;
+          // save the type object
           typeObj.save(function (typeErr, typeObj) {
             if (typeErr) {
               callBack(errorHandler.getErrorMessage(typeErr));
             } else {
+              // save the task
               task.save(function (err, task) {
                 if (err) {
                   callBack(errorHandler.getErrorMessage(err));
@@ -46,24 +54,27 @@ exports.setStatus = function(taskId, status, callBack) {
   });
 };
 
+// set the task to sclosed or fclosed
 exports.setTaskStatus = function(requester, task, callBack) {
   var successes = 0;
   var jobsAllDone = true;
+  // on jobs completion
   for (var job = 0; job < task.jobs.length; job++) {
     if (task.jobs[job].status === 'accepted')
       successes++;
-    if (task.jobs[job].status === 'active' || task.jobs[job].status === 'submitted') {
+    else if (task.jobs[job].status === 'active' || task.jobs[job].status === 'submitted')
       jobsAllDone = false;
-    }
   }
   if (!jobsAllDone)
     callBack(null);
+  // set task status
   if (successes >= task.successFactor)
     task.status = 'sclosed';
   else
     task.status = 'fclosed';
-  
+  // set the requester status
   setStatusRequester(task.status, task._id, requester, function(requester) {
+    // save task
     task.save(function(err, task) {
       if (err) return callBack(errorHandler.getErrorMessage(err));
       requester.save(function(err) {
@@ -74,6 +85,7 @@ exports.setTaskStatus = function(requester, task, callBack) {
   });
 };
 
+// sets the status of the requester by task status
 function setStatusRequester(status, taskId, typeObj, callBack) {
   typeObj = removeTaskFromRequesterArray(taskId, typeObj);
   switch (status) {
@@ -157,6 +169,7 @@ function removeFromObjectTasksArray (taskId, array) {
 }
 exports.removeFromObjectTasksArray = removeFromObjectTasksArray;
 
+// get worker ids for a list of task jobs
 function getWorkersIds(jobs) {
   var workersEnterprise = [];
   var workersIndividual = [];
@@ -182,14 +195,19 @@ function getWorkersIds(jobs) {
 }
 exports.getWorkersIds = getWorkersIds;
 
+// sets the status of the worker
 function setStatusOfWorkers(workerIdArray, status, taskId, callBack, errorIds, workerId) {
   if (!errorIds)
     errorIds = [];
   workerId = null;
+  // if it has enterpriseIds
   if (workerIdArray.enterpriseIds) {
+    // finds all the enterprises and sets their status and saves them marking error ids
     workerId = workerIdArray.enterpriseIds.shift();
+    // if there is no more enteprriseIds delete that field
     if (workerIdArray.enterpriseIds.length <= 0)
       delete workerIdArray.enterpriseIds;
+    // find the enterprise
     Enterprise.find({ '_id': workerId }, function(err, enterprise) {
       if (err) {
         errorIds.push({ error: err, workerId: workerId });
@@ -197,9 +215,11 @@ function setStatusOfWorkers(workerIdArray, status, taskId, callBack, errorIds, w
       } else if (enterprise.length <= 0) {
         return setStatusOfWorkers(workerIdArray, status, taskId, callBack, errorIds, workerId);
       } else {
+        // set the status of the worker
         enterprise = enterprise[0];
         enterprise = removeTaskFromWorkerArray(taskId, enterprise);
         enterprise = addWorkerTaskWithStatus(status, taskId, enterprise);
+        // save the enterprise
         enterprise.save(function(err, enterprise) {
           if (err)
             errorIds.push({ error: err, workerId: workerId });
@@ -207,10 +227,14 @@ function setStatusOfWorkers(workerIdArray, status, taskId, callBack, errorIds, w
         });
       }
     });
+  // if it has individual Ids
   } else if (workerIdArray.individualIds) {
+    // finds all the individuals and sets their status and saves them marking error ids
     workerId = workerIdArray.individualIds.shift();
+    // if there are no more individuals delete that field
     if (workerIdArray.individualIds.length <= 0)
       delete workerIdArray.individualIds;
+    // find the indivudal
     Individual.find({ '_id': workerId }, function(err, individual) {
       if (err) {
         errorIds.push({ error: err, workerId: workerId });
@@ -218,9 +242,11 @@ function setStatusOfWorkers(workerIdArray, status, taskId, callBack, errorIds, w
       } else if (individual.length <= 0) {
         return setStatusOfWorkers(workerIdArray, status, taskId, callBack, errorIds, workerId);
       } else {
+        // sets the status of the individual
         individual = individual[0];
         individual = removeTaskFromWorkerArray(taskId, individual);
         individual = addWorkerTaskWithStatus(status, taskId, individual);
+        // save the individual
         individual.save(function(err, individual) {
           if (err)
             errorIds.push({ error: err, workerId: workerId });
@@ -229,11 +255,13 @@ function setStatusOfWorkers(workerIdArray, status, taskId, callBack, errorIds, w
       }
     });
   } else {
+    // once recursive call is all done return the errorIds
     callBack(errorIds);
   }
 }
 exports.setStatusOfWorkers = setStatusOfWorkers;
 
+// adds a worker with a certain status
 function addWorkerTaskWithStatus(status, taskId, typeObj) {
   switch (status) {
     case 'open':

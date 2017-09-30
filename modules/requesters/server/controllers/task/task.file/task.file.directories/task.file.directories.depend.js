@@ -7,6 +7,7 @@ var path = require('path'),
   fs = require('fs'),
   mkdirp = require('mkdirp');
 
+// a function to make the nested directories
 function makeDirectory(dir, callBack) {
   if (!fs.existsSync(dir)) {
     mkdirp(dir, function (err) {
@@ -21,6 +22,7 @@ function makeDirectory(dir, callBack) {
 }
 module.exports.makeDirectory = makeDirectory;
 
+// gets the filePath for the stored messages
 module.exports.getFilePath = function(taskId, workerId, timeInMin, callBack) {
   var dir = './resources/taskSubmissions';
   if (taskId) {
@@ -38,7 +40,7 @@ module.exports.getFilePath = function(taskId, workerId, timeInMin, callBack) {
     return callBack(null, dir);
   });
 };
-
+// get directories in a directory
 module.exports.getDirectories = function(srcpath) {
   return fs.readdirSync(srcpath)
     .filter(file => fs.lstatSync(path.join(srcpath, file)).isDirectory());

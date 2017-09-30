@@ -14,8 +14,13 @@ var dependants = ['taskFindWithOption'];
 var taskFindWithOption;
 [taskFindWithOption] = moduleDependencies.assignDependantVariables(dependants);
 
+// this is a dependancy that is used
+// if can search tasks by multiple fields
+// this function is not currently in use
 module.exports.searchTasks = function(query, extraTerms, callBack) {
+  // mongodb search options
   var mongoOptions = [];
+  // Fuse search Options
   var FuseOptions = {
     shouldSort: true,
     threshold: 0.30,
@@ -26,6 +31,8 @@ module.exports.searchTasks = function(query, extraTerms, callBack) {
     keys: []
   };
   // fuse options
+  // if you want to search title, include { title: true }
+  // the same form for the rest of these
   if (query.title)
     FuseOptions.keys.push('title');
   if (query.description)
@@ -36,7 +43,9 @@ module.exports.searchTasks = function(query, extraTerms, callBack) {
     FuseOptions.keys.push('category');
   if (query.status)
     FuseOptions.keys.push('status');
-  
+
+  // these functions will match a bidding price and set the mongo options to values
+  // eq lth or gth depending on the object sent back
   if (query.bidding && query.bidding.bidable)
     mongoOptions.push({ payment: { bidding: { bidable: { $eq: true } } } });
   // bidding price options
@@ -71,7 +80,10 @@ module.exports.searchTasks = function(query, extraTerms, callBack) {
         mongoOptions.push({ payment: { staticPrice: { $gte: query.payment.staticPrice.min } } });
     }
   }
+
   // bidding date range
+  // this will match a data range either
+  // eq, gth, or lth
   if (query.payment && query.payment.bidding && query.payment.bidding.bidable && query.payment.bidding.timeRange) {
     if (query.payment.bidding.timeRange.start) {
       if (query.payment.bidding.timeRange.start.equals) {
@@ -94,7 +106,9 @@ module.exports.searchTasks = function(query, extraTerms, callBack) {
       }
     }
   }
+
   // deadline
+  // matches deadline the same as the previous two
   if (query.deadline) {
     if (query.deadline.equals)
       mongoOptions.push({ deadline: { $eq: query.deadline.equals } });
@@ -105,24 +119,26 @@ module.exports.searchTasks = function(query, extraTerms, callBack) {
         mongoOptions.push({ deadline: { $gte: query.deadline.min } });
     }
   }
+  // if you want to search secret tasks
   if (!query.secret) {
     mongoOptions.push({ secret: { $eq: false } });
   }
-  
+
   // searches for specific ids
   if (query.taskIds)
     mongoOptions.push({ '_id': { $in: query.taskIds } });
-  
+
   if (extraTerms)
     if (Array.isArray(extraTerms))
       mongoOptions = mongoOptions.concat(extraTerms);
     else
       mongoOptions.push(extraTerms);
-
+  // finds the tasks using mongo options
   taskFindWithOption({ $and: mongoOptions }, {}, function (err, tasks) {
     if (err)
       return callBack(errorHandler.getErrorMessage(err));
     if (query.searchTerm) {
+      // then cuts the tasks down using fuse
       var fuse = new Fuse(tasks, FuseOptions);
       tasks = fuse.search(query.searchTerm);
     }

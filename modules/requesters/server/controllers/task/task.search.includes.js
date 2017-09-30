@@ -6,7 +6,7 @@
 var _ = require('lodash');
 
 /**
- * Extend workers's controller
+ * Extend tasks search controller
  */
 module.exports.search = _.extend(
   require('./task.search/task.search.client.includes'),

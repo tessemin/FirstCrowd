@@ -6,7 +6,7 @@
 var _ = require('lodash');
 
 /**
- * Extend requesters's file controller
+ * Extend requesters's actions controller
  */
 module.exports.bidding = _.extend(
   require('./requester.task.actions.bid/bid.reject.server.controller'),

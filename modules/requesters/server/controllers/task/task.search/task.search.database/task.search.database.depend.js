@@ -7,7 +7,8 @@ var _ = require('lodash'),
   path = require('path'),
   mongoose = require('mongoose'),
   Task = mongoose.model('Task');
- 
+
+ // searches mongodb for the options specified and not for the options not specified
 module.exports.taskFindWithOption = function(options, nonOptions, callBack) {
   var requestOptions = [];
   if (Array.isArray(options))
@@ -22,6 +23,7 @@ module.exports.taskFindWithOption = function(options, nonOptions, callBack) {
   Task.find({ $and: requestOptions }, callBack);
 };
 
+// finds many takes with ids
 module.exports.taskFindMany = function(taskArray, secretAllowed, callBack) {
   if (!taskArray || taskArray.length <= 0)
     return callBack(null, []);
@@ -31,6 +33,7 @@ module.exports.taskFindMany = function(taskArray, secretAllowed, callBack) {
     Task.find({ '_id': { $in: taskArray }, secret: false }, callBack);
 };
 
+// finds on task
 module.exports.taskFindOne = function(taskId, callBack) {
   Task.findById(taskId, function (err, task) { callBack(err, task); });
 };

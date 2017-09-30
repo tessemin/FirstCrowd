@@ -6,9 +6,9 @@
 var _ = require('lodash');
 
 /**
- * Extend requesters's file controller
+ * Extend tasks read file controller
  */
- 
+
 _.extend(
   module.exports,
   require('./task.file.read/read.server.controller')

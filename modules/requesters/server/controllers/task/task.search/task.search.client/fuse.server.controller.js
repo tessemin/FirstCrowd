@@ -8,17 +8,19 @@ var path = require('path'),
   Task = mongoose.model('Task'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   Fuse = require('fuse.js');
-  
+
 // decalre dependant functions
 var moduleDependencies = require(path.resolve('./modules/core/server/controllers/modules.depend.server.controller'));
 var dependants = ['getUserTypeObject', 'searchTasks', 'isRequester', 'getIdsInArray', 'isWorker'];
 var getUserTypeObject, searchTasks, isRequester, getIdsInArray, isWorker;
 [getUserTypeObject, searchTasks, isRequester, getIdsInArray, isWorker] = moduleDependencies.assignDependantVariables(dependants);
 
+// this is a complicated function that searches open tasks
 module.exports.searchOpenTasks = function (req, res) {
   getUserTypeObject(req, res, function(typeObj) {
     var query = req.body.query;
     query.secret = false;
+    // uses the function in the depends folder
     searchTasks(query, [{ 'jobs': { $not: { $elemMatch: { 'worker.workerId': typeObj._id } } } },
       { 'requester.requesterId': { $ne: typeObj._id } }],
       function(err, results) {
@@ -30,10 +32,13 @@ module.exports.searchOpenTasks = function (req, res) {
       });
   });
 };
+
+
 module.exports.searchMyTasks = function (req, res) {
   getUserTypeObject(req, res, function(typeObj) {
     var query = {};
     query.searchTerm = req.body.query;
+    // gets all requester or worker tasks
     var ids = [];
     if (isRequester(req.user)) {
       ids = [].concat(getIdsInArray(typeObj.requester.activeTasks), getIdsInArray(typeObj.requester.suspendedTasks), getIdsInArray(typeObj.requester.completedTasks), getIdsInArray(typeObj.requester.rejectedTasks));
@@ -44,6 +49,7 @@ module.exports.searchMyTasks = function (req, res) {
         message: 'Please sign in as either a worker or requester.'
       });
     }
+    //sets up for the function in depends folder
     query.secret = true;
     query.taskIds = ids;
     query.title = true;
@@ -51,7 +57,7 @@ module.exports.searchMyTasks = function (req, res) {
     query.skills = true;
     query.category = true;
     query.status = true;
-    
+    // searches the tasks
     searchTasks(query, null, function(err, results) {
       if (err)
         return res.status(422).send({

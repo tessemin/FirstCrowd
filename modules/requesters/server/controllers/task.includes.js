@@ -6,7 +6,7 @@
 var _ = require('lodash');
 
 /**
- * Extend workers's controller
+ * Extend task controller
  */
 _.extend(
   module.exports,

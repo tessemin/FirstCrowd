@@ -6,9 +6,9 @@
 var _ = require('lodash');
 
 /**
- * Extend requesters's file controller
+ * Extend the task depend file
  */
- 
+
 module.exports.depend = _.extend(
   require('./task.depend')
 );

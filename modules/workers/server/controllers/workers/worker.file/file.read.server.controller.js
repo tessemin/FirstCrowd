@@ -12,9 +12,12 @@ var moduleDependencies = require(path.resolve('./modules/core/server/controllers
 var dependants = ['setUpWorkerFileExchange', 'getDownloadables'];
 var setUpWorkerFileExchange, getDownloadables;
 [setUpWorkerFileExchange, getDownloadables] = moduleDependencies.assignDependantVariables(dependants);
-  
+
+// get the downloables for a worker
 module.exports.getWorkerDownloadables = function (req, res) {
+  // set up the worker file exchange
   setUpWorkerFileExchange(req, res, function(typeObj, task, jobIndex) {
+    // and get the downloables
     getDownloadables(task._id, typeObj._id, function(down) {
       return res.status(200).send(down);
     }, req.body.sinceTimeX);

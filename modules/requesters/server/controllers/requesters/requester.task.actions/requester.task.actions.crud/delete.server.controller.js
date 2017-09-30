@@ -15,11 +15,15 @@ var getUserTypeObject, isRequester, taskFindOne, ownsTask;
 [getUserTypeObject, isRequester, taskFindOne, ownsTask] = moduleDependencies.assignDependantVariables(dependants);
 
 var taskId = null;
-  
+
+// delete a task
 module.exports.delete = function(req, res) {
+  // get your typeobj
   getUserTypeObject(req, res, function(typeObj) {
+    // if you are a requester
     if (isRequester(req.user)) {
       taskId = req.body.taskId;
+      // find the task
       taskFindOne(taskId, function(err, task) {
         if (err) {
           return res.status(422).send({
@@ -34,14 +38,18 @@ module.exports.delete = function(req, res) {
           return res.status(422).send({
             message: 'No owner for this task'
           });
+        // make sure you own the task
         if (ownsTask(task, typeObj)) {
+          // make sure there are no workers for thi task
           if (!task.jobs || task.jobs.length <= 0) {
+            // remove the task
             Task.findByIdAndRemove(taskId, function (err, task) {
               if (err) {
                 return res.status(422).send({
                   message: errorHandler.getErrorMessage(err)
                 });
               } else {
+                // TODO: repay the requester
                 return res.status(200).send({
                   message: 'Task ' + task.title + ' deleted successfully',
                   taskId: task._id

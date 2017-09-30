@@ -6,7 +6,7 @@
 var _ = require('lodash');
 
 /**
- * Extend workers's controller
+ * Extend tasks file controller
  */
 module.exports.file = _.extend(
   require('./task.file/task.file.directories.includes'),

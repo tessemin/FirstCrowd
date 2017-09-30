@@ -16,6 +16,7 @@ var dependants = ['findTypeObjByTaskTypeObj'];
 var findTypeObjByTaskTypeObj;
 [findTypeObjByTaskTypeObj] = moduleDependencies.assignDependantVariables(dependants);
 
+// finds the worker embended in the task
 module.exports.findTaskWorker = function(task, worker) {
   var job = findJobByWorker(task, worker);
   if (job)
@@ -23,6 +24,7 @@ module.exports.findTaskWorker = function(task, worker) {
   return false;
 };
 
+// gets the job for the worker embended in the task
 function findJobByWorker(task, worker) {
   var index = findJobIndex(task.jobs, worker._id);
   if (index < 0)
@@ -31,6 +33,7 @@ function findJobByWorker(task, worker) {
 }
 module.exports.findJobByWorker = findJobByWorker;
 
+// finds the index for the job the worker is working in the task
 function findJobIndex(jobs, workerId) {
   var jobIndex = 0,
     jobsLength = jobs.length;
@@ -46,6 +49,7 @@ function findJobIndex(jobs, workerId) {
 }
 module.exports.findJobIndex = findJobIndex;
 
+// finds the bid the worker bidded on
 module.exports.findBidByWorker = function(task, worker) {
   if (task && task.bids && worker)
     for (var i = 0; i < task.bids.length; i++) {
@@ -57,6 +61,7 @@ module.exports.findBidByWorker = function(task, worker) {
   return false;
 };
 
+// finds the task requester/owner
 module.exports.findRequesterByTask = function(task, callBack) {
   if (task) {
     findTypeObjByTaskTypeObj(task.requester, callBack);
@@ -65,10 +70,12 @@ module.exports.findRequesterByTask = function(task, callBack) {
   }
 };
 
+// takes the worker object embeded in a tasks and finds the worker object
 module.exports.findWorkerByWorkerTaskObject = function(workerTaskObj, callBack) {
   findTypeObjByTaskTypeObj(workerTaskObj, callBack);
 };
-
+/**** THIS FUNCTION NEEDS TO BE REFACTORED ****/
+// finds the worker/requester from the embedded object in the task
 module.exports.findTypeObjByTaskTypeObj = function(taskTypeObj, callBack) {
   if (!taskTypeObj) {
     return callBack('No type object provided.');
@@ -80,38 +87,40 @@ module.exports.findTypeObjByTaskTypeObj = function(taskTypeObj, callBack) {
     type = 'requester';
   else
     return callBack('Can\'t be both a worker and a requester.');
-  
+
+  // if enterprise is specified
   if (taskTypeObj[type + 'Type'].enterprise && !taskTypeObj[type + 'Type'].individual) {
-    Enterprise.findById(taskTypeObj[type + 'Id'], function (err, obj) { 
+    Enterprise.findById(taskTypeObj[type + 'Id'], function (err, obj) {
       if (err) {
-        return callBack(errorHandler.getErrorMessage(err)); 
+        return callBack(errorHandler.getErrorMessage(err));
       }
       if (obj)
         return callBack(null, obj);
       else
         return callBack('no ' + type + ' found');
     });
+  // if individual is specified
   } else if (taskTypeObj[type + 'Type'].individual && !taskTypeObj[type + 'Type'].enterprise) {
-    Individual.findById(taskTypeObj[type + 'Id'], function (err, obj) { 
+    Individual.findById(taskTypeObj[type + 'Id'], function (err, obj) {
       if (err) {
-        return callBack(errorHandler.getErrorMessage(err)); 
+        return callBack(errorHandler.getErrorMessage(err));
       }
       if (obj)
         return callBack(null, obj);
       else
         return callBack('no ' + type + ' found');
     });
-  } else {
-    Enterprise.findById(taskTypeObj[type + 'Id'], function (err, obj) { 
+  } else { // if neother is specified we search both
+    Enterprise.findById(taskTypeObj[type + 'Id'], function (err, obj) {
       if (err) {
-        return callBack(errorHandler.getErrorMessage(err)); 
+        return callBack(errorHandler.getErrorMessage(err));
       }
       if (obj)
         return callBack(null, obj);
       else
-        Individual.findById(taskTypeObj[type + 'Id'], function (err, obj) { 
+        Individual.findById(taskTypeObj[type + 'Id'], function (err, obj) {
           if (err) {
-            return callBack(errorHandler.getErrorMessage(err)); 
+            return callBack(errorHandler.getErrorMessage(err));
           }
           if (obj)
             return callBack(null, obj);

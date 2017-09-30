@@ -5,7 +5,8 @@
  */
 var path = require('path'),
   _ = require('lodash');
-  
+
+// removes old bids from a bids array
 module.exports.removeOldBids = function(bids, workerId) {
   var returnArray = [];
   bids.forEach(function (element) {
@@ -15,6 +16,7 @@ module.exports.removeOldBids = function(bids, workerId) {
   return returnArray;
 };
 
+// checks if a task is recomended to you
 module.exports.isTaskRecomended = function(taskId, typeObj) {
   for (var rec = 0; rec < typeObj.worker.recomendedTasks.length; rec++) {
     if (typeObj.worker.recomendedTasks[rec].taskId.toString() === taskId.toString())
@@ -23,6 +25,8 @@ module.exports.isTaskRecomended = function(taskId, typeObj) {
   return false;
 };
 
+// this sets you to be the only worker or bid on a task
+// the prevens us from sending unnessicary data to the worker
 function removeExtraWorkers(task, workerId) {
   if (task) {
     if (Array.isArray(task)) { // multiple tasks
@@ -51,6 +55,7 @@ function removeExtraWorkers(task, workerId) {
 }
 module.exports.removeExtraWorkers = removeExtraWorkers;
 
+// extends the workers depends
 _.extend(
   module.exports,
   require('./worker.task.actions.crud/worker.task.actions.crud.depend'),

@@ -6,7 +6,7 @@
 var _ = require('lodash');
 
 /**
- * Extend requesters's file controller
+ * Extend requesters's actions controller
  */
 module.exports.status = _.extend(
   require('./requester.task.actions.status/status.active.server.controller'),

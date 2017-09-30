@@ -9,6 +9,11 @@ var path = require('path'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller')),
   _ = require('lodash');
 
+// gets the ids in a task/worker/requester array in form:
+/*
+ [data: 'some data'
+  taskId: 12345abc]
+*/
 module.exports.getIdsInArray = function(array) {
   var idArray = [];
   for (var i = 0; i < array.length; i++)
@@ -18,6 +23,7 @@ module.exports.getIdsInArray = function(array) {
   return idArray;
 };
 
+//checks if the user is a requester
 module.exports.isRequester = function(user) {
   if (user.userRole)
     if (user.userRole.indexOf('requester') > -1)
@@ -25,6 +31,7 @@ module.exports.isRequester = function(user) {
   return false;
 };
 
+// checks if the user is a worker
 module.exports.isWorker = function(user) {
   if (user.userRole)
     if (user.userRole.indexOf('worker') > -1)
@@ -32,10 +39,17 @@ module.exports.isWorker = function(user) {
   return false;
 };
 
+// checks if the user owns a task
 module.exports.ownsTask = function(task, typeObj) {
   return task.requester.requesterId.toString() === typeObj._id.toString();
 };
 
+// this gets sproperties nested like prop1.prop2.prop3 and will return the value for prop3 in form:
+/* {
+  prop1: {
+    prop2: { prop3: 'value' }
+  }
+}*/
 module.exports.getNestedProperties = function(object, propertyNames) {
   if (object) {
     var returnObjs = {},
@@ -73,6 +87,7 @@ module.exports.getNestedProperties = function(object, propertyNames) {
   return null;
 };
 
+// hashes an object id to a smaller value
 module.exports.hashObjId = function(id) {
   if (id) {
     id = id.toString();

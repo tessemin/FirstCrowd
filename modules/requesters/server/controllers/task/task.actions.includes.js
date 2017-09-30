@@ -6,7 +6,7 @@
 var _ = require('lodash');
 
 /**
- * Extend workers's controller
+ * Extend task actions controller
  */
 module.exports.actions = _.extend(
   require('./task.actions/universal.server.controller')

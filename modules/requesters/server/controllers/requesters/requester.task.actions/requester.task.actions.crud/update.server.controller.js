@@ -3,13 +3,14 @@
  */
 var path = require('path'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
-  
+
 // decalre dependant functions
 /* var moduleDependencies = require(path.resolve('./modules/core/server/controllers/modules.depend.server.controller'));
 var dependants = [];
 var ;
 [] = moduleDependencies.assignDependantVariables(dependants); */
 
+// we dont need this code until its better defined
 module.exports.update = function(req, res) {
   // needs to modified so that it ony allows for loosening changes
   /* getUserTypeObject(req, res, function(typeObj) {

@@ -8,8 +8,11 @@ var path = require('path'),
   enterpriseControler = require(path.resolve('./modules/enterprises/server/controllers/enterprises.server.controller')),
   _ = require('lodash');
 
+// these functions are used mainly with task actions
 module.exports.getUserTypeObject = function(req, res, callBack) {
   if (req.user) {
+    // gets the user and decides if it is a indeividual or enterprise
+    // then uses the individual module or enterprise module to get the proper object
     if (req.user.individual) {
       individualControler.getThisIndividual(req, res, callBack);
     } else if (req.user.enterprise) {
@@ -20,6 +23,7 @@ module.exports.getUserTypeObject = function(req, res, callBack) {
       });
     }
   } else {
+    // else return a 404 with a link to the home page
     return res.status(400).send({
       message: 'User is not signed in, please sign in.',
       link: '/',
